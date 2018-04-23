@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{572E4B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Models.Authentication", "src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj", "{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Models.Authentication.Tests", "test\Guardians.Models.Authentication.Tests\Guardians.Models.Authentication.Tests.csproj", "{AD0D197E-5E82-4F41-86C3-1C27FB3383DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD0D197E-5E82-4F41-86C3-1C27FB3383DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0D197E-5E82-4F41-86C3-1C27FB3383DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD0D197E-5E82-4F41-86C3-1C27FB3383DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD0D197E-5E82-4F41-86C3-1C27FB3383DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{572E4B21-970E-4889-9B0D-357816B1307C} = {82223BC2-FD46-45B7-8714-A1BBB6FACC0E}
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD} = {572E4B21-970E-4889-9B0D-357816B1307C}
+		{AD0D197E-5E82-4F41-86C3-1C27FB3383DC} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

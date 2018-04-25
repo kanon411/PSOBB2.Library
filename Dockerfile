@@ -6,7 +6,7 @@ COPY . ./
 
 RUN chmod +x ./build.sh
 RUN ./build.sh
-COPY src/Server/Guardians.Service.Authentication/bin/Release/netcoreapp2.0/publish/* build/auth
+COPY ./src/Server/Guardians.Service.Authentication/bin/Release/netcoreapp2.0/publish/ ./build/auth
 
 # Build runtime image
 FROM microsoft/aspnetcore:2.0

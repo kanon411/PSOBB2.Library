@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OpenIddict.Core;
-using HaloLive.Models.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 
@@ -26,14 +25,14 @@ namespace Guardians
 	{
 		private IOptions<IdentityOptions> IdentityOptions { get; }
 
-		private SignInManager<HaloLiveApplicationUser> SignInManager { get; }
+		private SignInManager<GuardiansApplicationUser> SignInManager { get; }
 
-		private UserManager<HaloLiveApplicationUser> UserManager { get; }
+		private UserManager<GuardiansApplicationUser> UserManager { get; }
 
 		public AuthenticationController(
 			IOptions<IdentityOptions> identityOptions,
-			SignInManager<HaloLiveApplicationUser> signInManager,
-			UserManager<HaloLiveApplicationUser> userManager)
+			SignInManager<GuardiansApplicationUser> signInManager,
+			UserManager<GuardiansApplicationUser> userManager)
 		{
 			IdentityOptions = identityOptions;
 			SignInManager = signInManager;
@@ -122,8 +121,8 @@ namespace Guardians
 				ErrorDescription = "The specified grant type is not supported."
 			});
 		}
-
-		private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, HaloLiveApplicationUser user)
+		
+		private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, GuardiansApplicationUser user)
 		{
 			// Create a new ClaimsPrincipal containing the claims that
 			// will be used to create an id_token, a token or a code.
@@ -131,7 +130,7 @@ namespace Guardians
 
 			// Create a new authentication ticket holding the user identity.
 			var ticket = new AuthenticationTicket(principal,
-				new AuthenticationProperties(),
+				new Microsoft.AspNetCore.Authentication.AuthenticationProperties(),
 				OpenIdConnectServerDefaults.AuthenticationScheme);
 
 			// Set the list of scopes granted to the client application.

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using HaloLive.Hosting;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Guardians
 {
@@ -13,14 +14,20 @@ namespace Guardians
 	{
 		public static void Main(string[] args)
 		{
-			var host = new WebHostBuilder()
-				.ConfigureKestrelHostWithCommandlinArgs(args) //setups HaloLive specific hosting
-				.UseContentRoot(Directory.GetCurrentDirectory())
+			BuildWebHost(args).Run();
+		}
+
+		public static IWebHost BuildWebHost(string[] args) =>
+			WebHost.CreateDefaultBuilder(args)
+				.ConfigureKestrelHostWithCommandlinArgs(args)
+				.UseIISIntegration()
 				.UseStartup<Startup>()
+				.ConfigureAppConfiguration((context, builder) =>
+				{
+					//We now reigter this out here in ASP Core 2.0
+					builder.AddJsonFile(@"Config/authserverconfig.json", false);
+				})
 				.UseApplicationInsights()
 				.Build();
-
-			host.Run();
-		}
 	}
 }

@@ -4,12 +4,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
-using HaloLive.Authentication;
-using HaloLive.Hosting;
+using Consul.Net;
 using HaloLive.Models.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,24 +26,25 @@ namespace Guardians
 {
 	public class Startup
 	{
-		public Startup(IHostingEnvironment env)
+		//Changed in ASP Core 2.0
+		public Startup(IConfiguration config)
 		{
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(env.ContentRootPath)
-				//Add the authserver config json file
-				.AddJsonFile(@"Config/authserverconfig.json", false)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-				.AddEnvironmentVariables();
+			if(config == null) throw new ArgumentNullException(nameof(config));
 
-			GeneralConfiguration = builder.Build();
+			GeneralConfiguration = config;
 		}
 
-		public IConfigurationRoot GeneralConfiguration { get; }
+		public IConfiguration GeneralConfiguration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<IISOptions>(options =>
+			{
+				options.ForwardClientCertificate = false;
+				options.AutomaticAuthentication = false;
+			});
+
 			// Add framework services.
 			services.AddMvc();
 			services.AddLogging();
@@ -53,7 +59,7 @@ namespace Guardians
 
 			//Below is the OpenIddict registration
 			//This is the recommended setup from the official Github: https://github.com/openiddict/openiddict-core
-			services.AddIdentity<HaloLiveApplicationUser, HaloLiveApplicationRole>(options =>
+			services.AddIdentity<GuardiansApplicationUser, GuardiansApplicationRole>(options =>
 				{
 					//These disable the ridiculous requirements that the defauly password scheme has
 					options.Password.RequireNonAlphanumeric = false;
@@ -64,10 +70,10 @@ namespace Guardians
 					options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
 					options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
 				})
-				.AddEntityFrameworkStores<HaloLiveAuthenticationDbContext, int>()
+				.AddEntityFrameworkStores<GuardiansAuthenticationDbContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddDbContext<HaloLiveAuthenticationDbContext>(options =>
+			services.AddDbContext<GuardiansAuthenticationDbContext>(options =>
 			{
 				//TODO: Setup db options
 				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
@@ -77,7 +83,7 @@ namespace Guardians
 			services.AddOpenIddict<int>(options =>
 			{
 				// Register the Entity Framework stores.
-				options.AddEntityFrameworkCoreStores<HaloLiveAuthenticationDbContext>();
+				options.AddEntityFrameworkCoreStores<GuardiansAuthenticationDbContext>();
 
 				//This will disable the https requirement if we're debugging or not in production/debug mode.
 #if DEBUG || DEBUGBUILD
@@ -104,10 +110,39 @@ namespace Guardians
 			loggerFactory.AddConsole(GeneralConfiguration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
-			app.UseIdentity();
-			app.UseOpenIddict();
+			app.UseAuthentication();
 
 			app.UseMvcWithDefaultRoute();
+
+			//TODO: Refactor into common service library so boilerplate registeration doesn't need to be repeated
+			//TODO: Load Consul agent URI from file
+			//TODO: Handle region tag loading from config
+			//After the pipeline is configured we should then register this service with Consul.
+			IConsulClient<IConsulAgentServiceHttpApiService> agentService = 
+				new ConsulDotNetHttpClient<IConsulAgentServiceHttpApiService>(@"http://localhost:8500");
+
+			//TODO: Validate this
+			//The builder context actually has the listener URL that we need.
+			var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+			string address = serverAddressesFeature.Addresses.First();
+
+			Task.Factory.StartNew(async () =>
+			{
+				Uri hostUri = new Uri(address);
+
+				await agentService.Service.RegisterService(new AgentServiceRegisterationRequest()
+				{
+					//See: https://github.com/aspnet/Hosting/blob/a63932a492513cdeb4935661145084cad2ae5521/src/Microsoft.AspNetCore.Hosting.Abstractions/HostingAbstractionsWebHostBuilderExtensions.cs#L147
+					//TODO: How should we decide public address?
+					Address = $"{hostUri.Scheme}://{hostUri.Host}",
+					Port = hostUri.Port,
+					Id = Guid.NewGuid().ToString(),
+					Name = "Authentication",
+
+					//TODO: Handle locale from config; prod vs dev too
+					Tags = new[] {"US", "Dev"}
+				});
+			}).Wait();
 		}
 	}
 }

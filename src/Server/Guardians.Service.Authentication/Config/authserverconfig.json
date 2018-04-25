@@ -4,6 +4,6 @@
 
     "JwtSigningX509Certificate2Path": "Certs/TestCert.pfx",
 
-    "AuthenticationDatabaseString": "Server=localhost;Database=halolive;Uid=root;Pwd=test;"
+    "AuthenticationDatabaseString": "Server=localhost;Database=guardians.auth;Uid=root;Pwd=test;"
   }
 }

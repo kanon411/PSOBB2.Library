@@ -1,3 +1,3 @@
 cd build\auth
-start "auth" cmd /c dotnet Guardians.Service.Authentication.dll --usehttps=Certs/TLSCert.pfx --url=http://127.0.0.1:5001
+start "auth" cmd /c dotnet Guardians.Service.Authentication.dll --usehttps=Certs/TLSCert.pfx --url=http://172.16.42.120:5001
 cd ..

@@ -1,6 +1,6 @@
 FROM microsoft/aspnetcore-build:2.0 AS build-env
 
-RUN build.sh
+RUN /build.sh
 
 # Copy everything else and build
 COPY . /build

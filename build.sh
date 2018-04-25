@@ -3,4 +3,4 @@ dotnet publish src/Server/Guardians.Service.Authentication/Guardians.Service.Aut
 
 mkdir build
 mkdir build/auth
-mv /src/Server/Guardians.Service.Authentication/bin/Release/netcoreapp2.0/publish/* /build/auth
+mv src/Server/Guardians.Service.Authentication/bin/Release/netcoreapp2.0/publish/* build/auth

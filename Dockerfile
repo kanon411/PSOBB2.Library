@@ -4,6 +4,7 @@ WORKDIR /app
 # Copy everything else and build
 COPY . ./
 
+RUN chmod +x ./build.sh
 RUN ./build.sh
 
 # Build runtime image

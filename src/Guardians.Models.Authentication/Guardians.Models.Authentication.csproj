@@ -10,4 +10,8 @@
     <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.11" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+  </PropertyGroup>
+
 </Project>

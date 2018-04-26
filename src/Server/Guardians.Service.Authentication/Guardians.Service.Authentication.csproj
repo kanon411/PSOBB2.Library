@@ -42,4 +42,8 @@
     </Content>
   </ItemGroup>
 
+  <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+  </PropertyGroup>
+
 </Project>

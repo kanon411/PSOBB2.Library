@@ -20,5 +20,9 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+  </PropertyGroup>
 
 </Project>

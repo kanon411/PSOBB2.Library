@@ -30,4 +30,14 @@ test_script:
   - cmd: dotnet test Guardians.Models.Tests/Guardians.Models.Tests.csproj
 on_finish :
   # any cleanup in here
-deploy: off
+publish_wap_beanstalk: true
+deploy:
+- provider: ElasticBeanstalk
+  access_key_id: AKIAICPPHVXGVJB2NDVA
+  secret_access_key:
+    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
+  application_name: Guardians.Authentication
+  environment_name: Guardiansauthentication
+  region: us-east-2
+  on:
+    branch: master

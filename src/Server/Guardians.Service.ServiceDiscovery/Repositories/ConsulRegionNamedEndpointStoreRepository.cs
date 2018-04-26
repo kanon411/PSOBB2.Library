@@ -63,7 +63,8 @@ namespace Guardians
 
 		private static ResolvedEndpoint ConvertConsulEntryToEndpoint(CatalogServiceNodeEntry entry)
 		{
-			return new ResolvedEndpoint(entry.Address, entry.ServicePort);
+			//We need to use ServiceAddress and not Address. Address is the Consul address.
+			return new ResolvedEndpoint(entry.ServiceAddress, entry.ServicePort);
 		}
 
 		private static bool QueryResultIsValid(CatalogServiceNodeEntry[] result)

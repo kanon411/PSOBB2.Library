@@ -12,12 +12,11 @@ before_build:
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore src
-  - cmd: dotnet restore test
   - cmd: nuget restore Guardians.Library.sln
+  - cmd: dotnet restore
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
-  - cmd: dotnet build Guardians.Library.sln -c Release
+  - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
 after_build:
   # For once the build has completed
 artifacts:

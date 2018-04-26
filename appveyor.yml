@@ -27,7 +27,7 @@ test_script:
   - cmd: dotnet restore Guardians.Library.sln
   # run the unit tests (requires changing into the test directory)
   - cmd: cd test
-  - cmd: dotnet test Guardians.Models.Tests/Guardians.Models.Tests.csproj
+  - cmd: nunit3-console Guardians.Models.Tests/bin/Release/netcoreapp1.1/Guardians.Models.Tests.dll --result=myresults.xml;format=AppVeyor
 on_finish :
   # any cleanup in here
 deploy: off

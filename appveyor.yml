@@ -8,6 +8,8 @@ init:
   - cmd: git config --global core.autocrlf true
 install:
   # Install repo specific stuff here
+build:
+  publish_wap_beanstalk: true
 before_build:
   # Display .NET Core version
   - cmd: dotnet --version
@@ -30,7 +32,6 @@ test_script:
   - cmd: dotnet test Guardians.Models.Tests/Guardians.Models.Tests.csproj
 on_finish :
   # any cleanup in here
-publish_wap_beanstalk: true
 deploy:
 - provider: ElasticBeanstalk
   access_key_id: AKIAICPPHVXGVJB2NDVA

@@ -8,8 +8,8 @@
     <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
     <packagereference Include="Microsoft.NET.Test.Sdk" Version="15.0.0"></packagereference>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="NUnit" Version="3.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
   </ItemGroup>
 
   <ItemGroup>

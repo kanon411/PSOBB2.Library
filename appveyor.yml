@@ -12,7 +12,8 @@ before_build:
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore
+  - cmd: dontnet restore src
+  - cmd: dontnet restore test
   - cmd: nuget restore Guardians.Library.sln
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish

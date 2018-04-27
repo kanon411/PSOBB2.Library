@@ -19,7 +19,8 @@ namespace Guardians
 
 		public static IWebHost BuildWebHost(string[] args) =>
 			WebHost.CreateDefaultBuilder(args)
-				.ConfigureKestrelHostWithCommandlinArgs(args)
+				//.ConfigureKestrelHostWithCommandlinArgs(args)
+				.UseKestrel()
 				.UseIISIntegration()
 				.UseStartup<Startup>()
 				.ConfigureAppConfiguration((context, builder) =>

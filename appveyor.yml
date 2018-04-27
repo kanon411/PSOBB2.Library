@@ -21,9 +21,10 @@ build_script:
   - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
 after_build:
   # For once the build has completed
+  - cmd: dotnet publish src/Server/Guardians.Service.Authentication/Guardians.Service.Authentication.csproj -c release --self-contained -o out
 artifacts:
   # None right now
-  - path: src\Server\Guardians.Service.Authentication\bin\Release\netcoreapp2.0\
+  - path: src\Server\Guardians.Service.Authentication\out
     type: ElasticBeanstalkPackage
 clone_depth: 1
 test_script:

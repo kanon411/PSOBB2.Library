@@ -21,7 +21,7 @@ build_script:
   - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
 after_build:
   # For once the build has completed
-  - cmd: dotnet publish src/Server/Guardians.Service.Authentication/Guardians.Service.Authentication.csproj -c release --self-contained -o out
+  - cmd: dotnet publish src/Server/Guardians.Service.Authentication/Guardians.Service.Authentication.csproj -c release --self-contained --framework netcoreapp2.0 --runtime win10-x64 -o out
 artifacts:
   # None right now
   - path: src\Server\Guardians.Service.Authentication\out

@@ -23,6 +23,8 @@ after_build:
   # For once the build has completed
 artifacts:
   # None right now
+  - path: src\Server\Guardians.Service.Authentication\bin\Release\netcoreapp2.0\
+    type: ElasticBeanstalkPackage
 clone_depth: 1
 test_script:
   # restore packages for our unit tests

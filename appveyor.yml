@@ -4,7 +4,7 @@ branches:
   only:
   - master
 #Enviroment is setup for the multiple build matrix
-enviroment:
+environment:
   matrix:
     - context: Authentication
 init:

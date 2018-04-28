@@ -16,7 +16,7 @@ build:
   publish_wap_beanstalk: true
 before_build:
   # Display .NET Core version
-  - cmd: $(SERVICE_NAME)
+  - cmd: echo $(SERVICE_NAME)
   - cmd: dotnet --version
   # Display minimal restore text
   - cmd: nuget restore Guardians.Library.sln

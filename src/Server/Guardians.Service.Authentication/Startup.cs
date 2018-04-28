@@ -121,32 +121,36 @@ namespace Guardians
 			IConsulClient<IConsulAgentServiceHttpApiService> agentService = 
 				new ConsulDotNetHttpClient<IConsulAgentServiceHttpApiService>(@"http://localhost:8500");
 
-			//TODO: Validate this
-			//The builder context actually has the listener URL that we need.
-			var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
-			string address = serverAddressesFeature.Addresses.First();
-
 			//TODO: Handle logging better. We don't want to close just because of Consul
 			//We will be orphaned though.
 			try
 			{
 				Task.Factory.StartNew(async () =>
 				{
+					await Task.Delay(2000)
+						.ConfigureAwait(false);
+
+					//TODO: Validate this
+					//The builder context actually has the listener URL that we need.
+					var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+					string address = serverAddressesFeature.Addresses.First();
+
 					Uri hostUri = new Uri(address);
 
 					await agentService.Service.RegisterService(new AgentServiceRegisterationRequest()
-					{
-						//See: https://github.com/aspnet/Hosting/blob/a63932a492513cdeb4935661145084cad2ae5521/src/Microsoft.AspNetCore.Hosting.Abstractions/HostingAbstractionsWebHostBuilderExtensions.cs#L147
-						//TODO: How should we decide public address?
-						Address = $"{hostUri.Scheme}://{hostUri.Host}",
-						Port = hostUri.Port,
-						Id = Guid.NewGuid().ToString(),
-						Name = "Authentication",
+						{
+							//See: https://github.com/aspnet/Hosting/blob/a63932a492513cdeb4935661145084cad2ae5521/src/Microsoft.AspNetCore.Hosting.Abstractions/HostingAbstractionsWebHostBuilderExtensions.cs#L147
+							//TODO: How should we decide public address?
+							Address = $"{hostUri.Scheme}://{hostUri.Host}",
+							Port = hostUri.Port,
+							Id = Guid.NewGuid().ToString(),
+							Name = "Authentication",
 
-						//TODO: Handle locale from config; prod vs dev too
-						Tags = new[] { "US", "Dev" }
-					});
-				}).Wait();
+							//TODO: Handle locale from config; prod vs dev too
+							Tags = new[] {"US", "Dev"}
+						})
+						.ConfigureAwait(false);
+				});
 			}
 			catch(Exception e)
 			{

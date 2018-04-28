@@ -3,6 +3,10 @@ image: Visual Studio 2017
 branches:
   only:
   - master
+#Enviroment is setup for the multiple build matrix
+enviroment:
+  matrix:
+    - context: Authentication
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
@@ -21,10 +25,10 @@ build_script:
   - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
 after_build:
   # For once the build has completed
-  - cmd: dotnet publish src/Server/Guardians.Service.Authentication/Guardians.Service.Authentication.csproj -c release --self-contained --framework netcoreapp2.0 --runtime win10-x64 -o out
+  - cmd: dotnet publish src/Server/Guardians.Service.$(context)/Guardians.Service.$(context).csproj -c release --self-contained --framework netcoreapp2.0 --runtime win10-x64 -o out
 artifacts:
   # None right now
-  - path: src\Server\Guardians.Service.Authentication\out
+  - path: src\Server\Guardians.Service.$(context)\out
     type: ElasticBeanstalkPackage
 clone_depth: 1
 test_script:
@@ -40,8 +44,8 @@ deploy:
   access_key_id: AKIAICPPHVXGVJB2NDVA
   secret_access_key:
     secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
-  application_name: Guardians.Authentication
-  environment_name: Guardiansauthentication-env
+  application_name: Guardians.$(context)
+  environment_name: Guardians$(context)-env
   region: us-east-2
   on:
     branch: master

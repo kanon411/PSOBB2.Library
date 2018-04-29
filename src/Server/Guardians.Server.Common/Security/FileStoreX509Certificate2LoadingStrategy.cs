@@ -15,17 +15,19 @@ namespace Guardians
 		/// <inheritdoc />
 		public bool TryLoadCertificate(string name, out X509Certificate2 cert)
 		{
+#if NETCOREAPP1_1
+			throw new NotSupportedException($"Cert loader isn't working on netcore1.1 right now.");
+#else
 			if (File.Exists(name))
 			{
-				byte[] bytes = File.ReadAllBytes(name);
-
-				cert = new X509Certificate2(bytes);
+				cert = new X509Certificate2(name, "", X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
 
 				return true;
 			}
 
 			cert = null;
 			return false;
+#endif
 		}
 	}
 }

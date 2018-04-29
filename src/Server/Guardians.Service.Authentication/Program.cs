@@ -29,6 +29,9 @@ namespace Guardians
 					//We now reigter this out here in ASP Core 2.0
 					builder.AddJsonFile(@"Config/authserverconfig.json", false);
 				})
+			//TODO: remove this logging when we finally deploy properly
+				.UseSetting("detailedErrors", "true")
+				.CaptureStartupErrors(true)
 				.UseApplicationInsights()
 				.Build();
 	}

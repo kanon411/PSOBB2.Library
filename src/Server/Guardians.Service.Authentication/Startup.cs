@@ -103,7 +103,7 @@ namespace Guardians
 				try
 				{
 					//Loads the cert from the specified path
-					options.AddSigningCertificate(X509Certificate2Loader.Create(authOptions.Value.JwtSigningX509Certificate2Path).Load());
+					options.AddSigningCertificate(X509Certificate2Loader.Create(Path.Combine(Directory.GetCurrentDirectory(), authOptions.Value.JwtSigningX509Certificate2Path)).Load());
 				}
 				catch(Exception e)
 				{

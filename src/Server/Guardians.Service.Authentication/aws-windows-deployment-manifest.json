@@ -5,8 +5,8 @@
     "aspNetCoreWeb": 
     [
       {
-        "name": "Guardians.Service.Authentication",
-        "parameters": 
+        "name": "Authentication",
+        "parameters":
         {
           "appBundle": ".",
           "iisPath": "/"

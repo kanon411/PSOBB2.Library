@@ -20,7 +20,7 @@ namespace Guardians
 #else
 			if (File.Exists(name))
 			{
-				cert = new X509Certificate2(name, "", X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
+				cert = new X509Certificate2(name, "", X509KeyStorageFlags.EphemeralKeySet);
 
 				return true;
 			}

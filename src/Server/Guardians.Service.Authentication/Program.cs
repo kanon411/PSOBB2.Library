@@ -21,6 +21,7 @@ namespace Guardians
 			WebHost.CreateDefaultBuilder(args)
 				//.ConfigureKestrelHostWithCommandlinArgs(args)
 				.UseKestrel()
+				.UseUrls(@"http://0.0.0.0:7777")
 				.UseIISIntegration()
 				.UseStartup<Startup>()
 				.ConfigureAppConfiguration((context, builder) =>

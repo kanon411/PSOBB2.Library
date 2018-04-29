@@ -17,7 +17,10 @@ namespace Guardians
 		{
 			if (File.Exists(name))
 			{
-				cert = new X509Certificate2(name);
+				byte[] bytes = File.ReadAllBytes(name);
+
+				cert = new X509Certificate2(bytes);
+
 				return true;
 			}
 

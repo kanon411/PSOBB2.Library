@@ -99,8 +99,16 @@ namespace Guardians
 				options.AllowPasswordFlow(); // Allow client applications to use the grant_type=password flow.
 				options.AllowRefreshTokenFlow();
 				options.UseJsonWebTokens();
-				//Loads the cert from the specified path
-				options.AddSigningCertificate(X509Certificate2Loader.Create(authOptions.Value.JwtSigningX509Certificate2Path).Load());
+
+				try
+				{
+					//Loads the cert from the specified path
+					options.AddSigningCertificate(X509Certificate2Loader.Create(authOptions.Value.JwtSigningX509Certificate2Path).Load());
+				}
+				catch(Exception e)
+				{
+					throw new InvalidOperationException($"Failed to load cert at Path: {authOptions.Value.JwtSigningX509Certificate2Path} with Root: {Directory.GetCurrentDirectory()}. Error: {e.Message} \n\n Stack: {e.StackTrace}", e);
+				}
 			});
 		}
 

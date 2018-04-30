@@ -100,6 +100,9 @@ namespace Guardians
 				options.AllowRefreshTokenFlow();
 				options.UseJsonWebTokens();
 
+#warning Don't deploy this into production; we should use HTTPS. Even if it is behind IIS or HAProxy etc.
+				options.DisableHttpsRequirement();
+
 				try
 				{
 					//Loads the cert from the specified path

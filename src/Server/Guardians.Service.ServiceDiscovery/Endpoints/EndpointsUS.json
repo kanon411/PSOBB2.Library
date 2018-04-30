@@ -1,0 +1,13 @@
+﻿{
+  "Region": "US",
+  "ServiceEndpoints": 
+  [
+    {
+      "Authentication": 
+      {
+        "endpointAddress": "http://guardiansauth.us-east-2.elasticbeanstalk.com/",
+        "endpointPort": 80
+      }
+    }
+  ] 
+}

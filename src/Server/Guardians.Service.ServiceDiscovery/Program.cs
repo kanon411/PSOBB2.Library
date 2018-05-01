@@ -3,29 +3,31 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using HaloLive.Hosting;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Guardians
 {
-	public sealed class Program
+	public class Program
 	{
-		/// <summary>
-		/// Starts a new hosted web application with the following optional parameters
-		/// HostedUrl...
-		/// </summary>
-		/// <param name="args">Optional parameters.</param>
 		public static void Main(string[] args)
 		{
-			IWebHost host = new WebHostBuilder()
-				.ConfigureKestrelHostWithCommandlinArgs(args)
-				.UseContentRoot(Directory.GetCurrentDirectory())
+			BuildWebHost(args).Run();
+		}
+
+		public static IWebHost BuildWebHost(string[] args) =>
+			WebHost.CreateDefaultBuilder(args)
+				//.ConfigureKestrelHostWithCommandlinArgs(args)
+				.UseKestrel()
+				.UseUrls(@"http://0.0.0.0:7777")
+				.UseIISIntegration()
 				.UseStartup<Startup>()
+				//TODO: remove this logging when we finally deploy properly
+				.UseSetting("detailedErrors", "true")
+				.CaptureStartupErrors(true)
 				.UseApplicationInsights()
 				.Build();
-
-			host.Run();
-		}
 	}
 }

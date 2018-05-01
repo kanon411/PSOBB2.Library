@@ -12,7 +12,7 @@ namespace Guardians
 	/// Loads Endpoint{Region}.json files from the Endpoints directory.
 	/// This directory should be relative to the working directory of the launched application.
 	/// </summary>
-	public sealed class FilestoreBasedRegionNamedEndpointStoreRepository : IRegionNamedEndpointStoreRepository
+	public sealed class FilestoreBasedRegionNamedEndpointStoreRepository : IRegionNamedEndpointStoreRepository, IRegionbasedNameEndpointResolutionRepository
 	{
 		/// <inheritdoc />
 		public async Task<NameEndpointResolutionStorageModel> Retrieve(ClientRegionLocale region)
@@ -38,6 +38,37 @@ namespace Guardians
 			if (!Enum.IsDefined(typeof(ClientRegionLocale), region)) throw new ArgumentOutOfRangeException(nameof(region), "Value should be defined in the ClientRegionLocale enum.");
 
 			return $@"Endpoints/Endpoints{region.ToString()}.json";
+		}
+
+		/// <inheritdoc />
+		public async Task<ResolvedEndpoint> RetrieveAsync(ClientRegionLocale locale, string serviceType)
+		{
+			if(!await HasEntryAsync(locale, serviceType))
+				throw new InvalidOperationException($"Does not contain informations for Region: {locale} Type: {serviceType}");
+
+			NameEndpointResolutionStorageModel regionInfo = await Retrieve(locale);
+
+			return new ResolvedEndpoint(regionInfo.ServiceEndpoints[serviceType].EndpointAddress, regionInfo.ServiceEndpoints[serviceType].EndpointPort);
+		}
+
+		/// <inheritdoc />
+		public Task<bool> HasDataForRegionAsync(ClientRegionLocale locale)
+		{
+			return HasRegionStore(locale);
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> HasEntryAsync(ClientRegionLocale locale, string serviceType)
+		{
+			if(!await HasDataForRegionAsync(locale))
+				return false;
+
+			NameEndpointResolutionStorageModel regionInfo = await Retrieve(locale);
+
+			if(regionInfo.ServiceEndpoints.ContainsKey(serviceType))
+				return true;
+
+			return false;
 		}
 	}
 }

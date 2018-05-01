@@ -7,6 +7,7 @@ branches:
 environment:
   matrix:
     - SERVICE_NAME: Authentication
+    - SERVICE_NAME: ServiceDiscovery
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true

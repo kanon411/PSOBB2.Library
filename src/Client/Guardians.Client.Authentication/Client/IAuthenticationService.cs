@@ -11,6 +11,7 @@ namespace Guardians
 	/// <summary>
 	/// Proxy interface for Authentication Server RPCs.
 	/// </summary>
+	[Header("User-Agent", "GuardiansClient")]
 	public interface IAuthenticationService
 	{
 		/// <summary>

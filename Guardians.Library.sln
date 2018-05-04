@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.Authentic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Service.ServiceDiscovery", "src\Server\Guardians.Service.ServiceDiscovery\Guardians.Service.ServiceDiscovery.csproj", "{5080C03E-8E6D-4C27-BE39-3E563821E3D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.ServiceDiscovery", "src\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj", "{E2B40445-D90B-430D-8BA4-A321628D6C9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 		{FCC1F528-C205-4201-B86A-50194F11FC99} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

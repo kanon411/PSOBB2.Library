@@ -11,7 +11,7 @@ environment:
     - SERVICE_NAME: ServerSelection
 cache:
   # Cache NuGet data to speed up build times
-  - '%USERPROFILE%\.nuget\packages'
+  # - '%USERPROFILE%\.nuget\packages'
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true

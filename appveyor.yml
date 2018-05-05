@@ -8,7 +8,6 @@ environment:
   matrix:
     - SERVICE_NAME: Authentication
     - SERVICE_NAME: ServiceDiscovery
-    - SERVICE_NAME: ServerSelection
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
@@ -20,11 +19,9 @@ before_build:
   # Display .NET Core version
   - cmd: echo %SERVICE_NAME%
   - cmd: dotnet --version
-  # Display minimal restore text
+  # Restore
   - cmd: nuget restore Guardians.Library.sln
-  - cmd: dotnet restore
 build_script:
-  # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
 after_build:
   # For once the build has completed
@@ -35,9 +32,7 @@ artifacts:
     type: ElasticBeanstalkPackage
 clone_depth: 1
 test_script:
-  # restore packages for our unit tests
-  - cmd: dotnet restore Guardians.Library.sln
-  # run the unit tests (requires changing into the test directory)
+  # run the unit tests
   - cmd: cd test
   - cmd: dotnet test Guardians.Models.Tests/Guardians.Models.Tests.csproj
 on_finish :

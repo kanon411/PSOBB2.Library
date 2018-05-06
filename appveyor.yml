@@ -51,3 +51,13 @@ deploy:
   region: us-east-2
   on:
     branch: master
+- provider: ElasticBeanstalk
+  access_key_id: AKIAICPPHVXGVJB2NDVA
+  secret_access_key:
+    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
+  application_name: Guardians.%SERVICE_NAME%
+  environment_name: Guardians%SERVICE_NAME%-DevServer1-env
+  region: us-east-2
+  on:
+    branch: master
+    SERVICE_NAME: ServiceDiscovery

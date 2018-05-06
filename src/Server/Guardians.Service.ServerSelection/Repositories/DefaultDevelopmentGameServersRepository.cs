@@ -18,7 +18,7 @@ namespace Guardians
 			//TODO: Add static domain for endpoint
 			return new GameServerEntry[]
 			{
-				new GameServerEntry(new ResolvedEndpoint("todo", 80), GameServerStatusFlags.NewServer | GameServerStatusFlags.Online, "Development")
+				new GameServerEntry(new ResolvedEndpoint(@"http://Guardiansservicediscovery-DevServer1.us-east-2.elasticbeanstalk.com", 80), GameServerStatusFlags.NewServer | GameServerStatusFlags.Online, "DevServer1")
 			};
 		}
 	}

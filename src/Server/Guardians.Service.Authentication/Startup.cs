@@ -123,7 +123,11 @@ namespace Guardians
 				app.UseDeveloperExceptionPage();
 			}
 
-			loggerFactory.AddConsole(GeneralConfiguration.GetSection("Logging"));
+			//This adds CloudWatch AWS logging to this app
+			// Create a logging provider based on the configuration information passed through the appsettings.json
+			loggerFactory.AddAWSProvider(GeneralConfiguration.GetAWSLoggingConfigSection());
+
+			//loggerFactory.AddConsole(GeneralConfiguration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
 			app.UseAuthentication();

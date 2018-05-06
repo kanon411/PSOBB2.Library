@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using OpenIddict.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Guardians
 {
@@ -29,14 +30,18 @@ namespace Guardians
 
 		private UserManager<GuardiansApplicationUser> UserManager { get; }
 
+		private ILogger<AuthenticationController> Logger { get; }
+
 		public AuthenticationController(
 			IOptions<IdentityOptions> identityOptions,
 			SignInManager<GuardiansApplicationUser> signInManager,
-			UserManager<GuardiansApplicationUser> userManager)
+			UserManager<GuardiansApplicationUser> userManager, 
+			ILogger<AuthenticationController> logger)
 		{
 			IdentityOptions = identityOptions;
 			SignInManager = signInManager;
 			UserManager = userManager;
+			Logger = logger;
 		}
 
 		[HttpPost]
@@ -49,6 +54,10 @@ namespace Guardians
 
 			if (request.IsPasswordGrantType())
 			{
+				//We want to log this out for information purposes whenever an auth request begins
+				if(Logger.IsEnabled(LogLevel.Information))
+					Logger.LogInformation($"Auth Request: {request.Username} {HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}");
+
 				var user = await UserManager.FindByNameAsync(request.Username);
 				if (user == null)
 				{

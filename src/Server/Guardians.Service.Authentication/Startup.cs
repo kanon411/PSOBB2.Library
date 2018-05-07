@@ -118,13 +118,10 @@ namespace Guardians
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
-			if(env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+#warning Do not deploy exceptions page into production
+			app.UseDeveloperExceptionPage();
 
 			//This adds CloudWatch AWS logging to this app
-			// Create a logging provider based on the configuration information passed through the appsettings.json
 			loggerFactory.AddAWSProvider(GeneralConfiguration.GetAWSLoggingConfigSection());
 
 			//loggerFactory.AddConsole(GeneralConfiguration.GetSection("Logging"));

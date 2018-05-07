@@ -35,6 +35,10 @@ namespace Guardians
 			if(string.IsNullOrWhiteSpace(password))
 				return BadRequest("Invalid password.");
 
+			//We want to log this out for information purposes whenever an auth request begins
+			if(Logger.IsEnabled(LogLevel.Information))
+				Logger.LogInformation($"Register Request: {username} {HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}");
+
 			await UserManager.CreateAsync(new GuardiansApplicationUser()
 			{
 				UserName = username,

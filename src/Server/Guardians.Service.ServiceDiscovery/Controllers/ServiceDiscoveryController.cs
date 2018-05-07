@@ -42,6 +42,9 @@ namespace Guardians
 		[HttpPost(nameof(Discover))]
 		public async Task<ResolveServiceEndpointResponseModel> Discover([FromBody] ResolveServiceEndpointRequestModel requestModel)
 		{
+			if(LoggingService.IsEnabled(LogLevel.Debug))
+				LoggingService.LogDebug($"Service Discover request for: {requestModel.Region}:{requestModel.ServiceType}");
+
 			if (!ModelState.IsValid)
 			{
 				if (LoggingService.IsEnabled(LogLevel.Debug))

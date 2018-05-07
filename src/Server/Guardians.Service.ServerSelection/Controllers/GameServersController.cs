@@ -30,7 +30,7 @@ namespace Guardians
 		public async Task<JsonResult> GetAllServers([FromServices] IGameServersStoreRepository gameserverRepository)
 		{
 			if(Logger.IsEnabled(LogLevel.Debug))
-				Logger.LogDebug($"User: {HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort} requesting game servers.");
+				Logger.LogDebug($"User requesting game servers: {HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort} .");
 
 			GameServerEntry[] entries = await gameserverRepository.RetriveServers();
 

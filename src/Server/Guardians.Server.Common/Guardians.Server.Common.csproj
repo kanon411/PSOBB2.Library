@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1;netcoreapp2.0</TargetFrameworks>
+    <Configurations>Debug;Release;Debug-Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">

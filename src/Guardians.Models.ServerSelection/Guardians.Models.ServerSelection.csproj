@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.4;net46</TargetFrameworks>
+    <Configurations>Debug;Release;Debug-Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

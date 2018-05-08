@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Configurations>Debug;Release;Debug-Local</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Local|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG_LOCAL;NETCOREAPP2_0;LOCAL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

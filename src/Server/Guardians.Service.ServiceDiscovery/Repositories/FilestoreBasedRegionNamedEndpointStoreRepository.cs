@@ -14,6 +14,15 @@ namespace Guardians
 	/// </summary>
 	public sealed class FilestoreBasedRegionNamedEndpointStoreRepository : IRegionNamedEndpointStoreRepository, IRegionbasedNameEndpointResolutionRepository
 	{
+		private IRegionalServiceFilePathBuilder PathBuilder { get; }
+
+		public FilestoreBasedRegionNamedEndpointStoreRepository(IRegionalServiceFilePathBuilder pathBuilder)
+		{
+			if(pathBuilder == null) throw new ArgumentNullException(nameof(pathBuilder));
+
+			PathBuilder = pathBuilder;
+		}
+
 		/// <inheritdoc />
 		public async Task<NameEndpointResolutionStorageModel> Retrieve(ClientRegionLocale region)
 		{
@@ -35,9 +44,7 @@ namespace Guardians
 
 		private string BuildRegionEndpointFileLocation(ClientRegionLocale region)
 		{
-			if (!Enum.IsDefined(typeof(ClientRegionLocale), region)) throw new ArgumentOutOfRangeException(nameof(region), "Value should be defined in the ClientRegionLocale enum.");
-
-			return $@"Endpoints/Endpoints{region.ToString()}.json";
+			return PathBuilder.BuildPath(region);
 		}
 
 		/// <inheritdoc />

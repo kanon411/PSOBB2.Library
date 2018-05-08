@@ -1,0 +1,13 @@
+﻿{
+  "Region": "US",
+  "ServiceEndpoints": {
+    "Authentication": {
+      "endpointAddress": "http://localhost",
+      "endpointPort": 5001
+    },
+    "ServerSelection": {
+      "endpointAddress": "http://localhost",
+      "endpointPort": 5002
+    }
+  }
+}

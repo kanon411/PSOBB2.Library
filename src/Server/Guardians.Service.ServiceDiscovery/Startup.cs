@@ -41,6 +41,14 @@ namespace Guardians
 			services.AddSingleton<IRegionNamedEndpointStoreRepository, FilestoreBasedRegionNamedEndpointStoreRepository>();
 			services.AddSingleton<IRegionbasedNameEndpointResolutionRepository, FilestoreBasedRegionNamedEndpointStoreRepository>();
 
+			//TODO: We don't actually want to use config files for this. But we do for now.
+			//On local builds we want to use a different file
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+			services.AddSingleton<IRegionalServiceFilePathBuilder, DeployedRegionalServiceFilePathBuilder>();
+#else
+			services.AddSingleton<IRegionalServiceFilePathBuilder, LocalRegionalServiceFilePathBuilder>();
+#endif
+
 			//We're using consul now
 			/*services.AddTransient<IRegionbasedNameEndpointResolutionRepository, ConsulRegionNamedEndpointStoreRepository>();
 
@@ -59,9 +67,8 @@ namespace Guardians
 			app.UseDeveloperExceptionPage();
 
 			//This adds CloudWatch AWS logging to this app
-			loggerFactory.AddAWSProvider(Configuration.GetAWSLoggingConfigSection());
+			loggerFactory.RegisterGuardiansLogging(Configuration);
 
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
 			app.UseMvcWithDefaultRoute();

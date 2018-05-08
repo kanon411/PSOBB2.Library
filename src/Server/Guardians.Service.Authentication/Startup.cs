@@ -76,7 +76,13 @@ namespace Guardians
 			services.AddDbContext<GuardiansAuthenticationDbContext>(options =>
 			{
 				//TODO: Setup db options
+
+				//On local builds we don't want to use config. We want to default to local
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
 				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
+#else
+				options.UseMySql("Server=localhost;Database=guardians.auth;Uid=root;Pwd=test;");
+#endif
 				options.UseOpenIddict<int>();
 			});
 
@@ -121,10 +127,8 @@ namespace Guardians
 #warning Do not deploy exceptions page into production
 			app.UseDeveloperExceptionPage();
 
-			//This adds CloudWatch AWS logging to this app
-			loggerFactory.AddAWSProvider(GeneralConfiguration.GetAWSLoggingConfigSection());
+			loggerFactory.RegisterGuardiansLogging(GeneralConfiguration);
 
-			//loggerFactory.AddConsole(GeneralConfiguration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
 			app.UseAuthentication();
@@ -135,7 +139,7 @@ namespace Guardians
 			//TODO: Load Consul agent URI from file
 			//TODO: Handle region tag loading from config
 			//After the pipeline is configured we should then register this service with Consul.
-			IConsulClient<IConsulAgentServiceHttpApiService> agentService = 
+			/*IConsulClient<IConsulAgentServiceHttpApiService> agentService = 
 				new ConsulDotNetHttpClient<IConsulAgentServiceHttpApiService>(@"http://localhost:8500");
 
 			//TODO: Handle logging better. We don't want to close just because of Consul
@@ -172,7 +176,7 @@ namespace Guardians
 			catch(Exception e)
 			{
 				Console.WriteLine(e);
-			}
+			}*/
 		}
 	}
 }

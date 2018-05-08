@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <Configurations>Debug;Release;Debug-Local</Configurations>
+    <Configurations>Debug;Release;Debug-Local;DEBUG_LOCAL</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -17,15 +17,16 @@ namespace Guardians
 		/// </summary>
 		/// <param name="builder">The builder.</param>
 		/// <returns>The builder.</returns>
-		public static IWebHostBuilder UseKestrelGuardiansConfig(this IWebHostBuilder builder)
+		public static IWebHostBuilder UseKestrelGuardiansConfig(this IWebHostBuilder builder, string[] args)
 		{
-			//We always use kestrel so this is ok
-			builder.UseKestrel();
-
 			//If we're local then we don't want to set this IP
 			//because it won't work. Since we won't be on our own EC2 instance with IIS
 #if !DEBUG_LOCAL && !RELEASE_LOCAL
-			builder.UseUrls(@"http://0.0.0.0:7777");
+			builder
+			.UseKestrel()
+			.UseUrls(@"http://0.0.0.0:7777");
+#else
+			builder.ConfigureKestrelHostWithCommandlinArgs(args);
 #endif
 
 			return builder;

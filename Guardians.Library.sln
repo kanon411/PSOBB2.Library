@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.ServerSele
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.ServerSelection", "src\Server\Guardians.Service.ServerSelection\Guardians.Service.ServerSelection.csproj", "{A4A46064-B720-4B94-862F-7FEEAC4127EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Service.GameServer", "src\Server\Guardians.Service.GameServer\Guardians.Service.GameServer.csproj", "{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		DEBUG_LOCAL|Any CPU = DEBUG_LOCAL|Any CPU
@@ -102,6 +104,12 @@ Global
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +129,7 @@ Global
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364} = {572E4B21-970E-4889-9B0D-357816B1307C}
 		{07357D90-27C3-4CA3-BB57-201DDCD03875} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

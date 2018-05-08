@@ -26,6 +26,7 @@ namespace Guardians
 		//We don't need to authorize the users here
 		//Users don't need to be logged in to know the gameservers since it's
 		//not a secret and it is not unique to the users.
+		[ResponseCache(Duration = 15)] //we want to cache this for 15 seconds.
 		[HttpGet("all")]
 		public async Task<JsonResult> GetAllServers([FromServices] IGameServersStoreRepository gameserverRepository)
 		{

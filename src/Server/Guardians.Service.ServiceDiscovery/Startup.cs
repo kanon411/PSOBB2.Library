@@ -29,7 +29,9 @@ namespace Guardians
 		public void ConfigureServices(IServiceCollection services)
 		{
 			// Add framework services.
-			services.AddMvc();
+			services.AddMvc()
+				.RegisterHealthCheckController();
+
 			services.AddLogging();
 
 			//We're using an inmemory store for now that we populate with the file stored data

@@ -46,7 +46,9 @@ namespace Guardians
 			});
 
 			// Add framework services.
-			services.AddMvc();
+			services.AddMvc()
+				.RegisterHealthCheckController();
+
 			services.AddLogging();
 			services.AddOptions();
 			services.Configure<AuthenticationServerConfigurationModel>(GeneralConfiguration.GetSection("AuthConfig"));

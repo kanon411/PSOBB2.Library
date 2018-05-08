@@ -41,6 +41,11 @@ namespace Guardians
 #warning Do not deploy exceptions page into production
 			app.UseDeveloperExceptionPage();
 
+			//This allows response caching to work in app too
+			//the headers should do caching elsewhere too but this is another level
+			//to help keep up with potential high load scenarios where many users are at the selection screen.
+			app.UseResponseCaching();
+
 			loggerFactory.RegisterGuardiansLogging(Configuration);
 			loggerFactory.AddDebug();
 

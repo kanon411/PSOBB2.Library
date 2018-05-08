@@ -12,6 +12,26 @@ namespace Guardians
 	public static class IWebBuilderExtensions
 	{
 		/// <summary>
+		/// Registers Kestrl using <see cref="WebHostBuilderKestrelExtensions"/>'s UseKestrl.
+		/// Optionally abstracts configuration for local vs deploy vs AWS registeration.
+		/// </summary>
+		/// <param name="builder">The builder.</param>
+		/// <returns>The builder.</returns>
+		public static IWebHostBuilder UseKestrelGuardiansConfig(this IWebHostBuilder builder)
+		{
+			//We always use kestrel so this is ok
+			builder.UseKestrel();
+
+			//If we're local then we don't want to set this IP
+			//because it won't work. Since we won't be on our own EC2 instance with IIS
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+			builder.UseUrls(@"http://0.0.0.0:7777");
+#endif
+
+			return builder;
+		}
+
+		/// <summary>
 		/// Configure the server host with the arguments encoded in the <see cref="args"/> mapped to
 		/// an options instance of <see cref="DefaultWebHostingArgumentsModel"/>.
 		/// </summary>

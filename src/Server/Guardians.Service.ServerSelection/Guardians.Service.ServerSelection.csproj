@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
+    <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
   </ItemGroup>
 
 </Project>

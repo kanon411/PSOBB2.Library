@@ -26,9 +26,13 @@ namespace Guardians
 			services.AddMvc();
 			services.AddLogging();
 
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
 			//TODO: Support database/consul/register gameservers
 			//Probably wanna support healthchecks at some point too
-			services.AddTransient<IGameServersStoreRepository, DefaultDevelopmentGameServersRepository>();
+			services.AddSingleton<IGameServersStoreRepository, DefaultDevelopmentGameServersRepository>();
+#else
+			services.AddSingleton<IGameServersStoreRepository, LocalDevelopmentGameServersRepository>();
+#endif
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,10 +41,7 @@ namespace Guardians
 #warning Do not deploy exceptions page into production
 			app.UseDeveloperExceptionPage();
 
-			//This adds CloudWatch AWS logging to this app
-			loggerFactory.AddAWSProvider(Configuration.GetAWSLoggingConfigSection());
-
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.RegisterGuardiansLogging(Configuration);
 			loggerFactory.AddDebug();
 
 			app.UseMvc();

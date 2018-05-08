@@ -4,11 +4,11 @@ branches:
   only:
   - master
 #Enviroment is setup for the multiple build matrix
-environment:
-  matrix:
-    - SERVICE_NAME: Authentication
-    - SERVICE_NAME: ServiceDiscovery
-    - SERVICE_NAME: ServerSelection
+#environment:
+#  matrix:
+#    - SERVICE_NAME: Authentication
+#    - SERVICE_NAME: ServiceDiscovery
+#    - SERVICE_NAME: ServerSelection
 cache:
   # Cache NuGet data to speed up build times
   # - '%USERPROFILE%\.nuget\packages'
@@ -18,22 +18,22 @@ init:
 install:
   # Install repo specific stuff here
 build:
-  publish_wap_beanstalk: true
+#  publish_wap_beanstalk: true
 before_build:
   # Display .NET Core version
-  - cmd: echo %SERVICE_NAME%
+#  - cmd: echo %SERVICE_NAME%
   - cmd: dotnet --version
   # Restore
   - cmd: nuget restore Guardians.Library.sln
 build_script:
   - cmd: MSBuild Guardians.Library.sln /property:Configuration=Release
-after_build:
+#after_build:
   # For once the build has completed
-  - cmd: dotnet publish src/Server/Guardians.Service.%SERVICE_NAME%/Guardians.Service.%SERVICE_NAME%.csproj -c release --self-contained --framework netcoreapp2.0 --runtime win10-x64 -o out
-artifacts:
+#  - cmd: dotnet publish src/Server/Guardians.Service.%SERVICE_NAME%/Guardians.Service.%SERVICE_NAME%.csproj -c release --self-contained --framework netcoreapp2.0 --runtime win10-x64 -o out
+#artifacts:
   # None right now
-  - path: src\Server\Guardians.Service.%SERVICE_NAME%\out
-    type: ElasticBeanstalkPackage
+#  - path: src\Server\Guardians.Service.%SERVICE_NAME%\out
+#    type: ElasticBeanstalkPackage
 clone_depth: 1
 test_script:
   # run the unit tests
@@ -41,23 +41,23 @@ test_script:
   - cmd: dotnet test Guardians.Models.Tests/Guardians.Models.Tests.csproj
 on_finish :
   # any cleanup in here
-deploy:
-- provider: ElasticBeanstalk
-  access_key_id: AKIAICPPHVXGVJB2NDVA
-  secret_access_key:
-    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
-  application_name: Guardians.%SERVICE_NAME%
-  environment_name: Guardians%SERVICE_NAME%-env
-  region: us-east-2
-  on:
-    branch: master
-- provider: ElasticBeanstalk
-  access_key_id: AKIAICPPHVXGVJB2NDVA
-  secret_access_key:
-    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
-  application_name: Guardians.%SERVICE_NAME%
-  environment_name: Guardians%SERVICE_NAME%-DevServer1-env
-  region: us-east-2
-  on:
-    branch: master
-    SERVICE_NAME: ServiceDiscovery
+#deploy:
+#- provider: ElasticBeanstalk
+#  access_key_id: AKIAICPPHVXGVJB2NDVA
+#  secret_access_key:
+#    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
+#  application_name: Guardians.%SERVICE_NAME%
+#  environment_name: Guardians%SERVICE_NAME%-env
+#  region: us-east-2
+#  on:
+#    branch: master
+#- provider: ElasticBeanstalk
+#  access_key_id: AKIAICPPHVXGVJB2NDVA
+#  secret_access_key:
+#    secure: S3rBsU7uKb/dPHF4A9zIALpVq9J60iKba4uy9G6tXhZfay+87lL7U9bh5qY0oQRm
+#  application_name: Guardians.%SERVICE_NAME%
+#  environment_name: Guardians%SERVICE_NAME%-DevServer1-env
+#  region: us-east-2
+#  on:
+#    branch: master
+#    SERVICE_NAME: ServiceDiscovery

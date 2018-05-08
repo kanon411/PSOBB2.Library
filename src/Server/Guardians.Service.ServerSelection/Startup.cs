@@ -26,6 +26,8 @@ namespace Guardians
 			services.AddMvc();
 			services.AddLogging();
 
+			services.AddResponseCaching();
+
 #if !DEBUG_LOCAL && !RELEASE_LOCAL
 			//TODO: Support database/consul/register gameservers
 			//Probably wanna support healthchecks at some point too

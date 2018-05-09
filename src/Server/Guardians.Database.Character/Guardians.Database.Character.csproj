@@ -18,4 +18,8 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Guardians.Database.Common\Guardians.Database.Common.csproj" />
+  </ItemGroup>
+
 </Project>

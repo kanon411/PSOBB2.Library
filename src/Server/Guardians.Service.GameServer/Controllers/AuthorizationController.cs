@@ -21,7 +21,7 @@ namespace Guardians
 			ClaimsReader = claimsReader;
 		}
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[AuthorizeJwt]
 		[HttpGet("check")]
 		[NoResponseCache]
 		public IActionResult Check()
@@ -32,10 +32,16 @@ namespace Guardians
 				return Unauthorized();
 		}
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[AuthorizeJwt]
 		[HttpGet("user/name")]
 		[NoResponseCache]
-		public string Name() 
+		public string GetName() 
 			=> ClaimsReader.GetUserName(this.User);
+
+		[AuthorizeJwt]
+		[HttpGet("user/id")]
+		[NoResponseCache]
+		public int GetId()
+			=> ClaimsReader.GetUserIdInt(this.User);
 	}
 }

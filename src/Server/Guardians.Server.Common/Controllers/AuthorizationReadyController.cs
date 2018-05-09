@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+namespace Guardians
+{
+	public abstract class AuthorizationReadyController : BaseGuardiansController
+	{
+		/// <summary>
+		/// The reader for the claims.
+		/// </summary>
+		protected IClaimsPrincipalReader ClaimsReader { get; }
+
+		/// <inheritdoc />
+		protected AuthorizationReadyController(IClaimsPrincipalReader claimsReader, ILogger<AuthorizationReadyController> logger)
+			: base(logger)
+		{
+			if(claimsReader == null) throw new ArgumentNullException(nameof(claimsReader));
+
+			ClaimsReader = claimsReader;
+		}
+	}
+}

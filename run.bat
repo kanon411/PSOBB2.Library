@@ -13,3 +13,7 @@ cd ..
 cd gameservdisc
 start "gameservdisc" cmd /c dotnet Guardians.Service.ServiceDiscovery.dll --url=http://0.0.0.0:5003
 cd ..
+
+cd gameserv
+start "gameserv" cmd /c dotnet Guardians.Service.GameServer.dll --url=http://0.0.0.0:5004
+cd ..

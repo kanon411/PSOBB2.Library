@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Consul.Net;
-using HaloLive.Models.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -59,6 +58,19 @@ namespace Guardians
 
 			services.AddAuthentication();
 
+			services.AddDbContext<GuardiansAuthenticationDbContext>(options =>
+			{
+				//TODO: Setup db options
+
+				//On local builds we don't want to use config. We want to default to local
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
+#else
+				options.UseMySql("Server=localhost;Database=guardians.auth;Uid=root;Pwd=test;");
+#endif
+				options.UseOpenIddict<int>();
+			});
+
 			//Below is the OpenIddict registration
 			//This is the recommended setup from the official Github: https://github.com/openiddict/openiddict-core
 			services.AddIdentity<GuardiansApplicationUser, GuardiansApplicationRole>(options =>
@@ -74,19 +86,6 @@ namespace Guardians
 				})
 				.AddEntityFrameworkStores<GuardiansAuthenticationDbContext>()
 				.AddDefaultTokenProviders();
-
-			services.AddDbContext<GuardiansAuthenticationDbContext>(options =>
-			{
-				//TODO: Setup db options
-
-				//On local builds we don't want to use config. We want to default to local
-#if !DEBUG_LOCAL && !RELEASE_LOCAL
-				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
-#else
-				options.UseMySql("Server=localhost;Database=guardians.auth;Uid=root;Pwd=test;");
-#endif
-				options.UseOpenIddict<int>();
-			});
 
 			services.AddOpenIddict<int>(options =>
 			{
@@ -128,13 +127,9 @@ namespace Guardians
 		{
 #warning Do not deploy exceptions page into production
 			app.UseDeveloperExceptionPage();
-
-			loggerFactory.RegisterGuardiansLogging(GeneralConfiguration);
-
-			loggerFactory.AddDebug();
-
 			app.UseAuthentication();
-
+			loggerFactory.RegisterGuardiansLogging(GeneralConfiguration);
+			loggerFactory.AddDebug();
 			app.UseMvcWithDefaultRoute();
 
 			//TODO: Refactor into common service library so boilerplate registeration doesn't need to be repeated

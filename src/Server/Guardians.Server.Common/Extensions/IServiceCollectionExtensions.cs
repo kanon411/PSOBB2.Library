@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using AspNet.Security.OpenIdConnect.Primitives;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -35,15 +35,16 @@ namespace Guardians
 
 				//For some reason I can't figure out how to get the JWT middleware to spit out sub claims
 				//so we need to map the Identity to expect nameidentifier
-				options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-				options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-				options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+				options.ClaimsIdentity.UserIdClaimType = /*OpenIdConnectConstants.Claims.Subject*/"sub";
+				options.ClaimsIdentity.RoleClaimType = /*OpenIdConnectConstants.Claims.Role*/"role";
+				options.ClaimsIdentity.UserNameClaimType = /*OpenIdConnectConstants.Claims.Name*/"name";
 			});
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(o =>
 				{
-					o.RequireHttpsMetadata = true;
+#warning This is bad. Set this to true in prod
+					o.RequireHttpsMetadata = false;
 
 					o.TokenValidationParameters = new TokenValidationParameters()
 					{
@@ -55,10 +56,12 @@ namespace Guardians
 						ValidateIssuer = false,
 						ValidateLifetime = false, //temporary until we come up with a solution
 
-						NameClaimType = OpenIdConnectConstants.Claims.Name,
-						RoleClaimType = OpenIdConnectConstants.Claims.Role
+						NameClaimType = /*OpenIdConnectConstants.Claims.Name*/"name",
+						RoleClaimType = /*OpenIdConnectConstants.Claims.Role*/"role"
 					};
 				});
+
+			services.AddAuthorization();
 
 			return services;
 		}

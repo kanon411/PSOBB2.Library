@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -19,6 +18,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Certs\TestCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certs\TLSCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

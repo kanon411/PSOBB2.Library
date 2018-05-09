@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Guardians.Database.Character\Guardians.Database.Character.csproj" />
+    <ProjectReference Include="..\Guardians.Database.Common\Guardians.Database.Common.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
   </ItemGroup>
 

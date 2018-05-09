@@ -19,7 +19,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		Task<bool> Contains(TKey key); 
+		Task<bool> ContainsAsync(TKey key); 
 
 		/// <summary>
 		/// Tries to crate a new entry of the provided <see cref="model"/>

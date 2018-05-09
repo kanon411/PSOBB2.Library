@@ -14,7 +14,7 @@ namespace Guardians
 		protected IClaimsPrincipalReader ClaimsReader { get; }
 
 		/// <inheritdoc />
-		protected AuthorizationReadyController(IClaimsPrincipalReader claimsReader, ILogger<AuthorizationReadyController> logger)
+		protected AuthorizationReadyController([FromServices] IClaimsPrincipalReader claimsReader, [FromServices] ILogger<AuthorizationReadyController> logger)
 			: base(logger)
 		{
 			if(claimsReader == null) throw new ArgumentNullException(nameof(claimsReader));

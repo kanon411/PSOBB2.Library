@@ -29,6 +29,9 @@ namespace Guardians
 			services.AddMvc()
 				.RegisterHealthCheckController();
 
+			services.AddTransient<CharacterDatabaseContext>();
+			services.AddTransient<ICharacterRepository, DatabaseBackedCharacterRepository>();
+
 			X509Certificate2 cert = null;
 			string certPath = "Certs/TestCert.pfx";
 
@@ -40,8 +43,8 @@ namespace Guardians
 			{
 				throw new System.InvalidOperationException($"Failed to load {nameof(X509Certificate2)} from Path: {certPath} \n\n StackTrace: {e.StackTrace}", e);
 			}
-			
 
+			services.AddResponseCaching();
 			services.AddLogging();
 
 			//This provides JwtBearer support for Authorize attribute/header
@@ -54,6 +57,7 @@ namespace Guardians
 #warning Do not deploy exceptions page into production
 			app.UseDeveloperExceptionPage();
 
+			app.UseResponseCaching();
 			app.UseAuthentication();
 
 			loggerFactory.RegisterGuardiansLogging(Configuration);

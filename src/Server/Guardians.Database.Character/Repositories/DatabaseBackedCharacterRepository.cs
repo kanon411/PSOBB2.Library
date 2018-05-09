@@ -22,14 +22,14 @@ namespace Guardians
 			Context = context;
 		}
 
-		public Task<bool> Contains(int key)
+		public Task<bool> ContainsAsync(int key)
 		{
 			return Context
 				.Characters
 				.AnyAsync(c => c.CharacterId == key);
 		}
 
-		public Task<bool> Contains(string key)
+		public Task<bool> ContainsAsync(string key)
 		{
 			return Context
 				.Characters

@@ -22,6 +22,7 @@ namespace Guardians
 
 		[Authorize]
 		[HttpGet("check")]
+		[NoResponseCache]
 		public IActionResult Check()
 		{
 			if(ModelState.IsValid && this.User.Identity.IsAuthenticated)

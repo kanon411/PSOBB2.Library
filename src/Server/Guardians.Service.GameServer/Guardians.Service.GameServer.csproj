@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Configurations>Debug;Release;Database_Migration</Configurations>
+    <Configurations>Debug;Release;Database_Migration;Debug_Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.0.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
     <ProjectReference Include="..\Guardians.Database.Character\Guardians.Database.Character.csproj" />
     <ProjectReference Include="..\Guardians.Database.Common\Guardians.Database.Common.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />

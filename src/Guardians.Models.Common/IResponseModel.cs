@@ -11,7 +11,7 @@ namespace Guardians
 	/// Contract for models that are responses to a request.
 	/// </summary>
 	public interface IResponseModel<out TResultType>
-		where TResultType : struct, IComparable //TODO: Contraint to C# 7.3 enum
+		where TResultType : Enum //TODO: Contraint to C# 7.3 enum
 	{
 		/// <summary>
 		/// Indicates the result of the response.

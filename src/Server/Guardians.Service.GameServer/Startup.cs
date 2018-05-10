@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Amazon.CloudWatchLogs.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,17 @@ namespace Guardians
 			services.AddMvc()
 				.RegisterHealthCheckController();
 
-			services.AddTransient<CharacterDatabaseContext>();
+
+			services.AddDbContext<CharacterDatabaseContext>(o =>
+			{
+				//On local builds we don't want to use config. We want to default to local
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+				throw new NotSupportedException("AWS/Remote database not supported yet.");
+				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
+#else
+				o.UseMySql("Server=localhost;Database=guardians.characters;Uid=root;Pwd=test;");
+#endif
+			});
 			services.AddTransient<ICharacterRepository, DatabaseBackedCharacterRepository>();
 
 			X509Certificate2 cert = null;

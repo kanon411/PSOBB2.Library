@@ -21,7 +21,7 @@ namespace Guardians
 			if(characterRepository == null) throw new ArgumentNullException(nameof(characterRepository));
 			CharacterRepository = characterRepository;
 		}
-		
+
 		[ResponseCache(Duration = 10)] //Jagex crumbled for a day due to name checks. So, we should cache for 10 seconds. Probably won't change much.
 		[AllowAnonymous]
 		[HttpGet("name/validate")]
@@ -44,6 +44,7 @@ namespace Guardians
 		}
 
 		//TODO: Support recieve creation model JSON. Same with response.
+		[Produces("application/json")]
 		[AuthorizeJwt] //is it IMPORTANT that this method authorize the user. Don't know the accountid otherwise even, would be impossible.
 		[HttpPost("create/{name}")]
 		[NoResponseCache]
@@ -55,16 +56,15 @@ namespace Guardians
 
 			bool nameIsAvailable = await ValidateNameAvailability(name);
 
-			//TODO: JSON response
 			if(!nameIsAvailable)
-				return BadRequest();
+				return Json(new CharacterNameValidationResponse(CharacterNameValidationResponseCode.NameIsUnavailable));
 
 			//Otherwise we should try to create. There is a race condition here that can cause it to still fail
 			//since others could create a character with this name before we finish after checking
 			bool result = await CharacterRepository.TryCreateAsync(new CharacterDatabaseModel(accountId, name));
 
 			//TODO: JSON
-			return Ok($"Result: {result} {name}:{accountId} (accountid)");
+			return Created("TODO", new CharacterNameValidationResponse(CharacterNameValidationResponseCode.Success));
 		}
 	}
 }

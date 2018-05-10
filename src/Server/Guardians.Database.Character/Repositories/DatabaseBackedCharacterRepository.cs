@@ -36,6 +36,22 @@ namespace Guardians
 				.AnyAsync(c => c.CharacterName == key);
 		}
 
+		/// <inheritdoc />
+		public async Task<string> RetrieveNameAsync(int key)
+		{
+			if(!await ContainsAsync(key))
+				throw new InvalidOperationException($"Requested Character with Key: {key} but none exist.");
+
+			CharacterDatabaseModel character = await Context
+				.Characters
+				.FindAsync(key);
+
+			if(character == null)
+				throw new InvalidOperationException($"Tried to load Character with Key: {key} from database. Expected to exist but null.");
+
+			return character.CharacterName;
+		}
+
 		public Task<CharacterDatabaseModel> RetrieveAsync(int key)
 		{
 			return Context

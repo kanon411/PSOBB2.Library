@@ -11,6 +11,7 @@ namespace Guardians
 	[Route("api/characters")]
 	public class CharacterController : AuthorizationReadyController
 	{
+		//TODO: Add logging to these controllers
 		private ICharacterRepository CharacterRepository { get; }
 
 		/// <inheritdoc />
@@ -19,6 +20,7 @@ namespace Guardians
 			: base(claimsReader, logger)
 		{
 			if(characterRepository == null) throw new ArgumentNullException(nameof(characterRepository));
+
 			CharacterRepository = characterRepository;
 		}
 
@@ -44,7 +46,7 @@ namespace Guardians
 		}
 
 		//TODO: Support recieve creation model JSON. Same with response.
-		[Produces("application/json")]
+		[ProducesJson]
 		[AuthorizeJwt] //is it IMPORTANT that this method authorize the user. Don't know the accountid otherwise even, would be impossible.
 		[HttpPost("create/{name}")]
 		[NoResponseCache]
@@ -65,6 +67,32 @@ namespace Guardians
 
 			//TODO: JSON
 			return Created("TODO", new CharacterNameValidationResponse(CharacterNameValidationResponseCode.Success));
+		}
+
+		[AllowAnonymous]
+		[ProducesJson]
+		[ResponseCache(Duration = 360)] //We want to cache this for a long time. But it's possible with name changes that we want to not cache forever
+		[HttpGet("name/{id}")]
+		public async Task<IActionResult> NameQuery([FromRoute(Name = "id")] int characterId)
+		{
+			if(characterId < 0)
+				return BuildNotFoundUnknownIdResponse();
+
+			bool knownId = await CharacterRepository.ContainsAsync(characterId);
+
+			//TODO: JSON Response
+			if(!knownId)
+				return BuildNotFoundUnknownIdResponse();
+
+			//Else if it is a known id we should grab the name of the character
+			string name = await CharacterRepository.RetrieveNameAsync(characterId);
+
+			return Ok(new CharacterNameQueryResponse(name));
+		}
+
+		private IActionResult BuildNotFoundUnknownIdResponse()
+		{
+			return NotFound(new CharacterNameQueryResponse(CharacterNameQueryResponseCode.UnknownIdError));
 		}
 	}
 }

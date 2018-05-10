@@ -38,7 +38,19 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime CreationDate { get; private set; }
 
-		public CharacterDatabaseModel()
+		/// <inheritdoc />
+		public CharacterDatabaseModel(int accountId, string characterName)
+		{
+			//Character name validation is handled externally
+			if(accountId < 0) throw new ArgumentOutOfRangeException(nameof(accountId));
+			if(string.IsNullOrWhiteSpace(characterName)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(characterName));
+
+			AccountId = accountId;
+			CharacterName = characterName;
+		}
+
+		//Serializer ctor
+		protected CharacterDatabaseModel()
 		{
 			
 		}

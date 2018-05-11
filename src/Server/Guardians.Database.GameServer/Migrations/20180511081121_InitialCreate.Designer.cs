@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace Guardians.Database.Character.Migrations
+namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20180509161155_InitialCreate")]
+    [Migration("20180511081121_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Guardians.Database.Character.Migrations
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("Guardians.CharacterDatabaseModel", b =>
+            modelBuilder.Entity("Guardians.CharacterEntryModel", b =>
                 {
                     b.Property<int>("CharacterId")
                         .ValueGeneratedOnAdd()
@@ -37,6 +37,8 @@ namespace Guardians.Database.Character.Migrations
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
 
                     b.HasKey("CharacterId");
+
+                    b.HasAlternateKey("CharacterName");
 
                     b.ToTable("characters");
                 });

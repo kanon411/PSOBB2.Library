@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
     <ProjectReference Include="..\Guardians.Database.Common\Guardians.Database.Common.csproj" />
   </ItemGroup>
 

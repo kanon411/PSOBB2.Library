@@ -42,7 +42,7 @@ namespace Guardians
 			if(!await ContainsAsync(key))
 				throw new InvalidOperationException($"Requested Character with Key: {key} but none exist.");
 
-			CharacterDatabaseModel character = await Context
+			CharacterEntryModel character = await Context
 				.Characters
 				.FindAsync(key);
 
@@ -52,19 +52,19 @@ namespace Guardians
 			return character.CharacterName;
 		}
 
-		public Task<CharacterDatabaseModel> RetrieveAsync(int key)
+		public Task<CharacterEntryModel> RetrieveAsync(int key)
 		{
 			return Context
 				.Characters
 				.FindAsync(key);
 		}
 
-		public Task<CharacterDatabaseModel> RetrieveAsync(string key)
+		public Task<CharacterEntryModel> RetrieveAsync(string key)
 		{
 			throw new NotImplementedException($"TODO: Implement name based retrieve");
 		}
 
-		public async Task<bool> TryCreateAsync(CharacterDatabaseModel model)
+		public async Task<bool> TryCreateAsync(CharacterEntryModel model)
 		{
 			await Context.Characters.AddAsync(model);
 

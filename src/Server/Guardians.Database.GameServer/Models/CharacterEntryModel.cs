@@ -9,7 +9,7 @@ namespace Guardians
 	/// The model for the character database table.
 	/// </summary>
 	[Table("characters")]
-	public class CharacterDatabaseModel
+	public class CharacterEntryModel
 	{
 		/// <summary>
 		/// Primary key for the character.
@@ -39,7 +39,7 @@ namespace Guardians
 		public DateTime CreationDate { get; private set; }
 
 		/// <inheritdoc />
-		public CharacterDatabaseModel(int accountId, string characterName)
+		public CharacterEntryModel(int accountId, string characterName)
 		{
 			//Character name validation is handled externally
 			if(accountId < 0) throw new ArgumentOutOfRangeException(nameof(accountId));
@@ -50,7 +50,7 @@ namespace Guardians
 		}
 
 		//Serializer ctor
-		protected CharacterDatabaseModel()
+		protected CharacterEntryModel()
 		{
 			
 		}

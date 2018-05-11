@@ -63,9 +63,10 @@ namespace Guardians
 			if(!nameIsAvailable)
 				return Json(new CharacterCreationResponse(CharacterCreationResponseCode.NameUnavailableError));
 
+			//TODO: Don't expose the database table model
 			//Otherwise we should try to create. There is a race condition here that can cause it to still fail
 			//since others could create a character with this name before we finish after checking
-			bool result = await CharacterRepository.TryCreateAsync(new CharacterDatabaseModel(accountId, name));
+			bool result = await CharacterRepository.TryCreateAsync(new CharacterEntryModel(accountId, name));
 
 			//TODO: JSON
 			return Created("TODO", new CharacterCreationResponse(CharacterCreationResponseCode.Success));

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace Guardians.Database.Character.Migrations
+namespace Guardians.Database.GameServer.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -23,6 +23,7 @@ namespace Guardians.Database.Character.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_characters", x => x.CharacterId);
+                    table.UniqueConstraint("AK_characters_CharacterName", x => x.CharacterName);
                 });
         }
 

@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Guardians.Models.Common\Guardians.Models.Common.csproj" />
-    <ProjectReference Include="..\Server\Guardians.Database.GameServer\Guardians.Database.GameServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,9 +11,10 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    partial class CharacterDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180511084038_AddFluentForeignKeys")]
+    partial class AddFluentForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +66,6 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasAlternateKey("CharacterId");
 
-                    b.HasIndex("ZoneId")
-                        .IsUnique();
-
                     b.ToTable("character_sessions");
                 });
 
@@ -82,7 +80,7 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<short>("ZoneServerPort");
 
-                    b.Property<int>("ZoneType");
+                    b.Property<bool>("isStatic");
 
                     b.HasKey("ZoneId");
 
@@ -95,10 +93,13 @@ namespace Guardians.Database.GameServer.Migrations
                         .WithOne()
                         .HasForeignKey("Guardians.CharacterSessionModel", "CharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("Guardians.ZoneInstanceEntryModel", "ZoneEntry")
-                        .WithOne()
-                        .HasForeignKey("Guardians.CharacterSessionModel", "ZoneId")
+            modelBuilder.Entity("Guardians.ZoneInstanceEntryModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterSessionModel")
+                        .WithOne("ZoneEntry")
+                        .HasForeignKey("Guardians.ZoneInstanceEntryModel", "ZoneId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Guardians
 {
 	public interface ICharacterRepository : 
-		IGenericRepositoryCrudable<int, CharacterDatabaseModel>
+		IGenericRepositoryCrudable<int, CharacterEntryModel>
 	{
 		/// <summary>
 		/// Checks if the repository contains a model with the specified charactername.

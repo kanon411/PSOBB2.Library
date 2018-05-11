@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Guardians
 {
 	public sealed class CharacterDatabaseContext : DbContext
 	{
-		public DbSet<CharacterDatabaseModel> Characters { get; set; }
+		public DbSet<CharacterEntryModel> Characters { get; set; }
+
+		public DbSet<CharacterSessionModel> CharacterSessions { get; set; }
+
+		public DbSet<ZoneInstanceEntryModel> ZoneEntries { get; set; }
 
 		public CharacterDatabaseContext(DbContextOptions options) 
 			: base(options)
@@ -26,15 +31,33 @@ namespace Guardians
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			//TODO: Should I have local or also AWS setup here?
-			optionsBuilder.UseMySql("Server=localhost;Database=guardians.characters;Uid=root;Pwd=test;");
+			optionsBuilder.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
 
 			base.OnConfiguring(optionsBuilder);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<CharacterDatabaseModel>()
+			modelBuilder.Entity<CharacterEntryModel>()
 				.HasAlternateKey(c => c.CharacterName);
+
+			//Sessions should enforce uniqueness on both character id and account id.
+			EntityTypeBuilder<CharacterSessionModel> sessionEntity = modelBuilder.Entity<CharacterSessionModel>();
+
+			sessionEntity.HasAlternateKey(s => s.CharacterId);
+			sessionEntity.HasAlternateKey(s => s.AccountId);
+
+			sessionEntity
+				.HasOne(s => s.CharacterEntry)
+				.WithOne()
+				.HasForeignKey<CharacterSessionModel>(s => s.CharacterId);
+
+			sessionEntity
+				.HasOne(s => s.ZoneEntry)
+				.WithOne()
+				.HasForeignKey<CharacterSessionModel>(s => s.ZoneId);
+
+			base.OnModelCreating(modelBuilder);
 		}
 #endif
 	}

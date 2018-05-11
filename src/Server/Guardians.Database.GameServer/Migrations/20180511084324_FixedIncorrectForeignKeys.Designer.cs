@@ -11,9 +11,10 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    partial class CharacterDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180511084324_FixedIncorrectForeignKeys")]
+    partial class FixedIncorrectForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +83,7 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<short>("ZoneServerPort");
 
-                    b.Property<int>("ZoneType");
+                    b.Property<bool>("isStatic");
 
                     b.HasKey("ZoneId");
 

@@ -24,6 +24,7 @@ namespace Guardians
 			CharacterRepository = characterRepository;
 		}
 
+		[ProducesJson]
 		[ResponseCache(Duration = 10)] //Jagex crumbled for a day due to name checks. So, we should cache for 10 seconds. Probably won't change much.
 		[AllowAnonymous]
 		[HttpGet("name/validate")]
@@ -31,10 +32,10 @@ namespace Guardians
 		{
 			if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
-			bool containsName = await ValidateNameAvailability(name);
+			//TODO: Finer grain picking apart. We want to indicate the failure reason.
+			bool nameIsAvailable = await ValidateNameAvailability(name);
 
-			//TODO: Handle JSON model response.
-			return Ok($"Result: {containsName}");
+			return Ok(new CharacterNameValidationResponse(nameIsAvailable ? CharacterNameValidationResponseCode.Success : CharacterNameValidationResponseCode.NameIsUnavailable));
 		}
 
 		private async Task<bool> ValidateNameAvailability(string name)
@@ -59,14 +60,14 @@ namespace Guardians
 			bool nameIsAvailable = await ValidateNameAvailability(name);
 
 			if(!nameIsAvailable)
-				return Json(new CharacterNameValidationResponse(CharacterNameValidationResponseCode.NameIsUnavailable));
+				return Json(new CharacterCreationResponse(CharacterCreationResponseCode.NameUnavailableError));
 
 			//Otherwise we should try to create. There is a race condition here that can cause it to still fail
 			//since others could create a character with this name before we finish after checking
 			bool result = await CharacterRepository.TryCreateAsync(new CharacterDatabaseModel(accountId, name));
 
 			//TODO: JSON
-			return Created("TODO", new CharacterNameValidationResponse(CharacterNameValidationResponseCode.Success));
+			return Created("TODO", new CharacterCreationResponse(CharacterCreationResponseCode.Success));
 		}
 
 		[AllowAnonymous]

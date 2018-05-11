@@ -15,6 +15,8 @@ namespace Guardians
 
 		public DbSet<ZoneInstanceEntryModel> ZoneEntries { get; set; }
 
+		public DbSet<CharacterLocationModel> CharacterLocations { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions options) 
 			: base(options)
 		{
@@ -38,6 +40,8 @@ namespace Guardians
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
+
 			modelBuilder.Entity<CharacterEntryModel>()
 				.HasAlternateKey(c => c.CharacterName);
 
@@ -56,8 +60,6 @@ namespace Guardians
 				.HasOne(s => s.ZoneEntry)
 				.WithOne()
 				.HasForeignKey<CharacterSessionModel>(s => s.ZoneId);
-
-			base.OnModelCreating(modelBuilder);
 		}
 #endif
 	}

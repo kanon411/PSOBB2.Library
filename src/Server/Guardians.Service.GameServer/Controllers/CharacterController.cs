@@ -11,6 +11,7 @@ namespace Guardians
 	[Route("api/characters")]
 	public class CharacterController : AuthorizationReadyController
 	{
+		//TODO: Check and enforce character limit
 		//TODO: Add logging to these controllers
 		private ICharacterRepository CharacterRepository { get; }
 

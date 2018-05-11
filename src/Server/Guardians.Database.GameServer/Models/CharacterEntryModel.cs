@@ -35,7 +35,7 @@ namespace Guardians
 		/// 
 		/// </summary>
 		[Required]
-		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime CreationDate { get; private set; }
 
 		/// <inheritdoc />

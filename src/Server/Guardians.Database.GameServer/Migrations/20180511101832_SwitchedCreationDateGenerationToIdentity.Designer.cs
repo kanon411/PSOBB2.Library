@@ -11,9 +11,10 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    partial class CharacterDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180511101832_SwitchedCreationDateGenerationToIdentity")]
+    partial class SwitchedCreationDateGenerationToIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

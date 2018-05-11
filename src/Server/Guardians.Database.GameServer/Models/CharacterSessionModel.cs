@@ -33,7 +33,7 @@ namespace Guardians
 		public virtual ZoneInstanceEntryModel ZoneEntry { get; private set; }
 
 		[Required]
-		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime SessionCreationDate { get; private set; }
 
 		//TODO: Add Zone navigation property

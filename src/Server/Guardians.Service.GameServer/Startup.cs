@@ -42,6 +42,7 @@ namespace Guardians
 #endif
 			});
 			services.AddTransient<ICharacterRepository, DatabaseBackedCharacterRepository>();
+			services.AddTransient<ICharacterLocationRepository, DatabaseBackerCharacterLocationRepository>();
 
 			X509Certificate2 cert = null;
 			string certPath = "Certs/TestCert.pfx";

@@ -14,7 +14,6 @@ namespace Guardians
 		/// </summary>
 		[Key]
 		[ForeignKey(nameof(Character))]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int CharacterId { get; private set; }
 
 		/// <summary>

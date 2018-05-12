@@ -57,7 +57,16 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime SessionLastUpdateDate { get; private set; }
 
-		//TODO: Add Zone navigation property
+		/// <inheritdoc />
+		public CharacterSessionModel(int characterId, int zoneId, bool isSessionActive = false)
+		{
+			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+			if(zoneId < 0) throw new ArgumentOutOfRangeException(nameof(zoneId));
+
+			CharacterId = characterId;
+			ZoneId = zoneId;
+			IsSessionActive = isSessionActive;
+		}
 
 		public CharacterSessionModel()
 		{

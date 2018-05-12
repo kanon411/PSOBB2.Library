@@ -95,7 +95,7 @@ namespace Guardians
 
 		[HttpGet]
 		[AuthorizeJwt]
-		[ResponseCache(Duration = 10)]
+		[ProducesJson]
 		public async Task<CharacterListResponse> GetCharacters()
 		{
 			int accountId = ClaimsReader.GetUserIdInt(User);

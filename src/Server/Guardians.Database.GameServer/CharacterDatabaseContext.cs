@@ -44,8 +44,10 @@ namespace Guardians
 
 			EntityTypeBuilder<CharacterEntryModel> characterEntity = modelBuilder.Entity<CharacterEntryModel>();
 
+			//Use the below due to issue on Pomelo: https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/issues/252
 			characterEntity
-				.HasAlternateKey(c => c.CharacterName);
+				.HasIndex(c => c.CharacterName)
+				.IsUnique();
 
 			/*characterEntity
 				.Property(c => c.CreationDate)
@@ -54,8 +56,15 @@ namespace Guardians
 			//Sessions should enforce uniqueness on both character id and account id.
 			EntityTypeBuilder<CharacterSessionModel> sessionEntity = modelBuilder.Entity<CharacterSessionModel>();
 
-			sessionEntity.HasAlternateKey(s => s.CharacterId);
-			sessionEntity.HasAlternateKey(s => s.AccountId);
+			//Use the below due to issue on Pomelo: https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/issues/252
+			sessionEntity
+				.HasIndex(s => s.CharacterId)
+				.IsUnique();
+
+			//TODO: Enforce characterid and accountid match the character
+			//We no longer have a uniquness constraint here so that inactive sessions
+			//from multiple characters on the account can exist
+			//sessionEntity.HasAlternateKey(s => s.AccountId);
 
 			sessionEntity
 				.HasOne(s => s.CharacterEntry)

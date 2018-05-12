@@ -38,7 +38,8 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasKey("CharacterId");
 
-                    b.HasAlternateKey("CharacterName");
+                    b.HasIndex("CharacterName")
+                        .IsUnique();
 
                     b.ToTable("characters");
                 });
@@ -91,10 +92,8 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasKey("SessionId");
 
-                    b.HasAlternateKey("AccountId");
-
-
-                    b.HasAlternateKey("CharacterId");
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
 
                     b.HasIndex("ZoneId")
                         .IsUnique();

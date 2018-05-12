@@ -49,6 +49,7 @@ namespace Guardians
 		/// <summary>
 		/// Indicates the last time the location was updated.
 		/// </summary>
+		[Column(TypeName = "TIMESTAMP(6)")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime LastUpdated { get; private set; }
 

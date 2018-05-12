@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,18 @@ namespace Guardians
 				throw new InvalidOperationException($"Tried to load Character with Key: {key} from database. Expected to exist but null.");
 
 			return character.CharacterName;
+		}
+
+		/// <inheritdoc />
+		public async Task<int[]> CharacterIdsForAccountId(int accountId)
+		{
+			int[] ids = await Context
+				.Characters
+				.Where(c => c.AccountId == accountId)
+				.Select(c => c.AccountId)
+				.ToArrayAsync();
+
+			return ids;
 		}
 
 		public Task<CharacterEntryModel> RetrieveAsync(int key)

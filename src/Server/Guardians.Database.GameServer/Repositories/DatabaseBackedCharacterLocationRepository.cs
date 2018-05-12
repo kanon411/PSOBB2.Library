@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Guardians
 {
-	public sealed class DatabaseBackerCharacterLocationRepository : ICharacterLocationRepository
+	public sealed class DatabaseBackedCharacterLocationRepository : ICharacterLocationRepository
 	{
 		/// <summary>
 		/// The database service.
@@ -14,7 +14,7 @@ namespace Guardians
 		private CharacterDatabaseContext Context { get; }
 
 		/// <inheritdoc />
-		public DatabaseBackerCharacterLocationRepository(CharacterDatabaseContext context)
+		public DatabaseBackedCharacterLocationRepository(CharacterDatabaseContext context)
 		{
 			Context = context ?? throw new ArgumentNullException(nameof(context));
 		}

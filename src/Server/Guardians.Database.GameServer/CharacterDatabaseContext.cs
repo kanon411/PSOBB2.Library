@@ -42,8 +42,14 @@ namespace Guardians
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<CharacterEntryModel>()
+			EntityTypeBuilder<CharacterEntryModel> characterEntity = modelBuilder.Entity<CharacterEntryModel>();
+
+			characterEntity
 				.HasAlternateKey(c => c.CharacterName);
+
+			/*characterEntity
+				.Property(c => c.CreationDate)
+				.HasDefaultValueSql("CURRENT_TIMESTAMP");*/
 
 			//Sessions should enforce uniqueness on both character id and account id.
 			EntityTypeBuilder<CharacterSessionModel> sessionEntity = modelBuilder.Entity<CharacterSessionModel>();
@@ -60,6 +66,11 @@ namespace Guardians
 				.HasOne(s => s.ZoneEntry)
 				.WithOne()
 				.HasForeignKey<CharacterSessionModel>(s => s.ZoneId);
+
+			//Sets the creation date to mysql datetime on add.
+			/*sessionEntity
+				.Property(c => c.SessionCreationDate)
+				.HasDefaultValueSql("CURRENT_TIMESTAMP");*/
 		}
 #endif
 	}

@@ -35,6 +35,7 @@ namespace Guardians
 		/// 
 		/// </summary>
 		[Required]
+		[Column(TypeName = "TIMESTAMP(6)")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime CreationDate { get; private set; }
 

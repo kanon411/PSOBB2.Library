@@ -22,5 +22,13 @@ namespace Guardians
 		/// <param name="key"></param>
 		/// <returns>The name of the character. Throws if it doesn't exist.</returns>
 		Task<string> RetrieveNameAsync(int key);
+
+		/// <summary>
+		/// Tries to load all the characters with the provided <see cref="accountId"/>.
+		/// If none exist it will produce an empty collection.
+		/// </summary>
+		/// <param name="accountId">The account id to check.</param>
+		/// <returns></returns>
+		Task<int[]> CharacterIdsForAccountId(int accountId);
 	}
 }

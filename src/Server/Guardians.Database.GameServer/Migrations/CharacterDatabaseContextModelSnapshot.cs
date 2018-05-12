@@ -33,6 +33,7 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("CharacterId");
@@ -44,12 +45,11 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.CharacterLocationModel", b =>
                 {
-                    b.Property<int>("CharacterId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("CharacterId");
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("TIMESTAMP(6)")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
 
                     b.Property<float>("XPosition");
@@ -77,7 +77,13 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<DateTime>("SessionCreationDate")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("SessionLastUpdateDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("TIMESTAMP(6)")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
 
                     b.Property<int>("ZoneId");
 

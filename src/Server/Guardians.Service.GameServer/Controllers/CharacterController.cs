@@ -93,6 +93,26 @@ namespace Guardians
 			return Ok(new CharacterNameQueryResponse(name));
 		}
 
+		[HttpGet]
+		[AuthorizeJwt]
+		[ResponseCache(Duration = 10)]
+		public async Task<CharacterListResponse> GetCharacters()
+		{
+			int accountId = ClaimsReader.GetUserIdInt(User);
+
+			//So to check characters we just need to query for the
+			//characters with this account id
+			int[] characterIds = await CharacterRepository.CharacterIdsForAccountId(accountId);
+
+			if(characterIds.Length == 0)
+				return new CharacterListResponse(CharacterListResponseCode.NoCharactersFoundError);
+			
+			//The reason we only provide the IDs is all other character data can be looked up
+			//by the client when it needs it. Like name query, visible/character details/look stuff.
+			//No reason to send all this data when they may only need names. Which can be queried through the known API
+			return new CharacterListResponse(characterIds);
+		}
+
 		private IActionResult BuildNotFoundUnknownIdResponse()
 		{
 			return NotFound(new CharacterNameQueryResponse(CharacterNameQueryResponseCode.UnknownIdError));

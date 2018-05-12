@@ -11,8 +11,8 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20180511084324_FixedIncorrectForeignKeys")]
-    partial class FixedIncorrectForeignKeys
+    [Migration("20180512015607_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,14 +33,37 @@ namespace Guardians.Database.GameServer.Migrations
                         .IsRequired();
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("CharacterId");
 
                     b.HasAlternateKey("CharacterName");
 
                     b.ToTable("characters");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterLocationModel", b =>
+                {
+                    b.Property<int>("CharacterId");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("TIMESTAMP(6)")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
+
+                    b.Property<float>("XPosition");
+
+                    b.Property<float>("YPosition");
+
+                    b.Property<float>("ZPosition");
+
+                    b.Property<int>("ZoneType");
+
+                    b.HasKey("CharacterId");
+
+                    b.ToTable("character_locations");
                 });
 
             modelBuilder.Entity("Guardians.CharacterSessionModel", b =>
@@ -54,7 +77,13 @@ namespace Guardians.Database.GameServer.Migrations
                     b.Property<int>("CharacterId");
 
                     b.Property<DateTime>("SessionCreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("SessionLastUpdateDate")
                         .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("TIMESTAMP(6)")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn);
 
                     b.Property<int>("ZoneId");
@@ -83,11 +112,19 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<short>("ZoneServerPort");
 
-                    b.Property<bool>("isStatic");
+                    b.Property<int>("ZoneType");
 
                     b.HasKey("ZoneId");
 
                     b.ToTable("zone_endpoints");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterLocationModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Guardians.CharacterSessionModel", b =>

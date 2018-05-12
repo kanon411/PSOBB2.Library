@@ -38,11 +38,11 @@ namespace Guardians
 				throw new NotSupportedException("AWS/Remote database not supported yet.");
 				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 #else
-				o.UseMySql("Server=localhost;Database=guardians.characters;Uid=root;Pwd=test;");
+				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
 #endif
 			});
 			services.AddTransient<ICharacterRepository, DatabaseBackedCharacterRepository>();
-			services.AddTransient<ICharacterLocationRepository, DatabaseBackerCharacterLocationRepository>();
+			services.AddTransient<ICharacterLocationRepository, DatabaseBackedCharacterLocationRepository>();
 
 			X509Certificate2 cert = null;
 			string certPath = "Certs/TestCert.pfx";

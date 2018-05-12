@@ -32,9 +32,16 @@ namespace Guardians
 		//Navigation property
 		public virtual ZoneInstanceEntryModel ZoneEntry { get; private set; }
 
+		//Fluent API sets up default time
 		[Required]
+		[Column(TypeName = "TIMESTAMP(6)")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime SessionCreationDate { get; private set; }
+
+		[Required]
+		[Column(TypeName = "TIMESTAMP(6)")]
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		public DateTime SessionLastUpdateDate { get; private set; }
 
 		//TODO: Add Zone navigation property
 

@@ -59,7 +59,7 @@ namespace Guardians
 			int[] ids = await Context
 				.Characters
 				.Where(c => c.AccountId == accountId)
-				.Select(c => c.AccountId)
+				.Select(c => c.CharacterId)
 				.ToArrayAsync();
 
 			return ids;

@@ -67,11 +67,7 @@ namespace Guardians.Database.GameServer.Migrations
                 name: "character_sessions",
                 columns: table => new
                 {
-                    SessionId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AccountId = table.Column<int>(nullable: false),
                     CharacterId = table.Column<int>(nullable: false),
-                    IsSessionActive = table.Column<bool>(nullable: false),
                     SessionCreationDate = table.Column<DateTime>(type: "TIMESTAMP(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     SessionLastUpdateDate = table.Column<DateTime>(type: "TIMESTAMP(6)", nullable: false)
@@ -80,7 +76,7 @@ namespace Guardians.Database.GameServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_character_sessions", x => x.SessionId);
+                    table.PrimaryKey("PK_character_sessions", x => x.CharacterId);
                     table.ForeignKey(
                         name: "FK_character_sessions_characters_CharacterId",
                         column: x => x.CharacterId,
@@ -95,6 +91,32 @@ namespace Guardians.Database.GameServer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "claimed_sessions",
+                columns: table => new
+                {
+                    CharacterId = table.Column<int>(nullable: false),
+                    CharacterEntryCharacterId = table.Column<int>(nullable: true),
+                    SessionCreationDate = table.Column<DateTime>(type: "TIMESTAMP(6)", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_claimed_sessions", x => x.CharacterId);
+                    table.ForeignKey(
+                        name: "FK_claimed_sessions_characters_CharacterEntryCharacterId",
+                        column: x => x.CharacterEntryCharacterId,
+                        principalTable: "characters",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_claimed_sessions_character_sessions_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "character_sessions",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_character_sessions_CharacterId",
                 table: "character_sessions",
@@ -104,20 +126,32 @@ namespace Guardians.Database.GameServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_character_sessions_ZoneId",
                 table: "character_sessions",
-                column: "ZoneId",
-                unique: true);
+                column: "ZoneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_characters_AccountId",
+                table: "characters",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_characters_CharacterName",
                 table: "characters",
                 column: "CharacterName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_claimed_sessions_CharacterEntryCharacterId",
+                table: "claimed_sessions",
+                column: "CharacterEntryCharacterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "character_locations");
+
+            migrationBuilder.DropTable(
+                name: "claimed_sessions");
 
             migrationBuilder.DropTable(
                 name: "character_sessions");

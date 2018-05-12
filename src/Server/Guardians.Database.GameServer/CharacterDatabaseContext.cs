@@ -17,6 +17,8 @@ namespace Guardians
 
 		public DbSet<CharacterLocationModel> CharacterLocations { get; set; }
 
+		public DbSet<ClaimedSessionsModel> ClaimedSession { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions options) 
 			: base(options)
 		{
@@ -49,9 +51,9 @@ namespace Guardians
 				.HasIndex(c => c.CharacterName)
 				.IsUnique();
 
-			/*characterEntity
-				.Property(c => c.CreationDate)
-				.HasDefaultValueSql("CURRENT_TIMESTAMP");*/
+			characterEntity
+				.HasIndex(c => c.AccountId)
+				.IsUnique(false);
 
 			//Sessions should enforce uniqueness on both character id and account id.
 			EntityTypeBuilder<CharacterSessionModel> sessionEntity = modelBuilder.Entity<CharacterSessionModel>();
@@ -73,13 +75,20 @@ namespace Guardians
 
 			sessionEntity
 				.HasOne(s => s.ZoneEntry)
-				.WithOne()
-				.HasForeignKey<CharacterSessionModel>(s => s.ZoneId);
+				.WithMany()
+				.HasForeignKey(c => c.ZoneId);
 
-			//Sets the creation date to mysql datetime on add.
-			/*sessionEntity
-				.Property(c => c.SessionCreationDate)
-				.HasDefaultValueSql("CURRENT_TIMESTAMP");*/
+			EntityTypeBuilder<ClaimedSessionsModel> claimedSessionModel = modelBuilder.Entity<ClaimedSessionsModel>();
+
+			claimedSessionModel
+				.HasOne(s => s.Session)
+				.WithOne()
+				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
+
+			claimedSessionModel
+				.HasOne(s => s.CharacterEntry)
+				.WithOne()
+				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
 		}
 #endif
 	}

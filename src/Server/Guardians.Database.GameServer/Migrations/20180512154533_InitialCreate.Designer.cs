@@ -11,7 +11,7 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20180512092507_InitialCreate")]
+    [Migration("20180512154533_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,8 @@ namespace Guardians.Database.GameServer.Migrations
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("CharacterId");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("CharacterName")
                         .IsUnique();
@@ -69,15 +71,7 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.CharacterSessionModel", b =>
                 {
-                    b.Property<int>("SessionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccountId");
-
                     b.Property<int>("CharacterId");
-
-                    b.Property<bool>("IsSessionActive");
 
                     b.Property<DateTime>("SessionCreationDate")
                         .ValueGeneratedOnAdd()
@@ -91,15 +85,32 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.Property<int>("ZoneId");
 
-                    b.HasKey("SessionId");
+                    b.HasKey("CharacterId");
 
                     b.HasIndex("CharacterId")
                         .IsUnique();
 
-                    b.HasIndex("ZoneId")
-                        .IsUnique();
+                    b.HasIndex("ZoneId");
 
                     b.ToTable("character_sessions");
+                });
+
+            modelBuilder.Entity("Guardians.ClaimedSessionsModel", b =>
+                {
+                    b.Property<int>("CharacterId");
+
+                    b.Property<int?>("CharacterEntryCharacterId");
+
+                    b.Property<DateTime>("SessionCreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)")
+                        .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("CharacterId");
+
+                    b.HasIndex("CharacterEntryCharacterId");
+
+                    b.ToTable("claimed_sessions");
                 });
 
             modelBuilder.Entity("Guardians.ZoneInstanceEntryModel", b =>
@@ -136,8 +147,20 @@ namespace Guardians.Database.GameServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Guardians.ZoneInstanceEntryModel", "ZoneEntry")
+                        .WithMany()
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.ClaimedSessionsModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "CharacterEntry")
+                        .WithMany()
+                        .HasForeignKey("CharacterEntryCharacterId");
+
+                    b.HasOne("Guardians.CharacterSessionModel", "Session")
                         .WithOne()
-                        .HasForeignKey("Guardians.CharacterSessionModel", "ZoneId")
+                        .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

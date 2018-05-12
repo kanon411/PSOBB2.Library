@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace Guardians
 {
@@ -71,8 +73,22 @@ namespace Guardians
 			CheckAndThrowKey(accountId);
 
 			return Context
-				.CharacterSessions
-				.AnyAsync(s => s.IsSessionActive && s.AccountId == accountId);
+				.ClaimedSession
+				.AnyAsync(cs => cs.CharacterEntry.AccountId == accountId);
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> TryClaimUnclaimedSession(int accountId, int characterId)
+		{
+			MySqlParameter parameter = new MySqlParameter(@"@result", false)
+			{
+				Direction = ParameterDirection.Output
+			};
+
+			await Context.Database
+				.ExecuteSqlCommandAsync($@"CALL create_claimed_session({accountId},{characterId},@result)", parameter);
+
+			return (bool)parameter.Value;
 		}
 	}
 }

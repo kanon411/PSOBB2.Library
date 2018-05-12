@@ -22,6 +22,14 @@ namespace Guardians
 			CharacterSessionRepository = characterSessionRepository ?? throw new ArgumentNullException(nameof(characterSessionRepository));
 		}
 
+		[HttpGet("testclaim")]
+		public async Task<IActionResult> Test()
+		{
+			bool b = await CharacterSessionRepository.TryClaimUnclaimedSession(2, 1);
+
+			return Ok($"Result: {b}");
+		}
+
 		[HttpPost("enter/{id}")]
 		[NoResponseCache]
 		[AuthorizeJwt]
@@ -44,8 +52,8 @@ namespace Guardians
 			{
 				CharacterSessionModel sessionModel = await CharacterSessionRepository.RetrieveAsync(characterId);
 
-				if(sessionModel.IsSessionActive)
-					return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.CharacterSessionAlreadyActiveError);
+				//if(sessionModel.IsSessionActive)
+				//	return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.CharacterSessionAlreadyActiveError);
 
 				//TODO: Handle case when we have an inactive session that can be claimed
 				return new CharacterSessionEnterResponse(sessionModel.ZoneId);
@@ -62,7 +70,7 @@ namespace Guardians
 			//but we need player location data first (if they've never entered the world they won't have any
 			//TODO: Handle location loading
 			//TODO: Handle deafult
-			if(!await CharacterSessionRepository.TryCreateAsync(new CharacterSessionModel(characterId, 0, false)))
+			if(!await CharacterSessionRepository.TryCreateAsync(new CharacterSessionModel(characterId, 0)))
 				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.GeneralServerError);
 			
 			//TODO: Better zone handling

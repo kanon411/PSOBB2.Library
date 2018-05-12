@@ -80,7 +80,8 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task<bool> TryClaimUnclaimedSession(int accountId, int characterId)
 		{
-			MySqlParameter parameter = new MySqlParameter(@"@result", false)
+			//TODO: Pomelo MySql doesn't support out values on stored proc see: https://github.com/mysql-net/MySqlConnector/issues/231
+			/*MySqlParameter parameter = new MySqlParameter(@"@result", false)
 			{
 				Direction = ParameterDirection.Output
 			};
@@ -88,7 +89,20 @@ namespace Guardians
 			await Context.Database
 				.ExecuteSqlCommandAsync($@"CALL create_claimed_session({accountId},{characterId},@result)", parameter);
 
-			return (bool)parameter.Value;
+			return (bool)parameter.Value;*/
+
+			try
+			{
+				await Context.Database
+					.ExecuteSqlCommandAsync($@"CALL create_claimed_session({accountId},{characterId})");
+
+				return true;
+			}
+			catch(Exception)
+			{
+				//TODO: Log
+				return false;
+			}
 		}
 	}
 }

@@ -1,7 +1,10 @@
-﻿CREATE PROCEDURE `create_claimed_session`(IN accountId int, IN characterId int, OUT result BIT)
+﻿CREATE PROCEDURE `create_claimed_session`(IN accountId int, IN characterId int)
 BEGIN
-DECLARE failed BOOL DEFAULT 0;
-DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET failed = 1;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;  -- rollback any changes made in the transaction
+		RESIGNAL;  -- raise again the sql exception to the caller
+	END;
 
 # Check if accountid and characterid are valid first. Second part is more expensive.
 # This is more preformant because it avoids locks/transactions until we absolutely have to
@@ -9,7 +12,8 @@ IF (0 = (SELECT COUNT(*)
 		FROM `guardians.gameserver`.characters ch
 		WHERE ch.CharacterId = characterId AND ch.AccountId = accountId))
 THEN
-	SET result = false;
+	SIGNAL SQLSTATE '45000'
+	  SET MESSAGE_TEXT = 'Attempted session creation but AccountId and CharacterId do not align.';
 ELSE
 # If the accountId IS the accountId of the character then we need to start the transaction
 	SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
@@ -20,17 +24,10 @@ ELSE
 			WHERE C.AccountId = accountId))
 		THEN
 			INSERT INTO `guardians.gameserver`.claimed_sessions (CharacterId) VALUES(characterId);
-			SET result = true;
 		ELSE
-			SET result = false;
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Attempted session creation but an active session for this account already exists.';
 		END IF;
-		
-	IF failed
-	THEN
-		ROLLBACK;
-	ELSE
 		COMMIT;
-	END IF;
-	
 END IF;
 END

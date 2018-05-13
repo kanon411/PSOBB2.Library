@@ -52,6 +52,26 @@ namespace Guardians
 			Assert.False(result, $"Expected empty repository with {nameof(ICharacterRepository.ContainsAsync)} to produce false on empy.");
 		}
 
+		[Test]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		[TestCase("Shilo")]
+		[TestCase("Sammy")]
+		[TestCase("Skylar")]
+		public static async Task Test_Contains_Name_True_If_Model_Was_Added(string name)
+		{
+			//arrange
+			ICharacterRepository repository = BuildEmptyRepository();
+
+			//act
+			await repository.TryCreateAsync(new CharacterEntryModel(1, name));
+
+			bool result = await repository.ContainsAsync(name);
+
+			//assert
+			Assert.True(result, $"Expected true with {nameof(ICharacterRepository.ContainsAsync)}.");
+		}
+
 		public static ICharacterRepository BuildEmptyRepository()
 		{
 			ServiceCollection collection = new ServiceCollection();

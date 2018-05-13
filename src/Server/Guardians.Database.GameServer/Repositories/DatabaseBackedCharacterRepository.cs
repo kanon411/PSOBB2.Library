@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Guardians
 {
-	public sealed class DatabaseBackedCharacterRepository : ICharacterRepository
+	public sealed class DatabaseBackedCharacterRepository : ICharacterRepository, IGenericRepositoryCrudable<string, CharacterEntryModel>
 	{
 		/// <summary>
 		/// The database context.

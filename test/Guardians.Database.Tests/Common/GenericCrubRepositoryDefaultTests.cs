@@ -98,6 +98,18 @@ namespace Guardians
 		{
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
+			Dictionary<TKeyType, TModelType> models = await BuildTestModelDictionary(count, repository);
+
+			//assert
+			foreach(var kvp in models)
+			{
+				bool result = await repository.ContainsAsync(kvp.Key);
+				Assert.True(result, $"Could not find Key: {kvp.Key.ToString()} Model: {kvp.Value.ToString()} in the repository for some reason.");
+			}
+		}
+
+		private async Task<Dictionary<TKeyType, TModelType>> BuildTestModelDictionary(int count, IGenericRepositoryCrudable<TKeyType, TModelType> repository)
+		{
 			Dictionary<TKeyType, TModelType> models = new Dictionary<TKeyType, TModelType>();
 
 			for(int i = 0; i < count; i++)
@@ -107,11 +119,23 @@ namespace Guardians
 				models[ProduceKeyFromModel(model)] = model;
 			}
 
+			return models;
+		}
+
+		[Test]
+		public async Task Test_Retreieve_Produces_Correct_Result([Range(1, 100)] int count)
+		{
+			//arrange
+			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
+			Dictionary<TKeyType, TModelType> models = await BuildTestModelDictionary(count, repository);
+
 			//assert
 			foreach(var kvp in models)
 			{
-				bool result = await repository.ContainsAsync(kvp.Key);
-				Assert.True(result, $"Could not find Key: {kvp.Key.ToString()} Model: {kvp.Value.ToString()} in the repository for some reason.");
+				TModelType result = await repository.RetrieveAsync(kvp.Key);
+
+				//We need to check that equality AND key values are the same
+				Assert.AreEqual(ProduceKeyFromModel(result), kvp.Key, $"Retrieve produced model with non-matching keys.");
 			}
 		}
 

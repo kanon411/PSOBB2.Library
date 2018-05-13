@@ -72,6 +72,26 @@ namespace Guardians
 			Assert.True(result, $"Expected true with {nameof(ICharacterRepository.ContainsAsync)}.");
 		}
 
+		[Test]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		[TestCase("Shilo")]
+		[TestCase("Sammy")]
+		[TestCase("Skylar")]
+		public static async Task Test_Retrieve_Name_Works_On_Added_Models(string name)
+		{
+			//arrange
+			ICharacterRepository repository = BuildEmptyRepository();
+
+			//act
+			await repository.TryCreateAsync(new CharacterEntryModel(1, name));
+
+			string result = await repository.RetrieveNameAsync(1);
+
+			//assert
+			Assert.AreEqual(name, result);
+		}
+
 		public static ICharacterRepository BuildEmptyRepository()
 		{
 			ServiceCollection collection = new ServiceCollection();

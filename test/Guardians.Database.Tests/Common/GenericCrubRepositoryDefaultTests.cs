@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Generic.Math;
+using Guardians;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -14,18 +18,48 @@ namespace Guardians
 		where TDbContextType : DbContext
 		where TRepositoryType : class, IGenericRepositoryCrudable<TKeyType, TModelType>
 	{
+		private class MarkerType { }
+
+		/// <summary>
+		/// Implementers should provide a set of test keys to use for testing.
+		/// DO NOT REFERENCE THIS IN TEST ATTRIBUTES.
+		/// </summary>
+		public abstract IEnumerable<TKeyType> TestCaseKeys { get; }
+
+		//This is quite the clever hack. What it does is it allows us to use the abstract instance collection
+		//in the child type while meeting the requirement of the source being a static
+		static GenericCrubRepositoryDefaultTests()
+		{
+			//TODO: This will only work if there is only one implementation that matches
+			//Now we know the declaring type. The closed generic type.
+			//Therefore we can find a Type that matches it in the assembly
+			//we can then create it and get the test cases.
+			Type childType = typeof(MarkerType)
+				.Assembly
+				.GetTypes()
+				.First(t => !t.IsAbstract && typeof(GenericCrubRepositoryDefaultTests<TDbContextType, TRepositoryType, TKeyType, TModelType>).IsAssignableFrom(t));
+
+			var childObj = Activator.CreateInstance(childType)
+				as GenericCrubRepositoryDefaultTests<TDbContextType, TRepositoryType, TKeyType, TModelType>;
+
+			TestKeysSource = childObj.TestCaseKeys;
+		}
+		
+		public static IEnumerable<TKeyType> TestKeysSource { get; private set; }
+
+		public GenericCrubRepositoryDefaultTests()
+		{
+			
+		}
+
 		[Test]
-		[TestCase(5)]
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(100)]
-		[TestCase(int.MaxValue)]
-		public async Task Test_Contains_Id_False_On_Empty_Repository(int key)
+		[TestCaseSource(nameof(TestKeysSource))]
+		public virtual async Task Test_Contains_Id_False_On_Empty_Repository(TKeyType key)
 		{
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
 
-			TKeyType keyValue = TryBuildKey(key);
+			TKeyType keyValue = key;
 
 			//act
 			bool result = await repository.ContainsAsync(keyValue);

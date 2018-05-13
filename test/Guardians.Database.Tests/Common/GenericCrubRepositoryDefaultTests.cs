@@ -31,6 +31,8 @@ namespace Guardians
 		static GenericCrubRepositoryDefaultTests()
 		{
 			//TODO: This will only work if there is only one implementation that matches
+			//The static ctor is promsied to run for every closed generic type
+			//See: https://stackoverflow.com/questions/2936580/c-sharp-generic-static-constructor?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 			//Now we know the declaring type. The closed generic type.
 			//Therefore we can find a Type that matches it in the assembly
 			//we can then create it and get the test cases.

@@ -31,7 +31,7 @@ namespace Guardians
 		public async Task<bool> TryCreateAsync(CharacterLocationModel model)
 		{
 			if(await ContainsAsync(model.CharacterId))
-				throw new InvalidOperationException($"Tried to add duplicate Key: {model.CharacterId} to character_locations");
+				throw new ArgumentException($"Tried to add duplicate Key: {model.CharacterId} to character_locations", nameof(model));
 
 			await Context
 				.CharacterLocations

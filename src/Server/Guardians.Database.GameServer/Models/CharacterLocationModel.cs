@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -52,6 +53,19 @@ namespace Guardians
 		[Column(TypeName = "TIMESTAMP(6)")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime LastUpdated { get; private set; }
+
+		/// <inheritdoc />
+		public CharacterLocationModel(int characterId, GameZoneType zoneType, float xPosition, float yPosition, float zPosition)
+		{
+			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
+
+			CharacterId = characterId;
+			ZoneType = zoneType;
+			XPosition = xPosition;
+			YPosition = yPosition;
+			ZPosition = zPosition;
+		}
 
 		public CharacterLocationModel()
 		{

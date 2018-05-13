@@ -104,8 +104,7 @@ namespace Guardians
 			}
 			catch(Exception e)
 			{
-				Assert.True(e.Message.ToLower().Contains("key"), $"Exception methods should contain the word key somewhere in their message.");
-				Assert.True(e.Message.ToLower().Contains(ProduceKeyFromModel(model).ToString().ToLower()), $"Exceptions contain the key value in their message.");
+				Assert.True(e.Message.ToLower().Contains("key"), $"Exception methods should contain the word key somewhere in their message. Was: {e.Message}");
 			}
 		}
 

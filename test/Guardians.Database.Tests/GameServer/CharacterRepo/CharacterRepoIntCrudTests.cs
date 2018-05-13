@@ -10,7 +10,7 @@ namespace Guardians
 	/// Runs all the crud repo interface default tests against the character repository.
 	/// </summary>
 	[TestFixture]
-	public class CharacterRepoCrudTests : GenericCrubRepositoryDefaultTests<CharacterDatabaseContext, DatabaseBackedCharacterRepository, int, CharacterEntryModel>
+	public class CharacterRepoIntCrudTests : GenericCrubRepositoryDefaultTests<CharacterDatabaseContext, DatabaseBackedCharacterRepository, int, CharacterEntryModel>
 	{
 		private static int AccountIdIncrementable = 1;
 

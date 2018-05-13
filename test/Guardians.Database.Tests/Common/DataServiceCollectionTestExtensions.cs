@@ -1,0 +1,28 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Guardians
+{
+	public static class DataServiceCollectionTestExtensions
+	{
+		public static IServiceCollection AddDefaultDataTestServices(this IServiceCollection serviceCollection)
+		{
+			serviceCollection.AddLogging();
+			return serviceCollection;
+		}
+
+		public static IServiceCollection AddTestDatabaseContext<TDbContextType>(this IServiceCollection serviceCollection)
+			where TDbContextType : DbContext
+		{
+			serviceCollection.AddDbContext<TDbContextType>(o =>
+				{
+					//Every call should be a fresh database
+					o.UseInMemoryDatabase(Guid.NewGuid().ToString());
+				})
+				.AddEntityFrameworkInMemoryDatabase();
+
+			return serviceCollection;
+		}
+	}
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,6 +91,28 @@ namespace Guardians
 
 			//assert
 			Assert.AreEqual(name, result);
+		}
+
+		[Test]
+		[TestCase("Andrew", "Lyle", "Shilo", "Sammy", "Skylar")]
+		public static async Task Test_Retrieve_Characters_By_Account_Id_Works(params string[] names)
+		{
+			//arrange
+			ICharacterRepository repository = BuildEmptyRepository();
+
+			//act: Add all to the same account key
+			foreach(string n in names)
+				await repository.TryCreateAsync(new CharacterEntryModel(1, n));
+
+			//Add another not associated with the first id
+			await repository.TryCreateAsync(new CharacterEntryModel(2, Guid.NewGuid().ToString()));
+
+			int[] result = await repository.CharacterIdsForAccountId(1);
+
+			//assert
+			Assert.AreEqual(names.Length, result.Length, $"Expected character id collection length to be the same count as names.");
+			foreach(int key in result)
+				Assert.True(names.Contains((await repository.RetrieveAsync(key)).CharacterName));
 		}
 
 		public static ICharacterRepository BuildEmptyRepository()

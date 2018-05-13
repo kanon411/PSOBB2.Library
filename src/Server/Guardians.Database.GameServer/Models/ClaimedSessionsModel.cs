@@ -11,18 +11,13 @@ namespace Guardians
 	{
 		[Key]
 		[Required]
-		[ForeignKey(nameof(Session) + "," + nameof(CharacterEntry))]
+		[ForeignKey(nameof(Session))]
 		public int CharacterId { get; private set; }
 
 		/// <summary>
 		/// Navigation property to the linked session
 		/// </summary>
 		public virtual CharacterSessionModel Session { get; private set; }
-
-		/// <summary>
-		/// Navigation property to the linked session
-		/// </summary>
-		public virtual CharacterEntryModel CharacterEntry { get; private set; }
 
 		[Required]
 		[Column(TypeName = "TIMESTAMP(6)")]

@@ -96,7 +96,6 @@ namespace Guardians.Database.GameServer.Migrations
                 columns: table => new
                 {
                     CharacterId = table.Column<int>(nullable: false),
-                    CharacterEntryCharacterId = table.Column<int>(nullable: true),
                     SessionCreationDate = table.Column<DateTime>(type: "TIMESTAMP(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 },
@@ -104,11 +103,11 @@ namespace Guardians.Database.GameServer.Migrations
                 {
                     table.PrimaryKey("PK_claimed_sessions", x => x.CharacterId);
                     table.ForeignKey(
-                        name: "FK_claimed_sessions_characters_CharacterEntryCharacterId",
-                        column: x => x.CharacterEntryCharacterId,
+                        name: "FK_claimed_sessions_characters_CharacterId",
+                        column: x => x.CharacterId,
                         principalTable: "characters",
                         principalColumn: "CharacterId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_claimed_sessions_character_sessions_CharacterId",
                         column: x => x.CharacterId,
@@ -138,11 +137,6 @@ namespace Guardians.Database.GameServer.Migrations
                 table: "characters",
                 column: "CharacterName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_claimed_sessions_CharacterEntryCharacterId",
-                table: "claimed_sessions",
-                column: "CharacterEntryCharacterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

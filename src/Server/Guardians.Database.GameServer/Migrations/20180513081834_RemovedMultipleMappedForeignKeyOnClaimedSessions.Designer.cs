@@ -11,8 +11,8 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20180512171714_FixedClaimedSessionsColumns")]
-    partial class FixedClaimedSessionsColumns
+    [Migration("20180513081834_RemovedMultipleMappedForeignKeyOnClaimedSessions")]
+    partial class RemovedMultipleMappedForeignKeyOnClaimedSessions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,11 +150,6 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.ClaimedSessionsModel", b =>
                 {
-                    b.HasOne("Guardians.CharacterEntryModel", "CharacterEntry")
-                        .WithOne()
-                        .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Guardians.CharacterSessionModel", "Session")
                         .WithOne()
                         .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")

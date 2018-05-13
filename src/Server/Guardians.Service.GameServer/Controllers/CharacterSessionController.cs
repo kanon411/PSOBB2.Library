@@ -22,10 +22,11 @@ namespace Guardians
 			CharacterSessionRepository = characterSessionRepository ?? throw new ArgumentNullException(nameof(characterSessionRepository));
 		}
 
+		[AuthorizeJwt]
 		[HttpGet("testclaim")]
 		public async Task<IActionResult> Test()
 		{
-			bool b = await CharacterSessionRepository.TryClaimUnclaimedSession(2, 1);
+			bool b = await CharacterSessionRepository.TryClaimUnclaimedSession(ClaimsReader.GetUserIdInt(User), 3);
 
 			return Ok($"Result: {b}");
 		}
@@ -40,33 +41,27 @@ namespace Guardians
 
 			int accountId = ClaimsReader.GetUserIdInt(User);
 
-			//If the character id is actually valid then we need to check for existing sessions
-			//if a session exists we should allow them to resume ONLY if the session is inactive
-			//if no session exists then we should create one based on information on their saved location
-			//it is possible their saved location was in a dead non-static zone (like an instance server)
-			//so we'll need to throw them back into the static world if that is the case
+			//This checks to see if the account, not just the character, has an active session.
+			//We do this before we check anything to reject quick even though the query behind this
+			//may be abit more expensive
+			if(await CharacterSessionRepository.AccountHasActiveSession(accountId))
+				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.AccountAlreadyHasCharacterSession);
+
+			//They may have a session entry already, which is ok. So long as they don't have an active claimed session
+			//which the above query checks for.
 			bool hasSession = await CharacterSessionRepository.ContainsAsync(characterId);
 
 			//We need to check active or not
 			if(hasSession)
 			{
+				//If it's active we can just retrieve the data and send them off on their way
 				CharacterSessionModel sessionModel = await CharacterSessionRepository.RetrieveAsync(characterId);
-
-				//if(sessionModel.IsSessionActive)
-				//	return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.CharacterSessionAlreadyActiveError);
 
 				//TODO: Handle case when we have an inactive session that can be claimed
 				return new CharacterSessionEnterResponse(sessionModel.ZoneId);
 			}
 
-			//TODO: Fix race condition related to multiple in-progress session claims from seperate characters that exists on seperate zones
-			//Even if no session exists it's possible they've started a session on the account on another character
-			bool accountHasActiveSession = await CharacterSessionRepository.AccountHasActiveSession(accountId);
-
-			if(accountHasActiveSession)
-				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.AccountAlreadyHasCharacterSession);
-
-			//If we've made it this far we can create a session (because one does not exist) for the character
+			//If we've made it this far we'll need to create a session (because one does not exist) for the character
 			//but we need player location data first (if they've never entered the world they won't have any
 			//TODO: Handle location loading
 			//TODO: Handle deafult

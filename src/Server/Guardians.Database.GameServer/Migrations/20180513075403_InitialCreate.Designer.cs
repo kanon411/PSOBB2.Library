@@ -11,7 +11,7 @@ using System;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20180512154533_InitialCreate")]
+    [Migration("20180513075403_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,16 +99,12 @@ namespace Guardians.Database.GameServer.Migrations
                 {
                     b.Property<int>("CharacterId");
 
-                    b.Property<int?>("CharacterEntryCharacterId");
-
                     b.Property<DateTime>("SessionCreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP(6)")
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("CharacterId");
-
-                    b.HasIndex("CharacterEntryCharacterId");
 
                     b.ToTable("claimed_sessions");
                 });
@@ -155,8 +151,9 @@ namespace Guardians.Database.GameServer.Migrations
             modelBuilder.Entity("Guardians.ClaimedSessionsModel", b =>
                 {
                     b.HasOne("Guardians.CharacterEntryModel", "CharacterEntry")
-                        .WithMany()
-                        .HasForeignKey("CharacterEntryCharacterId");
+                        .WithOne()
+                        .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Guardians.CharacterSessionModel", "Session")
                         .WithOne()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Guardians.Database.GameServer.Migrations
 {
-	public partial class AddStoredProcedures : Migration
+	public partial class AddedStoredProcedures : Migration
 	{
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
@@ -46,7 +46,7 @@ END");
 
 		protected override void Down(MigrationBuilder migrationBuilder)
 		{
-			//TODO: Add drop table
+
 		}
 	}
 }

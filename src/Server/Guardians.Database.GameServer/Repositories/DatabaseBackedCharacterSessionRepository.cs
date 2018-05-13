@@ -74,7 +74,7 @@ namespace Guardians
 
 			return Context
 				.ClaimedSession
-				.AnyAsync(cs => cs.CharacterEntry.AccountId == accountId);
+				.AnyAsync(cs => cs.Session.CharacterEntry.AccountId == accountId);
 		}
 
 		/// <inheritdoc />

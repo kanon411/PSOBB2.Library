@@ -149,11 +149,6 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.ClaimedSessionsModel", b =>
                 {
-                    b.HasOne("Guardians.CharacterEntryModel", "CharacterEntry")
-                        .WithOne()
-                        .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Guardians.CharacterSessionModel", "Session")
                         .WithOne()
                         .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")

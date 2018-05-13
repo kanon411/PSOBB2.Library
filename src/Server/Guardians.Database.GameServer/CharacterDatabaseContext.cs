@@ -84,11 +84,6 @@ namespace Guardians
 				.HasOne(s => s.Session)
 				.WithOne()
 				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
-
-			claimedSessionModel
-				.HasOne(s => s.CharacterEntry)
-				.WithOne()
-				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
 		}
 #endif
 	}

@@ -74,7 +74,9 @@ namespace Guardians
 
 		public Task<CharacterEntryModel> RetrieveAsync(string key)
 		{
-			throw new NotImplementedException($"TODO: Implement name based retrieve");
+			return Context
+				.Characters
+				.FirstAsync(c => c.CharacterName == key);
 		}
 
 		public async Task<bool> TryCreateAsync(CharacterEntryModel model)

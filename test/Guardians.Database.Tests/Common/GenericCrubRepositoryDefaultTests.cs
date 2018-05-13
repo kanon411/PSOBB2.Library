@@ -75,6 +75,46 @@ namespace Guardians
 			}
 		}
 
+		[Test]
+		public async Task Test_Can_Add_Two_Unique_Models_To_Repository()
+		{
+			//arrange
+			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
+
+			TModelType model1 = BuildRandomModel();
+			TModelType model2 = BuildRandomModel();
+
+			//act
+			bool addResult1 = await repository.TryCreateAsync(model1);
+			bool addResult2 = await repository.TryCreateAsync(model2);
+
+			//assert
+			Assert.True(addResult1, $"Could not add Model1: {model1.ToString()} to repository for some reason.");
+			Assert.True(addResult2, $"Could not add Model1: {model2.ToString()} to repository for some reason.");
+		}
+
+		[Test]
+		public async Task Test_Contains_Works_When_Unique_Models_Are_Added([Range(1, 10)] int count)
+		{
+			//arrange
+			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
+			Dictionary<TKeyType, TModelType> models = new Dictionary<TKeyType, TModelType>();
+
+			for(int i = 0; i < count; i++)
+			{
+				TModelType model = BuildRandomModel();
+				await repository.TryCreateAsync(model);
+				models[ProduceKeyFromModel(model)] = model;
+			}
+
+			//assert
+			foreach(var kvp in models)
+			{
+				bool result = await repository.ContainsAsync(kvp.Key);
+				Assert.True(result, $"Could not find Key: {kvp.Key.ToString()} Model: {kvp.Value.ToString()} in the repository for some reason.");
+			}
+		}
+
 		/// <summary>
 		/// 
 		/// </summary>

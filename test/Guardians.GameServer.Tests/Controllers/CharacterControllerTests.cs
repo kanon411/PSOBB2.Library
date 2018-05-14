@@ -108,6 +108,28 @@ namespace Guardians
 				Assert.True(resultQueryNames.Contains(s));
 		}
 
+		[Test]
+		[TestCase(short.MaxValue)]
+		[TestCase(-1)]
+		[TestCase(int.MaxValue)]
+		[TestCase(int.MaxValue - 1)]
+		public async Task Test_Can_Not_NameQuery_Unknown_Ids(int keyToCheck)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+			List<string> names = await AddTestValuesToRepository(20, serviceProvider, 2);
+
+			//act
+			CharacterNameQueryResponse result = GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(keyToCheck));
+
+			//assert
+			Assert.False(result.isSuccessful);
+			Assert.True(result.ResultCode == CharacterNameQueryResponseCode.UnknownIdError);
+			Assert.True(String.IsNullOrWhiteSpace(result.CharacterName));
+		}
+
+
 		public static T GetActionResultObject<T>(IActionResult result)
 		{
 			if(result == null) throw new ArgumentNullException(nameof(result));

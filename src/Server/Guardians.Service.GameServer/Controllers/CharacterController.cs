@@ -61,7 +61,7 @@ namespace Guardians
 			bool nameIsAvailable = await ValidateNameAvailability(name);
 
 			if(!nameIsAvailable)
-				return Json(new CharacterCreationResponse(CharacterCreationResponseCode.NameUnavailableError));
+				return BadRequest(new CharacterCreationResponse(CharacterCreationResponseCode.NameUnavailableError));
 
 			//TODO: Don't expose the database table model
 			//Otherwise we should try to create. There is a race condition here that can cause it to still fail

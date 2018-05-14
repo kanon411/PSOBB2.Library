@@ -188,6 +188,44 @@ namespace Guardians
 			Assert.True(result.ResultCode == CharacterNameValidationResponseCode.Success);
 		}
 
+		[Test]
+		[TestCase("Test")]
+		[TestCase("Test32")]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		public async Task Test_Can_Create_Character(string name)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			//act
+			CharacterCreationResponse result = GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
+
+			//assert
+			Assert.True(result.isSuccessful);
+			Assert.True(result.ResultCode == CharacterCreationResponseCode.Success);
+		}
+
+		[Test]
+		[TestCase("Test")]
+		[TestCase("Test32")]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		public async Task Test_Cannot_Create_Character_With_Duplicate_Name(string name)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			//act
+			await controller.CreateCharacter(name);
+			CharacterCreationResponse result = GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
+
+			//assert
+			Assert.False(result.isSuccessful);
+			Assert.AreEqual(CharacterCreationResponseCode.NameUnavailableError, result.ResultCode);
+		}
 
 		public static T GetActionResultObject<T>(IActionResult result)
 		{

@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
@@ -63,6 +64,7 @@ namespace Guardians
 			Assert.True(response.isSuccessful);
 		}
 
+		//This test is incredibly important. We do not want to ever spit out characters from another account somehow
 		[Test]
 		public async Task Test_Get_Characters_Contains_No_Characters_Added_From_Other_Account([Range(1, 20)] int count)
 		{
@@ -79,6 +81,45 @@ namespace Guardians
 			Assert.AreEqual(0, response.CharacterIds.Count, $"Expected NO characters to be provided. They're all under a different account. This is CRITICAL!");
 			Assert.True(response.ResultCode == CharacterListResponseCode.NoCharactersFoundError);
 			Assert.False(response.isSuccessful);
+		}
+
+		[Test]
+		public async Task Test_Can_Get_Name_From_Character_Id([Range(1, 20)] int count)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			List<string> names = await AddTestValuesToRepository(count, serviceProvider, 2);
+
+			List<string> resultQueryNames = new List<string>(count);
+
+			//assert
+			for(int i = 1; i < count + 1; i++)
+			{
+				CharacterNameQueryResponse nameQueryResponse = GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(i));
+				Assert.True(nameQueryResponse.isSuccessful);
+				Assert.NotNull(nameQueryResponse.CharacterName);
+				resultQueryNames.Add(nameQueryResponse.CharacterName);
+			}
+
+			//Check that each inserted name is available in the total query results
+			foreach(string s in names)
+				Assert.True(resultQueryNames.Contains(s));
+		}
+
+		public static T GetActionResultObject<T>(IActionResult result)
+		{
+			if(result == null) throw new ArgumentNullException(nameof(result));
+
+			ObjectResult objectResult = (result as ObjectResult);
+
+			if(objectResult?.Value == null) throw new InvalidOperationException($"Failed to get object Type: {typeof(T).Name} from IActionResult.");
+
+			if(!typeof(T).IsAssignableFrom(objectResult.Value.GetType()))
+				throw new InvalidOperationException($"Result objects is not of Type: {typeof(T).Name} was Type: {objectResult.Value.GetType().Name}");
+
+			return (T)objectResult.Value;
 		}
 
 		private static async Task<List<string>> AddTestValuesToRepository(int count, IServiceProvider serviceProvider, int accountId = 1)

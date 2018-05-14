@@ -28,6 +28,7 @@ namespace Guardians
 			Assert.AreEqual(CharacterSessionEnterResponseCode.InvalidCharacterIdError, response.ResultCode);
 		}
 
+		//This is EXTREMELY important. We DO NOT want to allow anyone with an active session
 		[Test]
 		public static async Task Test_Controller_Produces_AlreadyHasSession_When_Session_Has()
 		{
@@ -53,6 +54,26 @@ namespace Guardians
 			//assert
 			Assert.False(response.isSuccessful, $"Characters that already have ");
 			Assert.AreEqual(CharacterSessionEnterResponseCode.AccountAlreadyHasCharacterSession, response.ResultCode);
+		}
+
+		[Test]
+		public static async Task Test_Controller_Produces_InvalidId_When_Wrong_AccountId()
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 2);
+			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
+			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
+			ICharacterSessionRepository sessionRepo = serviceProvider.GetService<ICharacterSessionRepository>();
+
+			await characterRepo.TryCreateAsync(new CharacterEntryModel(1, "Testing"));
+			await sessionRepo.TryCreateAsync(new CharacterSessionModel(1, 0));
+
+			//act
+			CharacterSessionEnterResponse response = await controller.EnterSession(1);
+
+			//assert
+			Assert.False(response.isSuccessful, $"Characters should not be able to create sessions when the accountid doesn't match.");
+			Assert.AreEqual(response.ResultCode, CharacterSessionEnterResponseCode.InvalidCharacterIdError);
 		}
 
 		public static CharacterSessionController BuildCharacterSessionController(string userName, int accountId)

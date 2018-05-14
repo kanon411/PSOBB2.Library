@@ -83,8 +83,7 @@ namespace Guardians
 			//We only support positive character ids so if they request a less than 0 it's invalid and likely spoofed
 			//or if they request an id they don't own
 			//or if it's an not a known character
-			return User.Identity.IsAuthenticated && //this should always be true 
-				characterId >= 0 &&
+			return characterId >= 0 &&
 				await characterRepository.ContainsAsync(characterId) && 
 				(await characterRepository.RetrieveAsync(characterId)).AccountId == ClaimsReader.GetUserIdInt(User);
 		}

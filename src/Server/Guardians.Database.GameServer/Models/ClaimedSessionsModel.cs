@@ -23,5 +23,18 @@ namespace Guardians
 		[Column(TypeName = "TIMESTAMP(6)")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime SessionCreationDate { get; private set; }
+
+		/// <inheritdoc />
+		public ClaimedSessionsModel(int characterId)
+		{
+			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+
+			CharacterId = characterId;
+		}
+
+		public ClaimedSessionsModel()
+		{
+			
+		}
 	}
 }

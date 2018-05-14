@@ -97,7 +97,7 @@ namespace Guardians
 			//assert
 			for(int i = 1; i < count + 1; i++)
 			{
-				CharacterNameQueryResponse nameQueryResponse = GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(i));
+				CharacterNameQueryResponse nameQueryResponse = ControllerTestsHelpers.GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(i));
 				Assert.True(nameQueryResponse.isSuccessful);
 				Assert.NotNull(nameQueryResponse.CharacterName);
 				resultQueryNames.Add(nameQueryResponse.CharacterName);
@@ -121,7 +121,7 @@ namespace Guardians
 			List<string> names = await AddTestValuesToRepository(20, serviceProvider, 2);
 
 			//act
-			CharacterNameQueryResponse result = GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(keyToCheck));
+			CharacterNameQueryResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(keyToCheck));
 
 			//assert
 			Assert.False(result.isSuccessful);
@@ -141,7 +141,7 @@ namespace Guardians
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
-			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+			CharacterNameValidationResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
 
 			//assert
 			Assert.True(result.isSuccessful);
@@ -161,7 +161,7 @@ namespace Guardians
 
 			//act
 			await serviceProvider.GetService<ICharacterRepository>().TryCreateAsync(new CharacterEntryModel(1, name));
-			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+			CharacterNameValidationResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
 
 			//assert
 			Assert.False(result.isSuccessful, $"Response for name validation should be false when the name is taken.");
@@ -181,7 +181,7 @@ namespace Guardians
 
 			//act
 			await serviceProvider.GetService<ICharacterRepository>().TryCreateAsync(new CharacterEntryModel(1, $"{name}Z"));
-			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+			CharacterNameValidationResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
 
 			//assert
 			Assert.True(result.isSuccessful);
@@ -200,7 +200,7 @@ namespace Guardians
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
-			CharacterCreationResponse result = GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
+			CharacterCreationResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
 
 			//assert
 			Assert.True(result.isSuccessful);
@@ -220,25 +220,11 @@ namespace Guardians
 
 			//act
 			await controller.CreateCharacter(name);
-			CharacterCreationResponse result = GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
+			CharacterCreationResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterCreationResponse>(await controller.CreateCharacter(name));
 
 			//assert
 			Assert.False(result.isSuccessful);
 			Assert.AreEqual(CharacterCreationResponseCode.NameUnavailableError, result.ResultCode);
-		}
-
-		public static T GetActionResultObject<T>(IActionResult result)
-		{
-			if(result == null) throw new ArgumentNullException(nameof(result));
-
-			ObjectResult objectResult = (result as ObjectResult);
-
-			if(objectResult?.Value == null) throw new InvalidOperationException($"Failed to get object Type: {typeof(T).Name} from IActionResult.");
-
-			if(!typeof(T).IsAssignableFrom(objectResult.Value.GetType()))
-				throw new InvalidOperationException($"Result objects is not of Type: {typeof(T).Name} was Type: {objectResult.Value.GetType().Name}");
-
-			return (T)objectResult.Value;
 		}
 
 		private static async Task<List<string>> AddTestValuesToRepository(int count, IServiceProvider serviceProvider, int accountId = 1)

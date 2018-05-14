@@ -168,6 +168,26 @@ namespace Guardians
 			Assert.True(result.ResultCode == CharacterNameValidationResponseCode.NameIsUnavailable);
 		}
 
+		[Test]
+		[TestCase("Test")]
+		[TestCase("Test32")]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		public async Task Test_Validate_Character_Name_Passes_On_AlreadyExisting_Character_If_The_Names_Are_Different(string name)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			//act
+			await serviceProvider.GetService<ICharacterRepository>().TryCreateAsync(new CharacterEntryModel(1, $"{name}Z"));
+			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+
+			//assert
+			Assert.True(result.isSuccessful);
+			Assert.True(result.ResultCode == CharacterNameValidationResponseCode.Success);
+		}
+
 
 		public static T GetActionResultObject<T>(IActionResult result)
 		{

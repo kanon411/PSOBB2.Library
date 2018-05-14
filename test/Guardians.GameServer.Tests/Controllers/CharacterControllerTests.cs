@@ -129,6 +129,45 @@ namespace Guardians
 			Assert.True(String.IsNullOrWhiteSpace(result.CharacterName));
 		}
 
+		[Test]
+		[TestCase("Test")]
+		[TestCase("Test32")]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		public async Task Test_Validate_Character_Name_Works_On_Empty_Characters(string name)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			//act
+			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+
+			//assert
+			Assert.True(result.isSuccessful);
+			Assert.True(result.ResultCode == CharacterNameValidationResponseCode.Success);
+		}
+
+		[Test]
+		[TestCase("Test")]
+		[TestCase("Test32")]
+		[TestCase("Andrew")]
+		[TestCase("Lyle")]
+		public async Task Test_Validate_Character_Name_Fails_On_AlreadyExisting_Character(string name)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			CharacterController controller = serviceProvider.GetService<CharacterController>();
+
+			//act
+			await serviceProvider.GetService<ICharacterRepository>().TryCreateAsync(new CharacterEntryModel(1, name));
+			CharacterNameValidationResponse result = GetActionResultObject<CharacterNameValidationResponse>(await controller.ValidateCharacterName(name));
+
+			//assert
+			Assert.False(result.isSuccessful, $"Response for name validation should be false when the name is taken.");
+			Assert.True(result.ResultCode == CharacterNameValidationResponseCode.NameIsUnavailable);
+		}
+
 
 		public static T GetActionResultObject<T>(IActionResult result)
 		{

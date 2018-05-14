@@ -13,11 +13,13 @@ namespace Guardians
 	[JsonObject]
 	public class CharacterListResponse : IResponseModel<CharacterListResponseCode>, ISucceedable
 	{
+		private static int[] EmptyInts { get; } = new int[0];
+
 		/// <summary>
 		/// Optionally backing field for 
 		/// </summary>
 		[JsonProperty(Required = Required.AllowNull)]
-		private int[] _CharacterIds { get; set; }
+		private int[] _CharacterIds { get; set; } = EmptyInts;
 
 		/// <summary>
 		/// The IDs of the characters.

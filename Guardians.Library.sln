@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Database.GameServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Database.Tests", "test\Guardians.Database.Tests\Guardians.Database.Tests.csproj", "{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.GameServer.Tests", "test\Guardians.GameServer.Tests\Guardians.GameServer.Tests.csproj", "{550C16F4-7770-4AA5-AC7E-D994861EA57B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
@@ -216,6 +218,16 @@ Global
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Debug-Local|Any CPU.Build.0 = Debug-Local|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug-Local|Any CPU.ActiveCfg = Debug-Local|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug-Local|Any CPU.Build.0 = Debug-Local|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,6 +253,7 @@ Global
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6} = {572E4B21-970E-4889-9B0D-357816B1307C}
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE} = {98B85CCA-E727-485B-AD3C-68AC2A2B0364}
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

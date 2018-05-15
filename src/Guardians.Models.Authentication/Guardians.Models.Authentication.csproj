@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Debug-Local;DEBUG_LOCAL;Database_Migration</Configurations>
   </PropertyGroup>
 
@@ -9,6 +9,10 @@
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Guardians.Models.Common\Guardians.Models.Common.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

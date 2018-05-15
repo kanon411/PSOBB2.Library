@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <Configurations>Debug;Release;Debug-Local;DEBUG_LOCAL;Database_Migration</Configurations>
   </PropertyGroup>
 
@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.Common\Guardians.Models.Common.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
   </ItemGroup>
 
   <ItemGroup>

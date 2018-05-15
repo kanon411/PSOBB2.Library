@@ -76,6 +76,32 @@ namespace Guardians
 			Assert.AreEqual(response.ResultCode, CharacterSessionEnterResponseCode.InvalidCharacterIdError);
 		}
 
+		//This is EXTREMELY important. We DO NOT want to allow anyone with an active session
+		[Test]
+		[TestCase(5, 6)]
+		[TestCase(5, 7)]
+		[TestCase(5, 7)]
+		[TestCase(3, short.MaxValue)]
+		public static async Task Test_Controller_Produces_SessionGranted_With_Zone_Id_If_UnclaimedSession_Exists(int accountId, int zoneid)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", accountId);
+			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
+			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
+			ICharacterSessionRepository sessionRepo = serviceProvider.GetService<ICharacterSessionRepository>();
+
+			await characterRepo.TryCreateAsync(new CharacterEntryModel(accountId, "Testing"));
+			await sessionRepo.TryCreateAsync(new CharacterSessionModel(1, zoneid));
+
+			//act
+			CharacterSessionEnterResponse response = await controller.EnterSession(1);
+
+			//assert
+			Assert.True(response.isSuccessful, $"Created sessions should be granted if no active account session or character session is claimed.");
+			Assert.AreEqual(CharacterSessionEnterResponseCode.Success, response.ResultCode);
+			Assert.AreEqual(zoneid, response.ZoneId, $"Provided zone id was not the same as the session.");
+		}
+
 		public static CharacterSessionController BuildCharacterSessionController(string userName, int accountId)
 		{
 			return BuildServiceProvider(userName, accountId).GetService<CharacterSessionController>();

@@ -50,7 +50,7 @@ namespace Guardians
 		}
 
 		//Serializer ctor
-		protected CharacterNameQueryResponse()
+		public CharacterNameQueryResponse()
 		{
 			
 		}

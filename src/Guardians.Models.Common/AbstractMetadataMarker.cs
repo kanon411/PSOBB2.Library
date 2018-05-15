@@ -14,11 +14,19 @@ namespace Guardians
 		/// The models defined in the assembly.
 		/// </summary>
 		public static IEnumerable<Type> ModelTypes { get; }
-			= typeof(TTypeToScanAssemblyFrom)
+
+		public static IEnumerable<Type> AllTypes { get; }
+
+		static AbstractMetadataMarker()
+		{
+			AllTypes = typeof(TTypeToScanAssemblyFrom)
 				.GetTypeInfo()
 				.Assembly
 				.DefinedTypes
-				.Where(t => t.GetCustomAttribute<JsonObjectAttribute>() != null)
 				.Select(t => t.AsType());
+
+			ModelTypes = AllTypes
+				.Where(t => t.GetCustomAttribute<JsonObjectAttribute>() != null);
+		}
 	}
 }

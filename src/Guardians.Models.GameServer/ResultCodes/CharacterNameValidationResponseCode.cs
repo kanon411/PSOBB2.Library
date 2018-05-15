@@ -9,13 +9,13 @@ namespace Guardians
 		/// <summary>
 		/// Indicates that the name is valid.
 		/// </summary>
-		Success = 0,
+		Success = 1,
 		
 		//TODO: Doc
-		NameIsUnavailable = 1,
+		NameIsUnavailable = 2,
 
-		NameContainsInvalidCharacters = 2,
+		NameContainsInvalidCharacters = 3,
 
-		NameLengthIsInvalid = 3,
+		NameLengthIsInvalid = 4,
 	}
 }

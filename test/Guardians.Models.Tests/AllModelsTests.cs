@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -19,6 +20,11 @@ namespace Guardians
 			.Concat(GameServerModelsMetadataMarker.ModelTypes)
 			.Concat(ServerSelectionModelsMetadataMarker.ModelTypes);
 
+		public static IEnumerable<Type> AllTypes { get; } =
+			AuthenticationModelsMetadataMarker.AllTypes
+				.Concat(GameServerModelsMetadataMarker.AllTypes)
+				.Concat(ServerSelectionModelsMetadataMarker.AllTypes);
+
 		public static IEnumerable<MemberInfo> SerializableMembers { get; }
 			= ModelTypes
 				.SelectMany(t => t.GetProperties().Select(p => (MemberInfo)p).Concat(t.GetFields()));
@@ -32,6 +38,15 @@ namespace Guardians
 		}
 
 		[Test]
+		[TestCaseSource(nameof(AllTypes))]
+		public void Test_Model_IResponseModel_All_Marked_JsonObject(Type t)
+		{
+			//assert
+			if(t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IResponseModel<>)))
+				Assert.True(t.GetCustomAttribute<JsonObjectAttribute>() != null, $"{GenerateMemberInfoIdentiferPrefix(t)} must have a JsonObject attribute marked on the Type.");
+		}
+
+		[Test]
 		[TestCaseSource(nameof(SerializableMembers))]
 		public void Test_Model_Properties_All_Have_Explict_Json_Properties(MemberInfo m)
 		{
@@ -39,9 +54,17 @@ namespace Guardians
 			Assert.True(m.GetCustomAttribute<JsonPropertyAttribute>() != null || m.GetCustomAttribute<JsonIgnoreAttribute>() != null, $"{GenerateMemberInfoIdentiferPrefix(m)} does not contain explict {nameof(JsonProperty)} or {nameof(JsonIgnoreAttribute)}");
 		}
 
+		//TODO: Change this to support Type as well
 		private static string GenerateMemberInfoIdentiferPrefix(MemberInfo m)
 		{
-			return $"Property: {m.Name} in Type: {m.DeclaringType.Name}";
+			try
+			{
+				return $"Property: {m?.Name} in Type: {m?.DeclaringType?.Name}";
+			}
+			catch(Exception)
+			{
+				return $"Backup debug: {m.ToString()}";
+			}
 		}
 
 		[Test]
@@ -58,6 +81,34 @@ namespace Guardians
 		{
 			//assert
 			Assert.False(!m.GetUnderlyingType().IsArray && m.IsPublic() && m.GetUnderlyingType() != typeof(string) && (TypeIsReadonlyCollection(m)), $"{GenerateMemberInfoIdentiferPrefix(m)} is a collection type that is not readonly. It uses Type: {m.GetUnderlyingType()}. Use IReadonlyCollection<T>. Do not use IEnumerable<T>.");
+		}
+
+
+		[Test]
+		[TestCaseSource(nameof(ModelTypes))]
+		public void Test_Model_IResponseModel_Models_ValueZero_Indicates_Success(Type t)
+		{
+			//arrange
+			if(!typeof(ISucceedable).IsAssignableFrom(t))
+				return;
+
+			//act: We use GetCtor because Activator.CreateInstance just plain doesn't work in some cases. See: https://stackoverflow.com/questions/440016/activator-createinstance-with-private-sealed-class
+			ConstructorInfo constructorInfo = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+
+			if(constructorInfo == null)
+				Assert.Fail($"Failed to load ctor of Type: {t.Name}.");
+
+			object obj = constructorInfo.Invoke(new object[0]);
+
+			if(obj == null)
+				Assert.Fail($"Failed to create Type: {t.Name} from default ctor.");
+
+			ISucceedable succedable = obj as ISucceedable;
+
+			if(succedable == null)
+				Assert.Fail($"Failed to cast Type: {t.Name} to {nameof(ISucceedable)}.");
+
+			Assert.False(succedable.isSuccessful, $"{GenerateMemberInfoIdentiferPrefix(t)} default state must indicate non-success.");
 		}
 
 		private static bool TypeIsReadonlyCollection(MemberInfo m)

@@ -9,6 +9,7 @@ namespace Guardians
 	/// <summary>
 	/// Response model for requests that try to create/enter sessions.
 	/// </summary>
+	[JsonObject]
 	public sealed class CharacterSessionEnterResponse : IResponseModel<CharacterSessionEnterResponseCode>, ISucceedable
 	{
 		/// <inheritdoc />

@@ -8,13 +8,13 @@
 		/// <summary>
 		/// Indicates success.
 		/// </summary>
-		Success = 0,
+		Success = 1,
 
 		/// <summary>
 		/// Indicates that the id requested as unknown.
 		/// </summary>
-		UnknownIdError = 1,
+		UnknownIdError = 2,
 
-		GeneralServerError = 2
+		GeneralServerError = 3
 	}
 }

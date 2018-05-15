@@ -9,9 +9,9 @@
 		/// <summary>
 		/// Indicates the creation was successful.
 		/// </summary>
-		Success = 0,
+		Success = 1,
 
 		//TODO: Add more fine grained information about failure.
-		NameUnavailableError = 1
+		NameUnavailableError = 2
 	}
 }

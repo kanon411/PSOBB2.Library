@@ -9,16 +9,16 @@
 		/// Indicates that the character list response
 		/// was successful.
 		/// </summary>
-		Success = 0,
+		Success = 1,
 
 		/// <summary>
 		/// Indicates that no characters were found.
 		/// </summary>
-		NoCharactersFoundError = 1,
+		NoCharactersFoundError = 2,
 
 		/// <summary>
 		/// Indicates an unknown/general error occurred.
 		/// </summary>
-		GeneralServerError = 2
+		GeneralServerError = 3
 	}
 }

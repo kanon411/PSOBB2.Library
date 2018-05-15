@@ -30,7 +30,7 @@ namespace Guardians
 
 		//This is EXTREMELY important. We DO NOT want to allow anyone with an active session
 		[Test]
-		public static async Task Test_Controller_Produces_AlreadyHasSession_When_Session_Has()
+		public static async Task Test_Controller_Produces_AlreadyHasActiveSession_When_Session_Has()
 		{
 			//arrange
 			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
@@ -100,6 +100,27 @@ namespace Guardians
 			Assert.True(response.isSuccessful, $"Created sessions should be granted if no active account session or character session is claimed.");
 			Assert.AreEqual(CharacterSessionEnterResponseCode.Success, response.ResultCode);
 			Assert.AreEqual(zoneid, response.ZoneId, $"Provided zone id was not the same as the session.");
+		}
+
+		[TestCase(7)]
+		[TestCase(1)]
+		[TestCase(25)]
+		[TestCase(short.MaxValue)]
+		public static async Task Test_Controller_Creates_UnclaimedSession_On_OnEnterSession(int accountId)
+		{
+			//arrange
+			IServiceProvider serviceProvider = BuildServiceProvider("Test", accountId);
+			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
+			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
+
+			await characterRepo.TryCreateAsync(new CharacterEntryModel(accountId, "Testing"));
+
+			//act: We also test that we can do it multiple times
+			CharacterSessionEnterResponse response = await controller.EnterSession(1);
+
+			//assert
+			Assert.True(response.isSuccessful);
+			Assert.AreEqual(CharacterSessionEnterResponseCode.Success, response.ResultCode);
 		}
 
 		public static CharacterSessionController BuildCharacterSessionController(string userName, int accountId)

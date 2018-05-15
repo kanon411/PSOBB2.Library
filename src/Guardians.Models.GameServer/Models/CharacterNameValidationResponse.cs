@@ -25,5 +25,11 @@ namespace Guardians
 
 			ResultCode = resultCode;
 		}
+
+		//Serializer ctor
+		protected CharacterNameValidationResponse()
+		{
+			
+		}
 	}
 }

@@ -24,6 +24,7 @@ namespace Guardians
 		/// <summary>
 		/// The IDs of the characters.
 		/// </summary>
+		[JsonIgnore]
 		public IReadOnlyCollection<int> CharacterIds => _CharacterIds;
 
 		/// <inheritdoc />

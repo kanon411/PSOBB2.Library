@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{8C598CE2-9578-41F6-A195-24678617AE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.Authentication", "src\Client\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj", "{34319D14-B040-4575-8FD4-CCCCCE34B6D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.Authentication", "src\Client\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj", "{34319D14-B040-4575-8FD4-CCCCCE34B6D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{572E4B21-970E-4889-9B0D-357816B1307C}"
 EndProject
@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.Authentic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.ServiceDiscovery", "src\Server\Guardians.Service.ServiceDiscovery\Guardians.Service.ServiceDiscovery.csproj", "{5080C03E-8E6D-4C27-BE39-3E563821E3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.ServiceDiscovery", "src\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj", "{E2B40445-D90B-430D-8BA4-A321628D6C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.ServiceDiscovery", "src\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj", "{E2B40445-D90B-430D-8BA4-A321628D6C9E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Models.ServerSelection", "src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj", "{9C4FE235-CEEE-4787-9C7F-9E6198D02364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.ServerSelection", "src\Client\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj", "{07357D90-27C3-4CA3-BB57-201DDCD03875}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.ServerSelection", "src\Client\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj", "{07357D90-27C3-4CA3-BB57-201DDCD03875}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.ServerSelection", "src\Server\Guardians.Service.ServerSelection\Guardians.Service.ServerSelection.csproj", "{A4A46064-B720-4B94-862F-7FEEAC4127EA}"
 EndProject
@@ -49,9 +49,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Database.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.GameServer.Tests", "test\Guardians.GameServer.Tests\Guardians.GameServer.Tests.csproj", "{550C16F4-7770-4AA5-AC7E-D994861EA57B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Models.Server.ZoneServer", "src\Guardians.Models.Server.ZoneServer\Guardians.Models.Server.ZoneServer.csproj", "{5C565DDD-54B1-4171-A14E-56B58ABE1507}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
+		Database_Migrations|Any CPU = Database_Migrations|Any CPU
 		DEBUG_LOCAL|Any CPU = DEBUG_LOCAL|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Debug-Local|Any CPU = Debug-Local|Any CPU
@@ -60,6 +63,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -70,6 +75,8 @@ Global
 		{9A3A80BD-9A88-4604-B1C2-3BEB94773807}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -80,6 +87,8 @@ Global
 		{34319D14-B040-4575-8FD4-CCCCCE34B6D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -90,6 +99,8 @@ Global
 		{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -100,6 +111,8 @@ Global
 		{53CC7F88-A56D-4280-BEE3-5A8170555D7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{FCC1F528-C205-4201-B86A-50194F11FC99}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{FCC1F528-C205-4201-B86A-50194F11FC99}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -110,6 +123,8 @@ Global
 		{FCC1F528-C205-4201-B86A-50194F11FC99}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -120,6 +135,8 @@ Global
 		{5080C03E-8E6D-4C27-BE39-3E563821E3D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -130,6 +147,8 @@ Global
 		{E2B40445-D90B-430D-8BA4-A321628D6C9E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -140,6 +159,8 @@ Global
 		{9C4FE235-CEEE-4787-9C7F-9E6198D02364}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -150,6 +171,8 @@ Global
 		{07357D90-27C3-4CA3-BB57-201DDCD03875}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -160,6 +183,8 @@ Global
 		{A4A46064-B720-4B94-862F-7FEEAC4127EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -170,6 +195,8 @@ Global
 		{ED9F1478-40FB-4C09-9CEC-0169662C8C5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Database_Migrations|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Database_Migrations|Any CPU.Build.0 = Debug_Local|Any CPU
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -180,6 +207,8 @@ Global
 		{2CE6DE11-C258-4723-BBB5-8CA4F3CC926A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Database_Migrations|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Database_Migrations|Any CPU.Build.0 = Debug_Local|Any CPU
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -190,6 +219,8 @@ Global
 		{F79CC27C-A429-4275-9854-688F5AEB81E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Database_Migrations|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Database_Migrations|Any CPU.Build.0 = Debug_Local|Any CPU
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -200,6 +231,8 @@ Global
 		{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -210,6 +243,8 @@ Global
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -220,6 +255,8 @@ Global
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73}.Release|Any CPU.Build.0 = Release|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migrations|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Database_Migrations|Any CPU.Build.0 = Database_Migration|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.DEBUG_LOCAL|Any CPU.ActiveCfg = DEBUG_LOCAL|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.DEBUG_LOCAL|Any CPU.Build.0 = DEBUG_LOCAL|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -228,6 +265,18 @@ Global
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Debug-Local|Any CPU.Build.0 = Debug-Local|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Database_Migration|Any CPU.ActiveCfg = Database_Migrations|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Database_Migration|Any CPU.Build.0 = Database_Migrations|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Database_Migrations|Any CPU.ActiveCfg = Database_Migrations|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Database_Migrations|Any CPU.Build.0 = Database_Migrations|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Debug-Local|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -254,6 +303,7 @@ Global
 		{F425A136-0D9E-4A01-9C44-5D881C088EDE} = {98B85CCA-E727-485B-AD3C-68AC2A2B0364}
 		{135FE2E9-A4E3-41FD-BCB6-C914BD08BC73} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 		{550C16F4-7770-4AA5-AC7E-D994861EA57B} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
+		{5C565DDD-54B1-4171-A14E-56B58ABE1507} = {572E4B21-970E-4889-9B0D-357816B1307C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

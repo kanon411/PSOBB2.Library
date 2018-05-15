@@ -13,6 +13,9 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ZoneId { get; private set; }
 
+		[Required]
+		public Guid ZoneGuid { get; private set; }
+
 		/// <summary>
 		/// The type of the registered zone.
 		/// Indicates if the zone itself is a static zone, not being transient.

@@ -43,5 +43,24 @@ namespace Guardians
 			}
 			return principal.FindFirstValue(Options.ClaimsIdentity.UserNameClaimType);
 		}
+
+		/// <inheritdoc />
+		public bool HasGuardiansRole(ClaimsPrincipal principal, GuardianApplicationRole role)
+		{
+			return principal.IsInRole(role.ToString());
+		}
+
+		/// <inheritdoc />
+		public string GetGloballyUniqueUserId(ClaimsPrincipal principal)
+		{
+			if(principal == null) throw new ArgumentNullException(nameof(principal));
+
+			Claim claim = principal.FindFirst("jti");
+
+			if(claim == null)
+				throw new InvalidOperationException($"The principal does not contain a claim for GUID/UUID (JTI).");
+
+			return claim.Value;
+		}
 	}
 }

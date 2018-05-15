@@ -158,7 +158,7 @@ namespace Guardians
 		}
 
 		[Test]
-		public async Task Test_Retreieve_Produces_Correct_Result([Range(1, 100)] int count)
+		public async Task Test_Retreieve_Produces_Correct_Result([Range(1, 10)] int count)
 		{
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();

@@ -28,5 +28,20 @@ namespace Guardians
 		/// <returns>The Name claim value, or null if the claim is not present.</returns>
 		/// <remarks>The Name claim is identified by <see cref="ClaimsIdentity.DefaultNameClaimType"/>.</remarks>
 		string GetUserName(ClaimsPrincipal principal);
+
+		/// <summary>
+		/// Indicates if the claim has the specified <see cref="role"/>.
+		/// </summary>
+		/// <param name="principal">The principal value.</param>
+		/// <param name="role">The role.</param>
+		/// <returns>True if the claim has the role.</returns>
+		bool HasGuardiansRole(ClaimsPrincipal principal, GuardianApplicationRole role);
+
+		/// <summary>
+		/// Reads the UUID/GUID/JTI value from the <see cref="principal"/>.
+		/// </summary>
+		/// <param name="principal">The principal value.</param>
+		/// <returns></returns>
+		string GetGloballyUniqueUserId(ClaimsPrincipal principal);
 	}
 }

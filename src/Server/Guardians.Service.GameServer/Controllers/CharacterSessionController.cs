@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +23,33 @@ namespace Guardians
 			CharacterSessionRepository = characterSessionRepository ?? throw new ArgumentNullException(nameof(characterSessionRepository));
 		}
 
-		[AuthorizeJwt]
-		[HttpGet("testclaim")]
-		public async Task<IActionResult> Test()
+		//TODO: This can't be unit tested because all the logic is written in an SQL stored procedure.
+		/// <summary>
+		/// Endpoint that the ZoneServers should query for attempted session claiming.
+		/// ONLY zoneserver roles should be able to call this. NEVER allow clients to call this endpoint.
+		/// </summary>
+		/// <returns></returns>
+		[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
+		[HttpPost("claim")]
+		public async Task<IActionResult> TryClaimSession([FromBody] ZoneServerTryClaimSessionRequest request)
 		{
-			bool b = await CharacterSessionRepository.TryClaimUnclaimedSession(ClaimsReader.GetUserIdInt(User), 3);
+			if(!this.ModelState.IsValid)
+				return BadRequest(); //TODO: Send JSON back too.
 
-			return Ok($"Result: {b}");
+			//We do not use the actual requesting ZoneServer's JWT id.
+			//We must use the user id they're trying to claim a session for.
+			string guid = ClaimsReader.GetGloballyUniqueUserId(User);
+
+			//TODO: Load the zone id.
+			
+			//TODO: Verify that the zone id is correct. Right now we aren't providing it and the query doesn't enforce it.
+			//We don't validate characterid/accountid association manually. It is implemented in the tryclaim SQL instead.
+			//It additionally also checks the zone relation for the session so it will fail if it's invalid for the provided zone.
+			//Therefore we don't need to make 3/4 database calls/queries to claim a session. Just one stored procedure call.
+			//This is preferable. A result code will be used to indicate the exact error in the future. For now it just fails if it fails.
+			bool sessionClaimed = await CharacterSessionRepository.TryClaimUnclaimedSession(request.PlayerAccountId, request.CharacterId);
+
+			return Ok(new ZoneServerTryClaimSessionResponse(sessionClaimed ? ZoneServerTryClaimSessionResponseCode.Success : ZoneServerTryClaimSessionResponseCode.GeneralServerError)); //TODO
 		}
 
 		[HttpPost("enter/{id}")]

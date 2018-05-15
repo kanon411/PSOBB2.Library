@@ -24,5 +24,13 @@ namespace Guardians
 		/// <param name="characterId"></param>
 		/// <returns></returns>
 		Task<bool> TryClaimUnclaimedSession(int accountId, int characterId);
+
+		/// <summary>
+		/// Attempts to remove/delete the available session that the provided <see cref="characterId"/>
+		/// may have.
+		/// </summary>
+		/// <param name="characterId">The character id to delete the claimed session for.</param>
+		/// <returns>True if the claimed session was removed.</returns>
+		Task<bool> TryDeleteClaimedSession(int characterId);
 	}
 }

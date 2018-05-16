@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;Debug_Local;Database_Migrations</Configurations>
+    <Configurations>Debug;Release;Debug_Local;Database_Migration</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

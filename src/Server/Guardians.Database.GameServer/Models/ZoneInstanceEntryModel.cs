@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -36,7 +37,21 @@ namespace Guardians
 		//TODO: Add zone type
 		//TODO: Health checks?
 
-		public ZoneInstanceEntryModel()
+		/// <inheritdoc />
+		public ZoneInstanceEntryModel(Guid zoneGuid, GameZoneType zoneType, string zoneServerAddress, short zoneServerPort)
+		{
+			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
+			if(string.IsNullOrWhiteSpace(zoneServerAddress)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(zoneServerAddress));
+			if(zoneServerPort < 0) throw new ArgumentOutOfRangeException(nameof(zoneServerPort));
+			if(zoneGuid == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(zoneGuid), "A Zone Guid must not be the empty guid.");
+
+			ZoneGuid = zoneGuid;
+			ZoneType = zoneType;
+			ZoneServerAddress = zoneServerAddress;
+			ZoneServerPort = zoneServerPort;
+		}
+
+		private ZoneInstanceEntryModel()
 		{
 			
 		}

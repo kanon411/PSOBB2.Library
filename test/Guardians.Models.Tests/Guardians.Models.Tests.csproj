@@ -17,7 +17,10 @@
     <ProjectReference Include="..\..\src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.Common\Guardians.Models.Common.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.Server.ZoneServer\Guardians.Models.Server.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\src\Server\Guardians.Service.ServiceDiscovery\Guardians.Service.ServiceDiscovery.csproj" />
   </ItemGroup>
 
   <ItemGroup>

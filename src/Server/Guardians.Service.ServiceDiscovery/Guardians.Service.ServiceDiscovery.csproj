@@ -17,7 +17,6 @@
     <PackageReference Include="AWS.Logger.AspNetCore" Version="1.2.7" />
     <PackageReference Include="Consul.Net.API" Version="0.0.1" />
     <PackageReference Include="Consul.Net.Client.DotNetHttpClient" Version="0.0.1" />
-    <PackageReference Include="HaloLive.Models.NameResolution.Server" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
   </ItemGroup>
 
@@ -26,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
   </ItemGroup>
 

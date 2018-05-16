@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HaloLive.Models.NameResolution;
 using Newtonsoft.Json;
 
 namespace Guardians

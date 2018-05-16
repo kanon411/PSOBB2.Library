@@ -18,12 +18,16 @@ namespace Guardians
 	{
 		public static IEnumerable<Type> ModelTypes { get; } = AuthenticationModelsMetadataMarker.ModelTypes
 			.Concat(GameServerModelsMetadataMarker.ModelTypes)
-			.Concat(ServerSelectionModelsMetadataMarker.ModelTypes);
+			.Concat(ServerSelectionModelsMetadataMarker.ModelTypes)
+			.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
+			.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes);
 
 		public static IEnumerable<Type> AllTypes { get; } =
 			AuthenticationModelsMetadataMarker.AllTypes
 				.Concat(GameServerModelsMetadataMarker.AllTypes)
-				.Concat(ServerSelectionModelsMetadataMarker.AllTypes);
+				.Concat(ServerSelectionModelsMetadataMarker.AllTypes)
+				.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
+				.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes);
 
 		public static IEnumerable<MemberInfo> SerializableMembers { get; }
 			= ModelTypes

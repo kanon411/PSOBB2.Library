@@ -5,8 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Consul;
 using Consul.Net;
-using HaloLive.Models.NameResolution;
-using HaloLive.Network.Common;
 
 namespace Guardians
 {

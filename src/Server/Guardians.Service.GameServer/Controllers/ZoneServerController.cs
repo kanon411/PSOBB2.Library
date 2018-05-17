@@ -9,6 +9,8 @@ namespace Guardians
 	[Route("api/[controller]")]
 	public class ZoneServerController : Controller
 	{
+		private IZoneServerRepository ZoneRepository { get; }
+
 		//We don't require authorization because it's not unique per-player
 		//It's also not a secret. They could auth then grab every endpoint.
 		//No reason to try to hide it.
@@ -17,12 +19,28 @@ namespace Guardians
 		[ResponseCache]
 		public async Task<IActionResult> GetServerEndpoint([FromQuery(Name = "id")] int zoneId)
 		{
-			//TODO: JSON Response
 			if(!ModelState.IsValid)
-				return BadRequest();
+				return BadRequest(new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.GeneralRequestError));
 
-			//TODO:
-			return null;
+			//We reuse the service discovery response model
+			if(!await ZoneRepository.ContainsAsync(zoneId))
+				return BadRequest(new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.ServiceUnlisted));
+
+			//Small interval for race condition. So we try catch.
+			try
+			{
+				ZoneInstanceEntryModel zone = await ZoneRepository.RetrieveAsync(zoneId);
+
+				//Should be good, we just send them the endpoint
+				if(zone != null)
+					return Ok(new ResolveServiceEndpointResponse(new ResolvedEndpoint(zone.ZoneServerAddress, zone.ZoneServerPort)));
+			}
+			catch(Exception)
+			{
+				//TODO: Logging/event
+			}
+
+			return BadRequest(new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.GeneralRequestError));
 		}
 	}
 }

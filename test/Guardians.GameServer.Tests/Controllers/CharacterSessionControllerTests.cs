@@ -17,7 +17,7 @@ namespace Guardians
 		public static async Task Test_Controller_Produces_InvalidId_When_Empty()
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = ControllerTestsHelpers.BuildServiceProvider<CharacterSessionController>("Test", 1);
 			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
 
 			//act
@@ -33,7 +33,7 @@ namespace Guardians
 		public static async Task Test_Controller_Produces_AlreadyHasActiveSession_When_Session_Has()
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = ControllerTestsHelpers.BuildServiceProvider<CharacterSessionController>("Test", 1);
 			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
 			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
 			ICharacterSessionRepository sessionRepo = serviceProvider.GetService<ICharacterSessionRepository>();
@@ -60,7 +60,7 @@ namespace Guardians
 		public static async Task Test_Controller_Produces_InvalidId_When_Wrong_AccountId()
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 2);
+			IServiceProvider serviceProvider = ControllerTestsHelpers.BuildServiceProvider<CharacterSessionController>("Test", 2);
 			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
 			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
 			ICharacterSessionRepository sessionRepo = serviceProvider.GetService<ICharacterSessionRepository>();
@@ -85,7 +85,7 @@ namespace Guardians
 		public static async Task Test_Controller_Produces_SessionGranted_With_Zone_Id_If_UnclaimedSession_Exists(int accountId, int zoneid)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", accountId);
+			IServiceProvider serviceProvider = ControllerTestsHelpers.BuildServiceProvider< CharacterSessionController>("Test", accountId);
 			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
 			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
 			ICharacterSessionRepository sessionRepo = serviceProvider.GetService<ICharacterSessionRepository>();
@@ -109,7 +109,7 @@ namespace Guardians
 		public static async Task Test_Controller_Creates_UnclaimedSession_On_OnEnterSession(int accountId)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", accountId);
+			IServiceProvider serviceProvider = ControllerTestsHelpers.BuildServiceProvider<CharacterSessionController>("Test", accountId);
 			CharacterSessionController controller = serviceProvider.GetService<CharacterSessionController>();
 			ICharacterRepository characterRepo = serviceProvider.GetService<ICharacterRepository>();
 
@@ -121,41 +121,6 @@ namespace Guardians
 			//assert
 			Assert.True(response.isSuccessful);
 			Assert.AreEqual(CharacterSessionEnterResponseCode.Success, response.ResultCode);
-		}
-
-		public static CharacterSessionController BuildCharacterSessionController(string userName, int accountId)
-		{
-			return BuildServiceProvider(userName, accountId).GetService<CharacterSessionController>();
-		}
-
-		public static IServiceProvider BuildServiceProvider(string userName, int accountId)
-		{
-			Mock<IClaimsPrincipalReader> claimsReaderMock = new Mock<IClaimsPrincipalReader>();
-
-			claimsReaderMock.Setup(c => c.GetUserName(It.IsAny<ClaimsPrincipal>()))
-				.Returns(() => userName);
-
-			claimsReaderMock.Setup(c => c.GetUserId(It.IsAny<ClaimsPrincipal>()))
-				.Returns(accountId.ToString);
-
-			Mock<ILogger<CharacterSessionController>> loggingMock = new Mock<ILogger<CharacterSessionController>>();
-
-			IServiceProvider serviceProvider = new ServiceCollection()
-				.AddTestDatabaseContext<CharacterDatabaseContext>()
-				.AddDefaultDataTestServices()
-				.AddSingleton<ICharacterRepository, DatabaseBackedCharacterRepository>()
-				.AddSingleton<ICharacterSessionRepository, DatabaseBackedCharacterSessionRepository>()
-				.AddTransient<CharacterSessionController>()
-				.AddTransient<IClaimsPrincipalReader>(provider => claimsReaderMock.Object)
-				.AddTransient<ILogger<CharacterSessionController>>(provider => loggingMock.Object)
-				.BuildServiceProvider();
-
-			return serviceProvider;
-		}
-
-		public static CharacterSessionController BuildCharacterController()
-		{
-			return BuildCharacterSessionController("Test", 1);
 		}
 	}
 }

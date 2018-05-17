@@ -10,7 +10,7 @@ using NUnit.Framework.Internal;
 namespace Guardians
 {
 	[TestFixture]
-	public static class ResolveServiceEndpointRequestModelTests
+	public static class ResolveServiceEndpointRequestTests
 	{
 		[Test]
 		[TestCase((ClientRegionLocale)int.MaxValue, "test")]
@@ -20,7 +20,7 @@ namespace Guardians
 		public static void Test_Throws_On_Construction_With_Invalid_Argument_Region(ClientRegionLocale region, string service)
 		{
 			//assert
-			Assert.Throws<ArgumentOutOfRangeException>(() => new ResolveServiceEndpointRequestModel(region, service));
+			Assert.Throws<ArgumentOutOfRangeException>(() => new ResolveServiceEndpointRequest(region, service));
 		}
 
 		[Test]
@@ -32,7 +32,7 @@ namespace Guardians
 		public static void Test_Throws_On_Construction_With_Invalid_Argument_Service(ClientRegionLocale region, string service)
 		{
 			//assert
-			Assert.Throws<ArgumentException>(() => new ResolveServiceEndpointRequestModel(region, service));
+			Assert.Throws<ArgumentException>(() => new ResolveServiceEndpointRequest(region, service));
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace Guardians
 		public static void Test_Doesnt_Throw_On_Valid_Arguments(ClientRegionLocale region, string service)
 		{
 			//assert
-			Assert.DoesNotThrow(() => new ResolveServiceEndpointRequestModel(region, service));
+			Assert.DoesNotThrow(() => new ResolveServiceEndpointRequest(region, service));
 		}
 
 		[Test]
@@ -54,7 +54,7 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_To_NonNull_Non_Whitespace(ClientRegionLocale region, string service)
 		{
 			//arrange
-			ResolveServiceEndpointRequestModel model = new ResolveServiceEndpointRequestModel(region, service);
+			ResolveServiceEndpointRequest model = new ResolveServiceEndpointRequest(region, service);
 
 			//act
 			string serializedModel = JsonConvert.SerializeObject(model);
@@ -72,11 +72,11 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_Then_Deserialize_With_Preserved_Values(ClientRegionLocale region, string service)
 		{
 			//arrange
-			ResolveServiceEndpointRequestModel model = new ResolveServiceEndpointRequestModel(region, service);
+			ResolveServiceEndpointRequest model = new ResolveServiceEndpointRequest(region, service);
 
 			//act
-			ResolveServiceEndpointRequestModel deserializedModel =
-				JsonConvert.DeserializeObject<ResolveServiceEndpointRequestModel>(JsonConvert.SerializeObject(model));
+			ResolveServiceEndpointRequest deserializedModel =
+				JsonConvert.DeserializeObject<ResolveServiceEndpointRequest>(JsonConvert.SerializeObject(model));
 
 			//assert
 			Assert.NotNull(deserializedModel);

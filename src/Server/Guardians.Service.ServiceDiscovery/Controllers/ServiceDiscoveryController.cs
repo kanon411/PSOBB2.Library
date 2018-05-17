@@ -32,13 +32,13 @@ namespace Guardians
 		}
 
 		[HttpGet(nameof(Discover))]
-		public Task<ResolveServiceEndpointResponseModel> Discover([FromQuery] string serviceName)
+		public Task<ResolveServiceEndpointResponse> Discover([FromQuery] string serviceName)
 		{
-			return Discover(new ResolveServiceEndpointRequestModel(ClientRegionLocale.US, serviceName));
+			return Discover(new ResolveServiceEndpointRequest(ClientRegionLocale.US, serviceName));
 		}
 
 		[HttpPost(nameof(Discover))]
-		public async Task<ResolveServiceEndpointResponseModel> Discover([FromBody] ResolveServiceEndpointRequestModel requestModel)
+		public async Task<ResolveServiceEndpointResponse> Discover([FromBody] ResolveServiceEndpointRequest requestModel)
 		{
 			if(LoggingService.IsEnabled(LogLevel.Debug))
 				LoggingService.LogDebug($"Service Discover request for: {requestModel.Region}:{requestModel.ServiceType}");
@@ -48,7 +48,7 @@ namespace Guardians
 				if (LoggingService.IsEnabled(LogLevel.Debug))
 					LoggingService.LogDebug($"Resolution request was sent with an invalid model ModelState.");
 
-				return new ResolveServiceEndpointResponseModel(ResolveServiceEndpointResponseCode.GeneralRequestError);
+				return new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.GeneralRequestError);
 			}
 
 			//We need to check if we know about the locale
@@ -59,7 +59,7 @@ namespace Guardians
 				if(LoggingService.IsEnabled(LogLevel.Debug))
 					LoggingService.LogDebug($"Client requested unlisted service Region: {requestModel.Region} Service: {requestModel.ServiceType}.");
 
-				return new ResolveServiceEndpointResponseModel(ResolveServiceEndpointResponseCode.ServiceUnlisted);
+				return new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.ServiceUnlisted);
 			}
 
 			ResolvedEndpoint endpoint = await EndpointRepository.RetrieveAsync(requestModel.Region, requestModel.ServiceType);
@@ -70,11 +70,11 @@ namespace Guardians
 				if(LoggingService.IsEnabled(LogLevel.Error))
 					LoggingService.LogError($"Resolution request {requestModel.ServiceType} for region {requestModel.Region} failed even through it was a known pair.");
 
-				return new ResolveServiceEndpointResponseModel(ResolveServiceEndpointResponseCode.GeneralRequestError);
+				return new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.GeneralRequestError);
 			}
 
 			//Just return the JSON model response to the client
-			return new ResolveServiceEndpointResponseModel(endpoint);
+			return new ResolveServiceEndpointResponse(endpoint);
 		}
 	}
 }

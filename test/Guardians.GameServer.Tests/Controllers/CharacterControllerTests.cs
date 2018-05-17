@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Moq;
 using NUnit.Framework;
+using static Guardians.ControllerTestsHelpers;
 
 namespace Guardians
 {
@@ -22,7 +23,7 @@ namespace Guardians
 		public void Test_Can_Build_Mocked_Controller()
 		{
 			//arrange
-			CharacterController controller = BuildCharacterController();
+			CharacterController controller = BuildCharacterController<CharacterController>();
 
 			//assert
 			Assert.NotNull(controller);
@@ -32,7 +33,7 @@ namespace Guardians
 		public async Task Test_Get_Characters_Empty_Datastore_Produces_Empty_Character_Result()
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -50,7 +51,7 @@ namespace Guardians
 		public async Task Test_Get_Characters_Contains_Same_Size_As_Characters_Added([Range(1, 20)] int count)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			List<string> names = await AddTestValuesToRepository(count, serviceProvider);
@@ -69,7 +70,7 @@ namespace Guardians
 		public async Task Test_Get_Characters_Contains_No_Characters_Added_From_Other_Account([Range(1, 20)] int count)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			List<string> names = await AddTestValuesToRepository(count, serviceProvider, 2);
@@ -87,7 +88,7 @@ namespace Guardians
 		public async Task Test_Can_Get_Name_From_Character_Id([Range(1, 20)] int count)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			List<string> names = await AddTestValuesToRepository(count, serviceProvider, 2);
@@ -116,7 +117,7 @@ namespace Guardians
 		public async Task Test_Can_Not_NameQuery_Unknown_Ids(int keyToCheck)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 			List<string> names = await AddTestValuesToRepository(20, serviceProvider, 2);
 
@@ -137,7 +138,7 @@ namespace Guardians
 		public async Task Test_Validate_Character_Name_Works_On_Empty_Characters(string name)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -156,7 +157,7 @@ namespace Guardians
 		public async Task Test_Validate_Character_Name_Fails_On_AlreadyExisting_Character(string name)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -176,7 +177,7 @@ namespace Guardians
 		public async Task Test_Validate_Character_Name_Passes_On_AlreadyExisting_Character_If_The_Names_Are_Different(string name)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -196,7 +197,7 @@ namespace Guardians
 		public async Task Test_Can_Create_Character(string name)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -215,7 +216,7 @@ namespace Guardians
 		public async Task Test_Cannot_Create_Character_With_Duplicate_Name(string name)
 		{
 			//arrange
-			IServiceProvider serviceProvider = BuildServiceProvider("Test", 1);
+			IServiceProvider serviceProvider = BuildServiceProvider<CharacterController>("Test", 1);
 			CharacterController controller = serviceProvider.GetService<CharacterController>();
 
 			//act
@@ -242,40 +243,6 @@ namespace Guardians
 			}
 
 			return names;
-		}
-
-		public static CharacterController BuildCharacterController(string userName, int accountId)
-		{
-			return BuildServiceProvider(userName, accountId).GetService<CharacterController>();
-		}
-
-		public static IServiceProvider BuildServiceProvider(string userName, int accountId)
-		{
-			Mock<IClaimsPrincipalReader> claimsReaderMock = new Mock<IClaimsPrincipalReader>();
-
-			claimsReaderMock.Setup(c => c.GetUserName(It.IsAny<ClaimsPrincipal>()))
-				.Returns(() => userName);
-
-			claimsReaderMock.Setup(c => c.GetUserId(It.IsAny<ClaimsPrincipal>()))
-				.Returns(accountId.ToString);
-
-			Mock<ILogger<CharacterController>> loggingMock = new Mock<ILogger<CharacterController>>();
-
-			IServiceProvider serviceProvider = new ServiceCollection()
-				.AddTestDatabaseContext<CharacterDatabaseContext>()
-				.AddDefaultDataTestServices()
-				.AddSingleton<ICharacterRepository, DatabaseBackedCharacterRepository>()
-				.AddTransient<CharacterController>()
-				.AddTransient<IClaimsPrincipalReader>(provider => claimsReaderMock.Object)
-				.AddTransient<ILogger<CharacterController>>(provider => loggingMock.Object)
-				.BuildServiceProvider();
-
-			return serviceProvider;
-		}
-
-		public static CharacterController BuildCharacterController()
-		{
-			return BuildCharacterController("Test", 1);
 		}
 	}
 }

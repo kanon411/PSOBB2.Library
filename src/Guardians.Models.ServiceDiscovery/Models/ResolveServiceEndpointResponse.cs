@@ -7,10 +7,10 @@ using Newtonsoft.Json;
 namespace Guardians
 {
 	/// <summary>
-	/// Response to <see cref="ResolveServiceEndpointRequestModel"/> containing the endpoint of the requested service.
+	/// Response to <see cref="ResolveServiceEndpointRequest"/> containing the endpoint of the requested service.
 	/// </summary>
 	[JsonObject]
-	public sealed class ResolveServiceEndpointResponseModel : IResponseModel<ResolveServiceEndpointResponseCode>, ISucceedable
+	public sealed class ResolveServiceEndpointResponse : IResponseModel<ResolveServiceEndpointResponseCode>, ISucceedable
 	{
 		/// <summary>
 		/// The resolved endpoint.
@@ -27,7 +27,7 @@ namespace Guardians
 		[JsonIgnore]
 		public bool isSuccessful => ResultCode == ResolveServiceEndpointResponseCode.Success;
 
-		public ResolveServiceEndpointResponseModel(ResolvedEndpoint endpoint)
+		public ResolveServiceEndpointResponse(ResolvedEndpoint endpoint)
 		{
 			if(endpoint == null) throw new ArgumentNullException(nameof(endpoint));
 
@@ -38,7 +38,7 @@ namespace Guardians
 			ResultCode = ResolveServiceEndpointResponseCode.Success;
 		}
 
-		public ResolveServiceEndpointResponseModel(ResolveServiceEndpointResponseCode resultCode)
+		public ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode resultCode)
 		{
 			if(!Enum.IsDefined(typeof(ResolveServiceEndpointResponseCode), resultCode)) throw new ArgumentOutOfRangeException(nameof(resultCode), "Value should be defined in the ResolveServiceEndpointResponseCode enum.");
 
@@ -48,7 +48,7 @@ namespace Guardians
 		/// <summary>
 		/// Protected serializer ctor.
 		/// </summary>
-		protected ResolveServiceEndpointResponseModel()
+		protected ResolveServiceEndpointResponse()
 		{
 
 		}

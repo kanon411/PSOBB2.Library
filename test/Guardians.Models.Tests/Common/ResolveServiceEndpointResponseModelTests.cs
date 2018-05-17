@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Guardians
 {
 	[TestFixture]
-	public static class ResolveServiceEndpointResponseModelTests
+	public static class ResolveServiceEndpointResponseTests
 	{
 		[Test]
 		[TestCase((ResolveServiceEndpointResponseCode)int.MaxValue)]
@@ -18,14 +18,14 @@ namespace Guardians
 		public static void Test_Throws_On_Construction_With_Invalid_Argument_ResponseCode(ResolveServiceEndpointResponseCode value)
 		{
 			//assert
-			Assert.Throws<ArgumentOutOfRangeException>(() => new ResolveServiceEndpointResponseModel(value));
+			Assert.Throws<ArgumentOutOfRangeException>(() => new ResolveServiceEndpointResponse(value));
 		}
 
 		[Test]
 		public static void Test_Throws_On_Construction_With_Invalid_Argument_Endpoint()
 		{
 			//assert
-			Assert.Throws<ArgumentNullException>(() => new ResolveServiceEndpointResponseModel(null));
+			Assert.Throws<ArgumentNullException>(() => new ResolveServiceEndpointResponse(null));
 		}
 
 		[Test]
@@ -33,8 +33,8 @@ namespace Guardians
 		public static void Test_Doesnt_Throw_On_Valid_Arguments(string serviveType)
 		{
 			//assert
-			Assert.DoesNotThrow(() => new ResolveServiceEndpointResponseModel(new ResolvedEndpoint("test", 55)));
-			Assert.DoesNotThrow(() => new ResolveServiceEndpointResponseModel(ResolveServiceEndpointResponseCode.Success));
+			Assert.DoesNotThrow(() => new ResolveServiceEndpointResponse(new ResolvedEndpoint("test", 55)));
+			Assert.DoesNotThrow(() => new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.Success));
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace Guardians
 		public static void Test_isSuccessful_False_On_Failed_ResponseCodes(ResolveServiceEndpointResponseCode resultCode)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel model = new ResolveServiceEndpointResponseModel(resultCode);
+			ResolveServiceEndpointResponse model = new ResolveServiceEndpointResponse(resultCode);
 
 			//assert
 			Assert.False(model.isSuccessful);
@@ -57,7 +57,7 @@ namespace Guardians
 		public static void Test_isSuccessful_True_On_Success(string endpoint, int port)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel model = new ResolveServiceEndpointResponseModel(new ResolvedEndpoint(endpoint, port));
+			ResolveServiceEndpointResponse model = new ResolveServiceEndpointResponse(new ResolvedEndpoint(endpoint, port));
 
 			//assert
 			Assert.True(model.isSuccessful);
@@ -69,7 +69,7 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_To_NonNull_Non_Whitespace(string endpoint, int port)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel authModel = new ResolveServiceEndpointResponseModel(new ResolvedEndpoint(endpoint, port));
+			ResolveServiceEndpointResponse authModel = new ResolveServiceEndpointResponse(new ResolvedEndpoint(endpoint, port));
 
 			//act
 			string serializedModel = JsonConvert.SerializeObject(authModel);
@@ -87,11 +87,11 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_Then_Deserialize_With_Preserved_Values(string endpoint, int port)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel authModel = new ResolveServiceEndpointResponseModel(new ResolvedEndpoint(endpoint, port));
+			ResolveServiceEndpointResponse authModel = new ResolveServiceEndpointResponse(new ResolvedEndpoint(endpoint, port));
 
 			//act
-			ResolveServiceEndpointResponseModel deserializedModel =
-				JsonConvert.DeserializeObject<ResolveServiceEndpointResponseModel>(JsonConvert.SerializeObject(authModel));
+			ResolveServiceEndpointResponse deserializedModel =
+				JsonConvert.DeserializeObject<ResolveServiceEndpointResponse>(JsonConvert.SerializeObject(authModel));
 
 			//assert
 			Assert.NotNull(deserializedModel);
@@ -108,7 +108,7 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_To_NonNull_Non_Whitespace(ResolveServiceEndpointResponseCode resultCode)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel authModel = new ResolveServiceEndpointResponseModel(resultCode);
+			ResolveServiceEndpointResponse authModel = new ResolveServiceEndpointResponse(resultCode);
 
 			//act
 			string serializedModel = JsonConvert.SerializeObject(authModel);
@@ -127,11 +127,11 @@ namespace Guardians
 		public static void Test_Can_JSON_Serialize_Then_Deserialize_With_Preserved_Values(ResolveServiceEndpointResponseCode resultCode)
 		{
 			//arrange
-			ResolveServiceEndpointResponseModel authModel = new ResolveServiceEndpointResponseModel(resultCode);
+			ResolveServiceEndpointResponse authModel = new ResolveServiceEndpointResponse(resultCode);
 
 			//act
-			ResolveServiceEndpointResponseModel deserializedModel =
-				JsonConvert.DeserializeObject<ResolveServiceEndpointResponseModel>(JsonConvert.SerializeObject(authModel));
+			ResolveServiceEndpointResponse deserializedModel =
+				JsonConvert.DeserializeObject<ResolveServiceEndpointResponse>(JsonConvert.SerializeObject(authModel));
 
 			//assert
 			Assert.NotNull(deserializedModel);

@@ -21,6 +21,6 @@ namespace Guardians
 		/// <param name="request">The request.</param>
 		/// <returns>The result of the resolve request.</returns>
 		[Post("/api/ServiceDiscovery")]
-		Task<ResolveServiceEndpointResponseModel> DiscoverService([JsonBody] ResolveServiceEndpointRequestModel request);
+		Task<ResolveServiceEndpointResponse> DiscoverService([JsonBody] ResolveServiceEndpointRequest request);
 	}
 }

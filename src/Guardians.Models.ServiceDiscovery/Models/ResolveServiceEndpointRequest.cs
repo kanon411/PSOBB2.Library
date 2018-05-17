@@ -11,7 +11,7 @@ namespace Guardians
 	/// naively loadbalance, though it's unlikely that it will be done this way, or direct users by region.
 	/// </summary>
 	[JsonObject]
-	public sealed class ResolveServiceEndpointRequestModel
+	public sealed class ResolveServiceEndpointRequest
 	{
 		/// <summary>
 		/// Indicates the region of the client requesting.
@@ -28,7 +28,7 @@ namespace Guardians
 		[JsonProperty]
 		public string ServiceType { get; }
 
-		public ResolveServiceEndpointRequestModel(ClientRegionLocale region, string serviceType)
+		public ResolveServiceEndpointRequest(ClientRegionLocale region, string serviceType)
 		{
 			if(!Enum.IsDefined(typeof(ClientRegionLocale), region)) throw new ArgumentOutOfRangeException(nameof(region), "Value should be defined in the ClientRegionLocale enum.");
 			if(string.IsNullOrWhiteSpace(serviceType)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(serviceType));
@@ -40,7 +40,7 @@ namespace Guardians
 		/// <summary>
 		/// Protected serializer ctor
 		/// </summary>
-		protected ResolveServiceEndpointRequestModel()
+		protected ResolveServiceEndpointRequest()
 		{
 
 		}

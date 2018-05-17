@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Guardians
 {
-	public sealed class DatabaseBackedZoneServerRepository : IZoneServerRepository
+	public sealed class DatabaseBackedZoneServerRepository : IZoneServerRepository, IGenericRepositoryCrudable<Guid, ZoneInstanceEntryModel>
 	{
 		private CharacterDatabaseContext Context { get; }
 
@@ -25,6 +25,14 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
+		public Task<bool> ContainsAsync(Guid key)
+		{
+			return Context
+				.ZoneEntries
+				.AnyAsync(z => z.ZoneGuid == key);
+		}
+
+		/// <inheritdoc />
 		public async Task<bool> TryCreateAsync(ZoneInstanceEntryModel model)
 		{
 #pragma warning disable AsyncFixer02 // Long running or blocking operations under an async method
@@ -34,6 +42,20 @@ namespace Guardians
 #pragma warning restore AsyncFixer02 // Long running or blocking operations under an async method
 
 			return 0 != await Context.SaveChangesAsync();
+		}
+
+		/// <inheritdoc />
+		public Task<ZoneInstanceEntryModel> RetrieveAsync(Guid key)
+		{
+			return Context
+				.ZoneEntries
+				.FirstAsync(z => z.ZoneGuid == key);
+		}
+
+		/// <inheritdoc />
+		public Task<bool> TryDeleteAsync(Guid key)
+		{
+			throw new NotImplementedException();
 		}
 
 		/// <inheritdoc />
@@ -48,6 +70,12 @@ namespace Guardians
 		public Task<bool> TryDeleteAsync(int key)
 		{
 			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public Task<ZoneInstanceEntryModel> RetrieveByGuidAsync(Guid zoneGuid)
+		{
+			return RetrieveAsync(zoneGuid);
 		}
 	}
 }

@@ -17,6 +17,23 @@ namespace Guardians
 			ZoneRepository = zoneRepository ?? throw new ArgumentNullException(nameof(zoneRepository));
 		}
 
+		/*[ProducesJson]
+		[HttpPost("register")]
+		[NoResponseCache]
+		[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
+		public async Task<IActionResult> RegisterZoneServer()
+		{
+			//TODO: JSON
+			if(!ModelState.IsValid)
+				return BadRequest();
+
+			//Check if it's already registered
+			//ZoneRepository.
+
+			//TODO
+			return null;
+		}*/
+
 		//We don't require authorization because it's not unique per-player
 		//It's also not a secret. They could auth then grab every endpoint.
 		//No reason to try to hide it.

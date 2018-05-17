@@ -79,18 +79,18 @@ namespace Guardians
 				CharacterSessionModel sessionModel = await CharacterSessionRepository.RetrieveAsync(characterId);
 
 				//TODO: Handle case when we have an inactive session that can be claimed
-				return new CharacterSessionEnterResponse(sessionModel.ZoneId);
+				return new CharacterSessionEnterResponse(sessionModel.ZoneId, GameZoneType.ZoneFirst);
 			}
 
 			//If we've made it this far we'll need to create a session (because one does not exist) for the character
 			//but we need player location data first (if they've never entered the world they won't have any
 			//TODO: Handle location loading
 			//TODO: Handle deafult
-			if(!await CharacterSessionRepository.TryCreateAsync(new CharacterSessionModel(characterId, 0)))
+			if(!await CharacterSessionRepository.TryCreateAsync(new CharacterSessionModel(characterId, 1)))
 				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.GeneralServerError);
 			
 			//TODO: Better zone handling
-			return new CharacterSessionEnterResponse(0);
+			return new CharacterSessionEnterResponse(1, GameZoneType.ZoneFirst);
 		}
 
 		/// <summary>

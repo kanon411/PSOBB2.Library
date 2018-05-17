@@ -11,6 +11,12 @@ namespace Guardians
 	{
 		private IZoneServerRepository ZoneRepository { get; }
 
+		/// <inheritdoc />
+		public ZoneServerController([FromServices] IZoneServerRepository zoneRepository)
+		{
+			ZoneRepository = zoneRepository ?? throw new ArgumentNullException(nameof(zoneRepository));
+		}
+
 		//We don't require authorization because it's not unique per-player
 		//It's also not a secret. They could auth then grab every endpoint.
 		//No reason to try to hide it.

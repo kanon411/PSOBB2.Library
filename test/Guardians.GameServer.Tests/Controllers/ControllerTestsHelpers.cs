@@ -49,6 +49,7 @@ namespace Guardians
 				.AddDefaultDataTestServices()
 				.AddSingleton<ICharacterRepository, DatabaseBackedCharacterRepository>()
 				.AddSingleton<ICharacterSessionRepository, DatabaseBackedCharacterSessionRepository>()
+				.AddSingleton<IZoneServerRepository, DatabaseBackedZoneServerRepository>()
 				.AddTransient<TControllerType>()
 				.AddTransient<IClaimsPrincipalReader>(provider => claimsReaderMock.Object)
 				.AddTransient<ILogger<TControllerType>>(provider => loggingMock.Object)

@@ -10,6 +10,7 @@ namespace Guardians
 	[ProtoContract]
 	public sealed class ClientSessionClaimRequestPayload : GameClientPacketPayload
 	{
+		//TODO: This is not save to sent over the wire in plaintext so it should be encrypted somehow.
 		/// <summary>
 		/// The JWT string that can be used to authorize
 		/// the user.

@@ -5,7 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GladNet3.Server.DotNetTcpServer" Version="3.0.31" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.38" />
+    <PackageReference Include="GladNet3.Handler.API" Version="3.0.38" />
+    <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.38" />
+    <PackageReference Include="GladNet3.Server.DotNetTcpServer" Version="3.0.38" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mock\" />
+  </ItemGroup>
+
 </Project>

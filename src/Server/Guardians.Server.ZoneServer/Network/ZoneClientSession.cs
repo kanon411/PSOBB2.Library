@@ -16,6 +16,9 @@ namespace Guardians
 		/// </summary>
 		private MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload> MessageHandlers { get; }
 
+		//TODO: One day this design fault will be fixed.
+		public static MockedPayloadInterceptorService MockedInterceptorService { get; } = new MockedPayloadInterceptorService();
+
 		/// <inheritdoc />
 		public ZoneClientSession(IManagedNetworkServerClient<GameServerPacketPayload, GameClientPacketPayload> internalManagedNetworkClient, 
 			SessionDetails details, MessageHandlerService<GameClientPacketPayload, 
@@ -34,7 +37,7 @@ namespace Guardians
 		/// <inheritdoc />
 		public override Task OnNetworkMessageRecieved(NetworkIncomingMessage<GameClientPacketPayload> message)
 		{
-			return MessageHandlers.TryHandleMessage(new DefaultPeerMessageContext<GameServerPacketPayload>(this.Connection, this.SendService, null), message);
+			return MessageHandlers.TryHandleMessage(new DefaultPeerMessageContext<GameServerPacketPayload>(this.Connection, this.SendService, MockedInterceptorService), message);
 		}
 	}
 }

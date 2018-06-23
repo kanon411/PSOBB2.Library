@@ -16,6 +16,8 @@ namespace Guardians
 
 		private IContainer ServiceContainer { get; }
 
+		private DefaultSessionCollection SessionCollection { get; }
+
 		/// <inheritdoc />
 		public ZoneServerApplicationBase(NetworkAddressInfo serverAddress, ILog logger) 
 			: base(serverAddress, logger)
@@ -24,6 +26,7 @@ namespace Guardians
 
 			Serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
 			ServiceContainer = BuildServiceContainer();
+			SessionCollection = new DefaultSessionCollection();
 		}
 
 		private IContainer BuildServiceContainer()
@@ -46,6 +49,11 @@ namespace Guardians
 
 			//This registers all the authentication message handlers
 			builder.RegisterModule<ZoneServerHandlerRegisterationModule>();
+
+			builder.RegisterInstance(SessionCollection)
+				.As<IRegisterable<int, ZoneClientSession>>()
+				.As<ISessionCollection>()
+				.SingleInstance();
 
 			return builder.Build();
 		}
@@ -75,7 +83,12 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override ManagedClientSession<GameServerPacketPayload, GameClientPacketPayload> CreateIncomingSession(IManagedNetworkServerClient<GameServerPacketPayload, GameClientPacketPayload> client, SessionDetails details)
 		{
-			throw new NotImplementedException($"Client session is not implemented yet.");
+			//TODO: Add handlers.
+			ZoneClientSession clientSession = new ZoneClientSession(client, details, null);
+
+			//We should add this to the session collection, and also make sure it is unregistered on disconnection
+			SessionCollection.Register(details.ConnectionId, clientSession);
+			clientSession.OnSessionDisconnection += (source, args) => SessionCollection.
 		}
 	}
 }

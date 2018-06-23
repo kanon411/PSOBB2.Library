@@ -53,5 +53,11 @@ namespace Guardians
 			//or this method should expect to throw.
 			return ZoneMap[key];
 		}
+
+		/// <inheritdoc />
+		public bool Unregister(int key)
+		{
+			return ZoneMap.TryRemove(key, out ZoneClientSession z);
+		}
 	}
 }

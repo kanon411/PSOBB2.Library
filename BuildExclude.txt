@@ -1,0 +1,16 @@
+UnityEngine.dll
+UnityEngine.xml
+UnityEngine.UI.dll
+UnityEngine.UI.xml
+UnityEditor.dll
+UnityEditor.xml
+System.IO.Compression.dll
+System.Net.Http.dll
+System.Runtime.InteropServices.RuntimeInformation.dll
+Sirenix.OdinInspector.Attributes.dll
+Sirenix.Serialization.dll
+UnityEngine.Timeline.dll
+UnityEngine.Timeline.xml
+Guardians.Client.All.dll
+Guardians.Client.All.xml
+*.json

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj" />
+    <ProjectReference Include="..\Client\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj" />
+    <ProjectReference Include="..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\Guardians.Client.UI\Guardians.Client.UI.csproj" />
+  </ItemGroup>
+
+</Project>

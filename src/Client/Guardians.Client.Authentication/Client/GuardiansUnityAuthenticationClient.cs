@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Guardians
 {
 	[Injectee]
-	public sealed class GuardiansUnityAuthenticationClient
+	public sealed class GuardiansUnityAuthenticationClient : IAuthenticationClient
 	{
 		[Inject]
 		private IAuthenticationService AuthService { get; }
@@ -20,7 +20,7 @@ namespace Guardians
 			AuthService = authService ?? throw new ArgumentNullException(nameof(authService));
 		}
 
-		public async Task<bool> TryAuthenticateAsync(IUserAuthenticationDetailsContainer detailsContainer)
+		public async Task<JWTModel> TryAuthenticateAsync(IUserAuthenticationDetailsContainer detailsContainer)
 		{
 			if(detailsContainer == null) throw new ArgumentNullException(nameof(detailsContainer));
 
@@ -31,14 +31,7 @@ namespace Guardians
 				ThrowInvalidAuthDetails("Username");
 
 			//TODO: Store JWT if it was successful.
-			JWTModel authModelResponse = await AuthService.TryAuthenticate(new AuthenticationRequestModel(detailsContainer.UserName, detailsContainer.Password));
-
-			//TODO: Logging
-			if(!authModelResponse.isTokenValid)
-				return false;
-
-			//TODO: Better flow for result so that we can do error handling and pops
-			return true;
+			return await AuthService.TryAuthenticate(new AuthenticationRequestModel(detailsContainer.UserName, detailsContainer.Password));
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]

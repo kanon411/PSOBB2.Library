@@ -70,7 +70,15 @@ namespace Guardians
 					.Build();
 			});
 
-			//
+			register
+				.RegisterType<InMemoryAuthDetailsModelRepository>()
+				.As<IAuthDetailsRepository>()
+				.SingleInstance();
+
+			register
+				.RegisterType<GuardiansUnityAuthenticationClient>()
+				.As<IAuthenticationClient>()
+				.SingleInstance();
 		}
 
 		private async Task<string> QueryForRemoteServiceEndpoint(IServiceDiscoveryService serviceDiscovery, string serviceType)

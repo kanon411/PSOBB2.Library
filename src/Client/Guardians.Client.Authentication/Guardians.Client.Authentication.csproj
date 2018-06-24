@@ -2,28 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;Debug_Local;Database_Migration</Configurations>
+    <Configurations>Debug;Release;</Configurations>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="SceneJect.Common" Version="3.0.7" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.7" />
+    <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.11" />
+    <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.11" />
     <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.11" />
+    <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.11" />
     <PackageReference Include="Unitysync.Async" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Client.UI\Guardians.Client.UI.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
-    <ProjectReference Include="..\..\Server\Guardians.Database.Common\Guardians.Database.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UI\Repository\" />
+    <ProjectReference Include="..\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
   </ItemGroup>
 
   <ItemGroup>

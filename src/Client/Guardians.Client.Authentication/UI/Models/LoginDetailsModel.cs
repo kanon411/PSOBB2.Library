@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Guardians
@@ -17,8 +18,8 @@ namespace Guardians
 		/// <inheritdoc />
 		public LoginDetailsModel(string userName, string password)
 		{
-			UserName = userName;
-			Password = password;
+			UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+			Password = password ?? throw new ArgumentNullException(nameof(password));
 		}
 
 		protected LoginDetailsModel()

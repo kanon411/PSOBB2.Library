@@ -3,19 +3,36 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Debug_Local;Database_Migration</Configurations>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="SceneJect.Common" Version="3.0.7" />
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.7" />
     <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.11" />
+    <PackageReference Include="Unitysync.Async" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Client.UI\Guardians.Client.UI.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
+    <ProjectReference Include="..\..\Server\Guardians.Database.Common\Guardians.Database.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Folder Include="UI\Repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

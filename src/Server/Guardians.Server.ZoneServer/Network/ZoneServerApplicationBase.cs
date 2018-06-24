@@ -25,8 +25,8 @@ namespace Guardians
 			if(serverAddress == null) throw new ArgumentNullException(nameof(serverAddress));
 
 			Serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
-			ServiceContainer = BuildServiceContainer();
 			SessionCollection = new DefaultSessionCollection();
+			ServiceContainer = BuildServiceContainer();
 		}
 
 		private IContainer BuildServiceContainer()
@@ -88,7 +88,9 @@ namespace Guardians
 
 			//We should add this to the session collection, and also make sure it is unregistered on disconnection
 			SessionCollection.Register(details.ConnectionId, clientSession);
-			clientSession.OnSessionDisconnection += (source, args) => SessionCollection.
+			clientSession.OnSessionDisconnection += (source, args) => SessionCollection.Unregister(source.Details.ConnectionId);
+
+			return clientSession;
 		}
 	}
 }

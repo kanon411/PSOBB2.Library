@@ -20,7 +20,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns>The result of the resolve request.</returns>
-		[Post("/api/ServiceDiscovery")]
+		[Post("/api/ServiceDiscovery/Discover")]
 		Task<ResolveServiceEndpointResponse> DiscoverService([JsonBody] ResolveServiceEndpointRequest request);
 	}
 }

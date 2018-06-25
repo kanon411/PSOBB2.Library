@@ -13,4 +13,7 @@ UnityEngine.Timeline.dll
 UnityEngine.Timeline.xml
 Guardians.Client.All.dll
 Guardians.Client.All.xml
-*.json
+System.Linq.Expressions.dll
+System.Linq.dll
+System.Text.RegularExpressions.dll
+System.Collections.NonGeneric.dll

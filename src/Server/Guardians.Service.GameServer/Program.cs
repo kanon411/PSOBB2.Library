@@ -19,8 +19,8 @@ namespace Guardians
 
 		public static IWebHost BuildWebHost(string[] args) =>
 			WebHost.CreateDefaultBuilder(args)
-				//.UseKestrelGuardiansConfig(args)
-				.UseKestrel()
+				.UseKestrelGuardiansConfig(args)
+				//.UseKestrel()
 				.UseIISIntegration()
 				.UseStartup<Startup>()
 				//TODO: remove this logging when we finally deploy properly

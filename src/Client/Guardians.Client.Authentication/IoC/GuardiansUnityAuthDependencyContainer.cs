@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Common.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -32,21 +34,18 @@ namespace Guardians
 			// ModelBinding, Validation
 			//
 			// The DefaultModelMetadataProvider does significant caching and should be a singleton.
-			services.TryAddEnumerable(
-				ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, MvcCoreMvcOptionsSetup>());
-
 			services.TryAddSingleton<IModelMetadataProvider, DefaultModelMetadataProvider>();
 			services.TryAdd(ServiceDescriptor.Transient<ICompositeMetadataDetailsProvider>(s =>
 			{
-				var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
-				return new DefaultCompositeMetadataDetailsProvider(options.ModelMetadataDetailsProviders);
+				//TODO: Is it ok to not use options?
+				return new DefaultCompositeMetadataDetailsProvider(new List<IMetadataDetailsProvider>());
 			}));
 			services.TryAddSingleton<IModelBinderFactory, ModelBinderFactory>();
 			services.TryAddSingleton<IObjectModelValidator>(s =>
 			{
-				var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
+				//TODO: Is it ok to not use options?
 				var metadataProvider = s.GetRequiredService<IModelMetadataProvider>();
-				return new DefaultObjectValidator(metadataProvider, options.ModelValidatorProviders);
+				return new DefaultObjectValidator(metadataProvider, new List<IModelValidatorProvider>());
 			});
 
 			register.RegisterType<GuardiansUnityAuthenticationClient>()
@@ -79,6 +78,12 @@ namespace Guardians
 				.RegisterType<GuardiansUnityAuthenticationClient>()
 				.As<IAuthenticationClient>()
 				.SingleInstance();
+
+			register.RegisterInstance(new UnityLogger(LogLevel.All))
+				.As<ILog>()
+				.SingleInstance();
+
+			register.Populate(services);
 		}
 
 		private async Task<string> QueryForRemoteServiceEndpoint(IServiceDiscoveryService serviceDiscovery, string serviceType)
@@ -87,6 +92,8 @@ namespace Guardians
 
 			if(!endpointResponse.isSuccessful)
 				throw new InvalidOperationException($"Failed to query for Service: {serviceType} Result: {endpointResponse.ResultCode}");
+
+			Debug.Log($"Recieved service discovery response: {endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort} for Type: {serviceType}");
 
 			//TODO: Do we need extra slash?
 			return $"http://{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/";

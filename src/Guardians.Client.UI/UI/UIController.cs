@@ -1,9 +1,9 @@
 ﻿using System;
+using Common.Logging;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.Extensions.Logging;
 using SceneJect.Common;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace Guardians
 		where TViewType : class
 	{
 		[Inject]
-		protected ILogger<UIController<TViewType>> Logger { get; }
+		protected ILog Logger { get; }
 
 		[Inject]
 		protected TViewType View { get; }

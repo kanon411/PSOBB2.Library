@@ -38,11 +38,18 @@ namespace Guardians
 			//TODO: Handle error case.
 			if(!validateResult.IsValid)
 			{
+				string error = validateResult
+					.Errors
+					.Select(e => e.ErrorMessage)
+					.Aggregate("", (s, s1) => $"Error: {s} \n Error: {s1}");
+
 				if(Logger.IsErrorEnabled)
-					foreach(string s in validateResult.Errors.Select(e => e.ErrorMessage))
-					{
-						Logger.Error(s);
-					}
+						Logger.Error(error);
+				else
+				{
+					ErrorView.SetError(error);
+				}
+
 				return;
 			}
 			
@@ -56,7 +63,10 @@ namespace Guardians
 					if(Logger.IsDebugEnabled)
 						Logger.Debug($"Auth Result: {jwt.isTokenValid} OptionalError: {jwt.Error}");
 
-					View.SetLoginButtonState(true);
+					if(!jwt.isTokenValid)
+					{
+						ErrorView.SetError($"Failed Authentication: {jwt.Error} - {jwt.ErrorDescription}");
+					}
 				});
 		}
 

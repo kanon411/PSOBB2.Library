@@ -5,14 +5,8 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Logging;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using SceneJect.Common;
 using TypeSafe.Http.Net;
 using UnityEngine;
@@ -28,25 +22,6 @@ namespace Guardians
 		public override void Register(ContainerBuilder register)
 		{
 			ServiceCollection services = new ServiceCollection();
-
-			//Directly from ASP Core.
-			//
-			// ModelBinding, Validation
-			//
-			// The DefaultModelMetadataProvider does significant caching and should be a singleton.
-			services.TryAddSingleton<IModelMetadataProvider, DefaultModelMetadataProvider>();
-			services.TryAdd(ServiceDescriptor.Transient<ICompositeMetadataDetailsProvider>(s =>
-			{
-				//TODO: Is it ok to not use options?
-				return new DefaultCompositeMetadataDetailsProvider(new List<IMetadataDetailsProvider>());
-			}));
-			services.TryAddSingleton<IModelBinderFactory, ModelBinderFactory>();
-			services.TryAddSingleton<IObjectModelValidator>(s =>
-			{
-				//TODO: Is it ok to not use options?
-				var metadataProvider = s.GetRequiredService<IModelMetadataProvider>();
-				return new DefaultObjectValidator(metadataProvider, new List<IModelValidatorProvider>());
-			});
 
 			register.RegisterType<GuardiansUnityAuthenticationClient>()
 				.As<IAuthenticationClient>()
@@ -81,6 +56,10 @@ namespace Guardians
 
 			register.RegisterInstance(new UnityLogger(LogLevel.All))
 				.As<ILog>()
+				.SingleInstance();
+
+			register.RegisterType<UnityLocalAuthDetailsValidator>()
+				.As<IValidator<IUserAuthenticationDetailsContainer>>()
 				.SingleInstance();
 
 			register.Populate(services);

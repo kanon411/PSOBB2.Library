@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
 
@@ -14,9 +15,13 @@ namespace Guardians
 		private InputField PasswordField { get; }
 
 		/// <inheritdoc />
+		[Required]
+		[StringLength(64, ErrorMessage = nameof(UserName) + "must be the proper length.", MinimumLength = 1)]
 		public string UserName => UsernameField.text;
 
 		/// <inheritdoc />
+		[Required]
+		[StringLength(64, ErrorMessage = nameof(Password) + "must be the proper length.", MinimumLength = 1)]
 		public string Password => PasswordField.text;
 
 		/// <inheritdoc />

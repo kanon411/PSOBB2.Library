@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using Button = UnityEngine.Experimental.UIElements.Button;
 
 namespace Guardians
 {
@@ -27,5 +26,17 @@ namespace Guardians
 		[Tooltip("The login button.")]
 		[SerializeField]
 		private Button LoginButton;
+
+		void Awake()
+		{
+			LoginButton.interactable = false;
+		}
+
+
+		//TODO: Doc
+		public void SetLoginButtonState(bool state)
+		{
+			LoginButton.interactable = state;
+		}
 	}
 }

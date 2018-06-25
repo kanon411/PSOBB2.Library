@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Bson;
 using SceneJect.Common;
@@ -24,29 +24,39 @@ namespace Guardians
 		[Inject]
 		private IAuthDetailsRepository DetailsRepository { get; }
 
+		[Inject]
+		private IValidator<IUserAuthenticationDetailsContainer> AuthDetailsValidator { get; }
+
 		public void OnLoginButtonPressed()
 		{
 			//Load the model
 			IUserAuthenticationDetailsContainer details = DetailsRepository.Retrieve();
 
 			//Validate the object
-			var validateResult = TryValidate(details);
+			var validateResult = AuthDetailsValidator.Validate(details);
 
 			//TODO: Handle error case.
 			if(!validateResult.IsValid)
-				foreach(string s in validateResult
-					.Where(pair => pair.Value.ValidationState != ModelValidationState.Valid)
-					.Select(pair => $"{pair.Key}: {pair.Value}"))
-				{
-					Debug.LogError($"Model Validation Failed: {s}");
-				}
-				
+			{
+				if(Logger.IsErrorEnabled)
+					foreach(string s in validateResult.Errors.Select(e => e.ErrorMessage))
+					{
+						Logger.Error(s);
+					}
+				return;
+			}
+			
+			View.SetLoginButtonState(false);
+
 			//Else we should try to auth.
 			//TODO: Handle this properly.
 			AuthClient.TryAuthenticateAsync(details)
 				.UnityAsyncContinueWith(this, jwt =>
 				{
-					Debug.Log($"Auth Result: {jwt.isTokenValid} OptionalError: {jwt.Error}");
+					if(Logger.IsDebugEnabled)
+						Logger.Debug($"Auth Result: {jwt.isTokenValid} OptionalError: {jwt.Error}");
+
+					View.SetLoginButtonState(true);
 				});
 		}
 
@@ -55,6 +65,12 @@ namespace Guardians
 			if(password == null) throw new ArgumentNullException(nameof(password));
 
 			DetailsRepository.SetCurrent(new LoginDetailsModel(DetailsRepository.Retrieve().UserName, password));
+			CheckModelState();
+		}
+
+		private void CheckModelState()
+		{
+			View.SetLoginButtonState(AuthDetailsValidator.Validate(DetailsRepository.Retrieve()).IsValid);
 		}
 
 		public void UpdateUsernameValue(string username)
@@ -62,6 +78,7 @@ namespace Guardians
 			if(username == null) throw new ArgumentNullException(nameof(username));
 
 			DetailsRepository.SetCurrent(new LoginDetailsModel(username, DetailsRepository.Retrieve().Password));
+			CheckModelState();
 		}
 	}
 }

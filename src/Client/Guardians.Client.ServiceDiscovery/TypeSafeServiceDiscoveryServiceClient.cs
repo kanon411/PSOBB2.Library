@@ -6,8 +6,8 @@ using TypeSafe.Http.Net;
 
 namespace Guardians
 {
-    public sealed class TypeSafeServiceDiscoveryServiceClient : IServiceDiscoveryService
-    {
+	public sealed class TypeSafeServiceDiscoveryServiceClient : IServiceDiscoveryService
+	{
 		public IServiceDiscoveryService Service { get; }
 
 		/// <inheritdoc />

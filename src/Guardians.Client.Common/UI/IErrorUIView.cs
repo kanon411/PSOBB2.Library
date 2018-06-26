@@ -7,7 +7,7 @@ namespace Guardians
 	/// <summary>
 	/// Contract for a type of error UI view.
 	/// </summary>
-    public interface IErrorUIView : IUIView
+	public interface IErrorUIView : IUIView
 	{
 		/// <summary>
 		/// Sets the error message.

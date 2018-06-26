@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Guardians
 {
-    public sealed class LoginErroFormView : MonoBehaviour, IErrorUIView
+	public sealed class LoginErroFormView : MonoBehaviour, IErrorUIView
 	{
 		[Serializable]
 		private class ErrorAction : UnityEvent<string> { }

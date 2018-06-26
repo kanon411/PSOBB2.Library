@@ -8,7 +8,7 @@ namespace Guardians
 	/// Simple data access repository contract
 	/// for the type <see cref="IUserAuthenticationDetailsContainer"/>.
 	/// </summary>
-    public interface IAuthDetailsRepository
+	public interface IAuthDetailsRepository
 	{
 		/// <summary>
 		/// Retrieves the current <see cref="IUserAuthenticationDetailsContainer"/>.

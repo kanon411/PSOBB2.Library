@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Guardians
 {
-    public sealed class UnityLogger : AbstractLogger
+	public sealed class UnityLogger : AbstractLogger
 	{
 		public LogLevel LoggingLevel { get; }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-    public sealed class EmptyLoginDetailsModel : IUserAuthenticationDetailsContainer
+	public sealed class EmptyLoginDetailsModel : IUserAuthenticationDetailsContainer
 	{
 		/// <summary>
 		/// Static cached instance.

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-    public sealed class InMemoryAuthDetailsModelRepository : IAuthDetailsRepository
+	public sealed class InMemoryAuthDetailsModelRepository : IAuthDetailsRepository
 	{
 		/// <summary>
 		/// The managed auth details.

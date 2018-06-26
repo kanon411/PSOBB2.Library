@@ -21,7 +21,7 @@ namespace Guardians
 		/// The entries of all gameservers.
 		/// </summary>
 		[JsonIgnore]
-		private IReadOnlyCollection<GameServerEntry> Entries => _Entries;
+		public IReadOnlyCollection<GameServerEntry> Entries => _Entries;
 
 		/// <inheritdoc />
 		public GameServerListResponseModel(GameServerEntry[] entries)

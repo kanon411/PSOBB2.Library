@@ -8,6 +8,10 @@
     "ServerSelection": {
       "endpointAddress": "http://localhost",
       "endpointPort": 5002
+    },
+    "GameServer": {
+      "endpointAddress": "http://localhost",
+      "endpointPort": 5004
     }
   }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Logging;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SceneJect.Common;
 using TypeSafe.Http.Net;
@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Guardians
 {
-	public sealed class GuardiansUnityAuthDependencyContainer : NonBehaviourDependency
+	public sealed class GuardiansUnityCharacterScreenDependencyContainer : NonBehaviourDependency
 	{
 		[SerializeField]
 		private string ServiceDiscoveryUrl;
@@ -23,8 +23,13 @@ namespace Guardians
 		{
 			ServiceCollection services = new ServiceCollection();
 
-			register.RegisterType<GuardiansUnityAuthenticationClient>()
-				.As<IAuthenticationClient>()
+			register.RegisterInstance(new UnityLogger(LogLevel.All))
+				.As<ILog>()
+				.SingleInstance();
+
+			register.RegisterType<AuthenticationTokenRepository>()
+				.As<IReadonlyAuthTokenRepository>()
+				.As<IAuthTokenRepository>()
 				.SingleInstance();
 
 			register.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
@@ -32,39 +37,23 @@ namespace Guardians
 				.WithParameter(new TypedParameter(typeof(string), ServiceDiscoveryUrl))
 				.SingleInstance();
 
-			register.Register<IAuthenticationService>(context =>
-			{
-				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
+			register.Register(context =>
+				{
+					//The below is not true for right now, we have global service discovery point to the gameserver for testing.
+					//This registeration is abit complicated
+					//because we are skipping the game server selection
+					//to do this we must query the service discovery and THEN
+					//we query the the gameserver's service discovery.
+					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-				return TypeSafeHttpBuilder<IAuthenticationService>
-					.Create()
-					.RegisterDefaultSerializers()
-					.RegisterJsonNetSerializer()
-					.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "Authentication"))
-					.Build();
-			});
-
-			register
-				.RegisterType<InMemoryAuthDetailsModelRepository>()
-				.As<IAuthDetailsRepository>()
-				.SingleInstance();
-
-			register
-				.RegisterType<GuardiansUnityAuthenticationClient>()
-				.As<IAuthenticationClient>()
-				.SingleInstance();
-
-			register.RegisterInstance(new UnityLogger(LogLevel.All))
-				.As<ILog>()
-				.SingleInstance();
-
-			register.RegisterType<UnityLocalAuthDetailsValidator>()
-				.As<IValidator<IUserAuthenticationDetailsContainer>>()
-				.SingleInstance();
-
-			register.RegisterType<AuthenticationTokenRepository>()
-				.As<IReadonlyAuthTokenRepository>()
-				.As<IAuthTokenRepository>()
+					return TypeSafeHttpBuilder<ICharacterService>
+						.Create()
+						.RegisterJsonNetSerializer()
+						.RegisterDefaultSerializers()
+						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"))
+						.Build();
+				})
+				.As<ICharacterService>()
 				.SingleInstance();
 
 			register.Populate(services);

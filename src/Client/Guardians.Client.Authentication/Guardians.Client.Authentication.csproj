@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="FluentValidation" Version="7.6.103" />
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="SceneJect.Common" Version="3.0.7" />
@@ -20,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Guardians.Client.UI\Guardians.Client.UI.csproj" />
+    <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
     <ProjectReference Include="..\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
   </ItemGroup>

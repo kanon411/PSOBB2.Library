@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Bson;
 using SceneJect.Common;
 using UnityEngine;

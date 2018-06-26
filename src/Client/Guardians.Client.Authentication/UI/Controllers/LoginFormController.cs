@@ -26,6 +26,9 @@ namespace Guardians
 		[Inject]
 		private IValidator<IUserAuthenticationDetailsContainer> AuthDetailsValidator { get; }
 
+		[Inject]
+		private IAuthTokenRepository AuthTokenRepository { get; }
+
 		public void OnLoginButtonPressed()
 		{
 			//Load the model
@@ -66,6 +69,8 @@ namespace Guardians
 					{
 						ErrorView.SetError($"Failed Authentication: {jwt.Error} - {jwt.ErrorDescription}");
 					}
+					else
+						AuthTokenRepository.Update(jwt.AccessToken);
 				});
 		}
 

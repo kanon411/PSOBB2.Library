@@ -62,6 +62,11 @@ namespace Guardians
 				.As<IValidator<IUserAuthenticationDetailsContainer>>()
 				.SingleInstance();
 
+			register.RegisterType<AuthenticationTokenRepository>()
+				.As<IReadonlyAuthTokenRepository>()
+				.As<IAuthTokenRepository>()
+				.SingleInstance();
+
 			register.Populate(services);
 		}
 

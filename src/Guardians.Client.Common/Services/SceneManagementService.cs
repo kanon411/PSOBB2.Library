@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement;
 
 namespace Guardians
 {
-	public sealed class SceneManagementService : ISceneManager
+	public sealed class SceneManagementService : MonoBehaviour, ISceneManager
 	{
 		[SerializeField]
-		private event UnityAction _OnSceneLoaded;
+		private UnityEvent _OnSceneLoaded;
 
 		public event Action OnSceneLoaded
 		{
 			add
 			{
-				_OnSceneLoaded += () => value?.Invoke();
+				_OnSceneLoaded.AddListener(new UnityAction(value));
 			}
 			remove
 			{
@@ -26,13 +26,13 @@ namespace Guardians
 		}
 
 		[SerializeField]
-		private UnityAction _OnBeforeSceneChange;
+		private UnityEvent _OnBeforeSceneChange;
 
 		public event Action OnBeforeSceneChange
 		{
 			add
 			{
-				_OnBeforeSceneChange += () => value?.Invoke();
+				_OnBeforeSceneChange.AddListener(new UnityAction(value));
 			}
 			remove
 			{

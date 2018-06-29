@@ -12,6 +12,7 @@
     <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.11" />
     <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.11" />
     <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.11" />
+    <PackageReference Include="Unitysync.Async" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,12 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

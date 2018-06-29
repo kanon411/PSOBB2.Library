@@ -22,5 +22,14 @@ namespace Guardians
 		[Header("Cache-Control", "max-age=60")]
 		[Get("api/characters")]
 		Task<CharacterListResponse> GetCharacters([AuthenticationToken] string authToken);
+
+		/// <summary>
+		/// TODO Doc
+		/// </summary>
+		/// <param name="characterId"></param>
+		/// <returns></returns>
+		[Header("Cache-Control", "max-age=360")]
+		[Get("api/name/{id}")]
+		Task<CharacterNameQueryResponse> NameQuery([AliasAs("id")] int characterId);
 	}
 }

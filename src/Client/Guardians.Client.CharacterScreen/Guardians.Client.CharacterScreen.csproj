@@ -10,6 +10,7 @@
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
     <PackageReference Include="SceneJect.Common" Version="3.0.8" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.8" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.11" />
     <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.11" />
     <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.11" />

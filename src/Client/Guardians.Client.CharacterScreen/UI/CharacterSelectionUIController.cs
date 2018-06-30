@@ -41,7 +41,7 @@ namespace Guardians
 			foreach(int characterId in response.CharacterIds)
 			{
 				string characterName = await NameQueryService.RetrieveAsync(characterId)
-					.ConfigureAwait(false);
+					.ConfigureAwait(true);
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Recieved characterId: {characterId}");

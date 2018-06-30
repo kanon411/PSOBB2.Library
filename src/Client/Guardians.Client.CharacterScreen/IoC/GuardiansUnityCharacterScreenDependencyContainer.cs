@@ -9,6 +9,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using PostSharp.Patterns.Caching;
+using PostSharp.Patterns.Caching.Backends;
 using SceneJect.Common;
 using TypeSafe.Http.Net;
 using UnityEngine;
@@ -23,6 +25,9 @@ namespace Guardians
 		/// <inheritdoc />
 		public override void Register(ContainerBuilder register)
 		{
+			//Postsharp requires we setup some backend stuff
+			CachingServices.DefaultBackend = new MemoryCachingBackend();
+
 			ServiceCollection services = new ServiceCollection();
 
 			register.RegisterInstance(new UnityLogger(LogLevel.All))

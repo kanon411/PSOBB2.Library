@@ -2,15 +2,15 @@
   "Region": "US",
   "ServiceEndpoints": {
     "Authentication": {
-      "endpointAddress": "http://localhost",
+      "endpointAddress": "http://localhost.",
       "endpointPort": 5001
     },
     "ServerSelection": {
-      "endpointAddress": "http://localhost",
+      "endpointAddress": "http://localhost.",
       "endpointPort": 5002
     },
     "GameServer": {
-      "endpointAddress": "http://localhost",
+      "endpointAddress": "http://localhost.",
       "endpointPort": 5004
     }
   }

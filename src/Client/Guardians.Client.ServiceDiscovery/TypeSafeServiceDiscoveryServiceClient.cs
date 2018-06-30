@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TypeSafe.Http.Net;
@@ -19,7 +21,7 @@ namespace Guardians
 				.Create()
 				.RegisterDefaultSerializers()
 				.RegisterJsonNetSerializer()
-				.RegisterDotNetHttpClient(baseUrl)
+				.RegisterDotNetHttpClient(baseUrl, new FiddlerEnabledWebProxyHandler())
 				.Build();
 		}
 

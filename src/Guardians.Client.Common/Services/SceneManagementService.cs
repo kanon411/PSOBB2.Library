@@ -56,6 +56,12 @@ namespace Guardians
 			SceneManager.sceneLoaded -= SceneManagerOnSceneLoaded;
 		}
 
+		//We need this overload for firigin in editor with events
+		public void LoadLevel(int id)
+		{
+			LoadLevel(id, LoadSceneMode.Single);
+		}
+
 		public void LoadLevel(int id, LoadSceneMode mode)
 		{
 			SceneManager.LoadSceneAsync(id, mode).completed += operation =>
@@ -63,6 +69,12 @@ namespace Guardians
 				_OnBeforeSceneChange?.Invoke();
 				operation.allowSceneActivation = true;
 			};
+		}
+
+		//We need this overload for firigin in editor with events
+		public void LoadLevel(string name)
+		{
+			LoadLevel(name, LoadSceneMode.Single);
 		}
 
 		public void LoadLevel(string name, LoadSceneMode mode)

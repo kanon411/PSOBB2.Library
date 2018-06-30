@@ -29,7 +29,7 @@ namespace Guardians
 		/// <param name="characterId"></param>
 		/// <returns></returns>
 		[Header("Cache-Control", "max-age=360")]
-		[Get("api/name/{id}")]
+		[Get("api/characters/name/{id}")]
 		Task<CharacterNameQueryResponse> NameQuery([AliasAs("id")] int characterId);
 	}
 }

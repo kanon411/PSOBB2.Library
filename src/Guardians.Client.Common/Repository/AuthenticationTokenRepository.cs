@@ -30,6 +30,13 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
+		public string RetrieveWithType()
+		{
+			//TODO: Make this more efficient
+			return $"Bearer {AuthToken}";
+		}
+
+		/// <inheritdoc />
 		public void Update([NotNull] string authToken)
 		{
 			if(string.IsNullOrEmpty(authToken)) throw new ArgumentException("Value cannot be null or empty.", nameof(authToken));

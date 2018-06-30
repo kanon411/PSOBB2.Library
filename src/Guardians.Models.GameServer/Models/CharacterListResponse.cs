@@ -35,7 +35,7 @@ namespace Guardians
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public CharacterListResponseCode ResultCode { get; }
+		public CharacterListResponseCode ResultCode { get; private set; } //unity requires private set
 
 		/// <summary>
 		/// Creates a successful response.

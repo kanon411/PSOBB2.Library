@@ -17,7 +17,7 @@ namespace Guardians
 			//TODO: Add static domain for endpoint
 			return new GameServerEntry[]
 			{
-				new GameServerEntry(new ResolvedEndpoint(@"http://localhost", 5003), GameServerStatusFlags.NewServer | GameServerStatusFlags.Online, "DevServer1")
+				new GameServerEntry(new ResolvedEndpoint(@"http://localhost.", 5003), GameServerStatusFlags.NewServer | GameServerStatusFlags.Online, "DevServer1")
 			};
 		}
 	}

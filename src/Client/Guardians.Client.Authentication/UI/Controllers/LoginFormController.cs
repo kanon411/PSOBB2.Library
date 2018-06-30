@@ -7,6 +7,7 @@ using FluentValidation;
 using Newtonsoft.Json.Bson;
 using SceneJect.Common;
 using UnityEngine;
+using UnityEngine.Events;
 using Unitysync.Async;
 
 namespace Guardians
@@ -28,6 +29,9 @@ namespace Guardians
 
 		[Inject]
 		private IAuthTokenRepository AuthTokenRepository { get; }
+
+		[SerializeField]
+		private UnityEvent OnAuthenticationSuccessful;
 
 		public void OnLoginButtonPressed()
 		{
@@ -70,7 +74,10 @@ namespace Guardians
 						ErrorView.SetError($"Failed Authentication: {jwt.Error} - {jwt.ErrorDescription}");
 					}
 					else
+					{
 						AuthTokenRepository.Update(jwt.AccessToken);
+						OnAuthenticationSuccessful?.Invoke();
+					}
 				});
 		}
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
@@ -50,7 +52,7 @@ namespace Guardians
 						.Create()
 						.RegisterJsonNetSerializer()
 						.RegisterDefaultSerializers()
-						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"))
+						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
 						.Build();
 				})
 				.As<ICharacterService>()

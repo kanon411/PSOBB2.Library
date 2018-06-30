@@ -31,7 +31,7 @@ namespace Guardians
 
 		public static IEnumerable<MemberInfo> SerializableMembers { get; }
 			= ModelTypes
-				.SelectMany(t => t.GetProperties().Select(p => (MemberInfo)p).Concat(t.GetFields()));
+				.SelectMany(t => t.GetProperties().Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() == null).Select(p => (MemberInfo)p).Concat(t.GetFields()));
 
 		[Test]
 		[TestCaseSource(nameof(ModelTypes))]
@@ -77,6 +77,18 @@ namespace Guardians
 		{
 			//assert
 			Assert.False(m.GetUnderlyingType().IsArray && m.IsPublic(), $"{GenerateMemberInfoIdentiferPrefix(m)} is an Array type but was public. Do not expose arrays publicly. Use them as backing fields to collections.");
+		}
+
+		[Test]
+		[TestCaseSource(nameof(SerializableMembers))]
+		public void Test_Model_All_Properties_Have_Setters_For_Unity3D_Compatibility(MemberInfo m)
+		{
+			//Only check props
+			if(m.MemberType != MemberTypes.Property)
+				return;
+
+			//assert
+			Assert.True(((PropertyInfo)m).CanWrite, $"{GenerateMemberInfoIdentiferPrefix(m)} is a property does not have a setter. All properties, due to Unity3D JSON compatibility, are required to have setters.");
 		}
 
 		[Test]

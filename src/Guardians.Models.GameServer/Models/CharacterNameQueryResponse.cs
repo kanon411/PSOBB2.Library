@@ -17,12 +17,12 @@ namespace Guardians
 		/// Optional name of the character from the request.
 		/// </summary>
 		[JsonProperty(Required = Required.AllowNull)]
-		public string CharacterName { get; }
+		public string CharacterName { get; private set; }
 
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public CharacterNameQueryResponseCode ResultCode { get; }
+		public CharacterNameQueryResponseCode ResultCode { get; private set; }
 
 		/// <inheritdoc />
 		[JsonIgnore]

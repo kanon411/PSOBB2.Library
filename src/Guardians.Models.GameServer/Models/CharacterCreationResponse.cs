@@ -12,7 +12,7 @@ namespace Guardians
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public CharacterCreationResponseCode ResultCode { get; }
+		public CharacterCreationResponseCode ResultCode { get; private set; }
 
 		/// <inheritdoc />
 		[JsonIgnore]

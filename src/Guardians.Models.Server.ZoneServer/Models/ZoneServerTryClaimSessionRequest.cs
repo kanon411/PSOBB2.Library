@@ -21,7 +21,7 @@ namespace Guardians
 		/// However that does not mean that the characterid 
 		/// </summary>
 		[JsonProperty]
-		public int PlayerAccountId { get; }
+		public int PlayerAccountId { get; private set; }
 		
 		/// <summary>
 		/// The character id attempting to be claimed.
@@ -29,7 +29,7 @@ namespace Guardians
 		/// A player MAY spoof this to try to log in as other characters.
 		/// </summary>
 		[JsonProperty]
-		public int CharacterId { get; }
+		public int CharacterId { get; private set; }
 
 		/// <inheritdoc />
 		public ZoneServerTryClaimSessionRequest(int playerAccountId, int characterId)

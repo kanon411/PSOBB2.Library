@@ -20,13 +20,13 @@ namespace Guardians
 		/// may serve better quality.
 		/// </summary>
 		[JsonProperty]
-		public ClientRegionLocale Region { get; }
+		public ClientRegionLocale Region { get; private set; }
 
 		/// <summary>
 		/// Indicates the service requested for resolution.
 		/// </summary>
 		[JsonProperty]
-		public string ServiceType { get; }
+		public string ServiceType { get; private set; }
 
 		public ResolveServiceEndpointRequest(ClientRegionLocale region, string serviceType)
 		{

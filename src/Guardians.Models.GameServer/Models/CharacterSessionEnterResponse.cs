@@ -15,7 +15,7 @@ namespace Guardians
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public CharacterSessionEnterResponseCode ResultCode { get; }
+		public CharacterSessionEnterResponseCode ResultCode { get; private set; }
 		
 		//We send the id instead of the connection details because some sessions may not contiue
 		//additionally this gives the client time to load the instance map and stuff while it takes time
@@ -27,14 +27,14 @@ namespace Guardians
 		/// The id of the zone the session will be on.
 		/// </summary>
 		[JsonProperty]
-		public int ZoneId { get; }
+		public int ZoneId { get; private set; }
 
 		/// <inheritdoc />
 		[JsonIgnore]
 		public bool isSuccessful => ResultCode == CharacterSessionEnterResponseCode.Success;
 
 		[JsonProperty]
-		public GameZoneType ZoneType { get; }
+		public GameZoneType ZoneType { get; private set; }
 
 		/// <summary>
 		/// Creates a successful enter response.

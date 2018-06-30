@@ -17,3 +17,4 @@ System.Linq.Expressions.dll
 System.Linq.dll
 System.Text.RegularExpressions.dll
 System.Collections.NonGeneric.dll
+System.Runtime.Serialization.Primitives.dll

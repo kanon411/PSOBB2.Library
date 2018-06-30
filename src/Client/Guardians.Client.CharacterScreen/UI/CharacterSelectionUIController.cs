@@ -17,6 +17,9 @@ namespace Guardians
 		[Inject]
 		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
 
+		[Inject]
+		private INameQueryService NameQueryService { get; }
+
 		private void Start()
 		{
 			//We need to query for the characters
@@ -37,29 +40,24 @@ namespace Guardians
 			//We need the character names for each one
 			foreach(int characterId in response.CharacterIds)
 			{
-				CharacterNameQueryResponse nameQueryResponse = await CharacterService.NameQuery(characterId)
+				string characterName = await NameQueryService.RetrieveAsync(characterId)
 					.ConfigureAwait(false);
-
-				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Recieved name query response with Code:{nameQueryResponse.ResultCode} Name: {nameQueryResponse.CharacterName}");
-
-				if(!nameQueryResponse.isSuccessful)
-					throw new InvalidOperationException($"Failed to query character name for Id: {characterId} ResultCode: {nameQueryResponse.ResultCode}");
-
-				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Before yield.");
-
-				await Task.Yield();
-
-				if(Logger.IsDebugEnabled)
-					Logger.Debug($"after yield.");
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Recieved characterId: {characterId}");
 
 				//TODO: Callback
-				View.SetCharacterSlot(nameQueryResponse.CharacterName, () => Logger.Debug($"Pressed Id: {characterId}"));
+				View.SetCharacterSlot(characterName, () => OnCharacterButtonClicked(characterId));
 			}
+		}
+
+		public void OnCharacterButtonClicked(int characterId)
+		{
+			//TODO: Should we use the async?
+			string characterName = NameQueryService.Retrieve(characterId);
+
+			if(Logger.IsDebugEnabled)
+				Logger.Debug($"Clicked: {characterName}");
 		}
 	}
 }

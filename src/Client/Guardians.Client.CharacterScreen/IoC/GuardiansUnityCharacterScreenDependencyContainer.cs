@@ -48,14 +48,14 @@ namespace Guardians
 					//we query the the gameserver's service discovery.
 					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-					return TypeSafeHttpBuilder<ICharacterService>
-						.Create()
-						.RegisterJsonNetSerializer()
-						.RegisterDefaultSerializers()
-						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
-						.Build();
+					return new RemoteNetworkCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
 				})
 				.As<ICharacterService>()
+				.SingleInstance();
+
+			//Name query service
+			register.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
+				.As<INameQueryService>()
 				.SingleInstance();
 
 			register.Populate(services);

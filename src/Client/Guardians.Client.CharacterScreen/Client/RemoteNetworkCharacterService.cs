@@ -44,5 +44,11 @@ namespace Guardians
 		{
 			return CharacterService.NameQuery(characterId);
 		}
+
+		/// <inheritdoc />
+		public Task<CharacterSessionEnterResponse> TryEnterSession(int characterId, string authToken)
+		{
+			return CharacterService.TryEnterSession(characterId, authToken);
+		}
 	}
 }

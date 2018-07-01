@@ -13,7 +13,7 @@ namespace Guardians
 		private INameQueryService NameQueryService { get; }
 
 		/// <inheritdoc />
-		public CachedNameQueryServiceDecorator([NotNull] INameQueryService nameQueryService)
+		public CachedNameQueryServiceDecorator(INameQueryService nameQueryService)
 		{
 			NameQueryService = nameQueryService ?? throw new ArgumentNullException(nameof(nameQueryService));
 		}
@@ -27,9 +27,10 @@ namespace Guardians
 
 		/// <inheritdoc />
 		[Cache]
-		public Task<string> RetrieveAsync(int id)
+		public async Task<string> RetrieveAsync(int id)
 		{
-			return NameQueryService.RetrieveAsync(id);
+			return await NameQueryService.RetrieveAsync(id)
+				.ConfigureAwait(false);
 		}
 	}
 }

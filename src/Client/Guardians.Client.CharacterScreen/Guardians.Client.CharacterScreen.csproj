@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="GaiaOnline.Game.Network.Client" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
     <PackageReference Include="SceneJect.Common" Version="3.0.8" />

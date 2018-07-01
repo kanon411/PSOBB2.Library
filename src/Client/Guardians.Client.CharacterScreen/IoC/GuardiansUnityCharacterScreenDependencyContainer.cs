@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
@@ -25,6 +27,10 @@ namespace Guardians
 		/// <inheritdoc />
 		public override void Register(ContainerBuilder register)
 		{
+			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
 			//Postsharp requires we setup some backend stuff
 			CachingServices.DefaultBackend = new MemoryCachingBackend();
 
@@ -78,6 +84,12 @@ namespace Guardians
 
 			//TODO: Do we need extra slash?
 			return $"{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/";
+		}
+
+		//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+		private bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+		{
+			return true;
 		}
 	}
 }

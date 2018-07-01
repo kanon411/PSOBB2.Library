@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GaiaOnline;
 using SceneJect.Common;
 using UnityEngine;
 using Unitysync.Async;
@@ -19,6 +20,12 @@ namespace Guardians
 
 		[Inject]
 		private INameQueryService NameQueryService { get; }
+
+		[Inject]
+		private IGaiaOnlineQueryClient GaiaQueryClient { get; }
+
+		[Inject]
+		private IGaiaOnlineImageCDNClient GaiaImageCDNClient { get; }
 
 		private void Start()
 		{
@@ -54,10 +61,23 @@ namespace Guardians
 		public void OnCharacterButtonClicked(int characterId)
 		{
 			//TODO: Should we use the async?
-			string characterName = NameQueryService.Retrieve(characterId);
+			NameQueryService.RetrieveAsync(characterId)
+				.UnityAsyncContinueWith(this, OnCharacterButtonClickedAsync);
+		}
 
-			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Clicked: {characterName}");
+		private async Task OnCharacterButtonClickedAsync(string characterName)
+		{
+			UserAvatarQueryResponse avatarQueryResponse = await GaiaQueryClient.GetAvatarFromUsername(characterName)
+				.ConfigureAwait(true);
+
+			if(!avatarQueryResponse.isRequestSuccessful)
+				throw new InvalidOperationException($"Failed to query gaia avatar url for Name: {characterName} Error: {avatarQueryResponse.ResponseStatusCode}");
+
+			//Now we must load the avatar texture
+			Texture2DWrapper texture2DWrapper = await GaiaImageCDNClient.GetAvatarImage(avatarQueryResponse.AvatarRelativeUrlPath)
+				.ConfigureAwait(true);
+
+			View.SetCharacterPreview(texture2DWrapper.Texture.Value);
 		}
 	}
 }

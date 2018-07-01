@@ -11,7 +11,7 @@ namespace Guardians
 		private ICharacterService CharacterService { get; }
 
 		/// <inheritdoc />
-		public RemoteNetworkedNameQueryService([NotNull] ICharacterService characterService)
+		public RemoteNetworkedNameQueryService(ICharacterService characterService)
 		{
 			CharacterService = characterService ?? throw new ArgumentNullException(nameof(characterService));
 		}
@@ -19,7 +19,10 @@ namespace Guardians
 		/// <inheritdoc />
 		public string Retrieve(int id)
 		{
-			return RetrieveAsync(id).ConfigureAwait(false).GetAwaiter().GetResult();
+			return RetrieveAsync(id)
+				.ConfigureAwait(false)
+				.GetAwaiter()
+				.GetResult();
 		}
 
 		/// <inheritdoc />

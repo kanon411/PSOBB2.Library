@@ -11,7 +11,7 @@ namespace Guardians
 	{
 		private ICharacterService CharacterService { get; }
 
-		public RemoteNetworkCharacterService([NotNull] string baseUrl)
+		public RemoteNetworkCharacterService(string baseUrl)
 		{
 			if(string.IsNullOrWhiteSpace(baseUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(baseUrl));
 

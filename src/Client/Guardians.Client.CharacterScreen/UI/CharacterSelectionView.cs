@@ -29,7 +29,10 @@ namespace Guardians
 		[SerializeField]
 		private ButtonWithText CharacterEntry;
 
-		public void SetCharacterSlot([NotNull] string characterName, [NotNull] Action onCharacterSlotClickedCallback)
+		[SerializeField]
+		private Image CharacterDisplayImage;
+
+		public void SetCharacterSlot(string characterName, Action onCharacterSlotClickedCallback)
 		{
 			if(onCharacterSlotClickedCallback == null) throw new ArgumentNullException(nameof(onCharacterSlotClickedCallback));
 			if(string.IsNullOrEmpty(characterName)) throw new ArgumentException("Value cannot be null or empty.", nameof(characterName));
@@ -41,7 +44,8 @@ namespace Guardians
 
 		public void SetCharacterPreview(Texture2D texture)
 		{
-			throw new NotImplementedException($"Not implemented preview");
+			CharacterDisplayImage.material.mainTexture = texture ?? throw new ArgumentNullException(nameof(texture));
+			CharacterDisplayImage.SetMaterialDirty();
 		}
 	}
 }

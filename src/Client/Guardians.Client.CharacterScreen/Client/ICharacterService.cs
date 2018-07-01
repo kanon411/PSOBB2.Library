@@ -31,5 +31,14 @@ namespace Guardians
 		[Header("Cache-Control", "max-age=360")]
 		[Get("api/characters/name/{id}")]
 		Task<CharacterNameQueryResponse> NameQuery([AliasAs("id")] int characterId);
+
+		/// <summary>
+		/// TODO DOC
+		/// </summary>
+		/// <param name="characterId"></param>
+		/// <param name="authToken"></param>
+		/// <returns></returns>
+		[Post("api/charactersession/enter/{id}")]
+		Task<CharacterSessionEnterResponse> TryEnterSession([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
 	}
 }

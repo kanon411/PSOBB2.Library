@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.11" />
+    <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.16" />
   </ItemGroup>
 
   <ItemGroup>

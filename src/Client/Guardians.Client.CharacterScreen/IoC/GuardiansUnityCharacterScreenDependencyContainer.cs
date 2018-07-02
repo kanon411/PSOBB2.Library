@@ -30,6 +30,7 @@ namespace Guardians
 			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.CheckCertificateRevocationList = false;
 
 			//Postsharp requires we setup some backend stuff
 			CachingServices.DefaultBackend = new MemoryCachingBackend();
@@ -67,6 +68,10 @@ namespace Guardians
 			//Name query service
 			register.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
 				.As<INameQueryService>()
+				.SingleInstance();
+
+			register.RegisterType<LocalCharacterDataRepository>()
+				.As<ICharacterDataRepository>()
 				.SingleInstance();
 
 			register.Populate(services);

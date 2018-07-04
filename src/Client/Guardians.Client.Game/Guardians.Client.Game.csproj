@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
     <ProjectReference Include="..\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj" />
     <ProjectReference Include="..\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
   </ItemGroup>

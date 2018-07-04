@@ -27,6 +27,9 @@ namespace Guardians
 			Serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
 			SessionCollection = new DefaultSessionCollection();
 			ServiceContainer = BuildServiceContainer();
+
+			if(Logger.IsDebugEnabled)
+				Logger.Debug($"Created server base.");
 		}
 
 		private IContainer BuildServiceContainer()
@@ -62,6 +65,7 @@ namespace Guardians
 		public ZoneServerApplicationBase(NetworkAddressInfo serverAddress, INetworkMessageDispatchingStrategy<GameServerPacketPayload, GameClientPacketPayload> messageHandlingStrategy) 
 			: base(serverAddress, messageHandlingStrategy, new NoOpLogger())
 		{
+
 		}
 
 		/// <inheritdoc />
@@ -83,12 +87,21 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override ManagedClientSession<GameServerPacketPayload, GameClientPacketPayload> CreateIncomingSession(IManagedNetworkServerClient<GameServerPacketPayload, GameClientPacketPayload> client, SessionDetails details)
 		{
+			if(Logger.IsDebugEnabled)
+				Logger.Debug($"Creating new session. Details: {details}");
+
 			//TODO: Add handlers.
 			ZoneClientSession clientSession = new ZoneClientSession(client, details, null);
 
 			//We should add this to the session collection, and also make sure it is unregistered on disconnection
 			SessionCollection.Register(details.ConnectionId, clientSession);
-			clientSession.OnSessionDisconnection += (source, args) => SessionCollection.Unregister(source.Details.ConnectionId);
+			clientSession.OnSessionDisconnection += (source, args) =>
+			{
+				if(Logger.IsDebugEnabled)
+					Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
+
+				SessionCollection.Unregister(source.Details.ConnectionId);
+			};
 
 			return clientSession;
 		}

@@ -69,6 +69,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.Common", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.Game", "src\Client\Guardians.Client.Game\Guardians.Client.Game.csproj", "{2896B433-69F7-46AB-B266-0F7274AA9C97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Unity.Common", "src\Guardians.Unity.Common\Guardians.Unity.Common.csproj", "{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
@@ -328,6 +330,16 @@ Global
 		{2896B433-69F7-46AB-B266-0F7274AA9C97}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
 		{2896B433-69F7-46AB-B266-0F7274AA9C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2896B433-69F7-46AB-B266-0F7274AA9C97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -364,6 +376,7 @@ Global
 		{400DECE1-46A9-4E9F-8F6C-D0A87CA2AD03} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{A541ABAF-5F9B-4800-8CD0-3BC722DD2699} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{2896B433-69F7-46AB-B266-0F7274AA9C97} = {8C598CE2-9578-41F6-A195-24678617AE6F}
+		{7E754EE8-795A-4CDB-B2C4-C5B61940D5A5} = {D0FA9394-9069-405B-9E01-274A489B84A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

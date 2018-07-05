@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.38" />
+    <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.38" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Guardians.Network.Common\Guardians.Network.Common.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
+  </ItemGroup>
+
+</Project>

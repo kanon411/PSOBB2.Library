@@ -90,20 +90,46 @@ namespace Guardians
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Creating new session. Details: {details}");
 
-			//TODO: Add handlers.
-			ZoneClientSession clientSession = new ZoneClientSession(client, details, null);
-
-			//We should add this to the session collection, and also make sure it is unregistered on disconnection
-			SessionCollection.Register(details.ConnectionId, clientSession);
-			clientSession.OnSessionDisconnection += (source, args) =>
+			try
 			{
-				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
+				ZoneClientSession clientSession = null;
+				using(var scope = ServiceContainer.BeginLifetimeScope(builder =>
+				{
+					builder.RegisterInstance(client)
+						.AsImplementedInterfaces()
+						.AsSelf()
+						.ExternallyOwned();
 
-				SessionCollection.Unregister(source.Details.ConnectionId);
-			};
+					builder.RegisterInstance(details)
+						.AsSelf();
 
-			return clientSession;
+					builder.RegisterType<ZoneClientSession>()
+						.AsSelf()
+						.InstancePerLifetimeScope();
+				}))
+				{
+					clientSession = scope.Resolve<ZoneClientSession>();
+				}
+
+				//We should add this to the session collection, and also make sure it is unregistered on disconnection
+				SessionCollection.Register(details.ConnectionId, clientSession);
+				clientSession.OnSessionDisconnection += (source, args) =>
+				{
+					if(Logger.IsDebugEnabled)
+						Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
+
+					SessionCollection.Unregister(source.Details.ConnectionId);
+				};
+
+				return clientSession;
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to create Client: {details} Error: {e.Message} \n\n Stack: {e.StackTrace}");
+
+				throw;
+			}
 		}
 	}
 }

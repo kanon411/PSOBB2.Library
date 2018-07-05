@@ -8,7 +8,7 @@ namespace Guardians
 	/// Base type for the game packets that clients send.
 	/// </summary>
 	[ProtoContract(UseProtoMembersOnly = true)]
-	public abstract class GameClientPacketPayload : IPacketPayload
+	public abstract class GameClientPacketPayload : IGamePacketPayload
 	{
 		//We don't need anything in the base packet actually.
 	}

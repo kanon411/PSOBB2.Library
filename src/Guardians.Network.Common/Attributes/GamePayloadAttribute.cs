@@ -8,6 +8,9 @@ namespace Guardians
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	public sealed class GamePayloadAttribute : Attribute
 	{
+		/// <summary>
+		/// The operation code.
+		/// </summary>
 		public GamePayloadOperationCode OperationCode { get; }
 
 		/// <inheritdoc />

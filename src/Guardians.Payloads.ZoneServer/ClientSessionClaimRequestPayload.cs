@@ -8,6 +8,7 @@ namespace Guardians
 	/// claim a an open session on the server.
 	/// </summary>
 	[ProtoContract]
+	[GamePayload(GamePayloadOperationCode.ClientSessionClaimRequest)]
 	public sealed class ClientSessionClaimRequestPayload : GameClientPacketPayload
 	{
 		//TODO: This is not save to sent over the wire in plaintext so it should be encrypted somehow.

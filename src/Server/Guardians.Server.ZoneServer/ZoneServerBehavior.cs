@@ -16,7 +16,14 @@ namespace Guardians
 			ZoneServerApplicationBase appBase = new ZoneServerApplicationBase(new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006), new UnityLogger(LogLevel.Debug));
 
 			if(!appBase.StartServer())
-				throw new InvalidOperationException($"Failed to start server on Details: {appBase.ServerAddress}");
+			{
+				string error = $"Failed to start server on Details: {appBase.ServerAddress}";
+
+				if(appBase.Logger.IsErrorEnabled)
+					appBase.Logger.Error(error);
+
+				throw new InvalidOperationException(error);
+			}
 
 			await appBase.BeginListening()
 				.ConfigureAwait(false);

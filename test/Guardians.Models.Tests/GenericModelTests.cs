@@ -6,32 +6,42 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Compatibility;
 using NUnit.Framework;
+using ProtoBuf;
 
 namespace Guardians
 {
 	[TestFixture]
-	public class AllModelsTests
+	public abstract class GenericModelTests<TPropertyAttributeType, TIgnorePropertyAttributeType, TContractType>
+		where TPropertyAttributeType : Attribute
+		where TIgnorePropertyAttributeType : Attribute
+		where TContractType : Attribute
 	{
 		public static IEnumerable<Type> ModelTypes { get; } = AuthenticationModelsMetadataMarker.ModelTypes
 			.Concat(GameServerModelsMetadataMarker.ModelTypes)
 			.Concat(ServerSelectionModelsMetadataMarker.ModelTypes)
 			.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
-			.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes);
+			.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes)
+			.Concat(ZoneServerMetadataMarker.PayloadTypes)
+			.Where(t => t.GetCustomAttribute<TContractType>(true) != null)
+			.Distinct()
+			.ToArray();
 
 		public static IEnumerable<Type> AllTypes { get; } =
 			AuthenticationModelsMetadataMarker.AllTypes
 				.Concat(GameServerModelsMetadataMarker.AllTypes)
 				.Concat(ServerSelectionModelsMetadataMarker.AllTypes)
 				.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
-				.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes);
+				.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes)
+				.Concat(ZoneServerMetadataMarker.PayloadTypes)
+				.Where(t => t.GetCustomAttribute<TContractType>(true) != null)
+				.Distinct()
+				.ToArray();
 
 		public static IEnumerable<MemberInfo> SerializableMembers { get; }
 			= ModelTypes
-				.SelectMany(t => t.GetProperties().Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() == null).Select(p => (MemberInfo)p).Concat(t.GetFields()));
+				.SelectMany(t => t.GetProperties().Where(p => p.GetCustomAttribute<TIgnorePropertyAttributeType>() == null).Select(p => (MemberInfo)p).Concat(t.GetFields()));
 
 		[Test]
 		[TestCaseSource(nameof(ModelTypes))]
@@ -43,23 +53,23 @@ namespace Guardians
 
 		[Test]
 		[TestCaseSource(nameof(AllTypes))]
-		public void Test_Model_IResponseModel_All_Marked_JsonObject(Type t)
+		public void Test_Model_IResponseModel_All_Marked_ContractType(Type t)
 		{
 			//assert
 			if(t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IResponseModel<>)))
-				Assert.True(t.GetCustomAttribute<JsonObjectAttribute>() != null, $"{GenerateMemberInfoIdentiferPrefix(t)} must have a JsonObject attribute marked on the Type.");
+				Assert.True(t.GetCustomAttribute<TContractType>() != null, $"{GenerateMemberInfoIdentiferPrefix(t)} must have a {typeof(TContractType).Name} attribute marked on the Type.");
 		}
 
 		[Test]
 		[TestCaseSource(nameof(SerializableMembers))]
-		public void Test_Model_Properties_All_Have_Explict_Json_Properties(MemberInfo m)
+		public void Test_Model_Properties_All_Have_Explict_Property_Attribute(MemberInfo m)
 		{
 			//assert
-			Assert.True(m.GetCustomAttribute<JsonPropertyAttribute>() != null || m.GetCustomAttribute<JsonIgnoreAttribute>() != null, $"{GenerateMemberInfoIdentiferPrefix(m)} does not contain explict {nameof(JsonProperty)} or {nameof(JsonIgnoreAttribute)}");
+			Assert.True(m.GetCustomAttribute<TPropertyAttributeType>() != null || m.GetCustomAttribute<TIgnorePropertyAttributeType>() != null, $"{GenerateMemberInfoIdentiferPrefix(m)} does not contain explict {typeof(TPropertyAttributeType).Name} or {typeof(TIgnorePropertyAttributeType).Name}");
 		}
 
 		//TODO: Change this to support Type as well
-		private static string GenerateMemberInfoIdentiferPrefix(MemberInfo m)
+		protected static string GenerateMemberInfoIdentiferPrefix(MemberInfo m)
 		{
 			try
 			{
@@ -77,18 +87,6 @@ namespace Guardians
 		{
 			//assert
 			Assert.False(m.GetUnderlyingType().IsArray && m.IsPublic(), $"{GenerateMemberInfoIdentiferPrefix(m)} is an Array type but was public. Do not expose arrays publicly. Use them as backing fields to collections.");
-		}
-
-		[Test]
-		[TestCaseSource(nameof(SerializableMembers))]
-		public void Test_Model_All_Properties_Have_Setters_For_Unity3D_Compatibility(MemberInfo m)
-		{
-			//Only check props
-			if(m.MemberType != MemberTypes.Property)
-				return;
-
-			//assert
-			Assert.True(((PropertyInfo)m).CanWrite, $"{GenerateMemberInfoIdentiferPrefix(m)} is a property does not have a setter. All properties, due to Unity3D JSON compatibility, are required to have setters.");
 		}
 
 		[Test]

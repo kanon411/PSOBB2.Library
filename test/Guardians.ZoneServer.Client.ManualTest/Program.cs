@@ -15,7 +15,9 @@ namespace Guardians
 			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
 			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
 
-			ZoneServerMetadataMarker.PayloadTypesByOpCodeMap
+			ZoneServerMetadataMarker.ClientPayloadTypesByOpcode
+				.AsEnumerable()
+				.Concat(ZoneServerMetadataMarker.ServerPayloadTypesByOpcode)
 				.ToList()
 				.ForEach(pair =>
 				{

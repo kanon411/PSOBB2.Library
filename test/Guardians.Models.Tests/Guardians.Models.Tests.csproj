@@ -11,6 +11,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NUnit" Version="3.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="protobuf-net" Version="2.3.13" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
     <ProjectReference Include="..\..\src\Guardians.Models.Server.ZoneServer\Guardians.Models.Server.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Service.ServiceDiscovery\Guardians.Service.ServiceDiscovery.csproj" />
   </ItemGroup>
 

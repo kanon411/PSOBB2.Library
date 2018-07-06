@@ -18,10 +18,13 @@ namespace Guardians
 			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
 			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
 
-			ZoneServerMetadataMarker.PayloadTypesByOpCodeMap
+			ZoneServerMetadataMarker.ClientPayloadTypesByOpcode
+				.AsEnumerable()
+				.Concat(ZoneServerMetadataMarker.ServerPayloadTypesByOpcode)
 				.ToList()
 				.ForEach(pair =>
 				{
+					//TODO: If they don't have the the direct base-type matching this will cause exceptions
 					RuntimeTypeModel.Default.Add(pair.Value, true);
 
 					RuntimeTypeModel.Default[pair.Value.BaseType]

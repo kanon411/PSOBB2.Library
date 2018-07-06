@@ -10,8 +10,8 @@ namespace Guardians
 	public enum GamePayloadOperationCode : int
 	{
 		/// <summary>
-		/// For the session claim request from the client.
+		/// For the session claim payloads.
 		/// </summary>
-		ClientSessionClaimRequest = 1,
+		ClientSessionClaim = 1,
 	}
 }

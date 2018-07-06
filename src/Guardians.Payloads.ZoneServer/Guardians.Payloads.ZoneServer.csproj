@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Guardians.Models.Common\Guardians.Models.Common.csproj" />
     <ProjectReference Include="..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
   </ItemGroup>
 

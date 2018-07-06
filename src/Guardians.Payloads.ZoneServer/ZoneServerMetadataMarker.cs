@@ -11,28 +11,43 @@ namespace Guardians
 	/// </summary>
 	public static class ZoneServerMetadataMarker
 	{
+		private static readonly Lazy<IReadOnlyDictionary<GamePayloadOperationCode, Type>> _ServerPayloadTypesByOpcode;
+		private static readonly Lazy<IReadOnlyDictionary<GamePayloadOperationCode, Type>> _ClientPayloadTypesByOpcode;
+
 		/// <summary>
 		/// Collection of all Zone Server payload types.
 		/// </summary>
 		public static IReadOnlyCollection<Type> PayloadTypes { get; }
 
+
 		/// <summary>
-		/// Collection of all Zone Server payload types as a dictionary
+		/// Collection of all Zone server payload types as a dictionary
 		/// with the key as the operation code.
 		/// </summary>
-		public static IReadOnlyDictionary<GamePayloadOperationCode, Type> PayloadTypesByOpCodeMap { get; }
+		public static IReadOnlyDictionary<GamePayloadOperationCode, Type> ServerPayloadTypesByOpcode => _ServerPayloadTypesByOpcode.Value;
+
+		/// <summary>
+		/// Collection of all Zone client payload types as a dictionary
+		/// with the key as the operation code.
+		/// </summary>
+		public static IReadOnlyDictionary<GamePayloadOperationCode, Type> ClientPayloadTypesByOpcode => _ClientPayloadTypesByOpcode.Value;
 
 		static ZoneServerMetadataMarker()
 		{
 			PayloadTypes = typeof(ClientSessionClaimRequestPayload)
 				.Assembly
 				.GetExportedTypes()
-				.Where(t => t.GetCustomAttribute<GamePayloadAttribute>() != null)
+				.Where(t => typeof(GameClientPacketPayload).IsAssignableFrom(t) || typeof(GameServerPacketPayload).IsAssignableFrom(t))
 				.Distinct()
 				.ToArray();
 
-			PayloadTypesByOpCodeMap = PayloadTypes
-				.ToDictionary(type => type.GetCustomAttribute<GamePayloadAttribute>().OperationCode);
+			_ServerPayloadTypesByOpcode = new Lazy<IReadOnlyDictionary<GamePayloadOperationCode, Type>>(() => PayloadTypes
+				.Where(t => typeof(GameServerPacketPayload).IsAssignableFrom(t))
+				.ToDictionary(type => type.GetCustomAttribute<GamePayloadAttribute>().OperationCode), true);
+
+			_ClientPayloadTypesByOpcode = new Lazy<IReadOnlyDictionary<GamePayloadOperationCode, Type>>(() => PayloadTypes
+				.Where(t => typeof(GameClientPacketPayload).IsAssignableFrom(t))
+				.ToDictionary(type => type.GetCustomAttribute<GamePayloadAttribute>().OperationCode), true);
 		}
 	}
 }

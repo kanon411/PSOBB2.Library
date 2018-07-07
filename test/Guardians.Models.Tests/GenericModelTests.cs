@@ -23,7 +23,7 @@ namespace Guardians
 			.Concat(ServerSelectionModelsMetadataMarker.ModelTypes)
 			.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
 			.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes)
-			.Concat(ZoneServerMetadataMarker.PayloadTypes)
+			.Concat(ZoneServerMetadataMarker.AllProtobufModels)
 			.Where(t => t.GetCustomAttribute<TContractType>(true) != null)
 			.Distinct()
 			.ToArray();
@@ -34,7 +34,7 @@ namespace Guardians
 				.Concat(ServerSelectionModelsMetadataMarker.AllTypes)
 				.Concat(ZoneServerModelsMetadataMarker.ModelTypes)
 				.Concat(ServiceDiscoveryModelsMetadataMarker.ModelTypes)
-				.Concat(ZoneServerMetadataMarker.PayloadTypes)
+				.Concat(ZoneServerMetadataMarker.AllProtobufModels)
 				.Where(t => t.GetCustomAttribute<TContractType>(true) != null)
 				.Distinct()
 				.ToArray();

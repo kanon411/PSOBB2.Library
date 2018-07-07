@@ -22,11 +22,12 @@ namespace Guardians
 		{
 			//arrange
 			IEnumerable<Type> distinctPayloads = ModelTypes
+				.Where(t => t.GetCustomAttribute<GamePayloadAttribute>(true) != null)
 				.Distinct(new PayloadTypeEqualityComparerByOpCodeAndType())
 				.ToArray();
 
 			//assert
-			Assert.AreEqual(ModelTypes.Count(), distinctPayloads.Count(), $"Encountered duplicate payload type More than 1 payload shares same OpCode and BaseType. Violating Types: {ModelTypes.Except(distinctPayloads).Aggregate("", (s, type) => $"{s} {type.Name}:OpCode.{type.GetCustomAttribute<GamePayloadAttribute>().OperationCode}")}");
+			Assert.AreEqual(ModelTypes.Count(t => t.GetCustomAttribute<GamePayloadAttribute>(true) != null), distinctPayloads.Count(), $"Encountered duplicate payload type More than 1 payload shares same OpCode and BaseType. Violating Types: {ModelTypes.Where(t => t.GetCustomAttribute<GamePayloadAttribute>(true) != null).Except(distinctPayloads).Aggregate("", (s, type) => $"{s} {type.Name}:OpCode.{type.GetCustomAttribute<GamePayloadAttribute>(true).OperationCode}")}");
 		}
 
 		[Test]
@@ -78,13 +79,13 @@ namespace Guardians
 			/// <inheritdoc />
 			public override bool Equals(Type x, Type y)
 			{
-				return x.BaseType == y.BaseType && x.GetCustomAttribute<GamePayloadAttribute>().OperationCode == y.GetCustomAttribute<GamePayloadAttribute>().OperationCode;
+				return x.BaseType == y.BaseType && x.GetCustomAttribute<GamePayloadAttribute>(true).OperationCode == y.GetCustomAttribute<GamePayloadAttribute>(true).OperationCode;
 			}
 
 			/// <inheritdoc />
 			public override int GetHashCode(Type obj)
 			{
-				return $"{obj.BaseType.Name}{obj.GetCustomAttribute<GamePayloadAttribute>().OperationCode}".GetHashCode();
+				return $"{obj.BaseType.Name}{obj.GetCustomAttribute<GamePayloadAttribute>(true).OperationCode}".GetHashCode();
 			}
 		}
 	}

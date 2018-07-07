@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using ProtoBuf;
 
 namespace Guardians
@@ -14,16 +15,16 @@ namespace Guardians
 	{
 		//TODO: We should also include any initialization stuff, such as update values or initial movement data.
 		[ProtoMember(1)]
-		private readonly NetworkEntityGuid[] _NowVisibleEntities;
+		private readonly EntityCreationData[] _EntitiesToCreate;
 
 		[ProtoMember(2)]
 		private readonly NetworkEntityGuid[] _OutOfRangeEntities;
 
 		/// <summary>
-		/// List of now newly visible entites.
+		/// List of now newly visible entites to create.
 		/// </summary>
 		[ProtoIgnore]
-		public IReadOnlyCollection<NetworkEntityGuid> NowVisibleEntities => _NowVisibleEntities;
+		public IReadOnlyCollection<EntityCreationData> EntitiesToCreate => _EntitiesToCreate;
 
 		/// <summary>
 		/// List of now out-of-range entities.
@@ -32,9 +33,9 @@ namespace Guardians
 		public IReadOnlyCollection<NetworkEntityGuid> OutOfRangeEntities => _OutOfRangeEntities;
 
 		/// <inheritdoc />
-		public NetworkObjectVisibilityChangeEventPayload(NetworkEntityGuid[] nowVisibleEntities, NetworkEntityGuid[] outOfRangeEntities)
+		public NetworkObjectVisibilityChangeEventPayload([NotNull] EntityCreationData[] entitiesToCreate, [NotNull] NetworkEntityGuid[] outOfRangeEntities)
 		{
-			_NowVisibleEntities = nowVisibleEntities ?? throw new ArgumentNullException(nameof(nowVisibleEntities));
+			_EntitiesToCreate = entitiesToCreate ?? throw new ArgumentNullException(nameof(entitiesToCreate));
 			_OutOfRangeEntities = outOfRangeEntities ?? throw new ArgumentNullException(nameof(outOfRangeEntities));
 		}
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ProtoBuf;
 
 namespace Guardians
 {
@@ -32,6 +33,8 @@ namespace Guardians
 		/// </summary>
 		public static IReadOnlyDictionary<GamePayloadOperationCode, Type> ClientPayloadTypesByOpcode => _ClientPayloadTypesByOpcode.Value;
 
+		public static IReadOnlyCollection<Type> AllProtobufModels { get; }
+
 		static ZoneServerMetadataMarker()
 		{
 			PayloadTypes = typeof(ClientSessionClaimRequestPayload)
@@ -48,6 +51,12 @@ namespace Guardians
 			_ClientPayloadTypesByOpcode = new Lazy<IReadOnlyDictionary<GamePayloadOperationCode, Type>>(() => PayloadTypes
 				.Where(t => typeof(GameClientPacketPayload).IsAssignableFrom(t))
 				.ToDictionary(type => type.GetCustomAttribute<GamePayloadAttribute>().OperationCode), true);
+
+			AllProtobufModels = typeof(ClientSessionClaimRequestPayload)
+				.Assembly
+				.GetTypes()
+				.Where(t => t.GetCustomAttribute<ProtoContractAttribute>() != null)
+				.ToArray();
 		}
 	}
 }

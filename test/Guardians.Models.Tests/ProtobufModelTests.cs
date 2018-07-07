@@ -15,6 +15,8 @@ namespace Guardians
 	{
 		public static IEnumerable<Type> AllProtobufPayloadModels => ZoneServerMetadataMarker.PayloadTypes;
 
+		public static IEnumerable<Type> AllProtobufModels => ZoneServerMetadataMarker.AllProtobufModels;
+
 		[Test]
 		public void Test_No_Duplicate_OpCodes_For_Same_PayloadType()
 		{
@@ -33,6 +35,42 @@ namespace Guardians
 		{
 			//assert
 			Assert.True(payloadType.GetCustomAttribute<GamePayloadAttribute>() != null, $"Payload is missing {nameof(GamePayloadAttribute)}. Type: {payloadType.Name}");
+		}
+
+		[Test]
+		[TestCaseSource(nameof(AllProtobufModels))]
+		public void Test_All_ProtobufModels_Dont_Have_Duplicate_Keys(Type payloadType)
+		{
+			Console.WriteLine(payloadType.Name);
+			//arrange
+			ProtoMemberAttribute[] attributes = payloadType
+				.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+				.Where(info => info.GetCustomAttribute<ProtoMemberAttribute>() != null)
+				.Select(info => info.GetCustomAttribute<ProtoMemberAttribute>())
+				.ToArray();
+
+			//assert
+			Assert.AreEqual(attributes.Length, attributes.Distinct(new ProtoMemberKeyIdComparer()).Count(), $"Protobuf Model had duplicate keys. Type: {payloadType.Name}");
+		}
+
+		private class ProtoMemberKeyIdComparer : EqualityComparer<ProtoMemberAttribute>
+		{
+			/// <inheritdoc />
+			public override bool Equals(ProtoMemberAttribute x, ProtoMemberAttribute y)
+			{
+				if(x == null)
+					return y == null;
+				else if(y == null)
+					return false;
+
+				return x.Tag == y.Tag;
+			}
+
+			/// <inheritdoc />
+			public override int GetHashCode(ProtoMemberAttribute obj)
+			{
+				return obj.Tag;
+			}
 		}
 
 		private class PayloadTypeEqualityComparerByOpCodeAndType : EqualityComparer<Type>

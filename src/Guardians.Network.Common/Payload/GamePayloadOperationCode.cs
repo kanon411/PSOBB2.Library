@@ -13,5 +13,7 @@ namespace Guardians
 		/// For the session claim payloads.
 		/// </summary>
 		ClientSessionClaim = 1,
+
+		EntityVisibilityChange = 2
 	}
 }

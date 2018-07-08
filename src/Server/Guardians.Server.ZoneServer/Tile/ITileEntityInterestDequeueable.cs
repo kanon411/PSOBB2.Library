@@ -1,6 +1,6 @@
 ﻿namespace Guardians
 {
-	public interface ITileEntityQueueInteractable
+	public interface ITileEntityInterestDequeueable
 	{
 		/// <summary>
 		/// The internally managed queue that contains all the entites that are leaving the queue

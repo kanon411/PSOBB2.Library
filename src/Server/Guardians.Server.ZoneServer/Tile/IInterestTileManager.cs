@@ -9,6 +9,6 @@ namespace Guardians
 		/// <summary>
 		/// The tiles, mapped by tile id, in the tile manager.
 		/// </summary>
-		IReadOnlyDictionary<int, IInterestTile> Tiles { get; }
+		IReadOnlyDictionary<int, IReadonlyInterestTile> Tiles { get; }
 	}
 }

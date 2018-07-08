@@ -13,6 +13,6 @@ namespace Guardians
 		/// <summary>
 		/// The Network GUID contained inside the container.
 		/// </summary>
-		NetworkEntityGuid NetworkGuid { get; }
+		NetworkEntityGuid EntityGuid { get; }
 	}
 }

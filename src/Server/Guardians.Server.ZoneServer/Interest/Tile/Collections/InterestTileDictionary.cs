@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Guardians
 {
-	public sealed class InterestTileDictionary : Dictionary<int, InterestTile>, IReadOnlyDictionary<int, IReadonlyInterestTile>
+	public sealed class InterestTileDictionary : Dictionary<int, InterestTile>, IReadOnlyDictionary<int, IReadonlyInterestCollection>
 	{
 		public InterestTileDictionary()
 		{
@@ -37,13 +37,13 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		IEnumerator<KeyValuePair<int, IReadonlyInterestTile>> IEnumerable<KeyValuePair<int, IReadonlyInterestTile>>.GetEnumerator()
+		IEnumerator<KeyValuePair<int, IReadonlyInterestCollection>> IEnumerable<KeyValuePair<int, IReadonlyInterestCollection>>.GetEnumerator()
 		{
 			throw new NotSupportedException($"Does not support iterating the readonly dictionary of tiles.");
 		}
 
 		/// <inheritdoc />
-		public bool TryGetValue(int key, out IReadonlyInterestTile value)
+		public bool TryGetValue(int key, out IReadonlyInterestCollection value)
 		{
 			bool result = base.TryGetValue(key, out InterestTile t);
 
@@ -52,12 +52,12 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		IReadonlyInterestTile IReadOnlyDictionary<int, IReadonlyInterestTile>.this[int key] => base[key];
+		IReadonlyInterestCollection IReadOnlyDictionary<int, IReadonlyInterestCollection>.this[int key] => base[key];
 
 		/// <inheritdoc />
-		IEnumerable<int> IReadOnlyDictionary<int, IReadonlyInterestTile>.Keys => base.Keys;
+		IEnumerable<int> IReadOnlyDictionary<int, IReadonlyInterestCollection>.Keys => base.Keys;
 
 		/// <inheritdoc />
-		IEnumerable<IReadonlyInterestTile> IReadOnlyDictionary<int, IReadonlyInterestTile>.Values => base.Values;
+		IEnumerable<IReadonlyInterestCollection> IReadOnlyDictionary<int, IReadonlyInterestCollection>.Values => base.Values;
 	}
 }

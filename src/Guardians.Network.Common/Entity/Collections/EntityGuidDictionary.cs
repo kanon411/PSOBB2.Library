@@ -8,25 +8,23 @@ namespace Guardians
 	/// <summary>
 	/// Generic dictionary with <see cref="NetworkEntityGuid"/> key types.
 	/// </summary>
-	/// <typeparam name="TKey">Key type.</typeparam>
 	/// <typeparam name="TValue">Value type.</typeparam>
-	public class EntityGuidDictionary<TKey, TValue> : Dictionary<TKey, TValue>
-		where TKey : NetworkEntityGuid
+	public class EntityGuidDictionary<TValue> : Dictionary<NetworkEntityGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
 	{
 		public EntityGuidDictionary()
-			: base(NetworkGuidEqualityComparer<TKey>.Instance)
+			: base(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
 		{
 
 		}
 
 		public EntityGuidDictionary(int capacity)
-			: base(capacity, NetworkGuidEqualityComparer<TKey>.Instance)
+			: base(capacity, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
 		{
 
 		}
 
-		public EntityGuidDictionary(IDictionary<TKey, TValue> dictionary)
-			: base(dictionary, NetworkGuidEqualityComparer<TKey>.Instance)
+		public EntityGuidDictionary(IDictionary<NetworkEntityGuid, TValue> dictionary)
+			: base(dictionary, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
 		{
 
 		}

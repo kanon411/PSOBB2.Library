@@ -4,13 +4,8 @@ using System.Text;
 
 namespace Guardians
 {
-	public interface IReadonlyInterestTile
+	public interface IReadonlyInterestCollection
 	{
-		/// <summary>
-		/// The ID of the tile.
-		/// </summary>
-		int TileId { get; }
-
 		/// <summary>
 		/// Represents the contained entites.
 		/// </summary>
@@ -28,6 +23,6 @@ namespace Guardians
 		/// They have not actually joined the tile so won't be in <see cref="ContainedEntities"/>.
 		/// They will join the tile in the next update.
 		/// </summary>
-		IReadOnlyCollection<NetworkEntityGuid> QueueJoiningEntities { get; }
+		IReadOnlyCollection<NetworkEntityGuid> QueuedJoiningEntities { get; }
 	}
 }

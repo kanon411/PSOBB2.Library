@@ -27,11 +27,12 @@ namespace Guardians
 		{
 			if (x == null)
 			{
-				if (y == null)
-					return true;
+				return y == null;
 			}
+			else if(y == null)
+				return false;
 
-			return y.Equals(x);
+			return x.RawGuidValue == y.RawGuidValue;
 		}
 
 		public override int GetHashCode(TType obj)

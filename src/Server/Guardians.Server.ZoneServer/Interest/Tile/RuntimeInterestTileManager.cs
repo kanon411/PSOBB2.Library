@@ -6,12 +6,12 @@ using JetBrains.Annotations;
 
 namespace Guardians
 {
-	public sealed class RuntimeInterestTileManager : IInterestTileManager
+	public sealed class RuntimeInterestTileManager : IInterestTileManager, IGameTickable
 	{
 		private InterestTileDictionary _Tiles { get; }
 
 		/// <inheritdoc />
-		public IReadOnlyDictionary<int, IReadonlyInterestTile> Tiles => _Tiles;
+		public IReadOnlyDictionary<int, IReadonlyInterestCollection> Tiles => _Tiles;
 
 		/// <summary>
 		/// The tile logger.
@@ -29,6 +29,12 @@ namespace Guardians
 			: this(new InterestTileDictionary(), logger)
 		{
 
+		}
+
+		public void BuildTileGroups()
+		{
+			//Tile groups encompass 9 tiles. A middle tile, the main tile, and neighboring tiles
+			//these tiles are shared throughtout other groups too.
 		}
 
 		/// <inheritdoc />
@@ -87,6 +93,12 @@ namespace Guardians
 		object IRegisterable<int, object>.Retrieve(int key)
 		{
 			throw new NotSupportedException($"Cannot retrieve tiles.");
+		}
+
+		/// <inheritdoc />
+		public void Tick()
+		{
+
 		}
 	}
 }

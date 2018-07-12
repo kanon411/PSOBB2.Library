@@ -1,57 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Text;
 using JetBrains.Annotations;
 
 namespace Guardians
 {
-	
-	/// <summary>
-	/// Add/Remove interface for an interest set.
-	/// (We don't use ICollection because of all the ridiculous methods like CopyTo and others)
-	/// </summary>
-	public interface ITileEntityInterestSet
+	public sealed class InterestCollection : IReadonlyInterestCollection, IEntityInterestQueueable, IEntityInterestDequeueable, IEntityInterestSet
 	{
-		/// <summary>
-		/// Adds an entity to the interest set.
-		/// </summary>
-		/// <param name="guid">The entity to add.</param>
-		/// <returns>True if the entity was added. False if it is already contained.</returns>
-		bool Add(NetworkEntityGuid guid);
-
-		/// <summary>
-		/// Tries to remove an entity in the interest set.
-		/// If it is in the interest set, and successfully removed, it will return true.
-		/// If it not contained it will return false.
-		/// </summary>
-		/// <param name="guid">The entity to add.</param>
-		/// <returns>True if the entity was found and removed.</returns>
-		bool Remove(NetworkEntityGuid guid);
-	}
-
-	public sealed class InterestTile : IReadonlyInterestTile, ITileEntityInterestQueueable, ITileEntityInterestDequeueable, ITileEntityInterestSet
-	{
-		/// <inheritdoc />
-		public int TileId { get; }
-
 		/// <summary>
 		/// Set that contains all the entites in the tile.
 		/// Is a unique set.
 		/// </summary>
-		private readonly HashSet<NetworkEntityGuid> _ContainedEntities = new HashSet<NetworkEntityGuid>();
+		private readonly HashSet<NetworkEntityGuid> _ContainedEntities = new HashSet<NetworkEntityGuid>(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance);
 
 		/// <summary>
 		/// Ordered queue of leaving entites.
 		/// Should be contained in <see cref="ContainedEntities"/>
 		/// </summary>
-		private readonly TileEntityQueue _LeavingTileQueue = new TileEntityQueue();
+		private readonly NetworkEntityGuidQueue _LeavingQueue = new NetworkEntityGuidQueue();
 
 		/// <summary>
 		/// Ordered queue of entering entites.
 		/// Not contained in <see cref="ContainedEntities"/>
 		/// </summary>
-		private readonly TileEntityQueue _EnteringTileQueue = new TileEntityQueue();
+		private readonly NetworkEntityGuidQueue _EnteringQueue = new NetworkEntityGuidQueue();
 
 		/// <summary>
 		/// Represents the contained entites.
@@ -63,26 +35,20 @@ namespace Guardians
 		/// They have not left the title if they are in this collection, so won't be in <see cref="ContainedEntities"/>.
 		/// They will leave the title in the next update.
 		/// </summary>
-		public IReadOnlyCollection<NetworkEntityGuid> QueuedLeavingEntities => _LeavingTileQueue;
+		public IReadOnlyCollection<NetworkEntityGuid> QueuedLeavingEntities => _LeavingQueue;
 
 		/// <summary>
 		/// The collection of enties that are queued for entering the tile.
 		/// They have not actually joined the tile so won't be in <see cref="ContainedEntities"/>.
 		/// They will join the tile in the next update.
 		/// </summary>
-		public IReadOnlyCollection<NetworkEntityGuid> QueueJoiningEntities => _EnteringTileQueue;
+		public IReadOnlyCollection<NetworkEntityGuid> QueuedJoiningEntities => _EnteringQueue;
 
 		/// <inheritdoc />
-		public IDequeable<NetworkEntityGuid> LeavingTileQueue => _LeavingTileQueue;
+		public IDequeable<NetworkEntityGuid> LeavingDequeueable => _LeavingQueue;
 
 		/// <inheritdoc />
-		public IDequeable<NetworkEntityGuid> EnteringTileQueue => _EnteringTileQueue;
-
-		/// <inheritdoc />
-		public InterestTile(int tileId)
-		{
-			TileId = tileId;
-		}
+		public IDequeable<NetworkEntityGuid> EnteringDequeueable => _EnteringQueue;
 
 		/// <inheritdoc />
 		public void Register([NotNull] NetworkEntityGuid key, [NotNull] NetworkEntityGuid value)
@@ -91,7 +57,7 @@ namespace Guardians
 			if(value == null) throw new ArgumentNullException(nameof(value));
 
 			//Both key and value are the same
-			_EnteringTileQueue.Enqueue(value);
+			_EnteringQueue.Enqueue(value);
 		}
 
 		/// <inheritdoc />
@@ -116,7 +82,7 @@ namespace Guardians
 		{
 			if(key == null) throw new ArgumentNullException(nameof(key));
 
-			_LeavingTileQueue.Enqueue(key);
+			_LeavingQueue.Enqueue(key);
 			return true;
 		}
 

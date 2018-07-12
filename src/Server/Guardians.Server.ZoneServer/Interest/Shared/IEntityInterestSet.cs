@@ -4,7 +4,7 @@
 	/// Add/Remove interface for an interest set.
 	/// (We don't use ICollection because of all the ridiculous methods like CopyTo and others)
 	/// </summary>
-	public interface ITileEntityInterestSet
+	public interface IEntityInterestSet
 	{
 		/// <summary>
 		/// Adds an entity to the interest set.

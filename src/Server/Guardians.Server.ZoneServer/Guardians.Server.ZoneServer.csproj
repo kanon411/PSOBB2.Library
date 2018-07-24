@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Common\Guardians.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
@@ -34,6 +35,10 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Factory\" />
   </ItemGroup>
 
 </Project>

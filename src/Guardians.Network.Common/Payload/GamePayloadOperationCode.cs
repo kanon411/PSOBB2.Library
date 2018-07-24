@@ -14,6 +14,8 @@ namespace Guardians
 		/// </summary>
 		ClientSessionClaim = 1,
 
-		EntityVisibilityChange = 2
+		EntityVisibilityChange = 2,
+
+		PlayerSelfSpawn = 3,
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using GladNet;
 using JetBrains.Annotations;
 
@@ -11,19 +12,15 @@ namespace Guardians
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }
 
-		private IReadonlyEntityGuidMappable<MovementInformation> MovementInformationMappable { get; }
-
-		private IReadonlyEntityGuidMappable<ZoneClientSession> SessionMappable { get; }
+		private INetworkMessageSender<EntityVisibilityChangeContext> VisibilityMessageSender { get; }
 
 		/// <inheritdoc />
 		public DefaultInterestRadiusManager(
-			[NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementInformationMappable, 
-			[NotNull] IReadonlyEntityGuidMappable<ZoneClientSession> sessionMappable, 
-			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections)
+			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
+			[NotNull] VisibilityChangeMessageSender visibilityMessageSender)
 		{
-			MovementInformationMappable = movementInformationMappable ?? throw new ArgumentNullException(nameof(movementInformationMappable));
-			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
 			ManagedInterestCollections = managedInterestCollections ?? throw new ArgumentNullException(nameof(managedInterestCollections));
+			VisibilityMessageSender = visibilityMessageSender ?? throw new ArgumentNullException(nameof(visibilityMessageSender));
 		}
 
 		/// <inheritdoc />
@@ -71,22 +68,7 @@ namespace Guardians
 				//We should only build packets for players.
 				if(kvp.Key.EntityType == EntityType.Player)
 				{
-					//TODO: Provide movement mappable
-					InterestChangedPacketBuilder changedPacketBuilder = new InterestChangedPacketBuilder(MovementInformationMappable);
-
-					//We delegate the packet building to the packet builder. But we still need to send it.
-					//Sending is async so it can be fired off and not awaited, we won't want to await it
-					NetworkObjectVisibilityChangeEventPayload changeEventPayload = changedPacketBuilder.Build(kvp.Value.QueuedJoiningEntities, kvp.Value.QueuedLeavingEntities);
-
-					//TODO: This will happen under disconnection circumstances. We need better disconnection handling.
-					if(!SessionMappable.ContainsKey(kvp.Key))
-						throw new InvalidOperationException($"Session that owns: {kvp.Key} no longer exists.");
-
-					//TODO: Send packet
-					ZoneClientSession session = SessionMappable[kvp.Key];
-
-					session.SendService.SendMessage(changeEventPayload, DeliveryMethod.ReliableOrdered)
-						.ConfigureAwait(false);
+					VisibilityMessageSender.Send(new EntityVisibilityChangeContext(kvp.Key, kvp.Value));
 				}
 
 				//No matter player or NPC we should dequeue the joining/leaving

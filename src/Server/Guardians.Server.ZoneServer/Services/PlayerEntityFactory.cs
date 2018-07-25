@@ -31,7 +31,7 @@ namespace Guardians
 			//When we create the actual world represenation of the
 			//player we need to add all the entity guid mappable references
 			//to it as well.
-			return null;
+			throw new NotImplementedException($"Need to implement the creation for player entity.");
 		}
 	}
 }

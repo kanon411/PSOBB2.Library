@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -15,15 +16,19 @@ namespace Guardians
 
 		private INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> SpawnPayloadSender { get; }
 
+		private ILog Logger { get; }
+
 		/// <inheritdoc />
 		public PlayerEntityEntryManager(
 			[NotNull] IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext>> playerEntitySessionDequeable, 
 			[NotNull] IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory,
-			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender)
+			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender,
+			[NotNull] ILog logger)
 		{
 			PlayerEntitySessionDequeable = playerEntitySessionDequeable ?? throw new ArgumentNullException(nameof(playerEntitySessionDequeable));
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			SpawnPayloadSender = spawnPayloadSender ?? throw new ArgumentNullException(nameof(spawnPayloadSender));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -37,6 +42,9 @@ namespace Guardians
 			while(!PlayerEntitySessionDequeable.isEmpty)
 			{
 				KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext> dequeuedPlayerSession = PlayerEntitySessionDequeable.Dequeue();
+
+				if(Logger.IsDebugEnabled)
+					Logger.Debug($"Dequeueing entity creation request for: {dequeuedPlayerSession.Key.EntityType}:{dequeuedPlayerSession.Key.EntityId}");
 
 				//We don't need to do anything with the returned object.
 				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value));

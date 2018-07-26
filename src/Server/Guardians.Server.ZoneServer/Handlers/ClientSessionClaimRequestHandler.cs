@@ -24,9 +24,6 @@ namespace Guardians
 		public async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientSessionClaimRequestPayload payload)
 		{
 			//TODO: We should actually send a request to the gameserver to try to validate this. But for now, so we can move on, it remains unimplemented
-			await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.Success))
-				.ConfigureAwait(false);
-
 			NetworkEntityGuidBuilder builder = new NetworkEntityGuidBuilder();
 
 			builder
@@ -36,8 +33,9 @@ namespace Guardians
 			//Now that the session has been accepted we should prepare the entry to the world for
 			//the session's character
 			bool result = PlayerEntityGatewayEntry.TryEntityEnter(new PlayerEntitySessionContext(), builder.Build());
-			
-			//TODO: Log or something? If this happens we have real problems.
+
+			await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.Success))
+				.ConfigureAwait(false);
 		}
 	}
 }

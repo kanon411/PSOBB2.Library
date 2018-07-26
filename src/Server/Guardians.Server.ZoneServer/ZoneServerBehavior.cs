@@ -34,33 +34,31 @@ namespace Guardians
 				});
 		}
 
-		/**/
-
 		private async Task Start()
 		{
 			//TODO: Refactor this into a factory.
 
-			ZoneServerApplicationBase appBase = BuildApplicationBase();
+			ApplicationBaseContainerPair container = BuildApplicationBase();
 
-			if(!appBase.StartServer())
+			if(!container.ApplicationBase.StartServer())
 			{
-				string error = $"Failed to start server on Details: {appBase.ServerAddress}";
+				string error = $"Failed to start server on Details: {container.ApplicationBase.ServerAddress}";
 
-				if(appBase.Logger.IsErrorEnabled)
-					appBase.Logger.Error(error);
+				if(container.ApplicationBase.Logger.IsErrorEnabled)
+					container.ApplicationBase.Logger.Error(error);
 
 				throw new InvalidOperationException(error);
 			}
 
-			await appBase.BeginListening()
+			await container.ApplicationBase.BeginListening()
 				.ConfigureAwait(false);
 
-			if(appBase.Logger.IsWarnEnabled)
-				appBase.Logger.Warn($"Server is shutting down.");
+			if(container.ApplicationBase.Logger.IsWarnEnabled)
+				container.ApplicationBase.Logger.Warn($"Server is shutting down.");
 		}
 
 		//TODO: Create factory/clean this up
-		private static ZoneServerApplicationBase BuildApplicationBase()
+		private static ApplicationBaseContainerPair BuildApplicationBase()
 		{
 			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
 

@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Autofac;
+using JetBrains.Annotations;
 
 namespace Guardians
 {
-	public sealed class DefaultZoneServerApplicationBaseFactory : IFactoryCreatable<ZoneServerApplicationBase, ZoneServerApplicationBaseCreationContext>
+	public sealed class DefaultZoneServerApplicationBaseFactory : IFactoryCreatable<ApplicationBaseContainerPair, ZoneServerApplicationBaseCreationContext>
 	{
 		/// <inheritdoc />
-		public ZoneServerApplicationBase Create(ZoneServerApplicationBaseCreationContext context)
+		public ApplicationBaseContainerPair Create(ZoneServerApplicationBaseCreationContext context)
 		{
 			ContainerBuilder builder = new ContainerBuilder();
 
@@ -19,7 +21,21 @@ namespace Guardians
 
 			IContainer build = builder.Build();
 
-			return build.Resolve<ZoneServerApplicationBase>();
+			return new ApplicationBaseContainerPair(build, build.Resolve<ZoneServerApplicationBase>());build.Resolve<ZoneServerApplicationBase>();
+		}
+	}
+
+	public sealed class ApplicationBaseContainerPair
+	{
+		public IContainer ServiceContainer { get; }
+
+		public ZoneServerApplicationBase ApplicationBase { get; }
+
+		/// <inheritdoc />
+		public ApplicationBaseContainerPair([NotNull] IContainer serviceContainer, [NotNull] ZoneServerApplicationBase applicationBase)
+		{
+			ServiceContainer = serviceContainer ?? throw new ArgumentNullException(nameof(serviceContainer));
+			ApplicationBase = applicationBase ?? throw new ArgumentNullException(nameof(applicationBase));
 		}
 	}
 }

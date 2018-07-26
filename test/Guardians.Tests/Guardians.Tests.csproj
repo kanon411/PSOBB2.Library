@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Database.Common\Guardians.Database.Common.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Database.GameServer\Guardians.Database.GameServer.csproj" />
+    <ProjectReference Include="..\..\src\Server\Guardians.Server.ZoneServer\Guardians.Server.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Service.GameServer\Guardians.Service.GameServer.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Service.ServiceDiscovery\Guardians.Service.ServiceDiscovery.csproj" />
   </ItemGroup>

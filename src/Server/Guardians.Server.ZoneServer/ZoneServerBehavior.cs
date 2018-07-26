@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Common.Logging;
 using GladNet;
 using ProtoBuf.Meta;
@@ -33,9 +34,13 @@ namespace Guardians
 				});
 		}
 
+		/**/
+
 		private async Task Start()
 		{
-			ZoneServerApplicationBase appBase = new ZoneServerApplicationBase(new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006), new UnityLogger(LogLevel.All));
+			//TODO: Refactor this into a factory.
+
+			ZoneServerApplicationBase appBase = BuildApplicationBase();
 
 			if(!appBase.StartServer())
 			{
@@ -52,6 +57,14 @@ namespace Guardians
 
 			if(appBase.Logger.IsWarnEnabled)
 				appBase.Logger.Warn($"Server is shutting down.");
+		}
+
+		//TODO: Create factory/clean this up
+		private static ZoneServerApplicationBase BuildApplicationBase()
+		{
+			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
+
+			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006)));
 		}
 	}
 }

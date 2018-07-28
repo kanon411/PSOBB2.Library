@@ -7,6 +7,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -55,6 +56,56 @@ namespace Guardians
 			builder.RegisterType<ZoneServerApplicationBase>()
 				.SingleInstance()
 				.AsSelf();
+
+			//gametickables
+			builder.RegisterType<DefaultInterestRadiusManager>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityEntryManager>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			//tickable services (may be shared with handlers)
+			builder.RegisterType<EntityGuidDictionary<InterestCollection>>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<InterestCollection>>()
+				.As<IEntityGuidMappable<InterestCollection>>()
+				.SingleInstance(); //only 1, else we will get problems
+
+			//TODO: We should automate the registeration of message senders
+			builder.RegisterType<VisibilityChangeMessageSender>()
+				.AsImplementedInterfaces()
+				.AsSelf();
+
+			builder.RegisterType<EntityGuidDictionary<MovementInformation>>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<MovementInformation>>()
+				.As<IEntityGuidMappable<MovementInformation>>()
+				.SingleInstance();
+
+			builder.RegisterType<EntityGuidDictionary<ZoneClientSession>>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<ZoneClientSession>>()
+				.As<IEntityGuidMappable<ZoneClientSession>>()
+				.SingleInstance();
+
+			builder.RegisterType<EntityGuidDictionary<GameObject>>()
+				.As<IEntityGuidMappable<GameObject>>()
+				.As<IReadonlyEntityGuidMappable<GameObject>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityFactory>()
+				.As<IFactoryCreatable<GameObject, PlayerEntityCreationContext>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.RegisterType<GenericMessageSender<PlayerSelfSpawnEventPayload>>()
+				.AsSelf()
+				.AsImplementedInterfaces();
 
 			//We also have to register factories now for session/sessionclient
 			builder.RegisterType<DefaultManagedClientSessionFactory>()

@@ -37,12 +37,7 @@ namespace Guardians
 				.AsManaged();
 
 			client.Connect(IPAddress.Parse("127.0.0.1"), 5006);
-
-			Thread.Sleep(1000);
-
 			client.SendMessage(new ClientSessionClaimRequestPayload("Test", 2));
-
-			Thread.Sleep(5000);
 		}
 	}
 }

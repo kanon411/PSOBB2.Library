@@ -2,43 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Common.Logging;
+using Common.Logging.Simple;
 using GladNet;
-using ProtoBuf.Meta;
-using UnityEngine;
 
 namespace Guardians
 {
-	public sealed class ZoneServerBehavior : MonoBehaviour
+	class Program
 	{
-		private IGameTickable[] GameTickables { get; set; }
-		
-		private ILog Logger { get; set; }
+		private static IGameTickable[] GameTickables { get; set; }
 
-		void Awake()
+		private static ILog Logger { get; set; }
+
+		private static bool isStarted { get; set; }
+
+		static void Main(string[] args)
 		{
-			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
-			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
+			Console.WriteLine("Starting test server");
 
-			ZoneServerMetadataMarker.ClientPayloadTypesByOpcode
-				.AsEnumerable()
-				.Concat(ZoneServerMetadataMarker.ServerPayloadTypesByOpcode)
-				.ToList()
-				.ForEach(pair =>
-				{
-					//TODO: If they don't have the the direct base-type matching this will cause exceptions
-					RuntimeTypeModel.Default.Add(pair.Value, true);
+			isStarted = false;
+			Task.Factory.StartNew(Start);
 
-					RuntimeTypeModel.Default[pair.Value.BaseType]
-						.AddSubType((int)pair.Key, pair.Value);
-
-				});
+			while(true)
+				FixedUpdate();
 		}
 
-		private async Task Start()
+		private static async Task Start()
 		{
 			//TODO: Refactor this into a factory.
 
@@ -48,7 +39,7 @@ namespace Guardians
 
 			if(!container.ApplicationBase.StartServer())
 			{
-				string error = $"Failed to start server on Details: {container.ApplicationBase.ServerAddress}";
+				string error = $"Failed to start server on Details: {container.ApplicationBase.ServerAddress.ToString()}";
 
 				if(container.ApplicationBase.Logger.IsErrorEnabled)
 					container.ApplicationBase.Logger.Error(error);
@@ -60,8 +51,20 @@ namespace Guardians
 				.Resolve<IEnumerable<IGameTickable>>()
 				.ToArray();
 
-			await container.ApplicationBase.BeginListening()
-				.ConfigureAwait(false);
+			isStarted = true;
+
+			Logger.Info("Server begining listen.");
+
+			try
+			{
+				await container.ApplicationBase.BeginListening()
+					.ConfigureAwait(false);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine($"Exception: {e.Message} \n\n Stack: {e.StackTrace} Inner: {e.InnerException?.Message} \n\n InnerStack: {e.InnerException?.StackTrace}");
+				throw;
+			}
 
 			if(container.ApplicationBase.Logger.IsWarnEnabled)
 				container.ApplicationBase.Logger.Warn($"Server is shutting down.");
@@ -72,11 +75,14 @@ namespace Guardians
 		{
 			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
 
-			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006)));
+			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new ConsoleLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006)));
 		}
 
-		void FixedUpdate()
+		static void FixedUpdate()
 		{
+			if(!isStarted)
+				return;
+
 			if(GameTickables == null || GameTickables.Length == 0)
 			{
 				if(Logger.IsDebugEnabled)

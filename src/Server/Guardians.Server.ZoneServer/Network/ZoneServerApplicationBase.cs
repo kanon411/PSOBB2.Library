@@ -23,8 +23,9 @@ namespace Guardians
 		{
 			if(serverAddress == null) throw new ArgumentNullException(nameof(serverAddress));
 			if(logger == null) throw new ArgumentNullException(nameof(logger));
-			if(managedSessionFactory == null) throw new ArgumentNullException(nameof(managedSessionFactory));
-			if(managedClientSessionFactory == null) throw new ArgumentNullException(nameof(managedClientSessionFactory));
+
+			ManagedSessionFactory = managedSessionFactory ?? throw new ArgumentNullException(nameof(managedSessionFactory));
+			ManagedClientSessionFactory = managedClientSessionFactory ?? throw new ArgumentNullException(nameof(managedClientSessionFactory));
 
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Created server base.");

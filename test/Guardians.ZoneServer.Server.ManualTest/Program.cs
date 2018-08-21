@@ -20,7 +20,8 @@ namespace Guardians
 
 		static void Main(string[] args)
 		{
-			ProtobufPayloadRegister payloadRegister = new ProtobufPayloadRegister();
+			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
+			payloadRegister.RegisterDefaults();
 			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
 
 			Console.WriteLine("Starting test server");

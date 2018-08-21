@@ -16,7 +16,8 @@ namespace Guardians
 		{
 			ProtobufNetGladNetSerializerAdapter serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
 
-			ProtobufPayloadRegister payloadRegister = new ProtobufPayloadRegister();
+			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
+			payloadRegister.RegisterDefaults();
 
 			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
 

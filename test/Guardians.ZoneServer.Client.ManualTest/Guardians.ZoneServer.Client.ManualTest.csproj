@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\src\Guardians.Common\Guardians.Common.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Network.Common\Guardians.Network.Common.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
   </ItemGroup>
 
 </Project>

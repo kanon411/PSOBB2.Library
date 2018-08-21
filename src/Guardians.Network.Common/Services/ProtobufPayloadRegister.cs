@@ -6,11 +6,16 @@ using ProtoBuf.Meta;
 
 namespace Guardians
 {
-	public sealed class ProtobufPayloadRegister
+	public class ProtobufPayloadRegister
 	{
 		public ProtobufPayloadRegister()
 		{
 			
+		}
+
+		public virtual void RegisterDefaults()
+		{
+			//Do nothing.
 		}
 
 		public void Register(IReadOnlyDictionary<GamePayloadOperationCode, Type> clientPayloadByOpCode, IReadOnlyDictionary<GamePayloadOperationCode, Type> serverPayloadByOpCode)

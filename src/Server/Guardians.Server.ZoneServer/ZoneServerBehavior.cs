@@ -20,7 +20,8 @@ namespace Guardians
 
 		void Awake()
 		{
-			ProtobufPayloadRegister payloadRegister = new ProtobufPayloadRegister();
+			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
+			payloadRegister.RegisterDefaults();
 			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
 		}
 

@@ -7,7 +7,7 @@ namespace Guardians
 	/// <summary>
 	/// Collection of connection/sessions.
 	/// </summary>
-	public interface ISessionCollection : IReadOnlyCollection<ZoneClientSession>
+	public interface ISessionCollection : IReadOnlyCollection<ZoneClientSession>, IRegisterable<int, ZoneClientSession>
 	{
 		
 	}

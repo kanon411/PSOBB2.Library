@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using GladNet;
 using JetBrains.Annotations;
 
 namespace Guardians
@@ -10,12 +11,12 @@ namespace Guardians
 	public sealed class GenericMessageSender<TPayloadType> : INetworkMessageSender<GenericSingleTargetMessageContext<TPayloadType>> 
 		where TPayloadType : GameServerPacketPayload
 	{
-		private IReadonlyEntityGuidMappable<ZoneClientSession> SessionMappable { get; }
+		private IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> SessionMappable { get; }
 
 		private ILog Logger { get; }
 
 		/// <inheritdoc />
-		public GenericMessageSender([NotNull] IReadonlyEntityGuidMappable<ZoneClientSession> sessionMappable, [NotNull] ILog logger)
+		public GenericMessageSender([NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable, [NotNull] ILog logger)
 		{
 			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -32,8 +33,12 @@ namespace Guardians
 			}
 			else
 			{
+				//We MUST unwrap the task otherwise we will not get exceptions. Which is BAD.
 				//TODO: Develivery method?
-				SessionMappable[context.EntityGuid].SendService.SendMessageImmediately(context.PayloadToSend);
+				SessionMappable[context.EntityGuid].SendMessageImmediately(context.PayloadToSend)
+					.ConfigureAwait(false)
+					.GetAwaiter()
+					.GetResult();
 			}
 		}
 
@@ -56,8 +61,10 @@ namespace Guardians
 			}
 			else
 			{
+				//Should we configure await false?
 				//TODO: Develivery method?
-				await SessionMappable[context.EntityGuid].SendService.SendMessage(context.PayloadToSend);
+				await SessionMappable[context.EntityGuid].SendMessage(context.PayloadToSend)
+					.ConfigureAwait(false);
 			}
 		}
 	}

@@ -20,6 +20,9 @@ namespace Guardians
 
 		static void Main(string[] args)
 		{
+			ProtobufPayloadRegister payloadRegister = new ProtobufPayloadRegister();
+			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
+
 			Console.WriteLine("Starting test server");
 
 			isStarted = false;

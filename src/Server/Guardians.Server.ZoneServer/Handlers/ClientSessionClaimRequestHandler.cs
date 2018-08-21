@@ -32,7 +32,7 @@ namespace Guardians
 
 			//Now that the session has been accepted we should prepare the entry to the world for
 			//the session's character
-			bool result = PlayerEntityGatewayEntry.TryEntityEnter(new PlayerEntitySessionContext(), builder.Build());
+			bool result = PlayerEntityGatewayEntry.TryEntityEnter(new PlayerEntitySessionContext(context.PayloadSendService), builder.Build());
 
 			await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.Success))
 				.ConfigureAwait(false);

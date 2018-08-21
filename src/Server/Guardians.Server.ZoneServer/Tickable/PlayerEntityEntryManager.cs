@@ -46,8 +46,12 @@ namespace Guardians
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Dequeueing entity creation request for: {dequeuedPlayerSession.Key.EntityType}:{dequeuedPlayerSession.Key.EntityId}");
 
+				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
 				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value));
+
+				if(Logger.IsDebugEnabled)
+					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");
 
 				//Once added we then need to send to the client a packet indicating its creation
 				SpawnPayloadSender.Send(BuildSpawnEventPayload(dequeuedPlayerSession));

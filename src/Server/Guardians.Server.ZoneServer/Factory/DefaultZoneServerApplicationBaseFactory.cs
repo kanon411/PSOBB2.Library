@@ -21,7 +21,7 @@ namespace Guardians
 
 			IContainer build = builder.Build();
 
-			return new ApplicationBaseContainerPair(build, build.Resolve<ZoneServerApplicationBase>());build.Resolve<ZoneServerApplicationBase>();
+			return new ApplicationBaseContainerPair(build, build.Resolve<ZoneServerApplicationBase>());
 		}
 	}
 

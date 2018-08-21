@@ -20,22 +20,8 @@ namespace Guardians
 
 		void Awake()
 		{
-			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
-			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
-
-			ZoneServerMetadataMarker.ClientPayloadTypesByOpcode
-				.AsEnumerable()
-				.Concat(ZoneServerMetadataMarker.ServerPayloadTypesByOpcode)
-				.ToList()
-				.ForEach(pair =>
-				{
-					//TODO: If they don't have the the direct base-type matching this will cause exceptions
-					RuntimeTypeModel.Default.Add(pair.Value, true);
-
-					RuntimeTypeModel.Default[pair.Value.BaseType]
-						.AddSubType((int)pair.Key, pair.Value);
-
-				});
+			ProtobufPayloadRegister payloadRegister = new ProtobufPayloadRegister();
+			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
 		}
 
 		private async Task Start()
@@ -88,7 +74,15 @@ namespace Guardians
 			//This moves the game simulation forward more or less, many things are scheduled to occur
 			//via the main game loop on the main game thread
 			for(int i = 0; i < GameTickables.Length; i++)
-				GameTickables[i].Tick();
+				try
+				{
+					GameTickables[i].Tick();
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Encountered Exception in Main GameLoop: {e.Message} \n\n Stack: {e.StackTrace}");
+				}
 		}
 	}
 }

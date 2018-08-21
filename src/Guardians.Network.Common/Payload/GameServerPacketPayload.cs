@@ -12,5 +12,9 @@ namespace Guardians
 	public abstract class GameServerPacketPayload : IGamePacketPayload
 	{
 		//We don't need anything in the base packet actually.
+		public GameServerPacketPayload()
+		{
+			
+		}
 	}
 }

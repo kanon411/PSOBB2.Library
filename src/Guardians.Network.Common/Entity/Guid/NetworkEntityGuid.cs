@@ -110,5 +110,11 @@ namespace Guardians
 		{
 			return RawGuidValue.GetHashCode();
 		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return $"{EntityType}:{EntityId}";
+		}
 	}
 }

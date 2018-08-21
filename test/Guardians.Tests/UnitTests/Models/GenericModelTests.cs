@@ -43,6 +43,7 @@ namespace Guardians
 			= ModelTypes
 				.SelectMany(t => t.GetProperties().Where(p => p.GetCustomAttribute<TIgnorePropertyAttributeType>() == null).Select(p => (MemberInfo)p).Concat(t.GetFields()));
 
+		//TODO: This actually doesn't check properly, how can we?
 		[Test]
 		[TestCaseSource(nameof(ModelTypes))]
 		public void Test_Model_Has_Parameterless_Ctor(Type t)

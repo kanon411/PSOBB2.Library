@@ -86,10 +86,10 @@ namespace Guardians
 				.As<IEntityGuidMappable<MovementInformation>>()
 				.SingleInstance();
 
-			builder.RegisterType<EntityGuidDictionary<ZoneClientSession>>()
+			builder.RegisterType<EntityGuidDictionary<IPeerPayloadSendService<GameServerPacketPayload>>>()
 				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<ZoneClientSession>>()
-				.As<IEntityGuidMappable<ZoneClientSession>>()
+				.As<IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>>>()
+				.As<IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>>>()
 				.SingleInstance();
 
 			builder.RegisterType<EntityGuidDictionary<GameObject>>()

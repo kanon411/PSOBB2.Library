@@ -9,7 +9,7 @@ namespace Guardians
 	/// <summary>
 	/// Collection of sessions connected.
 	/// </summary>
-	public sealed class DefaultSessionCollection : ISessionCollection, IRegisterable<int, ZoneClientSession>
+	public sealed class DefaultSessionCollection : ISessionCollection
 	{
 		/// <inheritdoc />
 		public int Count => ZoneMap.Count;

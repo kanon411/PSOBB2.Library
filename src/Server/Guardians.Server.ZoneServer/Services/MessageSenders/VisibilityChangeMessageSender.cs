@@ -11,10 +11,10 @@ namespace Guardians
 	{
 		private IReadonlyEntityGuidMappable<MovementInformation> MovementInformationMappable { get; }
 
-		private IReadonlyEntityGuidMappable<ZoneClientSession> SessionMappable { get; }
+		private IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> SessionMappable { get; }
 
 		/// <inheritdoc />
-		public VisibilityChangeMessageSender([NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementInformationMappable, [NotNull] IReadonlyEntityGuidMappable<ZoneClientSession> sessionMappable)
+		public VisibilityChangeMessageSender([NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementInformationMappable, [NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable)
 		{
 			MovementInformationMappable = movementInformationMappable ?? throw new ArgumentNullException(nameof(movementInformationMappable));
 			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
@@ -26,9 +26,9 @@ namespace Guardians
 			if(context == null) throw new ArgumentNullException(nameof(context));
 
 			NetworkObjectVisibilityChangeEventPayload changeEventPayload = BuildPayload(context.InterestCollection);
-			ZoneClientSession session = RetrieveSession(context.EntityGuid);
+			IPeerPayloadSendService<GameServerPacketPayload> sendService = RetrieveSendService(context.EntityGuid);
 
-			session.SendService.SendMessage(changeEventPayload, DeliveryMethod.ReliableOrdered)
+			sendService.SendMessage(changeEventPayload, DeliveryMethod.ReliableOrdered)
 				.ConfigureAwait(false);
 		}
 
@@ -38,14 +38,14 @@ namespace Guardians
 			if(context == null) throw new ArgumentNullException(nameof(context));
 
 			NetworkObjectVisibilityChangeEventPayload changeEventPayload = BuildPayload(context.InterestCollection);
-			ZoneClientSession session = RetrieveSession(context.EntityGuid);
+			IPeerPayloadSendService<GameServerPacketPayload> sendService = RetrieveSendService(context.EntityGuid);
 
 			//TODO: Should we await or return?
-			await session.SendService.SendMessage(changeEventPayload, DeliveryMethod.ReliableOrdered)
+			await sendService.SendMessage(changeEventPayload, DeliveryMethod.ReliableOrdered)
 				.ConfigureAwait(false);
 		}
 
-		private ZoneClientSession RetrieveSession([NotNull] NetworkEntityGuid guid)
+		private IPeerPayloadSendService<GameServerPacketPayload> RetrieveSendService([NotNull] NetworkEntityGuid guid)
 		{
 			if(guid == null) throw new ArgumentNullException(nameof(guid));
 
@@ -53,8 +53,7 @@ namespace Guardians
 			if(!SessionMappable.ContainsKey(guid))
 				throw new InvalidOperationException($"Session that owns: {guid} no longer exists.");
 
-			ZoneClientSession session = SessionMappable[guid];
-			return session;
+			return SessionMappable[guid];
 		}
 
 		private NetworkObjectVisibilityChangeEventPayload BuildPayload([NotNull] IReadonlyInterestCollection interestCollection)

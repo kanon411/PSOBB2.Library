@@ -56,6 +56,8 @@ namespace Guardians
 				.Assembly
 				.GetTypes()
 				.Where(t => t.GetCustomAttribute<ProtoContractAttribute>() != null)
+				.Concat(new Type[] { typeof(GameClientPacketPayload), typeof(GameServerPacketPayload) })
+				.Distinct()
 				.ToArray();
 		}
 	}

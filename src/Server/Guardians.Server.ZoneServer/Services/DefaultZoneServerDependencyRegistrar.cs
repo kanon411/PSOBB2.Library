@@ -7,6 +7,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
+using SceneJect.Common;
 using UnityEngine;
 
 namespace Guardians
@@ -60,6 +61,7 @@ namespace Guardians
 			//gametickables
 			builder.RegisterType<DefaultInterestRadiusManager>()
 				.AsSelf()
+				.As<IInterestRadiusManager>()
 				.As<IGameTickable>()
 				.SingleInstance();
 
@@ -98,6 +100,10 @@ namespace Guardians
 				.AsSelf()
 				.SingleInstance();
 
+			builder.RegisterType<DefaultGameObjectToEntityMappable>()
+				.As<IGameObjectToEntityMappable>()
+				.SingleInstance();
+
 			builder.RegisterType<PlayerEntityFactory>()
 				.As<IFactoryCreatable<GameObject, PlayerEntityCreationContext>>()
 				.AsSelf()
@@ -119,6 +125,15 @@ namespace Guardians
 			builder.RegisterType<QueueBasedPlayerEntitySessionGateway>()
 				.AsImplementedInterfaces()
 				.SingleInstance(); //must only be one, since it's basically a collection.
+
+			//Sceneject stuff that handles GameObject injections
+			builder.RegisterType<DefaultGameObjectFactory>()
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
+			builder.RegisterType<DefaultInjectionStrategy>()
+				.As<IInjectionStrategy>()
+				.SingleInstance();
 		}
 	}
 }

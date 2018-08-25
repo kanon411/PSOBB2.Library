@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GladNet;
 using JetBrains.Annotations;
+using SceneJect.Common;
 using UnityEngine;
 
 namespace Guardians
@@ -17,13 +18,21 @@ namespace Guardians
 
 		private IEntityGuidMappable<MovementInformation> GuidToMovementInfoMappable { get; }
 
+		//Sceneject GameObject factory
+		private IGameObjectFactory ObjectFactory { get; }
+
 		/// <inheritdoc />
-		public PlayerEntityFactory([NotNull] IEntityGuidMappable<GameObject> guidToGameObjectMappable, [NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, [NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, [NotNull] IEntityGuidMappable<MovementInformation> guidToMovementInfoMappable)
+		public PlayerEntityFactory([NotNull] IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
+			[NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, 
+			[NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, 
+			[NotNull] IEntityGuidMappable<MovementInformation> guidToMovementInfoMappable,
+			[NotNull] IGameObjectFactory objectFactory)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
 			GuidToSessionMappable = guidToSessionMappable ?? throw new ArgumentNullException(nameof(guidToSessionMappable));
 			GuidToInterestCollectionMappable = guidToInterestCollectionMappable ?? throw new ArgumentNullException(nameof(guidToInterestCollectionMappable));
 			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
+			ObjectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
 		}
 
 		/// <inheritdoc />
@@ -32,10 +41,10 @@ namespace Guardians
 			//TODO: Implement this
 			GuidToSessionMappable.Add(context.EntityGuid, context.SessionContext.ZoneSession);
 
-			//When we create the actual world represenation of the
-			//player we need to add all the entity guid mappable references
-			//to it as well.
-			return null;
+			//TODO: We should handle prefabs on the server-side better.
+			GameObject playerEntity = Resources.Load<GameObject>("Prefabs/PlayerEntity");
+
+			return ObjectFactory.Create(playerEntity);
 		}
 	}
 }

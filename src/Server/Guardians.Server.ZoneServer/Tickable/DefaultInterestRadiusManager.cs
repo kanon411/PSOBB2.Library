@@ -65,6 +65,11 @@ namespace Guardians
 			//events to them
 			foreach(var kvp in ManagedInterestCollections)
 			{
+				//We want to skip any collection that doesn't have any pending changes.
+				//No reason to send a message about it nor dequeue anything
+				if(!kvp.Value.HasPendingChanges())
+					continue;
+
 				//We should only build packets for players.
 				if(kvp.Key.EntityType == EntityType.Player)
 				{

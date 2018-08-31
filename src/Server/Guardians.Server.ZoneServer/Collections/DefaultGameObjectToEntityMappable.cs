@@ -8,14 +8,19 @@ using UnityEngine;
 namespace Guardians
 {
 	//TODO: Do a better implementation
-	public sealed class DefaultGameObjectToEntityMappable : IGameObjectToEntityMappable
+	public sealed class DefaultGameObjectToEntityMappable : IReadonlyGameObjectToEntityMappable, IGameObjectToEntityMappable
 	{
 		/// <inheritdoc />
-		public IReadOnlyDictionary<GameObject, NetworkEntityGuid> ObjectToEntityMap { get; }
+		public IReadOnlyDictionary<GameObject, NetworkEntityGuid> ObjectToEntityMap => InternalMap;
+
+		/// <inheritdoc />
+		IDictionary<GameObject, NetworkEntityGuid> IGameObjectToEntityMappable.ObjectToEntityMap => InternalMap;
+
+		private ConcurrentDictionary<GameObject, NetworkEntityGuid> InternalMap { get; }
 
 		public DefaultGameObjectToEntityMappable()
 		{
-			ObjectToEntityMap = new ConcurrentDictionary<GameObject, NetworkEntityGuid>();
+			InternalMap = new ConcurrentDictionary<GameObject, NetworkEntityGuid>();
 		}
 
 		/// <inheritdoc />

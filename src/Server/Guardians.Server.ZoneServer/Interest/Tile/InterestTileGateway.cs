@@ -29,7 +29,7 @@ namespace Guardians
 		private ILog Logger { get; }
 
 		[Inject]
-		private IGameObjectToEntityMappable ObjectToEntityMapper { get; }
+		private IReadonlyGameObjectToEntityMappable ObjectToEntityMapper { get; }
 
 		[Cache]
 		private int ComputeTileId()

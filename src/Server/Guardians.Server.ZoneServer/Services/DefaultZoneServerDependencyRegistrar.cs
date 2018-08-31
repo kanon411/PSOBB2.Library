@@ -101,6 +101,7 @@ namespace Guardians
 				.SingleInstance();
 
 			builder.RegisterType<DefaultGameObjectToEntityMappable>()
+				.As<IReadonlyGameObjectToEntityMappable>()
 				.As<IGameObjectToEntityMappable>()
 				.SingleInstance();
 

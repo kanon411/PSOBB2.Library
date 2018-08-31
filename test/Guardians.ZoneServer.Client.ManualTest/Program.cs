@@ -30,7 +30,11 @@ namespace Guardians
 			await client.ConnectAsync(IPAddress.Parse("127.0.0.1"), 5006);
 			Thread.Sleep(3000);
 
-			await client.SendMessage(new ClientSessionClaimRequestPayload("Test", 2));
+			Console.WriteLine("Enter Character ID for test:");
+
+			int characterId = int.Parse(Console.ReadLine());
+
+			await client.SendMessage(new ClientSessionClaimRequestPayload("Test", characterId));
 
 			try
 			{

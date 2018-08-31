@@ -51,7 +51,10 @@ namespace Guardians
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(playerEntityGameObject, context.EntityGuid);
 			//We just create our own manaul interest collection here.
-			GuidToInterestCollectionMappable.Add(context.EntityGuid, new InterestCollection()); 
+			GuidToInterestCollectionMappable.Add(context.EntityGuid, new InterestCollection());
+
+			//TODO: Better handle initial movement/position data
+			GuidToMovementInfoMappable.Add(context.EntityGuid, new MovementInformation(Vector3.zero, 0));
 
 			return playerEntityGameObject;
 		}

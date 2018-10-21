@@ -79,7 +79,20 @@ namespace Guardians
 		{
 			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
 
-			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new ConsoleLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006)));
+			try
+			{
+				return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new ConsoleLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("127.0.0.1"), 5006)));
+			}
+			catch(Exception e)
+			{
+
+				Console.WriteLine($"Encounter Exception: {e.Message} \n\n{e.StackTrace}\n\n");
+
+				if(e.InnerException != null)
+					Console.WriteLine($"Inner Exception: {e.InnerException.Message}\n\n{e.InnerException.StackTrace}\n\n");
+
+				throw;
+			}
 		}
 
 		static void FixedUpdate()

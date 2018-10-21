@@ -25,4 +25,10 @@
     <ProjectReference Include="..\..\src\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\lib\Unity\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

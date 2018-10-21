@@ -137,7 +137,7 @@ namespace Guardians
 				.SingleInstance();
 
 			//This is for mapping connection IDs to the main controlled EntityGuid.
-			builder.RegisterType<Dictionary<int, NetworkEntityGuid>>()
+			builder.RegisterInstance(new Dictionary<int, NetworkEntityGuid>())
 				.As<IReadOnlyDictionary<int, NetworkEntityGuid>>()
 				.As<IDictionary<int, NetworkEntityGuid>>()
 				.SingleInstance();

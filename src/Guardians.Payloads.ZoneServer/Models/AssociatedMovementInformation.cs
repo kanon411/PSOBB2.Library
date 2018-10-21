@@ -12,7 +12,7 @@ namespace Guardians
 	/// </summary>
 	[ProtoContract]
 	public sealed class AssociatedMovementInformation : IEntityGuidContainer
-    {
+	{
 		/// <summary>
 		/// The GUID of the entity.
 		/// </summary>

@@ -17,5 +17,7 @@ namespace Guardians
 		EntityVisibilityChange = 2,
 
 		PlayerSelfSpawn = 3,
+
+		MovementDataUpdate = 4,
 	}
 }

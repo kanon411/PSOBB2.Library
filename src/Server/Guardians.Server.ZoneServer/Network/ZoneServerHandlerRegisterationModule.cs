@@ -50,7 +50,7 @@ namespace Guardians
 			return GetType().GetTypeInfo()
 				.Assembly
 				.GetTypes()
-				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,,>)));
+				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,,>)) && !t.IsAbstract);
 		}
 	}
 }

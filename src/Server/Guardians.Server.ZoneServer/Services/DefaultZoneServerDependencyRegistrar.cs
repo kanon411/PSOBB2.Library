@@ -135,6 +135,12 @@ namespace Guardians
 			builder.RegisterType<DefaultInjectionStrategy>()
 				.As<IInjectionStrategy>()
 				.SingleInstance();
+
+			//This is for mapping connection IDs to the main controlled EntityGuid.
+			builder.RegisterType<Dictionary<int, NetworkEntityGuid>>()
+				.As<IReadOnlyDictionary<int, NetworkEntityGuid>>()
+				.As<IDictionary<int, NetworkEntityGuid>>()
+				.SingleInstance();
 		}
 	}
 }

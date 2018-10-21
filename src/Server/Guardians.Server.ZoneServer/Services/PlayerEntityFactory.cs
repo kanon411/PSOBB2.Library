@@ -23,13 +23,16 @@ namespace Guardians
 		//Sceneject GameObject factory
 		private IGameObjectFactory ObjectFactory { get; }
 
+		private IDictionary<int, NetworkEntityGuid> ConnectionIDToControllingEntityMap { get; }
+
 		/// <inheritdoc />
 		public PlayerEntityFactory([NotNull] IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
 			[NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, 
 			[NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, 
 			[NotNull] IEntityGuidMappable<MovementInformation> guidToMovementInfoMappable,
 			[NotNull] IGameObjectFactory objectFactory,
-			[NotNull] IGameObjectToEntityMappable gameObjectToEntityMap)
+			[NotNull] IGameObjectToEntityMappable gameObjectToEntityMap, 
+			[NotNull] IDictionary<int, NetworkEntityGuid> connectionIdToControllingEntityMap)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
 			GuidToSessionMappable = guidToSessionMappable ?? throw new ArgumentNullException(nameof(guidToSessionMappable));
@@ -37,13 +40,14 @@ namespace Guardians
 			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
 			ObjectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
+			ConnectionIDToControllingEntityMap = connectionIdToControllingEntityMap ?? throw new ArgumentNullException(nameof(connectionIdToControllingEntityMap));
 		}
 
 		/// <inheritdoc />
 		public GameObject Create(PlayerEntityCreationContext context)
 		{
-			//TODO: Implement this
 			GuidToSessionMappable.Add(context.EntityGuid, context.SessionContext.ZoneSession);
+			ConnectionIDToControllingEntityMap.Add(context.SessionContext.ConnectionId, context.EntityGuid);
 
 			//TODO: We should handle prefabs on the server-side better.
 			GameObject playerEntityPrefab = Resources.Load<GameObject>("Prefabs/PlayerEntity");

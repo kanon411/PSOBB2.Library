@@ -19,9 +19,9 @@
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.38" />
     <PackageReference Include="GladNet3.Server.DotNetTcpServer" Version="3.0.38" />
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
-    <PackageReference Include="SceneJect.Common" Version="3.0.8" />
-    <PackageReference Include="SceneJect.Editor" Version="3.0.8" />
-    <PackageReference Include="SceneJect.Metadata" Version="3.0.8" />
+    <PackageReference Include="SceneJect.Common" Version="3.0.11" />
+    <PackageReference Include="SceneJect.Editor" Version="3.0.11" />
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.11" />
   </ItemGroup>
 
   <ItemGroup>

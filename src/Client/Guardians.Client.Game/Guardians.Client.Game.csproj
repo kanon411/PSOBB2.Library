@@ -9,8 +9,8 @@
     <PackageReference Include="GaiaOnline.Game.Network.Client" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
-    <PackageReference Include="SceneJect.Common" Version="3.0.8" />
-    <PackageReference Include="SceneJect.Metadata" Version="3.0.8" />
+    <PackageReference Include="SceneJect.Common" Version="3.0.11" />
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.11" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.16" />
     <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.16" />

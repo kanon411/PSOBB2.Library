@@ -26,6 +26,11 @@ namespace Guardians
 
 			GameObject rootObject = other.GetRootGameObject();
 
+			//TODO: Should entites be interested in themselves?
+			//Right now the way this is set up we don't check if this is the entity itself.
+			//Which means an entity is always interested in itself, unless manually removed
+			//because when it enters the world it will enter its own interest radius
+			//This behavior MAY change.
 			NetworkEntityGuid me = ObjectToEntityMapper.ObjectToEntityMap[transform.GetRootGameObject()];
 
 			if(!ObjectToEntityMapper.ObjectToEntityMap.ContainsKey(rootObject))

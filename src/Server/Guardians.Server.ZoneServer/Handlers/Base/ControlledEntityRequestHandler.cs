@@ -17,12 +17,12 @@ namespace Guardians
 	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : IPeerPayloadSpecificMessageHandler<TSpecificPayloadType, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>> 
 		where TSpecificPayloadType : GameClientPacketPayload
 	{
-		private IReadOnlyDictionary<int, NetworkEntityGuid> ConnectionIdToEntityMap { get; }
+		private IReadonlyConnectionEntityCollection ConnectionIdToEntityMap { get; }
 
 		protected Common.Logging.ILog Logger { get; }
 
 		//TODO: Don't use dictionary, creatre interface.
-		protected ControlledEntityRequestHandler([NotNull] ILog logger, [NotNull] IReadOnlyDictionary<int, NetworkEntityGuid> connectionIdToEntityMap)
+		protected ControlledEntityRequestHandler([NotNull] ILog logger, [NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap)
 		{
 			ConnectionIdToEntityMap = connectionIdToEntityMap ?? throw new ArgumentNullException(nameof(connectionIdToEntityMap));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));

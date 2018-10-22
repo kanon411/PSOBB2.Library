@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using ProtoBuf;
 using SceneJect.Common;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Guardians
 {
@@ -59,16 +60,7 @@ namespace Guardians
 				.AsSelf();
 
 			//gametickables
-			builder.RegisterType<DefaultInterestRadiusManager>()
-				.AsSelf()
-				.As<IInterestRadiusManager>()
-				.As<IGameTickable>()
-				.SingleInstance();
-
-			builder.RegisterType<PlayerEntityEntryManager>()
-				.AsSelf()
-				.As<IGameTickable>()
-				.SingleInstance();
+			RegisterGameTickable(builder);
 
 			//tickable services (may be shared with handlers)
 			builder.RegisterType<EntityGuidDictionary<InterestCollection>>()
@@ -137,9 +129,35 @@ namespace Guardians
 				.SingleInstance();
 
 			//This is for mapping connection IDs to the main controlled EntityGuid.
-			builder.RegisterInstance(new Dictionary<int, NetworkEntityGuid>())
-				.As<IReadOnlyDictionary<int, NetworkEntityGuid>>()
-				.As<IDictionary<int, NetworkEntityGuid>>()
+			builder.RegisterInstance(new ConnectionEntityMap())
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityGuidEnumerable>()
+				.As<IPlayerEntityGuidEnumerable>()
+				.AsSelf();
+
+			builder.RegisterType<MovementUpdateMessageSender>()
+				.As<INetworkMessageSender<EntityMovementMessageContext>>()
+				.AsSelf();
+		}
+
+		private static void RegisterGameTickable(ContainerBuilder builder)
+		{
+			builder.RegisterType<DefaultInterestRadiusManager>()
+				.AsSelf()
+				.As<IInterestRadiusManager>()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityEntryManager>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityMovementDataUpdateManager>()
+				.AsSelf()
+				.As<IGameTickable>()
 				.SingleInstance();
 		}
 	}

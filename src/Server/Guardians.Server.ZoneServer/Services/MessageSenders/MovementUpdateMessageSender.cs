@@ -41,7 +41,12 @@ namespace Guardians
 			if(!GuidToInterestCollectionMappable.ContainsKey(context.EntityGuid))
 				return;
 
-			//TODO: Check if empty
+			//TODO: Revert the 1 check. Since we'll only send dirty updates. Client doesn't need it's own movement data
+			//We don't need to send a message at all if we aren't even interested in other entites.
+			//The reason we do 1 instead of 0 is entites are interested in themselves by default
+			if(GuidToInterestCollectionMappable[context.EntityGuid].ContainedEntities.Count <= 1)
+				return;
+
 			MovementDataUpdateEventPayload movementUpdateEvent = new MovementDataUpdateEventPayload(BuildMovementBlocks(context.EntityGuid));
 
 			SessionMappable[context.EntityGuid].SendMessage(movementUpdateEvent);

@@ -36,6 +36,8 @@ namespace Guardians
 
 			await client.SendMessage(new ClientSessionClaimRequestPayload("Test", characterId));
 
+			int packetCount = 0;
+
 			try
 			{
 				while(true)
@@ -43,7 +45,7 @@ namespace Guardians
 					NetworkIncomingMessage<GameServerPacketPayload> message = await client.ReadMessageAsync()
 						.ConfigureAwait(false);
 
-					Console.WriteLine($"\nRecieved Message Type: {message.Payload.GetType().Name}");
+					Console.WriteLine($"\n#{packetCount} - Recieved Message Type: {message.Payload.GetType().Name}");
 				}
 			}
 			catch(Exception e)

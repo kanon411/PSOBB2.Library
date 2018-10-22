@@ -26,12 +26,13 @@ namespace Guardians
 
 		public void Execute()
 		{
+			//TODO: Fix entity leaving removal (don't add them)
 			//Adds all the entering entities.
 			DequeueAddAllEntities(Dequeueable.EnteringDequeueable, InterestSet);
-			DequeueAddAllEntities(Dequeueable.LeavingDequeueable, InterestSet);
+			DequeueAddAllEntities(Dequeueable.LeavingDequeueable, InterestSet, false);
 		}
 
-		private static void DequeueAddAllEntities([NotNull] IDequeable<NetworkEntityGuid> interestDequeueable, [NotNull] IEntityInterestSet interestSet)
+		private static void DequeueAddAllEntities([NotNull] IDequeable<NetworkEntityGuid> interestDequeueable, [NotNull] IEntityInterestSet interestSet, bool add = true)
 		{
 			if(interestDequeueable == null) throw new ArgumentNullException(nameof(interestDequeueable));
 			if(interestSet == null) throw new ArgumentNullException(nameof(interestSet));
@@ -39,7 +40,11 @@ namespace Guardians
 			while(!interestDequeueable.isEmpty)
 			{
 				NetworkEntityGuid entityGuid = interestDequeueable.Dequeue();
-				interestSet.Add(entityGuid);
+
+				if(add)
+					interestSet.Add(entityGuid);
+				else
+					interestSet.Remove(entityGuid);
 			}
 		}
 	}

@@ -7,6 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
     <PackageReference Include="GaiaOnline.Game.Network.Client" Version="1.0.2" />
+    <PackageReference Include="GladNet3.Client.API" Version="3.0.45" />
+    <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.45" />
+    <PackageReference Include="GladNet3.Client.Unity3D" Version="3.0.45" />
+    <PackageReference Include="GladNet3.Handler.API" Version="3.0.45" />
+    <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.45" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
     <PackageReference Include="SceneJect.Common" Version="3.0.11" />
@@ -22,12 +27,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
     <ProjectReference Include="..\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj" />
     <ProjectReference Include="..\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Sirenix.OdinInspector.Attributes">
+      <HintPath>..\..\..\lib\Nido\Sirenix.OdinInspector.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\..\..\lib\Nido\Sirenix.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
     </Reference>

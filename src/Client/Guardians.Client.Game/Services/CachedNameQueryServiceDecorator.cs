@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using PostSharp.Patterns.Caching;
+//using PostSharp.Patterns.Caching;
 
 namespace Guardians
 {
-	[CacheConfiguration(AbsoluteExpiration = 5, IgnoreThisParameter = true)]
+	//[CacheConfiguration(AbsoluteExpiration = 5, IgnoreThisParameter = true)]
 	public sealed class CachedNameQueryServiceDecorator : INameQueryService
 	{
 		private INameQueryService NameQueryService { get; }
@@ -19,14 +19,14 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		[Cache]
+		//[Cache]
 		public string Retrieve(int id)
 		{
 			return NameQueryService.Retrieve(id);
 		}
 
 		/// <inheritdoc />
-		[Cache]
+		//[Cache]
 		public async Task<string> RetrieveAsync(int id)
 		{
 			return await NameQueryService.RetrieveAsync(id)

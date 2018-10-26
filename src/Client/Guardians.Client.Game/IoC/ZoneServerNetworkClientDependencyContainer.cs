@@ -48,6 +48,10 @@ namespace Guardians
 			register.RegisterType<PayloadInterceptMessageSendService<GameClientPacketPayload>>()
 				.As<IPeerRequestSendService<GameClientPacketPayload>>()
 				.SingleInstance();
+
+			register.RegisterInstance(new UnityLogger(LogLevel.All))
+				.As<ILog>()
+				.SingleInstance();
 		}
 	}
 }

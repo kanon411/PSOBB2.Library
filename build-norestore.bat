@@ -19,5 +19,3 @@ xcopy src\Server\Guardians.Service.GameServer\bin\Debug_Local\netcoreapp2.0\publ
 
 START build-norestore-client.bat
 START build-norestore-zoneserver.bat
-
-PAUSE

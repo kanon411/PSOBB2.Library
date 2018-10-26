@@ -20,6 +20,8 @@ namespace Guardians
 
 			register.RegisterType<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
+
+			register.RegisterModule<ZoneClientHandlerRegisterationModule>();
 		}
 	}
 }

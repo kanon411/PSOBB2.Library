@@ -34,6 +34,9 @@ namespace Guardians
 
 				//TODO: This is demo code, we should handle actual movement differently.
 				GameObjectMap[movementUpdate.EntityGuid].transform.position = movementUpdate.InitialMovementData.CurrentPosition;
+
+				//This is just a hacky little thing we're using for the demo
+				GameObjectMap[movementUpdate.EntityGuid].GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection();
 			}
 
 			return Task.CompletedTask;

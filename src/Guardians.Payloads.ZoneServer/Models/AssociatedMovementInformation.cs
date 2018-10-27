@@ -19,6 +19,7 @@ namespace Guardians
 		[ProtoMember(1, IsRequired = true)]
 		public NetworkEntityGuid EntityGuid { get; }
 
+		//TODO: Rename
 		/// <summary>
 		/// The initial movement data to use to
 		/// create the entity.

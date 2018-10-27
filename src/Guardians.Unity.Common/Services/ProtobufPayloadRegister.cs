@@ -28,6 +28,11 @@ namespace Guardians
 			if(!RuntimeTypeModel.Default.IsDefined(typeof(Vector3)))
 				RuntimeTypeModel.Default.Add(typeof(Vector3), false)
 					.Add(nameof(Vector3.x), nameof(Vector3.y), nameof(Vector3.z));
+
+			//Register Vector2
+			if(!RuntimeTypeModel.Default.IsDefined(typeof(Vector2)))
+				RuntimeTypeModel.Default.Add(typeof(Vector2), false)
+					.Add(nameof(Vector2.x), nameof(Vector2.y));
 		}
 	}
 }

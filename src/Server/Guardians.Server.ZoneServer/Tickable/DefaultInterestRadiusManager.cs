@@ -31,6 +31,10 @@ namespace Guardians
 
 			ThrowIfNoEntityInterestManaged(entryContext, entityGuid);
 
+			//If it's already known then we should ignore it.
+			if(ManagedInterestCollections.ContainsKey(entryContext))
+				return false;
+
 			ManagedInterestCollections[entryContext].Register(entityGuid, entityGuid);
 
 			return true;
@@ -49,6 +53,8 @@ namespace Guardians
 			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
 
 			ThrowIfNoEntityInterestManaged(entryContext, entityGuid);
+
+			//TODO: Handle case where it's not known and we want to unknow it somehow
 
 			return ManagedInterestCollections[entryContext].Unregister(entityGuid);
 		}

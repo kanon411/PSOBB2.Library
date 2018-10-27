@@ -41,6 +41,7 @@ namespace Guardians
 				return;
 			}
 
+			//TODO: Handle non-bool result. Ex (Entered, AlreadyExists, Failed) etc.
 			bool result = RadiusManager.TryEntityEnter(me, ObjectToEntityMapper.ObjectToEntityMap[rootObject]);
 
 			if(!result)

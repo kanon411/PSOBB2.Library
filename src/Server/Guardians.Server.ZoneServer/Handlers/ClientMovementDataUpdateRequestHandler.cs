@@ -28,7 +28,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		protected override Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
+		protected override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
 		{
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.CurrentPosition}");
@@ -37,6 +37,10 @@ namespace Guardians
 			{
 				//TODO: Handle position data better, we need to actually move the entities.
 				MovementDataMap[guid] = payload.MovementData;
+
+				//TODO: Make it so that this is simplier to use.
+				//We must run this next part on the main thread because it sets a transform.
+				await new UnityYieldAwaitable();
 
 				//TODO: This is kinda demo code, directly setting the position of the root object.
 				WorldEntities[guid].transform.position = payload.MovementData.CurrentPosition;
@@ -48,9 +52,6 @@ namespace Guardians
 
 				throw;
 			}
-			
-
-			return Task.CompletedTask;
 		}
 	}
 }

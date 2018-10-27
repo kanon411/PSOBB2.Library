@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -12,14 +13,18 @@ namespace Guardians
 	{
 		private IEntityGuidMappable<MovementInformation> MovementDataMap { get; }
 
+		private IReadonlyEntityGuidMappable<GameObject> WorldEntities { get; }
+
 		/// <inheritdoc />
 		public ClientMovementDataUpdateRequestHandler(
 			[NotNull] ILog logger, 
 			[NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap, 
-			[NotNull] IEntityGuidMappable<MovementInformation> movementDataMap) 
+			[NotNull] IEntityGuidMappable<MovementInformation> movementDataMap,
+			[NotNull] IReadonlyEntityGuidMappable<GameObject> worldEntities) 
 			: base(logger, connectionIdToEntityMap)
 		{
 			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
+			WorldEntities = worldEntities ?? throw new ArgumentNullException(nameof(worldEntities));
 		}
 
 		/// <inheritdoc />
@@ -30,6 +35,9 @@ namespace Guardians
 
 			//TODO: Handle position data better, we need to actually move the entities.
 			MovementDataMap[guid] = payload.MovementData;
+
+			//TODO: This is kinda demo code, directly setting the position of the root object.
+			WorldEntities[guid].transform.position = payload.MovementData.CurrentPosition;
 
 			return Task.CompletedTask;
 		}

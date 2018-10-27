@@ -164,7 +164,7 @@ namespace Guardians
 			}
 		}
 
-		public static bool IsPublic([NotNull] this MemberInfo member)
+		public static bool IsPublic(this MemberInfo member)
 		{
 			if(member == null) throw new ArgumentNullException(nameof(member));
 

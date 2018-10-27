@@ -19,11 +19,11 @@ namespace Guardians
 		private IFactoryCreatable<GameObject, LocalPlayerCreationContext> PlayerFactory { get; }
 
 		/// <inheritdoc />
-		public PlayerSelfSpawnEventHandler(ILog logger)
+		public PlayerSelfSpawnEventHandler(ILog logger, IFactoryCreatable<GameObject, LocalPlayerCreationContext> playerFactory)
 		{
-			if(logger == null) throw new ArgumentNullException(nameof(logger));
 
-			Logger = logger;
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 		}
 
 		/// <inheritdoc />
@@ -32,6 +32,9 @@ namespace Guardians
 			//TODO: Actually handle this. Right now it's just demo code, it actually could fail.
 			if(Logger.IsInfoEnabled)
 				Logger.Info($"Recieved server commanded PlayerSpawn. Player GUID: {payload.CreationData.EntityGuid} Position: {payload.CreationData.InitialMovementData.CurrentPosition}");
+
+			//Don't do any checks for now, we just spawn
+			PlayerFactory.Create(new LocalPlayerCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData));
 
 			return Task.CompletedTask;
 		}

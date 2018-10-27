@@ -42,8 +42,7 @@ namespace Guardians
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Creating local player. GUID: {context.EntityGuid}");
 
-			//TODO: We should handle prefabs better
-			GameObject playerEntityPrefab = Resources.Load<GameObject>("Prefabs/LocalPlayer");
+			GameObject playerEntityPrefab = LoadLocalPlayerPrefab();
 			GameObject playerEntityGameObject = ObjectFactory.Create(playerEntityPrefab, context.MovementData.CurrentPosition, Quaternion.Euler(0, context.MovementData.Orientation, 0));
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(playerEntityGameObject, context.EntityGuid);
@@ -54,6 +53,19 @@ namespace Guardians
 			GuidToGameObjectMappable.Add(context.EntityGuid, playerEntityGameObject);
 
 			return playerEntityGameObject;
+		}
+
+		private static GameObject LoadLocalPlayerPrefab()
+		{
+			string prefabString = "Prefabs/LocalPlayerAvatar";
+
+			//TODO: We should handle prefabs better
+			GameObject prefab = Resources.Load<GameObject>(prefabString);
+
+			if(prefab == null)
+				throw new InvalidOperationException($"Failed to load Local Player Prefab at Path: {prefabString}");
+
+			return prefab;
 		}
 	}
 }

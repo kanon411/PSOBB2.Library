@@ -4,6 +4,8 @@ using System.Text;
 using Autofac;
 using GladNet;
 using NUnit.Framework;
+using SceneJect;
+using SceneJect.Common;
 
 namespace Guardians
 {
@@ -17,6 +19,20 @@ namespace Guardians
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
 			builder.RegisterAssemblyModules(typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly);
+
+			//Manually register SceneJect services
+			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+				.As<IGameObjectFactory>()
+				.SingleInstance();
+
+			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+				.As<IGameObjectComponentAttachmentFactory>()
+				.SingleInstance();
+
+			builder.Register(context => new DefaultManualInjectionStrategy(context.Resolve<IComponentContext>()))
+				.As<IManualInjectionStrategy>()
+				.SingleInstance();
+
 			IContainer resolver = builder.Build();
 
 			//arrange

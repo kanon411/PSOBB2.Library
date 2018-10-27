@@ -34,8 +34,13 @@ namespace Guardians
 				.As<IGameObjectToEntityMappable>()
 				.SingleInstance();
 
-			builder.RegisterType<LocalPlayerFactory>()
-				.As<IFactoryCreatable<GameObject, LocalPlayerCreationContext>>()
+			builder.RegisterType<DefaultEntityFactory<DefaultEntityCreationContext>>()
+				.As<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.RegisterType<EntityPrefabFactory>()
+				.As<IFactoryCreatable<GameObject, EntityPrefab>>()
 				.AsSelf()
 				.SingleInstance();
 		}

@@ -14,10 +14,10 @@ namespace Guardians
 	/// </summary>
 	public sealed class PlayerSelfSpawnEventHandler : BaseZoneClientGameMessageHandler<PlayerSelfSpawnEventPayload>
 	{
-		private IFactoryCreatable<GameObject, LocalPlayerCreationContext> PlayerFactory { get; }
+		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> PlayerFactory { get; }
 
 		/// <inheritdoc />
-		public PlayerSelfSpawnEventHandler(ILog logger, IFactoryCreatable<GameObject, LocalPlayerCreationContext> playerFactory)
+		public PlayerSelfSpawnEventHandler(ILog logger, IFactoryCreatable<GameObject, DefaultEntityCreationContext> playerFactory)
 			: base(logger)
 		{
 
@@ -32,7 +32,7 @@ namespace Guardians
 				Logger.Info($"Recieved server commanded PlayerSpawn. Player GUID: {payload.CreationData.EntityGuid} Position: {payload.CreationData.InitialMovementData.CurrentPosition}");
 
 			//Don't do any checks for now, we just spawn
-			PlayerFactory.Create(new LocalPlayerCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData));
+			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer));
 
 			return Task.CompletedTask;
 		}

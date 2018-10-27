@@ -75,7 +75,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Common", "src\Gua
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Tests", "test\Guardians.Tests\Guardians.Tests.csproj", "{983F41F2-7851-4544-867C-E25F81F8DFEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.ZoneServer.Server.ManualTest", "test\Guardians.ZoneServer.Server.ManualTest\Guardians.ZoneServer.Server.ManualTest.csproj", "{5FD28B56-0D0C-483F-8957-EFB4410889B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.ZoneServer.Server.ManualTest", "test\Guardians.ZoneServer.Server.ManualTest\Guardians.ZoneServer.Server.ManualTest.csproj", "{5FD28B56-0D0C-483F-8957-EFB4410889B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.ZoneServer.Common", "src\Guardians.ZoneServer.Common\Guardians.ZoneServer.Common.csproj", "{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -356,6 +358,16 @@ Global
 		{5FD28B56-0D0C-483F-8957-EFB4410889B1}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
 		{5FD28B56-0D0C-483F-8957-EFB4410889B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FD28B56-0D0C-483F-8957-EFB4410889B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -396,6 +408,7 @@ Global
 		{73252DFC-DE22-464B-8E30-C53C4B0348B4} = {D0FA9394-9069-405B-9E01-274A489B84A2}
 		{983F41F2-7851-4544-867C-E25F81F8DFEB} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 		{5FD28B56-0D0C-483F-8957-EFB4410889B1} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
+		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E} = {D0FA9394-9069-405B-9E01-274A489B84A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

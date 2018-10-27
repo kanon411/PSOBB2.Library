@@ -54,6 +54,12 @@ namespace Guardians
 			GameObject playerEntityGameObject = ObjectFactory.Create(playerEntityPrefab);
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(playerEntityGameObject, context.EntityGuid);
+
+			InterestCollection playerInterestCollection = new InterestCollection();
+
+			//directly add ourselves so we don't become interest in ourselves after spawning
+			playerInterestCollection.Add(context.EntityGuid);
+
 			//We just create our own manaul interest collection here.
 			GuidToInterestCollectionMappable.Add(context.EntityGuid, new InterestCollection());
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using ProtoBuf;
 
@@ -24,13 +25,13 @@ namespace Guardians
 		/// List of now newly visible entites to create.
 		/// </summary>
 		[ProtoIgnore]
-		public IReadOnlyCollection<EntityCreationData> EntitiesToCreate => _EntitiesToCreate;
+		public IReadOnlyCollection<EntityCreationData> EntitiesToCreate => _EntitiesToCreate ?? Array.Empty<EntityCreationData>();
 
 		/// <summary>
 		/// List of now out-of-range entities.
 		/// </summary>
 		[ProtoIgnore]
-		public IReadOnlyCollection<NetworkEntityGuid> OutOfRangeEntities => _OutOfRangeEntities;
+		public IReadOnlyCollection<NetworkEntityGuid> OutOfRangeEntities => _OutOfRangeEntities ?? Array.Empty<NetworkEntityGuid>();
 
 		/// <inheritdoc />
 		public NetworkObjectVisibilityChangeEventPayload([NotNull] EntityCreationData[] entitiesToCreate, [NotNull] NetworkEntityGuid[] outOfRangeEntities)

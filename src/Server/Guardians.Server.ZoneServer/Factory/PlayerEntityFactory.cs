@@ -59,6 +59,7 @@ namespace Guardians
 
 			//TODO: Better handle initial movement/position data
 			GuidToMovementInfoMappable.Add(context.EntityGuid, new MovementInformation(Vector3.zero, 0));
+			GuidToGameObjectMappable.Add(context.EntityGuid, playerEntityGameObject);
 
 			return playerEntityGameObject;
 		}

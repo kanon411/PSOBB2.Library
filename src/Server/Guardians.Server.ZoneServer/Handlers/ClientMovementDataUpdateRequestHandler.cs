@@ -33,11 +33,22 @@ namespace Guardians
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.CurrentPosition}");
 
-			//TODO: Handle position data better, we need to actually move the entities.
-			MovementDataMap[guid] = payload.MovementData;
+			try
+			{
+				//TODO: Handle position data better, we need to actually move the entities.
+				MovementDataMap[guid] = payload.MovementData;
 
-			//TODO: This is kinda demo code, directly setting the position of the root object.
-			WorldEntities[guid].transform.position = payload.MovementData.CurrentPosition;
+				//TODO: This is kinda demo code, directly setting the position of the root object.
+				WorldEntities[guid].transform.position = payload.MovementData.CurrentPosition;
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to update MovementData for GUID: {guid}");
+
+				throw;
+			}
+			
 
 			return Task.CompletedTask;
 		}

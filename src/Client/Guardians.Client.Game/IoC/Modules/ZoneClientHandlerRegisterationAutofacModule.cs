@@ -18,7 +18,7 @@ namespace Guardians
 		{
 			IEnumerable<Type> handlerTypes = LoadHandlerTypes().ToArray();
 
-			Debug.Log($"Found Handlers: {handlerTypes.Count()}");
+			//Debug.Log($"Found Handlers: {handlerTypes.Count()}");
 
 			//Registers each type.
 			foreach(Type t in handlerTypes)
@@ -27,7 +27,7 @@ namespace Guardians
 					.AsSelf()
 					.SingleInstance();
 
-				Debug.Log($"Registered Handler Type: {t.Name}");
+				//Debug.Log($"Registered Handler Type: {t.Name}");
 			}
 				
 

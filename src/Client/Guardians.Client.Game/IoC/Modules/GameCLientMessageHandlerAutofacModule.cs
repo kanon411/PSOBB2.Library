@@ -22,7 +22,8 @@ namespace Guardians
 				.SingleInstance();
 
 			builder.RegisterType<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
-				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
+				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
+				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));
 
 			builder.RegisterModule<ZoneClientHandlerRegisterationAutofacModule>();
 		}

@@ -57,6 +57,7 @@ namespace Guardians
 		{
 			return GuidToInterestCollectionMappable[guid]
 				.ContainedEntities
+				.Where(e => e != guid) //TODO: Temporarily we are not sending movement data about ourselves.
 				.Select(e => new AssociatedMovementInformation(e, MovementInformationMap[e]))
 				.ToArray();
 		}

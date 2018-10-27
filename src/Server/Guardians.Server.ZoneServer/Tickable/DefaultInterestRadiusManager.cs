@@ -32,7 +32,7 @@ namespace Guardians
 			ThrowIfNoEntityInterestManaged(entryContext, entityGuid);
 
 			//If it's already known then we should ignore it.
-			if(ManagedInterestCollections[entryContext].Contains(entryContext))
+			if(ManagedInterestCollections[entryContext].Contains(entityGuid))
 				return false;
 
 			ManagedInterestCollections[entryContext].Register(entityGuid, entityGuid);

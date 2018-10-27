@@ -11,7 +11,7 @@ using Module = Autofac.Module;
 namespace Guardians
 {
 	//based on the server IoC module
-	public sealed class ZoneClientHandlerRegisterationModule : Module
+	public sealed class ZoneClientHandlerRegisterationAutofacModule : Module
 	{
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)

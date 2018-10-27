@@ -8,20 +8,11 @@ using UnityEngine;
 
 namespace Guardians
 {
-	public sealed class GameClientMessageHandlerRegisterModule : NonBehaviourDependency
+	/// <summary>
+	/// Simplified creatable type for <see cref="GameClientMessageHandlerAutofacModule"/>
+	/// </summary>
+	public sealed class GameClientMessageHandlerRegisterModule : AutofacBasedDependencyRegister<GameClientMessageHandlerAutofacModule>
 	{
-		/// <inheritdoc />
-		public override void Register(ContainerBuilder register)
-		{
-			//New IPeerContext generic param now so we register as implemented interface
-			register.RegisterType<ZoneClientDefaultRequestHandler>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
 
-			register.RegisterType<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
-				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
-
-			register.RegisterModule<ZoneClientHandlerRegisterationModule>();
-		}
 	}
 }

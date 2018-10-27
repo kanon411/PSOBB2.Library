@@ -11,7 +11,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
-///using PostSharp.Patterns.Caching;
+//using PostSharp.Patterns.Caching;
 //using PostSharp.Patterns.Caching.Backends;
 using SceneJect.Common;
 using TypeSafe.Http.Net;

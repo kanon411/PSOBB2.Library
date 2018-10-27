@@ -10,20 +10,16 @@ namespace Guardians
 	/// <summary>
 	/// The handling of the session claim response.
 	/// </summary>
-	public sealed class SessionClaimResponseHandler : IPeerPayloadSpecificMessageHandler<ClientSessionClaimResponsePayload, GameClientPacketPayload>
+	public sealed class SessionClaimResponseHandler : BaseZoneClientGameMessageHandler<ClientSessionClaimResponsePayload>
 	{
-		private ILog Logger { get; }
-
 		/// <inheritdoc />
 		public SessionClaimResponseHandler(ILog logger)
+			: base(logger)
 		{
-			if(logger == null) throw new ArgumentNullException(nameof(logger));
-
-			Logger = logger;
 		}
 
 		/// <inheritdoc />
-		public Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, ClientSessionClaimResponsePayload payload)
+		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, ClientSessionClaimResponsePayload payload)
 		{
 			//TODO: Actually handle this. Right now it's just demo code, it actually could fail.
 			if(Logger.IsInfoEnabled)

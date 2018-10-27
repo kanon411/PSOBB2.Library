@@ -12,22 +12,20 @@ namespace Guardians
 	/// The handler for the player spawn event
 	/// the server sends once it enter's the client into the world.
 	/// </summary>
-	public sealed class PlayerSelfSpawnEventHandler : IPeerPayloadSpecificMessageHandler<PlayerSelfSpawnEventPayload, GameClientPacketPayload>
+	public sealed class PlayerSelfSpawnEventHandler : BaseZoneClientGameMessageHandler<PlayerSelfSpawnEventPayload>
 	{
-		private ILog Logger { get; }
-
 		private IFactoryCreatable<GameObject, LocalPlayerCreationContext> PlayerFactory { get; }
 
 		/// <inheritdoc />
 		public PlayerSelfSpawnEventHandler(ILog logger, IFactoryCreatable<GameObject, LocalPlayerCreationContext> playerFactory)
+			: base(logger)
 		{
 
-			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 		}
 
 		/// <inheritdoc />
-		public Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, PlayerSelfSpawnEventPayload payload)
+		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, PlayerSelfSpawnEventPayload payload)
 		{
 			//TODO: Actually handle this. Right now it's just demo code, it actually could fail.
 			if(Logger.IsInfoEnabled)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using Autofac.Core;
 using GladNet;
 using NUnit.Framework;
 using SceneJect;
@@ -35,8 +36,25 @@ namespace Guardians
 
 			IContainer resolver = builder.Build();
 
-			//arrange
-			MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload> handler = resolver.Resolve<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
+
+			MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload> handler = null;
+
+			//act
+			try
+			{
+				handler = resolver.Resolve<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
+			}
+			catch(DependencyResolutionException e)
+			{
+				//This makes it so the error is more readable. So we can see the exact dependency that is missing.
+				DependencyResolutionException dependencyResolveException = e;
+
+				while(dependencyResolveException.InnerException is DependencyResolutionException)
+					dependencyResolveException = (DependencyResolutionException)dependencyResolveException.InnerException;
+
+				Assert.Fail($"Failed: {dependencyResolveException.Message}\n\n{dependencyResolveException.StackTrace}");
+			}
+			
 
 			//assert
 			Assert.NotNull(handler);

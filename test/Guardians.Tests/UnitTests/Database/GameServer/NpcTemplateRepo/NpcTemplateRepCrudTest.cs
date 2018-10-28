@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Guardians
 {
 	/// <summary>
-	/// Runs all the crud repo interface default tests against the character repository.
+	/// Runs all the crud repo interface default tests against the NPC Template Repository.
 	/// </summary>
 	[TestFixture]
 	public class NpcTemplateRepCrudTest : GenericCrubRepositoryDefaultTests<NpcDatabaseContext, DatabaseBackedNpcTemplateRepository, int, NPCTemplateModel>

@@ -43,6 +43,13 @@ namespace Guardians
 		public Vector3<float> SpawnPosition { get; private set; }
 
 		/// <summary>
+		/// The initial Y-axis orientation/rotation of the NPC/Creature when spawned.
+		/// Especially important for stationary NPCs.
+		/// </summary>
+		[Required]
+		public float InitialOrientation { get; private set; }
+
+		/// <summary>
 		/// The map/zone that this creature exists in.
 		/// (Each map/zone has an origin and the <see cref="SpawnPosition"/> is based on that).
 		/// </summary>
@@ -50,7 +57,7 @@ namespace Guardians
 		public int MapId { get; private set; }
 
 		/// <inheritdoc />
-		public NPCEntryModel(int npcTemplateId, Vector3<float> spawnPosition, int mapId)
+		public NPCEntryModel(int npcTemplateId, Vector3<float> spawnPosition, float initialOrientation, int mapId)
 		{
 			if(mapId <= 0) throw new ArgumentOutOfRangeException(nameof(mapId));
 			if(npcTemplateId <= 0) throw new ArgumentOutOfRangeException(nameof(npcTemplateId));
@@ -58,14 +65,15 @@ namespace Guardians
 			NpcTemplateId = npcTemplateId;
 			SpawnPosition = spawnPosition ?? throw new ArgumentNullException(nameof(spawnPosition));
 			MapId = mapId;
+			InitialOrientation = initialOrientation;
 		}
 
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		protected NPCEntryModel()
+		protected NPCEntryModel(float initialOrientation)
 		{
-			
+			InitialOrientation = initialOrientation;
 		}
 	}
 }

@@ -13,4 +13,8 @@
     <Folder Include="Packet\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Guardians.Common\Guardians.Common.csproj" />
+  </ItemGroup>
+
 </Project>

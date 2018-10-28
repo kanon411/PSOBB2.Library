@@ -3,7 +3,6 @@ dotnet publish src/Server/Guardians.Service.ServiceDiscovery/Guardians.Service.S
 dotnet publish src/Server/Guardians.Service.ServerSelection/Guardians.Service.ServerSelection.csproj -c DEBUG_LOCAL
 dotnet publish src/Server/Guardians.Service.GameServer/Guardians.Service.GameServer.csproj -c DEBUG_LOCAL
 
-if not exist "build" mkdir build
 if not exist "build\auth" mkdir build\auth
 if not exist "build\servdisc" mkdir build\servdisc
 if not exist "build\servsel" mkdir build\servsel
@@ -17,6 +16,4 @@ xcopy src\Server\Guardians.Service.ServerSelection\bin\Debug_Local\netcoreapp2.0
 xcopy src\Server\Guardians.Service.ServiceDiscovery\bin\Debug_Local\netcoreapp2.0\publish build\gameservdisc /s /y
 xcopy src\Server\Guardians.Service.GameServer\bin\Debug_Local\netcoreapp2.0\publish build\gameserv /s /y
 
-START build-norestore-client.bat
-START build-norestore-zoneserver.bat
 EXIT 0

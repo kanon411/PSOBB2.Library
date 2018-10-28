@@ -26,16 +26,20 @@ namespace Guardians
 		[ProtoMember(2)]
 		public float Orientation { get; }
 
+		[ProtoMember(3)]
+		public Vector2 Direction { get; }
+
 		/// <inheritdoc />
-		public MovementInformation(Vector3 currentPosition, float orientation)
+		public MovementInformation(Vector3 currentPosition, float orientation, Vector2 direction)
 		{
 			CurrentPosition = currentPosition;
 			Orientation = orientation;
+			Direction = direction;
 		}
 
 		protected MovementInformation()
 		{
-			
+
 		}
 	}
 }

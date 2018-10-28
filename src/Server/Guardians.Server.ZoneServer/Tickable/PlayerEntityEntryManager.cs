@@ -63,7 +63,7 @@ namespace Guardians
 		private static GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext> dequeuedPlayerSession)
 		{
 			//TODO: get real movement info
-			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new MovementInformation(Vector3.zero, 0.0f));
+			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new MovementInformation(Vector3.zero, 0.0f, Vector2.zero));
 
 			return new GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>(dequeuedPlayerSession.Key, new PlayerSelfSpawnEventPayload(data));
 		}

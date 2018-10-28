@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using ProtoBuf;
 
 namespace Guardians
@@ -16,6 +17,7 @@ namespace Guardians
 	/// which encodes flags and uses masking to dervive information about a GUID.
 	/// See: http://wowwiki.wikia.com/wiki/API_UnitGUID
 	/// </summary>
+	[JsonObject]
 	[ProtoContract]
 	public class NetworkEntityGuid : IEntityIdentifiable, IEquatable<NetworkEntityGuid>
 	{
@@ -23,18 +25,21 @@ namespace Guardians
 		/// <summary>
 		/// Raw 64bit numerical representation of the GUID.
 		/// </summary>
+		[JsonProperty]
 		[ProtoMember(1, IsRequired = true)]
 		public ulong RawGuidValue { get; } //dont use readonly prop. Some libraries can't serialize it yet.
 
 		/// <summary>
 		/// Represents an Empty or uninitialized <see cref="NetworkEntityGuid"/>.
 		/// </summary>
+		[JsonIgnore]
 		[ProtoIgnore]
 		public static NetworkEntityGuid Empty { get; } = new NetworkEntityGuid(0);
 
 		/// <summary>
 		/// Indicates the <see cref="EntityType"/> that this <see cref="NetworkEntityGuid"/> is for.
 		/// </summary>
+		[JsonIgnore]
 		[ProtoIgnore]
 		public EntityType EntityType => (EntityType)(byte)((RawGuidValue & 0x00FF000000000000) >> 48); //mask out to the EE (entity Type) and then shift it down to a byte
 
@@ -42,12 +47,14 @@ namespace Guardians
 		/// Indiciates if the GUID is an empty or unitialized GUID.
 		/// </summary>
 		/// <returns></returns>
+		[JsonIgnore]
 		[ProtoIgnore]
 		public bool isEmpty => RawGuidValue == 0;
 
 		/// <summary>
 		/// Indiciates the current GUID of the entity. This is the last chunk represents the actual ID without any type or identifying information.
 		/// </summary>
+		[JsonIgnore]
 		[ProtoIgnore]
 		public int EntityId => (int)(RawGuidValue & 0x00000000FFFFFFFF); //FFFF FFFF masks out everything but an unsigned integer. Casts to int. We waste bits this way but we gain considerable perf.
 

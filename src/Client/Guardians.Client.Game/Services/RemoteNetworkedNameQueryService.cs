@@ -28,13 +28,13 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task<string> RetrieveAsync(int id)
 		{
-			CharacterNameQueryResponse queryResponse = await CharacterService.NameQuery(id)
+			NameQueryResponse queryResponse = await CharacterService.NameQuery(id)
 				.ConfigureAwait(false);
 
 			if(!queryResponse.isSuccessful)
 				throw new KeyNotFoundException($"Failed to retrieve Key: {id} from {nameof(RemoteNetworkCharacterService)}. Error: {queryResponse.ResultCode}");
 
-			return queryResponse.CharacterName;
+			return queryResponse.EntityName;
 		}
 	}
 }

@@ -11,46 +11,46 @@ namespace Guardians
 	/// Response model to a character namequery request.
 	/// </summary>
 	[JsonObject]
-	public sealed class CharacterNameQueryResponse : IResponseModel<CharacterNameQueryResponseCode>, ISucceedable
+	public sealed class NameQueryResponse : IResponseModel<NameQueryResponseCode>, ISucceedable
 	{
 		/// <summary>
-		/// Optional name of the character from the request.
+		/// Optional name of the entity from the request.
 		/// </summary>
 		[JsonProperty(Required = Required.AllowNull)]
-		public string CharacterName { get; private set; }
+		public string EntityName { get; private set; }
 
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public CharacterNameQueryResponseCode ResultCode { get; private set; }
+		public NameQueryResponseCode ResultCode { get; private set; }
 
 		/// <inheritdoc />
 		[JsonIgnore]
-		public bool isSuccessful => ResultCode == CharacterNameQueryResponseCode.Success;
+		public bool isSuccessful => ResultCode == NameQueryResponseCode.Success;
 
 		/// <inheritdoc />
-		public CharacterNameQueryResponse(string characterName)
+		public NameQueryResponse(string characterName)
 		{
 			if(string.IsNullOrWhiteSpace(characterName)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(characterName));
 
-			CharacterName = characterName;
-			ResultCode = CharacterNameQueryResponseCode.Success;
+			EntityName = characterName;
+			ResultCode = NameQueryResponseCode.Success;
 		}
 
 		/// <inheritdoc />
-		public CharacterNameQueryResponse(CharacterNameQueryResponseCode resultCode)
+		public NameQueryResponse(NameQueryResponseCode resultCode)
 		{
-			if(!Enum.IsDefined(typeof(CharacterNameQueryResponseCode), resultCode)) throw new InvalidEnumArgumentException(nameof(resultCode), (int)resultCode, typeof(CharacterNameQueryResponseCode));
+			if(!Enum.IsDefined(typeof(NameQueryResponseCode), resultCode)) throw new InvalidEnumArgumentException(nameof(resultCode), (int)resultCode, typeof(NameQueryResponseCode));
 
 			//We don't want success to be possible. It means we need to provide the actual data.
-			if(resultCode == CharacterNameQueryResponseCode.Success)
+			if(resultCode == NameQueryResponseCode.Success)
 				throw new ArgumentException($"Cannot provide success to response without providing optional success based data. Use other ctor.");
 
 			ResultCode = resultCode;
 		}
 
 		//Serializer ctor
-		public CharacterNameQueryResponse()
+		public NameQueryResponse()
 		{
 			
 		}

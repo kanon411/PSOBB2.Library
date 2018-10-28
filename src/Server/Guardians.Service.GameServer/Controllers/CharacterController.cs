@@ -72,6 +72,7 @@ namespace Guardians
 			return Created("TODO", new CharacterCreationResponse(CharacterCreationResponseCode.Success));
 		}
 
+		//TODO: Conslidate/centralize name query stuff via entity GUID.
 		[AllowAnonymous]
 		[ProducesJson]
 		[ResponseCache(Duration = 360)] //We want to cache this for a long time. But it's possible with name changes that we want to not cache forever
@@ -90,7 +91,7 @@ namespace Guardians
 			//Else if it is a known id we should grab the name of the character
 			string name = await CharacterRepository.RetrieveNameAsync(characterId);
 
-			return Ok(new CharacterNameQueryResponse(name));
+			return Ok(new NameQueryResponse(name));
 		}
 
 		[HttpGet]
@@ -115,7 +116,7 @@ namespace Guardians
 
 		private IActionResult BuildNotFoundUnknownIdResponse()
 		{
-			return NotFound(new CharacterNameQueryResponse(CharacterNameQueryResponseCode.UnknownIdError));
+			return NotFound(new NameQueryResponse(NameQueryResponseCode.UnknownIdError));
 		}
 	}
 }

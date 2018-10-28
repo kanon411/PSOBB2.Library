@@ -30,7 +30,7 @@ namespace Guardians
 		/// <returns></returns>
 		[Header("Cache-Control", "max-age=360")]
 		[Get("api/characters/name/{id}")]
-		Task<CharacterNameQueryResponse> NameQuery([AliasAs("id")] int characterId);
+		Task<NameQueryResponse> NameQuery([AliasAs("id")] int characterId);
 
 		/// <summary>
 		/// TODO DOC

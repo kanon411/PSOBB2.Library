@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Enumeration of potential results of a name query.
 	/// </summary>
-	public enum CharacterNameQueryResponseCode
+	public enum NameQueryResponseCode
 	{
 		/// <summary>
 		/// Indicates success.

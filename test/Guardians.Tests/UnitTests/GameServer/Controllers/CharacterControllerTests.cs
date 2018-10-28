@@ -98,10 +98,10 @@ namespace Guardians
 			//assert
 			for(int i = 1; i < count + 1; i++)
 			{
-				CharacterNameQueryResponse nameQueryResponse = ControllerTestsHelpers.GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(i));
+				NameQueryResponse nameQueryResponse = ControllerTestsHelpers.GetActionResultObject<NameQueryResponse>(await controller.NameQuery(i));
 				Assert.True(nameQueryResponse.isSuccessful);
-				Assert.NotNull(nameQueryResponse.CharacterName);
-				resultQueryNames.Add(nameQueryResponse.CharacterName);
+				Assert.NotNull(nameQueryResponse.EntityName);
+				resultQueryNames.Add(nameQueryResponse.EntityName);
 			}
 
 			//Check that each inserted name is available in the total query results
@@ -122,12 +122,12 @@ namespace Guardians
 			List<string> names = await AddTestValuesToRepository(20, serviceProvider, 2);
 
 			//act
-			CharacterNameQueryResponse result = ControllerTestsHelpers.GetActionResultObject<CharacterNameQueryResponse>(await controller.NameQuery(keyToCheck));
+			NameQueryResponse result = ControllerTestsHelpers.GetActionResultObject<NameQueryResponse>(await controller.NameQuery(keyToCheck));
 
 			//assert
 			Assert.False(result.isSuccessful);
-			Assert.True(result.ResultCode == CharacterNameQueryResponseCode.UnknownIdError);
-			Assert.True(String.IsNullOrWhiteSpace(result.CharacterName));
+			Assert.True(result.ResultCode == NameQueryResponseCode.UnknownIdError);
+			Assert.True(String.IsNullOrWhiteSpace(result.EntityName));
 		}
 
 		[Test]

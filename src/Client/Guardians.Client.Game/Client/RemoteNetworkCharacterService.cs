@@ -40,7 +40,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task<CharacterNameQueryResponse> NameQuery(int characterId)
+		public Task<NameQueryResponse> NameQuery(int characterId)
 		{
 			return CharacterService.NameQuery(characterId);
 		}

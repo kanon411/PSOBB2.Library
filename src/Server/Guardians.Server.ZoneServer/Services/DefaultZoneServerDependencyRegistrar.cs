@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 using Autofac;
 using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
 using SceneJect.Common;
+using TypeSafe.Http.Net;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -28,6 +33,11 @@ namespace Guardians
 
 		public void RegisterServices(ContainerBuilder builder)
 		{
+			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.CheckCertificateRevocationList = false;
+
 			builder.RegisterInstance(new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32))
 				.As<INetworkSerializationService>();
 
@@ -141,6 +151,45 @@ namespace Guardians
 			builder.RegisterType<MovementUpdateMessageSender>()
 				.As<INetworkMessageSender<EntityMovementMessageContext>>()
 				.AsSelf();
+
+			builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
+				.As<IServiceDiscoveryService>()
+				.WithParameter(new TypedParameter(typeof(string), @"http://localhost:5003"))
+				.SingleInstance();
+
+			builder.Register(context =>
+				{
+					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
+
+					return TypeSafeHttpBuilder<IZoneServerToGameServerClient>
+						.Create()
+						.RegisterJsonNetSerializer()
+						.RegisterDefaultSerializers()
+						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
+						.Build();
+				})
+				.As<IZoneServerToGameServerClient>()
+				.SingleInstance();
+		}
+
+		//TODO: Put this in a base class or something
+		private async Task<string> QueryForRemoteServiceEndpoint(IServiceDiscoveryService serviceDiscovery, string serviceType)
+		{
+			ResolveServiceEndpointResponse endpointResponse = await serviceDiscovery.DiscoverService(new ResolveServiceEndpointRequest(ClientRegionLocale.US, serviceType));
+
+			if(!endpointResponse.isSuccessful)
+				throw new InvalidOperationException($"Failed to query for Service: {serviceType} Result: {endpointResponse.ResultCode}");
+
+			Debug.Log($"Recieved service discovery response: {endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort} for Type: {serviceType}");
+
+			//TODO: Do we need extra slash?
+			return $"{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/";
+		}
+
+		//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+		private bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+		{
+			return true;
 		}
 
 		private static void RegisterGameTickable(ContainerBuilder builder)

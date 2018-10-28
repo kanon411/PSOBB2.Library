@@ -22,10 +22,17 @@
     <PackageReference Include="SceneJect.Common" Version="3.0.29" />
     <PackageReference Include="SceneJect.Editor" Version="3.0.29" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
+    <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.16" />
+    <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.16" />
+    <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.16" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Common\Guardians.Common.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.Server.ZoneServer\Guardians.Models.Server.ZoneServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
     <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />

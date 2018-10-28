@@ -43,6 +43,10 @@ namespace Guardians
 				.As<IFactoryCreatable<GameObject, EntityPrefab>>()
 				.AsSelf()
 				.SingleInstance();
+
+			builder.RegisterType<DefaultEntityDestructor>()
+				.As<IObjectDestructorable<NetworkEntityGuid>>()
+				.AsSelf();
 		}
 	}
 }

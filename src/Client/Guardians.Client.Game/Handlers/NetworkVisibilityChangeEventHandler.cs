@@ -12,11 +12,17 @@ namespace Guardians
 	{
 		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
 
+		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }
+
 		/// <inheritdoc />
-		public NetworkVisibilityChangeEventHandler(ILog logger, IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory) 
+		public NetworkVisibilityChangeEventHandler(
+			ILog logger,
+			IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory,
+			IObjectDestructorable<NetworkEntityGuid> entityDestructor) 
 			: base(logger)
 		{
 			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 		}
 
 		/// <inheritdoc />
@@ -37,6 +43,9 @@ namespace Guardians
 			//Assume it's a player for now
 			foreach(var creationData in payload.EntitiesToCreate)
 				EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, creationData.InitialMovementData, EntityPrefab.RemotePlayer));
+
+			foreach(var destroyData in payload.OutOfRangeEntities)
+				EntityDestructor.Destroy(destroyData);
 
 			//We need to spawn newly encountered entites.
 			return Task.CompletedTask;

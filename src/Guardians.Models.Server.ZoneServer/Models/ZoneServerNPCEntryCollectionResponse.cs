@@ -15,7 +15,7 @@ namespace Guardians
 		[JsonProperty]
 		public NpcEntryCollectionResponseCode ResultCode { get; private set; }
 		
-		[JsonProperty]
+		[JsonProperty(PropertyName = "Entries")]
 		private ZoneServerNpcEntryModel[] _Entries { get; set; }
 
 		[JsonIgnore]

@@ -25,7 +25,7 @@ namespace Guardians
 		/// <summary>
 		/// Raw 64bit numerical representation of the GUID.
 		/// </summary>
-		[JsonProperty]
+		[JsonProperty(PropertyName = "GuidValue")]
 		[ProtoMember(1, IsRequired = true)]
 		public ulong RawGuidValue { get; } //dont use readonly prop. Some libraries can't serialize it yet.
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Guardians
 {
-	public sealed class DatabaseBackedNpcEntryRepository : IGenericRepositoryCrudable<int, NPCEntryModel>
+	public sealed class DatabaseBackedNpcEntryRepository : INpcEntryRepository
 	{
 		private NpcDatabaseContext NpcDatabase { get; }
 
@@ -13,6 +15,15 @@ namespace Guardians
 		public DatabaseBackedNpcEntryRepository(NpcDatabaseContext npcDatabase)
 		{
 			NpcDatabase = npcDatabase ?? throw new ArgumentNullException(nameof(npcDatabase));
+		}
+
+		public async Task<IReadOnlyCollection<NPCEntryModel>> RetrieveAllWithMapIdAsync(int mapId)
+		{
+			return await NpcDatabase
+				.Entries
+				.Where(m => m.MapId == mapId)
+				.ToArrayAsync()
+				.ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

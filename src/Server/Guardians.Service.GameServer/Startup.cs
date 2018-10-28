@@ -80,6 +80,7 @@ namespace Guardians
 			});
 
 			services.AddTransient<INpcTemplateRepository, DatabaseBackedNpcTemplateRepository>();
+			services.AddTransient<INpcEntryRepository, DatabaseBackedNpcEntryRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

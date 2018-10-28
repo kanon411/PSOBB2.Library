@@ -19,7 +19,7 @@ namespace Guardians
 		/// </summary>
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int NpcTemplateId { get; private set; }
+		public int TemplateId { get; private set; }
 
 		//TODO: Should we maintain a prefab table?
 		/// <summary>

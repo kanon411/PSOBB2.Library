@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -16,6 +17,38 @@ namespace Guardians
 			: base(claimsReader, logger)
 		{
 
+		}
+
+		//TODO: We should make it so it requires ZoneServer authorization to query this
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
+		[ProducesJson]
+		[ResponseCache(Duration = int.MaxValue)]
+		[HttpGet("Map/{id}")]
+		public async Task<IActionResult> GetNpcsOnMap([FromRoute(Name = "id")] int mapId, [FromServices] INpcEntryRepository entryRepository)
+		{
+			if(entryRepository == null) throw new ArgumentNullException(nameof(entryRepository));
+
+			IReadOnlyCollection<NPCEntryModel> entryModels = await entryRepository.RetrieveAllWithMapIdAsync(mapId)
+				.ConfigureAwait(false);
+
+			//TODO: Should this be an OK?
+			if(entryModels.Count == 0)
+				return Ok(new ZoneServerNPCEntryCollectionResponse(NpcEntryCollectionResponseCode.NoneFound));
+
+			return base.Ok(new ZoneServerNPCEntryCollectionResponse(entryModels.Select(npc => BuildDatabaseNPCEntryToTransportNPC(npc)).ToArray()));
+		}
+
+		//TODO: Create a converter type
+		private static ZoneServerNpcEntryModel BuildDatabaseNPCEntryToTransportNPC(NPCEntryModel npc)
+		{
+			NetworkEntityGuidBuilder guidBuilder = new NetworkEntityGuidBuilder();
+
+			NetworkEntityGuid guid = guidBuilder.WithId(npc.EntryId)
+				.WithType(EntityType.Npc)
+				.Build();
+
+			//TODO: Create a Vector3 converter
+			return new ZoneServerNpcEntryModel(guid, npc.NpcTemplateId, new Vector3(npc.SpawnPosition.X, npc.SpawnPosition.Y, npc.SpawnPosition.Z));
 		}
 
 		//TODO: Conslidate/centralize name query stuff via entity GUID.

@@ -13,10 +13,10 @@ namespace Guardians
 		/// <inheritdoc />
 		[JsonRequired]
 		[JsonProperty]
-		public NpcEntryCollectionResponseCode ResultCode { get; }
+		public NpcEntryCollectionResponseCode ResultCode { get; private set; }
 		
 		[JsonProperty]
-		private ZoneServerNpcEntryModel[] _Entries { get; }
+		private ZoneServerNpcEntryModel[] _Entries { get; set; }
 
 		[JsonIgnore]
 		public IReadOnlyCollection<ZoneServerNpcEntryModel> Entries => _Entries;
@@ -45,6 +45,14 @@ namespace Guardians
 			//TODO: Check and throw if success, can't be success since this is suppose to be a FAIL
 
 			ResultCode = resultCode;
+		}
+
+		/// <summary>
+		/// Serializer ctor.
+		/// </summary>
+		protected ZoneServerNPCEntryCollectionResponse()
+		{
+			
 		}
 	}
 }

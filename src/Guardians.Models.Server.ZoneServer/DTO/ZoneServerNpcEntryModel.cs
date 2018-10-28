@@ -15,18 +15,21 @@ namespace Guardians
 		/// The network GUID associated with the entry.
 		/// </summary>
 		[JsonRequired]
+		[JsonProperty]
 		public NetworkEntityGuid Guid { get; private set; }
 
 		/// <summary>
 		/// The NPC template id of the entry.
 		/// </summary>
 		[JsonRequired]
+		[JsonProperty]
 		public int TemplateId { get; private set; }
 
 		/// <summary>
 		/// The initial spawn position for the entry.
 		/// </summary>
 		[JsonRequired]
+		[JsonProperty]
 		public Vector3 InitialPosition { get; private set; }
 
 		/// <inheritdoc />

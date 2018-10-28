@@ -25,5 +25,7 @@ namespace Guardians
 		/// (Such as a Door or a Button)
 		/// </summary>
 		GameObject = 2,
+
+		Npc = 3,
 	}
 }

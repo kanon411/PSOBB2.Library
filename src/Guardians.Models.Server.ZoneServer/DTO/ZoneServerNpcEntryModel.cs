@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using UnityEngine;
+
+namespace Guardians
+{
+	[JsonObject]
+	public sealed class ZoneServerNpcEntryModel
+	{
+		/// <summary>
+		/// The network GUID associated with the entry.
+		/// </summary>
+		[JsonRequired]
+		public NetworkEntityGuid Guid { get; private set; }
+
+		/// <summary>
+		/// The NPC template id of the entry.
+		/// </summary>
+		[JsonRequired]
+		public int TemplateId { get; private set; }
+
+		/// <summary>
+		/// The initial spawn position for the entry.
+		/// </summary>
+		[JsonRequired]
+		public Vector3 InitialPosition { get; private set; }
+
+		/// <inheritdoc />
+		public ZoneServerNpcEntryModel([NotNull] NetworkEntityGuid guid, int templateId, Vector3 initialPosition)
+		{
+			if(templateId <= 0) throw new ArgumentOutOfRangeException(nameof(templateId));
+
+			Guid = guid ?? throw new ArgumentNullException(nameof(guid));
+			TemplateId = templateId;
+			InitialPosition = initialPosition;
+		}
+
+		/// <summary>
+		/// Serializer ctor.
+		/// </summary>
+		protected ZoneServerNpcEntryModel()
+		{
+			
+		}
+	}
+}

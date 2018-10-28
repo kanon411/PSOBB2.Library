@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="protobuf-net" Version="2.3.7" />
   </ItemGroup>
 
 </Project>

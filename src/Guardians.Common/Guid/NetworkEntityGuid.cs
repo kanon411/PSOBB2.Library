@@ -27,7 +27,7 @@ namespace Guardians
 		/// </summary>
 		[JsonProperty(PropertyName = "GuidValue")]
 		[ProtoMember(1, IsRequired = true)]
-		public ulong RawGuidValue { get; } //dont use readonly prop. Some libraries can't serialize it yet.
+		public ulong RawGuidValue { get; private set; } //We added a private set for unity3d JSON
 
 		/// <summary>
 		/// Represents an Empty or uninitialized <see cref="NetworkEntityGuid"/>.

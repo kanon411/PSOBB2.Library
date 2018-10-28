@@ -30,6 +30,7 @@ namespace Guardians
 		/// </summary>
 		[JsonRequired]
 		[JsonProperty]
+		[JsonConverter(typeof(Vector3Converter))] //TODO: Make custom attribute
 		public Vector3 InitialPosition { get; private set; }
 
 		/// <inheritdoc />

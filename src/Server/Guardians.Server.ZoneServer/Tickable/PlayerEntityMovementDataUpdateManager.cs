@@ -11,11 +11,17 @@ namespace Guardians
 
 		private INetworkMessageSender<EntityMovementMessageContext> MovementUpdateMessageSender { get; }
 
+		private IDirtyableMovementInformationCollection MovementCollection { get; }
+
 		/// <inheritdoc />
-		public PlayerEntityMovementDataUpdateManager([NotNull] IPlayerEntityGuidEnumerable playerGuids, [NotNull] INetworkMessageSender<EntityMovementMessageContext> movementUpdateMessageSender)
+		public PlayerEntityMovementDataUpdateManager(
+			[NotNull] IPlayerEntityGuidEnumerable playerGuids, 
+			[NotNull] INetworkMessageSender<EntityMovementMessageContext> movementUpdateMessageSender,
+			[NotNull] IDirtyableMovementInformationCollection movementCollection)
 		{
 			PlayerGuids = playerGuids ?? throw new ArgumentNullException(nameof(playerGuids));
 			MovementUpdateMessageSender = movementUpdateMessageSender ?? throw new ArgumentNullException(nameof(movementUpdateMessageSender));
+			MovementCollection = movementCollection ?? throw new ArgumentNullException(nameof(movementCollection));
 		}
 
 		/// <inheritdoc />
@@ -29,6 +35,9 @@ namespace Guardians
 				//to the connection associated with the provided guid.
 				MovementUpdateMessageSender.Send(new EntityMovementMessageContext(guid));
 			}
+
+			//After all movement is done we need to clear all tracked/dirty changes in the movement collection
+			MovementCollection.ClearDirty();
 		}
 	}
 }

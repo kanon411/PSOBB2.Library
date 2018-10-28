@@ -14,13 +14,13 @@ namespace Guardians
 
 		private IReadonlyEntityGuidMappable<InterestCollection> GuidToInterestCollectionMappable { get; }
 
-		private IReadonlyEntityGuidMappable<MovementInformation> MovementInformationMap { get; }
+		private IDirtyableMovementInformationCollection MovementInformationMap { get; }
 
 		/// <inheritdoc />
 		public MovementUpdateMessageSender(
 			[NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable, 
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, 
-			[NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementInformationMap)
+			[NotNull] IDirtyableMovementInformationCollection movementInformationMap)
 		{
 			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
 			GuidToInterestCollectionMappable = guidToInterestCollectionMappable ?? throw new ArgumentNullException(nameof(guidToInterestCollectionMappable));
@@ -41,13 +41,13 @@ namespace Guardians
 			if(!GuidToInterestCollectionMappable.ContainsKey(context.EntityGuid))
 				return;
 
-			//TODO: Revert the 1 check. Since we'll only send dirty updates. Client doesn't need it's own movement data
-			//We don't need to send a message at all if we aren't even interested in other entites.
-			//The reason we do 1 instead of 0 is entites are interested in themselves by default
-			if(GuidToInterestCollectionMappable[context.EntityGuid].ContainedEntities.Count <= 1)
+			AssociatedMovementInformation[] movementBlocks = BuildMovementBlocks(context.EntityGuid);
+
+			//it is possible that no movement data needs to be sent, because none is ddirty so we need to check
+			if(movementBlocks.Length == 0)
 				return;
 
-			MovementDataUpdateEventPayload movementUpdateEvent = new MovementDataUpdateEventPayload(BuildMovementBlocks(context.EntityGuid));
+			MovementDataUpdateEventPayload movementUpdateEvent = new MovementDataUpdateEventPayload(movementBlocks);
 
 			SessionMappable[context.EntityGuid].SendMessage(movementUpdateEvent);
 		}
@@ -57,7 +57,9 @@ namespace Guardians
 		{
 			return GuidToInterestCollectionMappable[guid]
 				.ContainedEntities
-				.Where(e => e != guid) //TODO: Temporarily we are not sending movement data about ourselves.
+				//TODO: Temporarily we are not sending movement data about ourselves.
+				//We also only send information about movement that is dirty from the last update we sent out.
+				.Where(e => e != guid && MovementInformationMap.isEntryDirty(e)) 
 				.Select(e => new AssociatedMovementInformation(e, MovementInformationMap[e]))
 				.ToArray();
 		}

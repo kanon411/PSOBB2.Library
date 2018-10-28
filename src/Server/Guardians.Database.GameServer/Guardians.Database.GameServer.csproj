@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;netstandard2.0</TargetFrameworks>
     <Configurations>Debug;Release;Database_Migration;Debug_Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
 
@@ -21,6 +22,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
     <ProjectReference Include="..\Guardians.Database.Common\Guardians.Database.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions">
+      <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore.abstractions\2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

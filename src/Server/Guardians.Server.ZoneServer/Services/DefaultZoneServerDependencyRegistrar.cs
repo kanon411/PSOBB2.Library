@@ -110,6 +110,11 @@ namespace Guardians
 
 			RegisterPlayerFactoryServices(builder);
 
+			builder.RegisterType<DefaultEntityFactory<DefaultEntityCreationContext>>()
+				.AsImplementedInterfaces()
+				.AsSelf()
+				.SingleInstance();
+
 			builder.RegisterType<GenericMessageSender<PlayerSelfSpawnEventPayload>>()
 				.AsSelf()
 				.AsImplementedInterfaces();

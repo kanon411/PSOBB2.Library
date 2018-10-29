@@ -18,6 +18,10 @@ namespace Guardians
 		
 		private ILog Logger { get; set; }
 
+		//TODO: We need a better way to configure ZoneServer settings.
+		[SerializeField]
+		public int MapId;
+
 		void Awake()
 		{
 			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
@@ -49,6 +53,35 @@ namespace Guardians
 			GameTickables = container.ServiceContainer
 				.Resolve<IEnumerable<IGameTickable>>()
 				.ToArray();
+
+			//We need to start spawning in all the NPCs and stuff.
+			IZoneServerToGameServerClient zoneGameServerClient = container.ServiceContainer
+				.Resolve<IZoneServerToGameServerClient>();
+
+			try
+			{
+				var response = await zoneGameServerClient.GetNPCEntriesByMapId(MapId)
+					.ConfigureAwait(false);
+
+				//TODO: We're assuming it was successful, which is ok for now but we'll need to handle it failing eventually.
+				foreach(var entry in response.Entries)
+					Logger.Debug($"NPC Entry Guid: {entry.Guid}");
+
+				//TODO: Eventually we'll need some NPC specific construction, so we won't be able to use the default.
+				var entityFactory = container.ServiceContainer
+					.Resolve<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>();
+
+				//Join main thread
+				await new UnityYieldAwaitable();
+
+				foreach(var entry in response.Entries)
+					entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, new MovementInformation(entry.InitialPosition, 0, Vector2.zero), EntityPrefab.NetworkNpc));
+			}
+			catch(Exception e)
+			{
+				Logger.Error($"Failed: {e.Message}");
+				throw;
+			}
 
 			await container.ApplicationBase.BeginListening()
 				.ConfigureAwait(false);

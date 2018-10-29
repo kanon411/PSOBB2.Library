@@ -13,5 +13,7 @@ namespace Guardians
 		Unknown = 0,
 		LocalPlayer = 1,
 		RemotePlayer = 2,
+
+		NetworkNpc = 3
 	}
 }

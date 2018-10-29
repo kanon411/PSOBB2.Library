@@ -21,6 +21,8 @@ namespace Guardians
 				case EntityPrefab.RemotePlayer:
 					//TODO: We should handle prefabs better
 					return Resources.Load<GameObject>("Prefabs/RemotePlayerAvatar");
+				case EntityPrefab.NetworkNpc:
+					return Resources.Load<GameObject>("Prefabs/NetworkNpc");
 			}
 
 			throw new NotImplementedException($"Failed to load prefab for {nameof(EntityPrefab)}: {context}");

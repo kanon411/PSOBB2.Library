@@ -48,7 +48,7 @@ namespace Guardians
 
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
-				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value));
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value, new MovementInformation(Vector3.zero, 0, Vector2.zero), EntityPrefab.RemotePlayer));
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");

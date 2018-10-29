@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Autofac;
+using Autofac.Core;
 using Common.Logging.Simple;
 using GladNet;
 using NUnit.Framework;
@@ -22,7 +23,20 @@ namespace Guardians
 			IContainer build = builder.Build();
 
 			//assert
-			Assert.DoesNotThrow(() => build.Resolve<IEnumerable<IGameTickable>>());
+			try
+			{
+				build.Resolve<IEnumerable<IGameTickable>>();
+			}
+			catch(DependencyResolutionException e)
+			{
+				//This makes it so the error is more readable. So we can see the exact dependency that is missing.
+				DependencyResolutionException dependencyResolveException = e;
+
+				while(dependencyResolveException.InnerException is DependencyResolutionException)
+					dependencyResolveException = (DependencyResolutionException)dependencyResolveException.InnerException;
+
+				Assert.Fail($"Failed: {dependencyResolveException.Message}\n\n{dependencyResolveException.StackTrace}");
+			}
 		}
 	}
 }

@@ -108,10 +108,7 @@ namespace Guardians
 				.As<IGameObjectToEntityMappable>()
 				.SingleInstance();
 
-			builder.RegisterType<PlayerEntityFactory>()
-				.As<IFactoryCreatable<GameObject, PlayerEntityCreationContext>>()
-				.AsSelf()
-				.SingleInstance();
+			RegisterPlayerFactoryServices(builder);
 
 			builder.RegisterType<GenericMessageSender<PlayerSelfSpawnEventPayload>>()
 				.AsSelf()
@@ -158,17 +155,42 @@ namespace Guardians
 				.SingleInstance();
 
 			builder.Register(context =>
-				{
-					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
+			{
+				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-					return TypeSafeHttpBuilder<IZoneServerToGameServerClient>
-						.Create()
-						.RegisterJsonNetSerializer()
-						.RegisterDefaultSerializers()
-						.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
-						.Build();
-				})
+				return TypeSafeHttpBuilder<IZoneServerToGameServerClient>
+					.Create()
+					.RegisterJsonNetSerializer()
+					.RegisterDefaultSerializers()
+					.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
+					.Build();
+			})
 				.As<IZoneServerToGameServerClient>()
+				.SingleInstance();
+		}
+
+		private static void RegisterPlayerFactoryServices(ContainerBuilder builder)
+		{
+			builder.RegisterType<DefaultEntityFactory<PlayerEntityCreationContext>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.Register(context =>
+				{
+					using(var scope = context.Resolve<ILifetimeScope>().BeginLifetimeScope(subBuilder =>
+					{
+						subBuilder.RegisterType<AdditionalServerRegisterationPlayerEntityFactoryDecorator>()
+							.WithParameter(new TypedParameter(typeof(IFactoryCreatable<GameObject, PlayerEntityCreationContext>), context.Resolve<DefaultEntityFactory<PlayerEntityCreationContext>>()));
+					}))
+					{
+						return scope.Resolve<AdditionalServerRegisterationPlayerEntityFactoryDecorator>();
+					}
+				})
+				.As<IFactoryCreatable<GameObject, PlayerEntityCreationContext>>()
+				.SingleInstance();
+
+			builder.RegisterType<EntityPrefabFactory>()
+				.As<IFactoryCreatable<GameObject, EntityPrefab>>()
 				.SingleInstance();
 		}
 

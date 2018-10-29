@@ -12,7 +12,7 @@ namespace Guardians
 
 		public DbSet<NPCTemplateModel> Templates { get; set; }
 
-		public NpcDatabaseContext(DbContextOptions options)
+		public NpcDatabaseContext(DbContextOptions<NpcDatabaseContext> options)
 			: base(options)
 		{
 

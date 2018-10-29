@@ -19,7 +19,7 @@ namespace Guardians
 
 		public DbSet<ClaimedSessionsModel> ClaimedSession { get; set; }
 
-		public CharacterDatabaseContext(DbContextOptions options) 
+		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{
 		}

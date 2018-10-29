@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SceneJect.Common" Version="3.0.29" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
+    <ProjectReference Include="..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

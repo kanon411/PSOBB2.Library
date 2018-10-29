@@ -49,4 +49,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entity\" />
+    <Folder Include="Factory\" />
+  </ItemGroup>
+
 </Project>

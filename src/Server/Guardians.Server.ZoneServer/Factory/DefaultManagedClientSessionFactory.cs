@@ -15,15 +15,19 @@ namespace Guardians
 
 		private IRegisterable<int, ZoneClientSession> SessionRegisterable { get; }
 
+		private IObjectDestructorable<PlayerSessionDeconstructionContext> SessionDestructor { get; }
+
 		/// <inheritdoc />
 		public DefaultManagedClientSessionFactory(
 			[NotNull] ILog logger,
 			[NotNull] MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>> handlerService,
-			[NotNull] IRegisterable<int, ZoneClientSession> sessionRegisterable)
+			[NotNull] IRegisterable<int, ZoneClientSession> sessionRegisterable,
+			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			HandlerService = handlerService ?? throw new ArgumentNullException(nameof(handlerService));
 			SessionRegisterable = sessionRegisterable ?? throw new ArgumentNullException(nameof(sessionRegisterable));
+			SessionDestructor = sessionDestructor ?? throw new ArgumentNullException(nameof(sessionDestructor));
 		}
 
 		/// <inheritdoc />
@@ -47,6 +51,9 @@ namespace Guardians
 						Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
 
 					SessionRegisterable.Unregister(source.Details.ConnectionId);
+
+					//TODO: Create an async OnSessionDisconnection in GladNet3 so we can handle disconnection logic better.
+					SessionDestructor.Destroy(new PlayerSessionDeconstructionContext(context.Details.ConnectionId));
 				};
 
 				return clientSession;

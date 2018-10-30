@@ -6,6 +6,7 @@ using TypeSafe.Http.Net;
 
 namespace Guardians
 {
+	//TODO: We shouldn't combine all the zoneserver query stuff in a single interface
 	//TODO: We need to do authorization headers for zoneserver stuff
 	[Header("User-Agent", "ZoneServer")]
 	public interface IZoneServerToGameServerClient
@@ -18,5 +19,13 @@ namespace Guardians
 		[Header("Cache-Control", "max-age=5000")]
 		[Get("/api/npcdata/map/{id}")]
 		Task<ZoneServerNPCEntryCollectionResponse> GetNPCEntriesByMapId([AliasAs("id")] int mapId);
+
+		/// <summary>
+		/// Queries the server for the location of the character with the provided <see cref="characterId"/>.
+		/// </summary>
+		/// <param name="characterId">The character id.</param>
+		/// <returns>The location model of the character (potentially empty).</returns>
+		[Get("/api/characters/location/{id}")]
+		Task<ZoneServerCharacterLocationResponse> GetCharacterLocation([AliasAs("id")] int characterId);
 	}
 }

@@ -28,7 +28,7 @@ namespace Guardians
 			//assert
 			try
 			{
-				factory.Create(new ZoneServerApplicationBaseCreationContext(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000))));
+				factory.Create(new ZoneServerApplicationBaseCreationContext(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000)));
 			}
 			catch(DependencyResolutionException e)
 			{

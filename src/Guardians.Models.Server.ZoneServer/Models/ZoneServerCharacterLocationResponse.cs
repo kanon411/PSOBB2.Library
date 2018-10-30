@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Guardians
 {
+	//TODO: Consolidate the location data into its own Model to share with the Request.
 	[JsonObject]
 	public sealed class ZoneServerCharacterLocationResponse : IResponseModel<ZoneServerCharacterLocationResponseCode>, ISucceedable
 	{

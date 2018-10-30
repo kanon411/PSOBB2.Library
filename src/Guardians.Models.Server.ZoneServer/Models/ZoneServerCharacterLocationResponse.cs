@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Guardians
 {
 	[JsonObject]
-	public sealed class ZoneServerCharacterLocationResponse : IResponseModel<ZoneServerCharacterLocationResponseCode>
+	public sealed class ZoneServerCharacterLocationResponse : IResponseModel<ZoneServerCharacterLocationResponseCode>, ISucceedable
 	{
 		[JsonConverter(typeof(Vector3Converter))]
 		[JsonProperty]
@@ -23,6 +23,10 @@ namespace Guardians
 		/// <inheritdoc />
 		[JsonProperty]
 		public ZoneServerCharacterLocationResponseCode ResultCode { get; private set; }
+
+		/// <inheritdoc />
+		[JsonIgnore]
+		public bool isSuccessful => ResultCode == ZoneServerCharacterLocationResponseCode.Success;
 
 		/// <inheritdoc />
 		public ZoneServerCharacterLocationResponse(Vector3 position, int mapId)

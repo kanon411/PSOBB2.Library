@@ -42,13 +42,30 @@ namespace Guardians
 
 			//Assume it's a player for now
 			foreach(var creationData in payload.EntitiesToCreate)
-				EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, creationData.InitialMovementData, EntityPrefab.RemotePlayer));
+				EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, creationData.InitialMovementData, ComputePrefabTypeFromGuid(creationData.EntityGuid)));
 
 			foreach(var destroyData in payload.OutOfRangeEntities)
 				EntityDestructor.Destroy(destroyData);
 
 			//We need to spawn newly encountered entites.
 			return Task.CompletedTask;
+		}
+
+		private EntityPrefab ComputePrefabTypeFromGuid(NetworkEntityGuid creationDataEntityGuid)
+		{
+			switch(creationDataEntityGuid.EntityType)
+			{
+				case EntityType.None:
+					return EntityPrefab.Unknown;
+				case EntityType.Player:
+					return EntityPrefab.RemotePlayer;
+				case EntityType.GameObject:
+					return EntityPrefab.Unknown;
+				case EntityType.Npc:
+					return EntityPrefab.NetworkNpc;
+			}
+
+			return EntityPrefab.Unknown;
 		}
 	}
 }

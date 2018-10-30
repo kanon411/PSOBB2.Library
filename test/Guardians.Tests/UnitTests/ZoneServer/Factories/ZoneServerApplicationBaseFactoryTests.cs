@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Autofac.Core;
 using Common.Logging.Simple;
 using GladNet;
 using NUnit.Framework;
@@ -25,7 +26,20 @@ namespace Guardians
 			DefaultZoneServerApplicationBaseFactory factory = new DefaultZoneServerApplicationBaseFactory();
 
 			//assert
-			Assert.DoesNotThrow(() => factory.Create(new ZoneServerApplicationBaseCreationContext(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000))));
+			try
+			{
+				factory.Create(new ZoneServerApplicationBaseCreationContext(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000))));
+			}
+			catch(DependencyResolutionException e)
+			{
+				//This makes it so the error is more readable. So we can see the exact dependency that is missing.
+				DependencyResolutionException dependencyResolveException = e;
+
+				while(dependencyResolveException.InnerException is DependencyResolutionException)
+					dependencyResolveException = (DependencyResolutionException)dependencyResolveException.InnerException;
+
+				Assert.Fail($"Failed: {dependencyResolveException.Message}\n\n{dependencyResolveException.StackTrace}");
+			}
 		}
 	}
 }

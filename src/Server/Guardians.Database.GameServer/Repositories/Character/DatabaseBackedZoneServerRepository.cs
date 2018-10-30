@@ -59,9 +59,17 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task UpdateAsync(Guid key, ZoneInstanceEntryModel model)
+		public async Task UpdateAsync(Guid key, ZoneInstanceEntryModel model)
 		{
-			throw new NotImplementedException();
+			//Since the generic crud provider will use Find we can't use it
+			//with are secondary name key. We have to implement this manually
+			if(!await Context.ZoneEntries.AnyAsync(z => z.ZoneGuid == key).ConfigureAwait(false))
+				throw new InvalidOperationException($"Cannot update model with Key: {key} as it does not exist.");
+
+			Context.ZoneEntries.Update(model);
+
+			await Context.SaveChangesAsync()
+				.ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

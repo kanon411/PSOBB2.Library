@@ -14,15 +14,19 @@ namespace Guardians
 
 		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }
 
+		private IReadonlyEntityGuidMappable<GameObject> KnownEntites { get; }
+
 		/// <inheritdoc />
 		public NetworkVisibilityChangeEventHandler(
 			ILog logger,
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory,
-			IObjectDestructorable<NetworkEntityGuid> entityDestructor) 
+			IObjectDestructorable<NetworkEntityGuid> entityDestructor, 
+			IReadonlyEntityGuidMappable<GameObject> knownEntites) 
 			: base(logger)
 		{
 			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
+			KnownEntites = knownEntites;
 		}
 
 		/// <inheritdoc />
@@ -45,7 +49,16 @@ namespace Guardians
 				EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, creationData.InitialMovementData, ComputePrefabTypeFromGuid(creationData.EntityGuid)));
 
 			foreach(var destroyData in payload.OutOfRangeEntities)
+			{
+				//If we don't know it, we likely encountered the rare edge case that is the result
+				//of some hacks that were added to keep the wheels from falling off.
+				//These will eventually be fixed, but for now we should just skip ones we don't know
+				//because we can't remove what we don't know.
+				if(!KnownEntites.ContainsKey(destroyData))
+					continue;
+
 				EntityDestructor.Destroy(destroyData);
+			}
 
 			//We need to spawn newly encountered entites.
 			return Task.CompletedTask;

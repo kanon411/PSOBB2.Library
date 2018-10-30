@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using Amazon.CloudWatchLogs.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -27,7 +29,12 @@ namespace Guardians
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc()
+			services.AddMvc(options =>
+				{
+					//This prevents ASP Core from trying to validate Vector3's children, which contain Vector3 (because Unity3D thanks)
+					//so it will cause stack overflows. This will avoid it.
+					options.ModelMetadataDetailsProviders.Add(new SuppressChildValidationMetadataProvider(typeof(Vector3)));
+				})
 				.RegisterHealthCheckController();
 
 			RegisterDatabaseServices(services);

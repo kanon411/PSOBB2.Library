@@ -52,8 +52,21 @@ namespace Guardians
 
 					SessionRegisterable.Unregister(source.Details.ConnectionId);
 
-					//TODO: Create an async OnSessionDisconnection in GladNet3 so we can handle disconnection logic better.
-					SessionDestructor.Destroy(new PlayerSessionDeconstructionContext(context.Details.ConnectionId));
+					try
+					{
+						//TODO: This is kinda a hack, we need this to run on the main thread because it destroys a GameObject
+						UnityExtended.UnityMainThreadContext.Post(state =>
+						{
+							//TODO: Create an async OnSessionDisconnection in GladNet3 so we can handle disconnection logic better.
+							SessionDestructor.Destroy(new PlayerSessionDeconstructionContext(context.Details.ConnectionId));
+						}, true);
+					}
+					catch(Exception e)
+					{
+						if(Logger.IsErrorEnabled)
+							Logger.Error($"Error Session Cleanup: {e.Message}\n\nStackTrace: {e.StackTrace}");
+						throw;
+					}
 				};
 
 				return clientSession;

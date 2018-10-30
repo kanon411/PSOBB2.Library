@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +68,9 @@ namespace Guardians
 		{
 			if(!await ContainsAsync(key).ConfigureAwait(false))
 				throw new InvalidOperationException($"Cannot update model with Key: {key} as it does not exist.");
+
+			//TODO: is this slow? Is there a better way to deal with tracked entities?
+			Context.Entry(await RetrieveAsync(key).ConfigureAwait(false)).State = EntityState.Detached;
 
 			ModelSet.Update(model);
 

@@ -7,6 +7,7 @@
 	{
 		Success = 1,
 		CharacterDoesntExist = 2,
-		GeneralError = 3
+		GeneralError = 3,
+		NoLocationDefined = 4
 	}
 }

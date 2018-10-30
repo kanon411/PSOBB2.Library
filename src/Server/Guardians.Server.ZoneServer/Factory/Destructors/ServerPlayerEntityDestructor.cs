@@ -36,7 +36,8 @@ namespace Guardians
 			//This is slow, and hacky. We need a better solution for entities getting deconstructed.
 			foreach(var exit in Physics.OverlapSphere(ourCollider.transform.position, ourCollider.radius)
 				.Select(c => c.gameObject.transform.root.GetComponentInChildren<InterestRadiusGatewayExit>())
-				.Where(e => e != null))
+				.Where(e => e != null)
+				.Distinct())
 			{
 				//This simulates us leaving their interest radius.
 				exit.OnTriggerExit(ourCollider);

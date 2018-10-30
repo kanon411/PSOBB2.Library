@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -112,6 +114,33 @@ namespace Guardians
 			//by the client when it needs it. Like name query, visible/character details/look stuff.
 			//No reason to send all this data when they may only need names. Which can be queried through the known API
 			return new CharacterListResponse(characterIds);
+		}
+
+		[ProducesJson]
+		[HttpGet("location/{id}")]
+		[NoResponseCache]
+		//TODO: Renable ZoneServer authorization eventually.
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
+		public async Task<IActionResult> UpdateCharacterLocation([FromRoute(Name = "id")] int characterId, [NotNull] [FromServices] ICharacterLocationRepository locationRepository)
+		{
+			if(locationRepository == null) throw new ArgumentNullException(nameof(locationRepository));
+
+			if(characterId <= 0 || !await CharacterRepository.ContainsAsync(characterId)
+				.ConfigureAwait(false))
+				return Json(new ZoneServerCharacterLocationResponse(ZoneServerCharacterLocationResponseCode.CharacterDoesntExist));
+
+			//So, the character exists and we now need to check if we can find a location for it. It may not have one, for whatever reason.
+			//so we need to handle the case where it has none (maybe new character, or was manaully wiped).
+
+			if(!await locationRepository.ContainsAsync(characterId).ConfigureAwait(false))
+				return Json(new ZoneServerCharacterLocationResponse(ZoneServerCharacterLocationResponseCode.NoLocationDefined));
+
+			//Otherwise, let's load and send the result
+			CharacterLocationModel locationModel = await locationRepository.RetrieveAsync(characterId)
+				.ConfigureAwait(false);
+
+			//TODO: Integrate Map Id design into Schema, and implement it here.
+			return Json(new ZoneServerCharacterLocationResponse(new Vector3(locationModel.XPosition, locationModel.YPosition, locationModel.ZPosition), 1));
 		}
 
 		private IActionResult BuildNotFoundUnknownIdResponse()

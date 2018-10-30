@@ -116,12 +116,42 @@ namespace Guardians
 			return new CharacterListResponse(characterIds);
 		}
 
+		[AllowAnonymous]
+		[HttpPost("location")]
+		public async Task<IActionResult> UpdateCharacterLocation(
+			[FromBody] ZoneServerCharacterLocationSaveRequest saveRequest,
+			[NotNull] [FromServices] ICharacterLocationRepository locationRepository)
+		{
+			if(locationRepository == null) throw new ArgumentNullException(nameof(locationRepository));
+
+			int characterId = saveRequest.CharacterId;
+
+			if(characterId <= 0 || !await CharacterRepository.ContainsAsync(characterId)
+				.ConfigureAwait(false))
+				return NotFound();
+
+			//TODO: Is this the best way to deal with this?
+			if(await locationRepository.ContainsAsync(characterId).ConfigureAwait(false))
+				await locationRepository.UpdateAsync(characterId, BuildCharacterLocationFromSave(characterId, saveRequest))
+					.ConfigureAwait(false);
+			else
+				await locationRepository.TryCreateAsync(BuildCharacterLocationFromSave(characterId, saveRequest))
+					.ConfigureAwait(false);
+
+			return Ok();
+		}
+
+		private static CharacterLocationModel BuildCharacterLocationFromSave(int characterId, ZoneServerCharacterLocationSaveRequest saveRequest)
+		{
+			return new CharacterLocationModel(characterId, GameZoneType.ZoneFirst, saveRequest.Position.x, saveRequest.Position.y, saveRequest.Position.z);
+		}
+
 		[ProducesJson]
 		[HttpGet("location/{id}")]
 		[NoResponseCache]
 		//TODO: Renable ZoneServer authorization eventually.
 		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
-		public async Task<IActionResult> UpdateCharacterLocation([FromRoute(Name = "id")] int characterId, [NotNull] [FromServices] ICharacterLocationRepository locationRepository)
+		public async Task<IActionResult> GetCharacterLocation([FromRoute(Name = "id")] int characterId, [NotNull] [FromServices] ICharacterLocationRepository locationRepository)
 		{
 			if(locationRepository == null) throw new ArgumentNullException(nameof(locationRepository));
 

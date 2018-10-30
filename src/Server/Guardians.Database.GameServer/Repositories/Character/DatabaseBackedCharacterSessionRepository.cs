@@ -113,5 +113,13 @@ namespace Guardians
 
 			return (await Context.SaveChangesAsync() != 0);
 		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, CharacterSessionModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, CharacterSessionModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, CharacterSessionModel>(Context.CharacterSessions, Context);
+
+			return crudProvider.UpdateAsync(key, model);
+		}
 	}
 }

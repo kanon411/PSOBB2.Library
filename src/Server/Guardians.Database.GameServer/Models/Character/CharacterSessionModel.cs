@@ -45,7 +45,8 @@ namespace Guardians
 		/// <inheritdoc />
 		public CharacterSessionModel(int characterId, int zoneId)
 		{
-			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+			//We don't check this because tests might provide CLR default (update)
+			//if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
 			if(zoneId < 0) throw new ArgumentOutOfRangeException(nameof(zoneId));
 
 			CharacterId = characterId;

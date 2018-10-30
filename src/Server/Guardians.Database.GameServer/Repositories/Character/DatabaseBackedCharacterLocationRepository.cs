@@ -58,5 +58,13 @@ namespace Guardians
 		{
 			throw new NotSupportedException($"TODO: Implement deleting character_locations");
 		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, CharacterLocationModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, CharacterLocationModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, CharacterLocationModel>(Context.CharacterLocations, Context);
+
+			return crudProvider.UpdateAsync(key, model);
+		}
 	}
 }

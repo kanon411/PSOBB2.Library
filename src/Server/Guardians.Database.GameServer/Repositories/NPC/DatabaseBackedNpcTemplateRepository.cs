@@ -7,32 +7,32 @@ namespace Guardians
 {
 	public sealed class DatabaseBackedNpcTemplateRepository : INpcTemplateRepository
 	{
-		private NpcDatabaseContext NpcDatabase { get; }
+		private NpcDatabaseContext Context { get; }
 
 		/// <inheritdoc />
 		public DatabaseBackedNpcTemplateRepository(NpcDatabaseContext npcDatabase)
 		{
-			NpcDatabase = npcDatabase ?? throw new ArgumentNullException(nameof(npcDatabase));
+			Context = npcDatabase ?? throw new ArgumentNullException(nameof(npcDatabase));
 		}
 
 		/// <inheritdoc />
 		public async Task<bool> ContainsAsync(int key)
 		{
-			return (await NpcDatabase.Templates.FindAsync(key).ConfigureAwait(false)) != null;
+			return (await Context.Templates.FindAsync(key).ConfigureAwait(false)) != null;
 		}
 
 		/// <inheritdoc />
 		public async Task<bool> TryCreateAsync(NPCTemplateModel model)
 		{
-			NpcDatabase.Templates.Add(model);
+			Context.Templates.Add(model);
 
-			return (await NpcDatabase.SaveChangesAsync().ConfigureAwait(false)) != 0;
+			return (await Context.SaveChangesAsync().ConfigureAwait(false)) != 0;
 		}
 
 		/// <inheritdoc />
 		public Task<NPCTemplateModel> RetrieveAsync(int key)
 		{
-			return NpcDatabase.Templates.FindAsync(key);
+			return Context.Templates.FindAsync(key);
 		}
 
 		/// <inheritdoc />
@@ -41,9 +41,9 @@ namespace Guardians
 			if(!await ContainsAsync(key).ConfigureAwait(false))
 				return false;
 
-			NpcDatabase.Templates.Remove(await RetrieveAsync(key));
+			Context.Templates.Remove(await RetrieveAsync(key));
 
-			return (await NpcDatabase.SaveChangesAsync().ConfigureAwait(false)) != 0;
+			return (await Context.SaveChangesAsync().ConfigureAwait(false)) != 0;
 		}
 
 		/// <inheritdoc />
@@ -59,6 +59,14 @@ namespace Guardians
 				throw new InvalidOperationException($"Failed to load {nameof(NPCEntryModel)} for Key: {key}");
 
 			return model.NpcName;
+		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, NPCTemplateModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, NPCTemplateModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, NPCTemplateModel>(Context.Templates, Context);
+
+			return crudProvider.UpdateAsync(key, model);
 		}
 	}
 }

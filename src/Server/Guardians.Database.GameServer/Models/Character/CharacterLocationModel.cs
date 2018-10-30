@@ -57,7 +57,8 @@ namespace Guardians
 		/// <inheritdoc />
 		public CharacterLocationModel(int characterId, GameZoneType zoneType, float xPosition, float yPosition, float zPosition)
 		{
-			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+			//We don't check this because unit tests may set 0, as the CLR default for updating.
+			//if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
 			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
 
 			CharacterId = characterId;
@@ -70,6 +71,12 @@ namespace Guardians
 		public CharacterLocationModel()
 		{
 			
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return $"Id: {CharacterId}";
 		}
 	}
 }

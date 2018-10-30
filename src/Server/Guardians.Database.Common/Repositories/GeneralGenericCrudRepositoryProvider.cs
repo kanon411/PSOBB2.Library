@@ -61,5 +61,19 @@ namespace Guardians
 			return await SaveAndCheckResultsAsync()
 				.ConfigureAwait(false);
 		}
+
+		/// <inheritdoc />
+		public async Task UpdateAsync(TKey key, TModelType model)
+		{
+			if(!await ContainsAsync(key).ConfigureAwait(false))
+				throw new InvalidOperationException($"Cannot update model with Key: {key} as it does not exist.");
+
+			Console.WriteLine($"Key: {key.ToString()} Model: {model.ToString()}");
+
+			ModelSet.Update(model);
+
+			await SaveAndCheckResultsAsync()
+				.ConfigureAwait(false);
+		}
 	}
 }

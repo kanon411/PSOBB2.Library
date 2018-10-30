@@ -97,5 +97,21 @@ namespace Guardians
 		{
 			throw new NotImplementedException($"TODO: Implement delete based on key.");
 		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, CharacterEntryModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, CharacterEntryModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, CharacterEntryModel>(Context.Characters, Context);
+
+			return crudProvider.UpdateAsync(key, model);
+		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(string key, CharacterEntryModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<string, CharacterEntryModel> crudProvider = new GeneralGenericCrudRepositoryProvider<string, CharacterEntryModel>(Context.Characters, Context);
+
+			return crudProvider.UpdateAsync(key, model);
+		}
 	}
 }

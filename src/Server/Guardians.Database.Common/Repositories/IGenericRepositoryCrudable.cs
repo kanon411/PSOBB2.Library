@@ -46,5 +46,15 @@ namespace Guardians
 		/// <param name="key"></param>
 		/// <returns></returns>
 		Task<bool> TryDeleteAsync(TKey key);
+
+		/// <summary>
+		/// Attempts to update a model with the provided <see cref="key"/>.
+		/// Setting the new model to the provided <see cref="model"/> if it exists.
+		/// To create use Create, not update.
+		/// </summary>
+		/// <param name="key">The key for the entity.</param>
+		/// <param name="model">The model to replace the current model.</param>
+		/// <returns>Awaitable.</returns>
+		Task UpdateAsync(TKey key, TModel model);
 	}
 }

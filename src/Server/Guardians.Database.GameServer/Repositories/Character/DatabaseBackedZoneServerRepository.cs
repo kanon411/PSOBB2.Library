@@ -59,6 +59,12 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
+		public Task UpdateAsync(Guid key, ZoneInstanceEntryModel model)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
 		public Task<ZoneInstanceEntryModel> RetrieveAsync(int key)
 		{
 			return Context
@@ -70,6 +76,14 @@ namespace Guardians
 		public Task<bool> TryDeleteAsync(int key)
 		{
 			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, ZoneInstanceEntryModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, ZoneInstanceEntryModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, ZoneInstanceEntryModel>(Context.ZoneEntries, Context);
+
+			return crudProvider.UpdateAsync(key, model);
 		}
 
 		/// <inheritdoc />

@@ -9,17 +9,17 @@ namespace Guardians
 {
 	public sealed class DatabaseBackedNpcEntryRepository : INpcEntryRepository
 	{
-		private NpcDatabaseContext NpcDatabase { get; }
+		private NpcDatabaseContext Context { get; }
 
 		/// <inheritdoc />
 		public DatabaseBackedNpcEntryRepository(NpcDatabaseContext npcDatabase)
 		{
-			NpcDatabase = npcDatabase ?? throw new ArgumentNullException(nameof(npcDatabase));
+			Context = npcDatabase ?? throw new ArgumentNullException(nameof(npcDatabase));
 		}
 
 		public async Task<IReadOnlyCollection<NPCEntryModel>> RetrieveAllWithMapIdAsync(int mapId)
 		{
-			return await NpcDatabase
+			return await Context
 				.Entries
 				.Where(m => m.MapId == mapId)
 				.ToArrayAsync()
@@ -36,7 +36,7 @@ namespace Guardians
 
 		private GeneralGenericCrudRepositoryProvider<int, NPCEntryModel> BuildGeneralCrudProvider()
 		{
-			return new GeneralGenericCrudRepositoryProvider<int, NPCEntryModel>(NpcDatabase.Entries, NpcDatabase);
+			return new GeneralGenericCrudRepositoryProvider<int, NPCEntryModel>(Context.Entries, Context);
 		}
 
 		/// <inheritdoc />
@@ -61,6 +61,14 @@ namespace Guardians
 			var generalCrudProvider = BuildGeneralCrudProvider();
 
 			return generalCrudProvider.TryDeleteAsync(key);
+		}
+
+		/// <inheritdoc />
+		public Task UpdateAsync(int key, NPCEntryModel model)
+		{
+			GeneralGenericCrudRepositoryProvider<int, NPCEntryModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, NPCEntryModel>(Context.Entries, Context);
+
+			return crudProvider.UpdateAsync(key, model);
 		}
 	}
 }

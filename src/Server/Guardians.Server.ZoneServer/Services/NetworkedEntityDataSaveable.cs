@@ -35,7 +35,9 @@ namespace Guardians
 			if(guid.EntityType != EntityType.Player)
 				return;
 
-			//TODO: Send request to save location/posiion.
+			//TODO: Handle map ID.
+			await ZoneToSeverClient.SaveCharacterLocation(new ZoneServerCharacterLocationSaveRequest(guid.EntityId, movementData.CurrentPosition, 1))
+				.ConfigureAwait(false);
 		}
 	}
 }

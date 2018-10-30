@@ -27,5 +27,9 @@ namespace Guardians
 		/// <returns>The location model of the character (potentially empty).</returns>
 		[Get("/api/characters/location/{id}")]
 		Task<ZoneServerCharacterLocationResponse> GetCharacterLocation([AliasAs("id")] int characterId);
+
+		//TODO: Doc
+		[Post("api/characters/location")]
+		Task SaveCharacterLocation([JsonBody] ZoneServerCharacterLocationSaveRequest saveRequest);
 	}
 }

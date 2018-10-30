@@ -71,12 +71,38 @@ namespace Guardians
 		}
 
 		[Test]
+		public virtual async Task Test_Update_Replaces_Existing_Model()
+		{
+			//arrange
+			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
+			TModelType model1 = BuildRandomModel(true);
+			await repository.TryCreateAsync(model1)
+				.ConfigureAwait(false);
+
+			TModelType model2 = BuildRandomModel(false);
+
+			//act
+			await repository.UpdateAsync(this.ProduceKeyFromModel(model1), model2)
+				.ConfigureAwait(false);
+			bool containsModel1 = await repository.ContainsAsync(ProduceKeyFromModel(model1))
+				.ConfigureAwait(false);
+
+			TModelType model3 = await repository.RetrieveAsync(ProduceKeyFromModel(model1))
+				.ConfigureAwait(false);
+
+			//assert
+			//Model1 should still seem like its in the database, but it should be Model2.
+			Assert.True(containsModel1, $"Model1 key was in the database.");
+			Assert.AreSame(model1, model3);
+		}
+
+		[Test]
 		public async Task Test_Can_Add_New_Model_To_Repository()
 		{
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
 
-			TModelType model = BuildRandomModel();
+			TModelType model = BuildRandomModel(true);
 
 			//act
 			bool addResult = await repository.TryCreateAsync(model);
@@ -91,7 +117,7 @@ namespace Guardians
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
 
-			TModelType model = BuildRandomModel();
+			TModelType model = BuildRandomModel(true);
 
 			//act
 			bool addResult = await repository.TryCreateAsync(model);
@@ -116,8 +142,8 @@ namespace Guardians
 			//arrange
 			IGenericRepositoryCrudable<TKeyType, TModelType> repository = BuildEmptyRepository();
 
-			TModelType model1 = BuildRandomModel();
-			TModelType model2 = BuildRandomModel();
+			TModelType model1 = BuildRandomModel(true);
+			TModelType model2 = BuildRandomModel(true);
 
 			//act
 			bool addResult1 = await repository.TryCreateAsync(model1);
@@ -149,7 +175,7 @@ namespace Guardians
 
 			for(int i = 0; i < count; i++)
 			{
-				TModelType model = BuildRandomModel();
+				TModelType model = BuildRandomModel(true);
 				await repository.TryCreateAsync(model);
 				models[ProduceKeyFromModel(model)] = model;
 			}
@@ -200,7 +226,7 @@ namespace Guardians
 		/// Should build a random model for use for the testing class.
 		/// </summary>
 		/// <returns></returns>
-		public abstract TModelType BuildRandomModel();
+		public abstract TModelType BuildRandomModel(bool generateKey);
 
 		public abstract TKeyType ProduceKeyFromModel(TModelType model);
 

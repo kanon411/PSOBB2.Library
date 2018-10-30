@@ -17,7 +17,7 @@ namespace Guardians
 		public override IEnumerable<string> TestCaseKeys => new string[] { "Andrew", "Lyle", "Shilo", "Sammy", "Skylar" };
 
 		/// <inheritdoc />
-		public override CharacterEntryModel BuildRandomModel()
+		public override CharacterEntryModel BuildRandomModel(bool generateKey)
 		{
 			int accountid = Interlocked.Increment(ref AccountIdIncrementable);
 

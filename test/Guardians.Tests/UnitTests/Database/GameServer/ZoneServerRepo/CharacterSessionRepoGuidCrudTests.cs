@@ -16,7 +16,7 @@ namespace Guardians
 		public override IEnumerable<Guid> TestCaseKeys { get; } = Enumerable.Range(0, 20).Select(i => Guid.NewGuid()).ToArray();
 
 		/// <inheritdoc />
-		public override ZoneInstanceEntryModel BuildRandomModel()
+		public override ZoneInstanceEntryModel BuildRandomModel(bool generateKey)
 		{
 			return new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, "127.0.0.1", 5080);
 		}

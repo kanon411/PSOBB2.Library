@@ -107,11 +107,17 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task UpdateAsync(string key, CharacterEntryModel model)
+		public async Task UpdateAsync(string key, CharacterEntryModel model)
 		{
-			GeneralGenericCrudRepositoryProvider<string, CharacterEntryModel> crudProvider = new GeneralGenericCrudRepositoryProvider<string, CharacterEntryModel>(Context.Characters, Context);
+			//Since the generic crud provider will use Find we can't use it
+			//with are secondary name key. We have to implement this manually
+			if(!await Context.Characters.AnyAsync(c => c.CharacterName == key).ConfigureAwait(false))
+				throw new InvalidOperationException($"Cannot update model with Key: {key} as it does not exist.");
 
-			return crudProvider.UpdateAsync(key, model);
+			Context.Characters.Update(model);
+
+			await Context.SaveChangesAsync()
+				.ConfigureAwait(false);
 		}
 	}
 }

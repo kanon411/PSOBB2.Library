@@ -9,8 +9,7 @@ namespace Guardians
 	{
 		public override Vector4 ReadJson(JsonReader reader, Type objectType, Vector4 existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			if(hasExistingValue)
-				throw new NotSupportedException("Don't support reading data into structs.");
+			//Ignore existing value.
 
 			var t = serializer.Deserialize(reader);
 			var iv = JsonConvert.DeserializeObject<Vector4>(t.ToString());
@@ -38,8 +37,7 @@ namespace Guardians
 	{
 		public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			if(hasExistingValue)
-				throw new NotSupportedException("Don't support reading data into structs.");
+			//Ignore existing value.
 
 			var t = serializer.Deserialize(reader);
 			var iv = JsonConvert.DeserializeObject<Vector3>(t.ToString());
@@ -65,8 +63,7 @@ namespace Guardians
 	{
 		public override Vector2 ReadJson(JsonReader reader, Type objectType, Vector2 existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			if(hasExistingValue)
-				throw new NotSupportedException("Don't support reading data into structs.");
+			//Ignore existing value.
 
 			var t = serializer.Deserialize(reader);
 			var iv = JsonConvert.DeserializeObject<Vector2>(t.ToString());

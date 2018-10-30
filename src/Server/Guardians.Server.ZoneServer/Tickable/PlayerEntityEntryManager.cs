@@ -8,9 +8,10 @@ using UnityEngine;
 
 namespace Guardians
 {
+	//TODO: Refactor clean this mess up
 	public sealed class PlayerEntityEntryManager : IGameTickable
 	{
-		private IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext>> PlayerEntitySessionDequeable { get; }
+		private IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> PlayerEntitySessionDequeable { get; }
 
 		private IFactoryCreatable<GameObject, PlayerEntityCreationContext> PlayerFactory { get; }
 
@@ -20,7 +21,7 @@ namespace Guardians
 
 		/// <inheritdoc />
 		public PlayerEntityEntryManager(
-			[NotNull] IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext>> playerEntitySessionDequeable, 
+			[NotNull] IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> playerEntitySessionDequeable, 
 			[NotNull] IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory,
 			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender,
 			[NotNull] ILog logger)
@@ -41,14 +42,14 @@ namespace Guardians
 			//TODO: Should we limit this? We might want to stagger this or else under extreme conditions we could lag the main thread.
 			while(!PlayerEntitySessionDequeable.isEmpty)
 			{
-				KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext> dequeuedPlayerSession = PlayerEntitySessionDequeable.Dequeue();
+				KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession = PlayerEntitySessionDequeable.Dequeue();
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Dequeueing entity creation request for: {dequeuedPlayerSession.Key.EntityType}:{dequeuedPlayerSession.Key.EntityId}");
 
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
-				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value, new MovementInformation(Vector3.zero, 0, Vector2.zero), EntityPrefab.RemotePlayer));
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value.SessionContext, new MovementInformation(dequeuedPlayerSession.Value.SpawnPosition, 0, Vector2.zero), EntityPrefab.RemotePlayer));
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");
@@ -60,10 +61,10 @@ namespace Guardians
 			}
 		}
 
-		private static GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntitySessionContext> dequeuedPlayerSession)
+		private static GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession)
 		{
 			//TODO: get real movement info
-			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new MovementInformation(Vector3.zero, 0.0f, Vector2.zero));
+			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new MovementInformation(dequeuedPlayerSession.Value.SpawnPosition, 0.0f, Vector2.zero));
 
 			return new GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>(dequeuedPlayerSession.Key, new PlayerSelfSpawnEventPayload(data));
 		}

@@ -9,13 +9,10 @@ namespace Guardians
 	[JsonObject]
 	public sealed class ZoneServerCharacterLocationSaveRequest
 	{
-		//TODO: Should we use network entity guid?
-		/// <summary>
-		/// The character ID to save the position of.
-		/// </summary>
+		//TODO: Should we sent EntityGuid?
 		[JsonProperty]
-		public int CharacterId { get; }
-		
+		public int CharacterId { get; private set; }
+
 		/// <summary>
 		/// The position to save.
 		/// </summary>
@@ -37,6 +34,9 @@ namespace Guardians
 		/// <param name="mapId"></param>
 		public ZoneServerCharacterLocationSaveRequest(int characterId, Vector3 position, int mapId)
 		{
+			if(characterId <= 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+			if(mapId <= 0) throw new ArgumentOutOfRangeException(nameof(mapId));
+
 			CharacterId = characterId;
 			Position = position;
 			MapId = mapId;

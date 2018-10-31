@@ -19,5 +19,7 @@ namespace Guardians
 		PlayerSelfSpawn = 3,
 
 		MovementDataUpdate = 4,
+
+		ServerTimeSyncronization = 5
 	}
 }

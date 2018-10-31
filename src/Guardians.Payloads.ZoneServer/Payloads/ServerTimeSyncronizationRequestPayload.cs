@@ -18,7 +18,7 @@ namespace Guardians
 		/// The current local time (in ticks).
 		/// </summary>
 		[ProtoMember(1)]
-		private long CurrentLocalTime { get; }
+		public long CurrentLocalTime { get; private set; }
 
 		/// <inheritdoc />
 		public ServerTimeSyncronizationRequestPayload(long currentLocalTime)

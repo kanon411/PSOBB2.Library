@@ -93,7 +93,7 @@ namespace Guardians
 			//assert
 			//Model1 should still seem like its in the database, but it should be Model2.
 			Assert.True(containsModel1, $"Model1 key was in the database.");
-			Assert.AreSame(model1, model3);
+			Assert.AreEqual(ProduceKeyFromModel(model1), ProduceKeyFromModel(model3));
 		}
 
 		[Test]

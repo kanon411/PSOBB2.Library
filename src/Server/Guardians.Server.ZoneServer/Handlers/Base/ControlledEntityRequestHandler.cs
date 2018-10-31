@@ -14,21 +14,19 @@ namespace Guardians
 	/// For example, movement. Can't handle movement packets if the session doesn't even have an associated entity.
 	/// </summary>
 	/// <typeparam name="TSpecificPayloadType"></typeparam>
-	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : IPeerPayloadSpecificMessageHandler<TSpecificPayloadType, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>> 
+	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : BaseServerRequestHandler<TSpecificPayloadType>
 		where TSpecificPayloadType : GameClientPacketPayload
 	{
 		private IReadonlyConnectionEntityCollection ConnectionIdToEntityMap { get; }
 
-		protected Common.Logging.ILog Logger { get; }
-
 		//TODO: Don't use dictionary, creatre interface.
 		protected ControlledEntityRequestHandler([NotNull] ILog logger, [NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap)
+			: base(logger)
 		{
 			ConnectionIdToEntityMap = connectionIdToEntityMap ?? throw new ArgumentNullException(nameof(connectionIdToEntityMap));
-			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
-		public Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
+		public override Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
 		{
 			//We need to check this, if we recieve a message that requires a controlled entity then we should not handle this message
 			//and log this. It's possible it was spoofed or something. Or there is an error somewhere in logic.

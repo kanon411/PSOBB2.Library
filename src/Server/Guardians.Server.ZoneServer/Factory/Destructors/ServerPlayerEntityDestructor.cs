@@ -19,12 +19,16 @@ namespace Guardians
 		private IReadonlyEntityGuidMappable<GameObject> GuidToGameObjectMap { get; }
 
 		/// <inheritdoc />
-		public ServerPlayerEntityDestructor([NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor, [NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, [NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMap)
+		public ServerPlayerEntityDestructor(
+			[NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor, 
+			[NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, 
+			[NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable,
+			[NotNull] IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMap)
 		{
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 			GuidToSessionMappable = guidToSessionMappable ?? throw new ArgumentNullException(nameof(guidToSessionMappable));
 			GuidToInterestCollectionMappable = guidToInterestCollectionMappable ?? throw new ArgumentNullException(nameof(guidToInterestCollectionMappable));
-			GuidToGameObjectMap = guidToGameObjectMap;
+			GuidToGameObjectMap = guidToGameObjectMap ?? throw new ArgumentNullException(nameof(guidToGameObjectMap));
 		}
 
 		/// <inheritdoc />

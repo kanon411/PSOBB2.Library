@@ -20,6 +20,9 @@ namespace Guardians
 		[ProtoMember(1)]
 		public long SentLocalTime { get; private set; }
 
+		/// <summary>
+		/// The time stamp from the server.
+		/// </summary>
 		[ProtoMember(2)]
 		public long ServerTime { get; private set; }
 

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
+	//TODO: Unit test, when I'm not lazy.
 	public sealed class UtcNowNetworkTimeService : INetworkTimeService
 	{
 		/// <inheritdoc />

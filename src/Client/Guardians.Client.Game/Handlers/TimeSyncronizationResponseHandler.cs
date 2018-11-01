@@ -9,27 +9,23 @@ namespace Guardians
 {
 	public sealed class TimeSyncronizationResponseHandler : BaseZoneClientGameMessageHandler<ServerTimeSyncronizationResponsePayload>
 	{
+		private INetworkTimeService TimeService { get; }
+
 		/// <inheritdoc />
-		public TimeSyncronizationResponseHandler(ILog logger) 
+		public TimeSyncronizationResponseHandler(ILog logger, INetworkTimeService timeService) 
 			: base(logger)
 		{
-
+			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
 		}
 
 		//TODO: This is a work in progress, we need a time service.
 		/// <inheritdoc />
 		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, ServerTimeSyncronizationResponsePayload payload)
 		{
-			long approxLatency = (payload.SentLocalTime - DateTime.UtcNow.Ticks) / 2;
-
-			//time diff is basically the difference between any server timestamps we recieve from the local time.
-			//So ServerTime + the timeDiff will be the local time something should be.
-			//We remove approxlatency (RTT) from the local client time because we make the assumption that
-			//the server actually created the timestamp at AbsoluteServerTime - MessageTravelTime (RTT)
-			long timeDiff = (DateTime.UtcNow.Ticks - approxLatency) - payload.ServerTime;
+			TimeService.SetTimeSyncronization(payload.SentLocalTime, payload.ServerTime);
 
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"ApproxLatency: {approxLatency / TimeSpan.TicksPerMillisecond} ms TimeDiff: {timeDiff / TimeSpan.TicksPerMillisecond} ms");
+				Logger.Debug($"ApproxLatency: {TimeService.CurrentLatency / TimeSpan.TicksPerMillisecond} ms TimeDiff: {TimeService.CurrentTimeOffset / TimeSpan.TicksPerMillisecond} ms");
 
 			return Task.CompletedTask;
 		}

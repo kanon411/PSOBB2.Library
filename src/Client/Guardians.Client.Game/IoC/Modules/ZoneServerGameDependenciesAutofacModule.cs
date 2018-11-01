@@ -47,6 +47,11 @@ namespace Guardians
 			builder.RegisterType<DefaultEntityDestructor>()
 				.As<IObjectDestructorable<NetworkEntityGuid>>()
 				.AsSelf();
+
+			builder.RegisterType<UtcNowNetworkTimeService>()
+				.As<INetworkTimeService>()
+				.As<IReadonlyNetworkTimeService>()
+				.SingleInstance();
 		}
 	}
 }

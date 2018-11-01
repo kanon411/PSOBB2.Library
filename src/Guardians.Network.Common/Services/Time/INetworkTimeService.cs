@@ -11,8 +11,8 @@ namespace Guardians
 		/// This will initialize the properties exposed for time usage.
 		/// </summary>
 		/// <param name="originalLocalTime">The original local time sent in the syncronization packet.</param>
-		/// <param name="serverTime">The server time sent back.</param>
-		void SetTimeSyncronization(long originalLocalTime, long serverTime);
+		/// <param name="remoteTime">The remote time sent back.</param>
+		void SetTimeSyncronization(long originalLocalTime, long remoteTime);
 	}
 
 	public interface IReadonlyNetworkTimeService
@@ -25,14 +25,14 @@ namespace Guardians
 		long CalculateRoundTripTime(long originalLocalTime);
 
 		/// <summary>
-		/// Caclulates the offset between the server and client clocks.
-		/// This offset can be used to convert server times to
+		/// Caclulates the offset between the remote and client clocks.
+		/// This offset can be used to convert remote times to
 		/// client times.
 		/// </summary>
 		/// <param name="originalLocalTime"></param>
-		/// <param name="serverTime"></param>
+		/// <param name="remoteTime"></param>
 		/// <returns></returns>
-		long CalculateTimeOffset(long originalLocalTime, long serverTime);
+		long CalculateTimeOffset(long originalLocalTime, long remoteTime);
 
 		/// <summary>
 		/// The current computed time offset.
@@ -51,5 +51,11 @@ namespace Guardians
 		/// (Does no computation).
 		/// </summary>
 		long CurrentLatency { get; }
+
+		/// <summary>
+		/// The approximated current remote time.
+		/// Likely based on the <see cref="CurrentLocalTime"/> and the <see cref="CurrentTimeOffset"/>.
+		/// </summary>
+		long CurrentRemoteTime { get; }
 	}
 }

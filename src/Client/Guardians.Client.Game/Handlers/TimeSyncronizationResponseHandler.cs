@@ -29,7 +29,7 @@ namespace Guardians
 			long timeDiff = (DateTime.UtcNow.Ticks - approxLatency) - payload.ServerTime;
 
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"ApproxLatency: {approxLatency} TimeDiff: {timeDiff}");
+				Logger.Debug($"ApproxLatency: {approxLatency / TimeSpan.TicksPerMillisecond} ms TimeDiff: {timeDiff / TimeSpan.TicksPerMillisecond} ms");
 
 			return Task.CompletedTask;
 		}

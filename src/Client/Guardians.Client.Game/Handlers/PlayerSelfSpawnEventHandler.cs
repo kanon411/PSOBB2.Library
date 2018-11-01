@@ -34,6 +34,9 @@ namespace Guardians
 			//Don't do any checks for now, we just spawn
 			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer));
 
+			//TODO: We need to make this the first packet, or couple of packets. We don't want to do this inbetween potentially slow operatons.
+			context.PayloadSendService.SendMessageImmediately(new ServerTimeSyncronizationRequestPayload(DateTime.UtcNow.Ticks));
+
 			return Task.CompletedTask;
 		}
 	}

@@ -37,7 +37,7 @@ namespace Guardians
 
 				//TODO: We need to handle multiple movement types
 				//This is just a hacky little thing we're using for the demo
-				GameObjectMap[movementUpdate.EntityGuid].GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection((movementUpdate.InitialMovementData as PositionChangeMovementData).InitialPosition);
+				GameObjectMap[movementUpdate.EntityGuid].GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection((movementUpdate.InitialMovementData as PositionChangeMovementData).Direction);
 			}
 
 			return Task.CompletedTask;

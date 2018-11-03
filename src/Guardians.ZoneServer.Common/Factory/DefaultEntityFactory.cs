@@ -15,7 +15,7 @@ namespace Guardians
 
 		private IEntityGuidMappable<GameObject> GuidToGameObjectMappable { get; }
 
-		private IEntityGuidMappable<MovementInformation> GuidToMovementInfoMappable { get; }
+		private IEntityGuidMappable<IMovementData> GuidToMovementInfoMappable { get; }
 
 		private IGameObjectToEntityMappable GameObjectToEntityMap { get; }
 
@@ -28,7 +28,7 @@ namespace Guardians
 		public DefaultEntityFactory(
 			ILog logger, 
 			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
-			IEntityGuidMappable<MovementInformation> guidToMovementInfoMappable, 
+			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap, 
 			IGameObjectFactory objectFactory,
 			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory)
@@ -49,7 +49,7 @@ namespace Guardians
 
 			//load the entity's prefab from the factory
 			GameObject prefab = PrefabFactory.Create(context.PrefabType);
-			GameObject entityGameObject = ObjectFactory.Create(prefab, context.MovementData.CurrentPosition, Quaternion.Euler(0, context.MovementData.Orientation, 0));
+			GameObject entityGameObject = ObjectFactory.Create(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(entityGameObject, context.EntityGuid);
 

@@ -18,13 +18,13 @@ namespace Guardians
 		/// The internally serialized movement data blocks.
 		/// </summary>
 		[ProtoMember(1)]
-		private AssociatedMovementInformation[] _MovementDatas { get; }
+		private AssociatedMovementData[] _MovementDatas { get; }
 
 		/// <summary>
 		/// The movement data sent in the update.
 		/// </summary>
 		[ProtoIgnore]
-		public IReadOnlyCollection<AssociatedMovementInformation> MovementDatas => _MovementDatas;
+		public IReadOnlyCollection<AssociatedMovementData> MovementDatas => _MovementDatas;
 
 		/// <summary>
 		/// Should always be true. Events should not be sent with no data.
@@ -33,7 +33,7 @@ namespace Guardians
 		public bool HasMovementData => _MovementDatas != null && _MovementDatas.Length != 0;
 
 		/// <inheritdoc />
-		public MovementDataUpdateEventPayload([NotNull] AssociatedMovementInformation[] movementDatas)
+		public MovementDataUpdateEventPayload([NotNull] AssociatedMovementData[] movementDatas)
 		{
 			_MovementDatas = movementDatas ?? throw new ArgumentNullException(nameof(movementDatas));
 		}

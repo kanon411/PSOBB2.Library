@@ -84,11 +84,11 @@ namespace Guardians
 				.AsImplementedInterfaces()
 				.AsSelf();
 
-			builder.RegisterType<MovementInformationCollection>()
+			builder.RegisterType<MovementDataCollection>()
 				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<MovementInformation>>()
-				.As<IEntityGuidMappable<MovementInformation>>()
-				.As<IDirtyableMovementInformationCollection>()
+				.As<IReadonlyEntityGuidMappable<IMovementData>>()
+				.As<IEntityGuidMappable<IMovementData>>()
+				.As<IDirtyableMovementDataCollection>()
 				.SingleInstance();
 
 			builder.RegisterType<EntityGuidDictionary<IPeerPayloadSendService<GameServerPacketPayload>>>()

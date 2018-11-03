@@ -14,17 +14,17 @@ namespace Guardians
 
 		private IReadonlyEntityGuidMappable<InterestCollection> GuidToInterestCollectionMappable { get; }
 
-		private IDirtyableMovementInformationCollection MovementInformationMap { get; }
+		private IDirtyableMovementDataCollection MovementDataMap { get; }
 
 		/// <inheritdoc />
 		public MovementUpdateMessageSender(
 			[NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable, 
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, 
-			[NotNull] IDirtyableMovementInformationCollection movementInformationMap)
+			[NotNull] IDirtyableMovementDataCollection movementDataMap)
 		{
 			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
 			GuidToInterestCollectionMappable = guidToInterestCollectionMappable ?? throw new ArgumentNullException(nameof(guidToInterestCollectionMappable));
-			MovementInformationMap = movementInformationMap ?? throw new ArgumentNullException(nameof(movementInformationMap));
+			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
 		}
 
 		/// <inheritdoc />
@@ -41,7 +41,7 @@ namespace Guardians
 			if(!GuidToInterestCollectionMappable.ContainsKey(context.EntityGuid))
 				return;
 
-			AssociatedMovementInformation[] movementBlocks = BuildMovementBlocks(context.EntityGuid);
+			AssociatedMovementData[] movementBlocks = BuildMovementBlocks(context.EntityGuid);
 
 			//it is possible that no movement data needs to be sent, because none is ddirty so we need to check
 			if(movementBlocks.Length == 0)
@@ -53,14 +53,14 @@ namespace Guardians
 		}
 
 		//TODO: We need to filter in ONLY dirty movement data. Right now it resends movement data every packet but we only want to update if the data has changed.
-		private AssociatedMovementInformation[] BuildMovementBlocks(NetworkEntityGuid guid)
+		private AssociatedMovementData[] BuildMovementBlocks(NetworkEntityGuid guid)
 		{
 			return GuidToInterestCollectionMappable[guid]
 				.ContainedEntities
 				//TODO: Temporarily we are not sending movement data about ourselves.
 				//We also only send information about movement that is dirty from the last update we sent out.
-				.Where(e => e != guid && MovementInformationMap.isEntryDirty(e)) 
-				.Select(e => new AssociatedMovementInformation(e, MovementInformationMap[e]))
+				.Where(e => e != guid && MovementDataMap.isEntryDirty(e)) 
+				.Select(e => new AssociatedMovementData(e, MovementDataMap[e]))
 				.ToArray();
 		}
 

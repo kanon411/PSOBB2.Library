@@ -6,7 +6,7 @@ namespace Guardians
 {
 	public interface IEntityCreationContext : IEntityGuidContainer
 	{
-		MovementInformation MovementData { get; }
+		IMovementData MovementData { get; }
 
 		EntityPrefab PrefabType { get; }
 	}

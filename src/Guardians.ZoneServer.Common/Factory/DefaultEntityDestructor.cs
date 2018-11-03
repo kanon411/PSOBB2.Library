@@ -9,14 +9,14 @@ namespace Guardians
 	{
 		private IEntityGuidMappable<GameObject> GuidToGameObjectMappable { get; }
 
-		private IEntityGuidMappable<MovementInformation> GuidToMovementInfoMappable { get; }
+		private IEntityGuidMappable<IMovementData> GuidToMovementInfoMappable { get; }
 
 		private IGameObjectToEntityMappable GameObjectToEntityMap { get; }
 
 		/// <inheritdoc />
 		public DefaultEntityDestructor(
 			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
-			IEntityGuidMappable<MovementInformation> guidToMovementInfoMappable, 
+			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));

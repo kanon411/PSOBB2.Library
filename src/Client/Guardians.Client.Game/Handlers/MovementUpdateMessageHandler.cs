@@ -12,14 +12,14 @@ namespace Guardians
 	{
 		private IReadonlyEntityGuidMappable<GameObject> GameObjectMap { get; }
 
-		private IEntityGuidMappable<MovementInformation> MovementInformationMap { get; }
+		private IEntityGuidMappable<IMovementData> MovementDataMap { get; }
 
 		/// <inheritdoc />
-		public MovementUpdateMessageHandler(ILog logger, IReadonlyEntityGuidMappable<GameObject> gameObjectMap, IEntityGuidMappable<MovementInformation> movementInformationMap) 
+		public MovementUpdateMessageHandler(ILog logger, IReadonlyEntityGuidMappable<GameObject> gameObjectMap, IEntityGuidMappable<IMovementData> movementDataMap) 
 			: base(logger)
 		{
 			GameObjectMap = gameObjectMap;
-			MovementInformationMap = movementInformationMap;
+			MovementDataMap = movementDataMap;
 		}
 
 		/// <inheritdoc />
@@ -30,13 +30,14 @@ namespace Guardians
 
 			foreach(var movementUpdate in payload.MovementDatas)
 			{
-				MovementInformationMap[movementUpdate.EntityGuid] = movementUpdate.InitialMovementData;
+				MovementDataMap[movementUpdate.EntityGuid] = movementUpdate.InitialMovementData;
 
 				//TODO: This is demo code, we should handle actual movement differently.
-				GameObjectMap[movementUpdate.EntityGuid].transform.position = movementUpdate.InitialMovementData.CurrentPosition;
+				GameObjectMap[movementUpdate.EntityGuid].transform.position = movementUpdate.InitialMovementData.InitialPosition;
 
+				//TODO: We need to handle multiple movement types
 				//This is just a hacky little thing we're using for the demo
-				GameObjectMap[movementUpdate.EntityGuid].GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection(movementUpdate.InitialMovementData.Direction);
+				GameObjectMap[movementUpdate.EntityGuid].GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection((movementUpdate.InitialMovementData as PositionChangeMovementData).InitialPosition);
 			}
 
 			return Task.CompletedTask;

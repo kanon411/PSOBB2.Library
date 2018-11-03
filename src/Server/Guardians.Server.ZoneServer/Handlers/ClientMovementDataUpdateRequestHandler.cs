@@ -11,7 +11,7 @@ namespace Guardians
 {
 	public sealed class ClientMovementDataUpdateRequestHandler : ControlledEntityRequestHandler<ClientMovementDataUpdateRequest>
 	{
-		private IEntityGuidMappable<MovementInformation> MovementDataMap { get; }
+		private IEntityGuidMappable<IMovementData> MovementDataMap { get; }
 
 		private IReadonlyEntityGuidMappable<GameObject> WorldEntities { get; }
 
@@ -19,7 +19,7 @@ namespace Guardians
 		public ClientMovementDataUpdateRequestHandler(
 			[NotNull] ILog logger, 
 			[NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap, 
-			[NotNull] IEntityGuidMappable<MovementInformation> movementDataMap,
+			[NotNull] IEntityGuidMappable<IMovementData> movementDataMap,
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> worldEntities) 
 			: base(logger, connectionIdToEntityMap)
 		{
@@ -31,7 +31,7 @@ namespace Guardians
 		protected override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
 		{
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.CurrentPosition}");
+				Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.InitialPosition}");
 
 			try
 			{
@@ -43,7 +43,7 @@ namespace Guardians
 				await new UnityYieldAwaitable();
 
 				//TODO: This is kinda demo code, directly setting the position of the root object.
-				WorldEntities[guid].transform.position = payload.MovementData.CurrentPosition;
+				WorldEntities[guid].transform.position = payload.MovementData.InitialPosition;
 			}
 			catch(Exception e)
 			{

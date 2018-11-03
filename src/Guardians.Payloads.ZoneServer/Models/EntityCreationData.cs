@@ -22,10 +22,10 @@ namespace Guardians
 		/// create the entity and move it until movement updates are recieved.
 		/// </summary>
 		[ProtoMember(2, IsRequired = true)]
-		public MovementInformation InitialMovementData { get; }
+		public IMovementData InitialMovementData { get; }
 
 		/// <inheritdoc />
-		public EntityCreationData([NotNull] NetworkEntityGuid entityGuid, [NotNull] MovementInformation initialMovementData)
+		public EntityCreationData([NotNull] NetworkEntityGuid entityGuid, [NotNull] IMovementData initialMovementData)
 		{
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			InitialMovementData = initialMovementData ?? throw new ArgumentNullException(nameof(initialMovementData));

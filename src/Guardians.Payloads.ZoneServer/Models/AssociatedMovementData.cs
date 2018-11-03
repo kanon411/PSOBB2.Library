@@ -8,10 +8,10 @@ namespace Guardians
 {
 	//Right now this looks a lot like EntityCreationData but creation data, and this model, will eventually diverge as features are added.
 	/// <summary>
-	/// Represents a <see cref="MovementInformation"/> that is associated with a specific <see cref="NetworkEntityGuid"/>.
+	/// Represents a <see cref="IMovementData"/> that is associated with a specific <see cref="NetworkEntityGuid"/>.
 	/// </summary>
 	[ProtoContract]
-	public sealed class AssociatedMovementInformation : IEntityGuidContainer
+	public sealed class AssociatedMovementData : IEntityGuidContainer
 	{
 		/// <summary>
 		/// The GUID of the entity.
@@ -27,10 +27,10 @@ namespace Guardians
 		/// create the entity and move it until movement updates are recieved.
 		/// </summary>
 		[ProtoMember(2, IsRequired = true)]
-		public MovementInformation InitialMovementData { get; }
+		public IMovementData InitialMovementData { get; }
 
 		/// <inheritdoc />
-		public AssociatedMovementInformation([NotNull] NetworkEntityGuid entityGuid, [NotNull] MovementInformation initialMovementData)
+		public AssociatedMovementData([NotNull] NetworkEntityGuid entityGuid, [NotNull] IMovementData initialMovementData)
 		{
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			InitialMovementData = initialMovementData ?? throw new ArgumentNullException(nameof(initialMovementData));
@@ -39,7 +39,7 @@ namespace Guardians
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		protected AssociatedMovementInformation()
+		protected AssociatedMovementData()
 		{
 
 		}

@@ -29,7 +29,7 @@ namespace Guardians
 		{
 			//TODO: Actually handle this. Right now it's just demo code, it actually could fail.
 			if(Logger.IsInfoEnabled)
-				Logger.Info($"Recieved server commanded PlayerSpawn. Player GUID: {payload.CreationData.EntityGuid} Position: {payload.CreationData.InitialMovementData.CurrentPosition}");
+				Logger.Info($"Recieved server commanded PlayerSpawn. Player GUID: {payload.CreationData.EntityGuid} Position: {payload.CreationData.InitialMovementData.InitialPosition}");
 
 			//Don't do any checks for now, we just spawn
 			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer));

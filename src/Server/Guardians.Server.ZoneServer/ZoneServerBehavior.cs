@@ -74,8 +74,9 @@ namespace Guardians
 				//Join main thread
 				await new UnityYieldAwaitable();
 
+				//TODO: Timestamp
 				foreach(var entry in response.Entries)
-					entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, new MovementInformation(entry.InitialPosition, 0, Vector2.zero), EntityPrefab.NetworkNpc));
+					entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, new PositionChangeMovementData(0, entry.InitialPosition, Vector2.zero), EntityPrefab.NetworkNpc));
 			}
 			catch(Exception e)
 			{

@@ -23,12 +23,15 @@ namespace Guardians
 		[ProtoMember(2)]
 		public Vector3 InitialPosition { get; }
 
+		[ProtoMember(3)]
+		public Vector2 Direction { get; }
+
 		/// <inheritdoc />
-		public PositionChangeMovementData(long timeStamp, Vector3 initialPosition)
+		public PositionChangeMovementData(long timeStamp, Vector3 initialPosition, Vector2 direction)
 		{
-			if(timeStamp <= 0) throw new ArgumentOutOfRangeException(nameof(timeStamp));
 			TimeStamp = timeStamp;
 			InitialPosition = initialPosition;
+			Direction = direction;
 		}
 
 		protected PositionChangeMovementData()

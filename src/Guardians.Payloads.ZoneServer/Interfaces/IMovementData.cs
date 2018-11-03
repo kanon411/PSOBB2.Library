@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Guardians
 {
+	[ProtoContract]
 	[ProtoInclude(1, typeof(PositionChangeMovementData))]
 	public interface IMovementData
 	{

@@ -11,13 +11,13 @@ namespace Guardians
 		/// <inheritdoc />
 		public NetworkEntityGuid EntityGuid { get; }
 
-		public MovementInformation MovementData { get; }
+		public IMovementData MovementData { get; }
 
 		/// <inheritdoc />
 		public EntityPrefab PrefabType { get; }
 
 		/// <inheritdoc />
-		public DefaultEntityCreationContext(NetworkEntityGuid entityGuid, MovementInformation movementData, EntityPrefab prefabType)
+		public DefaultEntityCreationContext(NetworkEntityGuid entityGuid, IMovementData movementData, EntityPrefab prefabType)
 		{
 			if(!Enum.IsDefined(typeof(EntityPrefab), prefabType)) throw new InvalidEnumArgumentException(nameof(prefabType), (int)prefabType, typeof(EntityPrefab));
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));

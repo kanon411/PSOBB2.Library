@@ -8,12 +8,12 @@ namespace Guardians
 {
 	public sealed class NetworkedEntityDataSaveable : IEntityDataSaveable
 	{
-		private IReadonlyEntityGuidMappable<MovementInformation> MovementDataMap { get; }
+		private IReadonlyEntityGuidMappable<IMovementData> MovementDataMap { get; }
 
 		private IZoneServerToGameServerClient ZoneToSeverClient { get; }
 
 		/// <inheritdoc />
-		public NetworkedEntityDataSaveable([NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementDataMap, [NotNull] IZoneServerToGameServerClient zoneToSeverClient)
+		public NetworkedEntityDataSaveable([NotNull] IReadonlyEntityGuidMappable<IMovementData> movementDataMap, [NotNull] IZoneServerToGameServerClient zoneToSeverClient)
 		{
 			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
 			ZoneToSeverClient = zoneToSeverClient ?? throw new ArgumentNullException(nameof(zoneToSeverClient));
@@ -29,14 +29,14 @@ namespace Guardians
 		public async Task SaveAsync(NetworkEntityGuid guid)
 		{
 			//TODO: Check that the entity actually exists
-			MovementInformation movementData = MovementDataMap[guid];
+			IMovementData movementData = MovementDataMap[guid];
 
 			//We can only handle players at the moment, not sure how NPC data would be saved.
 			if(guid.EntityType != EntityType.Player)
 				return;
 
 			//TODO: Handle map ID.
-			await ZoneToSeverClient.SaveCharacterLocation(new ZoneServerCharacterLocationSaveRequest(guid.EntityId, movementData.CurrentPosition, 1))
+			await ZoneToSeverClient.SaveCharacterLocation(new ZoneServerCharacterLocationSaveRequest(guid.EntityId, movementData.InitialPosition, 1))
 				.ConfigureAwait(false);
 		}
 	}

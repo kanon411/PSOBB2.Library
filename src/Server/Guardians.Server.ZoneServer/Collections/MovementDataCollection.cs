@@ -6,20 +6,20 @@ using System.Text;
 namespace Guardians
 {
 	//TODO: Refactor interface implementation
-	public sealed class MovementInformationCollection : IDirtyableMovementInformationCollection, IEntityGuidMappable<MovementInformation>
+	public sealed class MovementDataCollection : IDirtyableMovementDataCollection, IEntityGuidMappable<IMovementData>
 	{
-		private EntityGuidDictionary<MovementInformation> InternallyManagedMovementDictionary { get; }
+		private EntityGuidDictionary<IMovementData> InternallyManagedMovementDictionary { get; }
 
 		private Dictionary<NetworkEntityGuid, bool> DirtyChangesTracker { get; }
 
-		public MovementInformationCollection()
+		public MovementDataCollection()
 		{
-			InternallyManagedMovementDictionary = new EntityGuidDictionary<MovementInformation>();
+			InternallyManagedMovementDictionary = new EntityGuidDictionary<IMovementData>();
 			DirtyChangesTracker = new Dictionary<NetworkEntityGuid, bool>();
 		}
 
 		/// <inheritdoc />
-		public IEnumerator<KeyValuePair<NetworkEntityGuid, MovementInformation>> GetEnumerator()
+		public IEnumerator<KeyValuePair<NetworkEntityGuid, IMovementData>> GetEnumerator()
 		{
 			return InternallyManagedMovementDictionary.GetEnumerator();
 		}
@@ -31,7 +31,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public void Add(KeyValuePair<NetworkEntityGuid, MovementInformation> item)
+		public void Add(KeyValuePair<NetworkEntityGuid, IMovementData> item)
 		{
 			DirtyChangesTracker[item.Key] = true;
 			InternallyManagedMovementDictionary.Add(item.Key, item.Value);
@@ -45,19 +45,19 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public bool Contains(KeyValuePair<NetworkEntityGuid, MovementInformation> item)
+		public bool Contains(KeyValuePair<NetworkEntityGuid, IMovementData> item)
 		{
 			return InternallyManagedMovementDictionary.ContainsKey(item.Key) && InternallyManagedMovementDictionary[item.Key] == item.Value;
 		}
 
 		/// <inheritdoc />
-		public void CopyTo(KeyValuePair<NetworkEntityGuid, MovementInformation>[] array, int arrayIndex)
+		public void CopyTo(KeyValuePair<NetworkEntityGuid, IMovementData>[] array, int arrayIndex)
 		{
 			throw new NotSupportedException($"TODO: Implement CopyTo.");
 		}
 
 		/// <inheritdoc />
-		public bool Remove(KeyValuePair<NetworkEntityGuid, MovementInformation> item)
+		public bool Remove(KeyValuePair<NetworkEntityGuid, IMovementData> item)
 		{
 			DirtyChangesTracker.Remove(item.Key);
 			//Assume value is right
@@ -65,23 +65,23 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		int ICollection<KeyValuePair<NetworkEntityGuid, MovementInformation>>.Count => InternallyManagedMovementDictionary.Count;
+		int ICollection<KeyValuePair<NetworkEntityGuid, IMovementData>>.Count => InternallyManagedMovementDictionary.Count;
 
 		/// <inheritdoc />
-		bool ICollection<KeyValuePair<NetworkEntityGuid, MovementInformation>>.IsReadOnly => false;
+		bool ICollection<KeyValuePair<NetworkEntityGuid, IMovementData>>.IsReadOnly => false;
 
 		/// <inheritdoc />
-		int IReadOnlyCollection<KeyValuePair<NetworkEntityGuid, MovementInformation>>.Count => InternallyManagedMovementDictionary.Count;
+		int IReadOnlyCollection<KeyValuePair<NetworkEntityGuid, IMovementData>>.Count => InternallyManagedMovementDictionary.Count;
 
 		/// <inheritdoc />
-		public void Add(NetworkEntityGuid key, MovementInformation value)
+		public void Add(NetworkEntityGuid key, IMovementData value)
 		{
 			DirtyChangesTracker[key] = true;
 			InternallyManagedMovementDictionary.Add(key, value);
 		}
 
 		/// <inheritdoc />
-		bool IDictionary<NetworkEntityGuid, MovementInformation>.ContainsKey(NetworkEntityGuid key)
+		bool IDictionary<NetworkEntityGuid, IMovementData>.ContainsKey(NetworkEntityGuid key)
 		{
 			return InternallyManagedMovementDictionary.ContainsKey(key);
 		}
@@ -94,25 +94,25 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		bool IDictionary<NetworkEntityGuid, MovementInformation>.TryGetValue(NetworkEntityGuid key, out MovementInformation value)
+		bool IDictionary<NetworkEntityGuid, IMovementData>.TryGetValue(NetworkEntityGuid key, out IMovementData value)
 		{
 			return InternallyManagedMovementDictionary.TryGetValue(key, out value);
 		}
 
 		/// <inheritdoc />
-		bool IReadOnlyDictionary<NetworkEntityGuid, MovementInformation>.ContainsKey(NetworkEntityGuid key)
+		bool IReadOnlyDictionary<NetworkEntityGuid, IMovementData>.ContainsKey(NetworkEntityGuid key)
 		{
 			return InternallyManagedMovementDictionary.ContainsKey(key);
 		}
 
 		/// <inheritdoc />
-		bool IReadOnlyDictionary<NetworkEntityGuid, MovementInformation>.TryGetValue(NetworkEntityGuid key, out MovementInformation value)
+		bool IReadOnlyDictionary<NetworkEntityGuid, IMovementData>.TryGetValue(NetworkEntityGuid key, out IMovementData value)
 		{
 			return InternallyManagedMovementDictionary.TryGetValue(key, out value);
 		}
 
 		/// <inheritdoc />
-		public MovementInformation this[NetworkEntityGuid key]
+		public IMovementData this[NetworkEntityGuid key]
 		{
 			get => InternallyManagedMovementDictionary[key];
 			set
@@ -123,16 +123,16 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		IEnumerable<NetworkEntityGuid> IReadOnlyDictionary<NetworkEntityGuid, MovementInformation>.Keys => InternallyManagedMovementDictionary.Keys;
+		IEnumerable<NetworkEntityGuid> IReadOnlyDictionary<NetworkEntityGuid, IMovementData>.Keys => InternallyManagedMovementDictionary.Keys;
 
 		/// <inheritdoc />
-		ICollection<MovementInformation> IDictionary<NetworkEntityGuid, MovementInformation>.Values => InternallyManagedMovementDictionary.Values;
+		ICollection<IMovementData> IDictionary<NetworkEntityGuid, IMovementData>.Values => InternallyManagedMovementDictionary.Values;
 
 		/// <inheritdoc />
-		ICollection<NetworkEntityGuid> IDictionary<NetworkEntityGuid, MovementInformation>.Keys => InternallyManagedMovementDictionary.Keys;
+		ICollection<NetworkEntityGuid> IDictionary<NetworkEntityGuid, IMovementData>.Keys => InternallyManagedMovementDictionary.Keys;
 
 		/// <inheritdoc />
-		IEnumerable<MovementInformation> IReadOnlyDictionary<NetworkEntityGuid, MovementInformation>.Values => InternallyManagedMovementDictionary.Values;
+		IEnumerable<IMovementData> IReadOnlyDictionary<NetworkEntityGuid, IMovementData>.Values => InternallyManagedMovementDictionary.Values;
 
 		/// <inheritdoc />
 		public bool isEntryDirty(NetworkEntityGuid key)

@@ -18,10 +18,10 @@ namespace Guardians
 		/// The movement data to update the server with.
 		/// </summary>
 		[ProtoMember(1)]
-		public MovementInformation MovementData { get; }
+		public IMovementData MovementData { get; }
 
 		/// <inheritdoc />
-		public ClientMovementDataUpdateRequest([NotNull] MovementInformation movementData)
+		public ClientMovementDataUpdateRequest([NotNull] IMovementData movementData)
 		{
 			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
 		}

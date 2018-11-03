@@ -11,13 +11,13 @@ namespace Guardians
 
 		private INetworkMessageSender<EntityMovementMessageContext> MovementUpdateMessageSender { get; }
 
-		private IDirtyableMovementInformationCollection MovementCollection { get; }
+		private IDirtyableMovementDataCollection MovementCollection { get; }
 
 		/// <inheritdoc />
 		public PlayerEntityMovementDataUpdateManager(
 			[NotNull] IPlayerEntityGuidEnumerable playerGuids, 
 			[NotNull] INetworkMessageSender<EntityMovementMessageContext> movementUpdateMessageSender,
-			[NotNull] IDirtyableMovementInformationCollection movementCollection)
+			[NotNull] IDirtyableMovementDataCollection movementCollection)
 		{
 			PlayerGuids = playerGuids ?? throw new ArgumentNullException(nameof(playerGuids));
 			MovementUpdateMessageSender = movementUpdateMessageSender ?? throw new ArgumentNullException(nameof(movementUpdateMessageSender));

@@ -47,9 +47,10 @@ namespace Guardians
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Dequeueing entity creation request for: {dequeuedPlayerSession.Key.EntityType}:{dequeuedPlayerSession.Key.EntityId}");
 
+				//TODO: Time stamp
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
-				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value.SessionContext, new MovementInformation(dequeuedPlayerSession.Value.SpawnPosition, 0, Vector2.zero), EntityPrefab.RemotePlayer));
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value.SessionContext, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer));
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");
@@ -63,8 +64,9 @@ namespace Guardians
 
 		private static GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession)
 		{
+			//TODO: Time stamp
 			//TODO: get real movement info
-			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new MovementInformation(dequeuedPlayerSession.Value.SpawnPosition, 0.0f, Vector2.zero));
+			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero));
 
 			return new GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>(dequeuedPlayerSession.Key, new PlayerSelfSpawnEventPayload(data));
 		}

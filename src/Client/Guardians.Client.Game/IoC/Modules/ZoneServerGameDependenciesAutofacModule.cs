@@ -16,10 +16,10 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<EntityGuidDictionary<MovementInformation>>()
+			builder.RegisterType<EntityGuidDictionary<IMovementData>>()
 				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<MovementInformation>>()
-				.As<IEntityGuidMappable<MovementInformation>>()
+				.As<IReadonlyEntityGuidMappable<IMovementData>>()
+				.As<IEntityGuidMappable<IMovementData>>()
 				.SingleInstance();
 
 

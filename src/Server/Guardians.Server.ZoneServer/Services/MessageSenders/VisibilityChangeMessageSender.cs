@@ -9,14 +9,14 @@ namespace Guardians
 {
 	public sealed class VisibilityChangeMessageSender : INetworkMessageSender<EntityVisibilityChangeContext>
 	{
-		private IReadonlyEntityGuidMappable<MovementInformation> MovementInformationMappable { get; }
+		private IReadonlyEntityGuidMappable<IMovementData> MovementDataMappable { get; }
 
 		private IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> SessionMappable { get; }
 
 		/// <inheritdoc />
-		public VisibilityChangeMessageSender([NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementInformationMappable, [NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable)
+		public VisibilityChangeMessageSender([NotNull] IReadonlyEntityGuidMappable<IMovementData> movementDataMappable, [NotNull] IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable)
 		{
-			MovementInformationMappable = movementInformationMappable ?? throw new ArgumentNullException(nameof(movementInformationMappable));
+			MovementDataMappable = movementDataMappable ?? throw new ArgumentNullException(nameof(movementDataMappable));
 			SessionMappable = sessionMappable ?? throw new ArgumentNullException(nameof(sessionMappable));
 		}
 
@@ -61,7 +61,7 @@ namespace Guardians
 			if(interestCollection == null) throw new ArgumentNullException(nameof(interestCollection));
 
 			//TODO: Provide movement mappable
-			InterestChangedPacketBuilder changedPacketBuilder = new InterestChangedPacketBuilder(MovementInformationMappable);
+			InterestChangedPacketBuilder changedPacketBuilder = new InterestChangedPacketBuilder(MovementDataMappable);
 
 			//We delegate the packet building to the packet builder. But we still need to send it.
 			//Sending is async so it can be fired off and not awaited, we won't want to await it

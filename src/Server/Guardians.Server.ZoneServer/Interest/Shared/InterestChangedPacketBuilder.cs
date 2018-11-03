@@ -11,10 +11,10 @@ namespace Guardians
 		/// <summary>
 		/// The movement data mappabled from an entity guid.
 		/// </summary>
-		private IReadonlyEntityGuidMappable<MovementInformation> MovementMapper { get; }
+		private IReadonlyEntityGuidMappable<IMovementData> MovementMapper { get; }
 
 		/// <inheritdoc />
-		public InterestChangedPacketBuilder([NotNull] IReadonlyEntityGuidMappable<MovementInformation> movementMapper)
+		public InterestChangedPacketBuilder([NotNull] IReadonlyEntityGuidMappable<IMovementData> movementMapper)
 		{
 			MovementMapper = movementMapper ?? throw new ArgumentNullException(nameof(movementMapper));
 		}

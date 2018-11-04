@@ -52,6 +52,14 @@ namespace Guardians
 				.As<INetworkTimeService>()
 				.As<IReadonlyNetworkTimeService>()
 				.SingleInstance();
+
+			builder.RegisterType<DefaultMovementHandlerService>()
+				.As<IMovementDataHandlerService>()
+				.AsSelf();
+
+			builder.RegisterType<PositionChangeMovementBlockHandler>()
+				.As<IMovementBlockHandler>()
+				.AsSelf();
 		}
 	}
 }

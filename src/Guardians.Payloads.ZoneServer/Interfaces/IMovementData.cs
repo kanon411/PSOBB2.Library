@@ -14,6 +14,7 @@ namespace Guardians
 		/// The timestamp that a particular movement data
 		/// was created at on the server.
 		/// </summary>
+		[ProtoIgnore]
 		long TimeStamp { get; }
 
 		//TODO: Doc better
@@ -22,6 +23,7 @@ namespace Guardians
 		/// that the moving entity started with
 		/// before this movement data was created.
 		/// </summary>
+		[ProtoIgnore]
 		Vector3 InitialPosition { get; }
 	}
 }

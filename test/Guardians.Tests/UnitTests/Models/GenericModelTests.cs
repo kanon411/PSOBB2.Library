@@ -48,6 +48,9 @@ namespace Guardians
 		[TestCaseSource(nameof(ModelTypes))]
 		public void Test_Model_Has_Parameterless_Ctor(Type t)
 		{
+			if(t.IsInterface)
+				Assert.Pass($"Interfaces don't ever have ctor. Skipping for: {t.Name}");
+
 			//assert
 			Assert.NotNull(t.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, CallingConventions.Any, Enumerable.Empty<Type>().ToArray(), null), $"Type: {t.Name} does not have a required parameterless ctor. In Assembly: {t.Assembly.FullName}");
 		}

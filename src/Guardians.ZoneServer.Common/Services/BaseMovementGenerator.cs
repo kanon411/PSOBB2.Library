@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Guardians
 {
+	/// <summary>
+	/// Base for movement generators that control client and serverside movement simulation.
+	/// </summary>
+	/// <typeparam name="TDataInputType">The data input type.</typeparam>
 	public abstract class BaseMovementGenerator<TDataInputType> : IMovementGenerator<GameObject>
 		where TDataInputType : class, IMovementData
 	{

@@ -60,6 +60,17 @@ namespace Guardians
 			builder.RegisterType<PositionChangeMovementBlockHandler>()
 				.As<IMovementBlockHandler>()
 				.AsSelf();
+
+			builder.RegisterType<EntityGuidDictionary<IMovementGenerator<GameObject>>>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>>>()
+				.As<IEntityGuidMappable<IMovementGenerator<GameObject>>>()
+				.SingleInstance();
+
+			builder.RegisterType<MovementSimulationTickable>()
+				.As<IGameTickable>()
+				.AsSelf()
+				.SingleInstance();
 		}
 	}
 }

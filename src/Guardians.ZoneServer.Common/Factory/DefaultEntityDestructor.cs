@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Guardians
@@ -13,15 +14,19 @@ namespace Guardians
 
 		private IGameObjectToEntityMappable GameObjectToEntityMap { get; }
 
+		private IEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerators { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityDestructor(
 			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
 			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
-			IGameObjectToEntityMappable gameObjectToEntityMap)
+			IGameObjectToEntityMappable gameObjectToEntityMap,
+			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerators)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
 			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
+			MovementGenerators = movementGenerators ?? throw new ArgumentNullException(nameof(movementGenerators));
 		}
 
 		/// <inheritdoc />
@@ -38,6 +43,10 @@ namespace Guardians
 			GameObjectToEntityMap.ObjectToEntityMap.Remove(rootEntityGameObject);
 
 			GameObject.Destroy(rootEntityGameObject);
+
+			//Not all entities will have a movement generator sometimes.
+			if(MovementGenerators.ContainsKey(obj))
+				MovementGenerators.Remove(obj);
 
 			return true;
 		}

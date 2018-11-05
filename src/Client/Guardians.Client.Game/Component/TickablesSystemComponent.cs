@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Common.Logging;
+using SceneJect.Common;
+using UnityEngine;
+
+namespace Guardians
+{
+	[Injectee]
+	public sealed class TickablesSystemComponent : MonoBehaviour
+	{
+		[Inject]
+		private IReadOnlyCollection<IGameTickable> GameTickables { get; }
+
+		[Inject]
+		private ILog Logger { get; }
+
+		void FixedUpdate()
+		{
+			if(GameTickables == null || GameTickables.Count == 0)
+			{
+				if(Logger.IsDebugEnabled)
+					Logger.Debug($"No gametickables; engine skipping tickables.");
+
+				return;
+			}
+
+			//We just tick all tickables, they should be order independent
+			//This moves the game simulation forward more or less, many things are scheduled to occur
+			//via the main game loop on the main game thread
+			foreach(var tickable in GameTickables)
+			{
+				try
+				{
+					tickable.Tick();
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Encountered Exception in Main GameLoop: {e.Message} \n\n Stack: {e.StackTrace}");
+				}
+			}
+		}
+	}
+}

@@ -173,6 +173,12 @@ namespace Guardians
 				.As<IZoneServerToGameServerClient>()
 				.SingleInstance();
 
+			builder.RegisterType<EntityGuidDictionary<IMovementGenerator<GameObject>>>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>>>()
+				.As<IEntityGuidMappable<IMovementGenerator<GameObject>>>()
+				.SingleInstance();
+
 			RegisterEntityDestructionServices(builder);
 		}
 

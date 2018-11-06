@@ -15,7 +15,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		protected override void InternalStart(GameObject entity, long currentTime)
+		protected override void Start(GameObject entity, long currentTime)
 		{
 			//We don't need to deal with time when a position change occurs.
 
@@ -28,7 +28,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		protected override void InternalUpdate(GameObject entity, float deltaTime)
+		protected override void InternalUpdate(GameObject entity, long currentTime)
 		{
 			//We don't need to do anything in update, position is already changed in start.
 		}

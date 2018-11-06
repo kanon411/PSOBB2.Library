@@ -8,10 +8,10 @@ namespace Guardians
 	{
 		/// <summary>
 		/// Updates the movement for the <see cref="entity"/>
-		/// based on the delta from the last update <see cref="deltaTime"/>.
+		/// based on the time <see cref="currentTime"/>.
 		/// </summary>
 		/// <param name="entity"></param>
-		/// <param name="deltaTime">The deltatime from the last update.</param>
-		void Update(TEntityType entity, float deltaTime);
+		/// <param name="currentTime"></param>
+		void Update(TEntityType entity, long currentTime);
 	}
 }

@@ -26,35 +26,25 @@ namespace Guardians
 			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
 		}
 
-		protected void Start(GameObject entity, long currentTime)
-		{
-			if(!hasStartFired)
-				InternalStart(entity, currentTime);
-			else
-				throw new InvalidOperationException($"{nameof(Start)} should only ever be called once for a generator.");
-
-			hasStartFired = true;
-		}
-
-		protected abstract void InternalStart(GameObject entity, long currentTime);
+		protected abstract void Start(GameObject entity, long currentTime);
 
 		/// <inheritdoc />
-		public void Update(GameObject entity, float deltaTime)
+		public void Update(GameObject entity, long currentTime)
 		{
 			if(!hasStartFired)
 			{
-				throw new InvalidOperationException($"Cannot start path before {nameof(Start)} is called.");
+				Start(entity, currentTime);
+				hasStartFired = true;
 			}
 			else 
-				InternalUpdate(entity, deltaTime); //don't update if we called Start
+				InternalUpdate(entity, currentTime); //don't update if we called Start
 		}
 
-		//TODO: Doc
 		/// <summary>
 		/// Called on <see cref="Update"/>
 		/// </summary>
 		/// <param name="entity"></param>
-		/// <param name="deltaTime"></param>
-		protected abstract void InternalUpdate(GameObject entity, float deltaTime);
+		/// <param name="currentTime"></param>
+		protected abstract void InternalUpdate(GameObject entity, long currentTime);
 	}
 }

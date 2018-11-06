@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
@@ -32,7 +33,7 @@ namespace Guardians
 		/// The movement path sent.
 		/// </summary>
 		[ProtoIgnore]
-		public IReadOnlyCollection<Vector3> MovementPath => _MovementPath;
+		public ReadOnlyCollection<Vector3> MovementPath => new ReadOnlyCollection<Vector3>(_MovementPath);
 
 		/// <inheritdoc />
 		public PathBasedMovementData([NotNull] Vector3[] movementPath, long timeStamp)

@@ -24,6 +24,8 @@ namespace Guardians
 
 		private IFactoryCreatable<GameObject, EntityPrefab> PrefabFactory { get; }
 
+		private IMovementDataHandlerService MovementHandlerService { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityFactory(
 			ILog logger, 
@@ -31,7 +33,8 @@ namespace Guardians
 			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap, 
 			IGameObjectFactory objectFactory,
-			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory)
+			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory,
+			IMovementDataHandlerService movementHandlerService)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
@@ -39,6 +42,7 @@ namespace Guardians
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
 			ObjectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
 			PrefabFactory = prefabFactory ?? throw new ArgumentNullException(nameof(prefabFactory));
+			MovementHandlerService = movementHandlerService ?? throw new ArgumentNullException(nameof(movementHandlerService));
 		}
 
 		/// <inheritdoc />
@@ -57,6 +61,10 @@ namespace Guardians
 			GuidToMovementInfoMappable.Add(context.EntityGuid, context.MovementData);
 
 			GuidToGameObjectMappable.Add(context.EntityGuid, entityGameObject);
+
+			//TODO: Is it best to do this here?
+			if(!MovementHandlerService.TryHandleMovement(context.EntityGuid, context.MovementData))
+				throw new InvalidOperationException($"Cannot handle MovementType: {context.MovementData.GetType().Name} for Entity: {context.EntityGuid}");
 
 			return entityGameObject;
 		}

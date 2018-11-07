@@ -16,7 +16,7 @@ namespace Guardians
 		[Inject]
 		private ILog Logger { get; }
 
-		void FixedUpdate()
+		void Update()
 		{
 			if(GameTickables == null || GameTickables.Count == 0)
 			{

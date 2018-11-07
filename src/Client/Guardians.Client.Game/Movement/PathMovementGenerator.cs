@@ -16,39 +16,28 @@ namespace Guardians
 			public int PathIndex { get; }
 
 			/// <summary>
-			/// The initial position to start pathing from to the point
-			/// at index <see cref="PathIndex"/>
-			/// </summary>
-			public long IndexTimeOffset { get; }
-
-			/// <summary>
 			/// This is different than the movement data timestamp.
 			/// This is the time that the simulation started this particiular path state.
 			/// Meaning it can be used to compute the offset since the last path state
 			/// which would can then be used to compute the distance traveled since the path at <see cref="PathIndex"/>.
-			/// How it relates to <see cref="IndexTimeOffset"/> is that it IndexTimeOffset is like P0 in
-			/// FinalPosition = Speed * t + P0 where P0 is <see cref="IndexTimeOffset"/> * Speed
 			/// </summary>
 			public long TimePathStateCreated { get; }
 
 			/// <summary>
 			/// The duration (in ticks) for how long it should take from <see cref="PathIndex"/> to <see cref="PathIndex"/>+1.
-			/// This includes the <see cref="IndexTimeOffset"/>.
 			/// Meaning at t = <see cref="TimePathStateCreated"/> + <see cref="PathSegementDuration"/> the path should move to the next segement.
 			/// </summary>
 			public long PathSegementDuration { get; }
 
 			/// <inheritdoc />
-			public PathState(int pathIndex, long indexTimeOffset, long timePathStateCreated, long pathSegementDuration)
+			public PathState(int pathIndex, long timePathStateCreated, long pathSegementDuration)
 			{
 				//Path can be 0, it can be the initial segment
 				if(pathIndex < 0) throw new ArgumentOutOfRangeException(nameof(pathIndex));
-				if(indexTimeOffset < 0) throw new ArgumentOutOfRangeException(nameof(indexTimeOffset));
 				if(timePathStateCreated < 0) throw new ArgumentOutOfRangeException(nameof(timePathStateCreated));
 				if(pathSegementDuration < 0) throw new ArgumentOutOfRangeException(nameof(pathSegementDuration));
 
 				PathIndex = pathIndex;
-				IndexTimeOffset = indexTimeOffset;
 				TimePathStateCreated = timePathStateCreated;
 				PathSegementDuration = pathSegementDuration;
 			}
@@ -121,11 +110,11 @@ namespace Guardians
 
 					//The current time minus the time taken to reach the current distance traveled from the last point is the offset of how far
 					//we are into a point.
-					return new PathState(i, CalculateInitialTickOffsetForPathState(movementSpeedPerSecond, distance, distancedTraveledSince), currentTime, CalculateDistanceLengthInTicks(distance, movementSpeedPerSecond)); // * 1000 to convert secounds to milliseconds
+					return new PathState(i, currentTime, CalculateDistanceLengthInTicks(distance, movementSpeedPerSecond)); // * 1000 to convert secounds to milliseconds
 				}
 			}
 
-			return new PathState(MovementData.MovementPath.Count - 1, 0, currentTime, 0);
+			return new PathState(MovementData.MovementPath.Count - 1, currentTime, 0);
 		}
 
 		private static long CalculateDistanceLengthInTicks(float distance, float movementSpeedInSeconds)
@@ -165,7 +154,7 @@ namespace Guardians
 				if(State.PathIndex + 1 >= MovementData.MovementPath.Count)
 					isPathingEnabled = false;
 				else
-					State = new PathState(State.PathIndex + 1, 0, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));
+					State = new PathState(State.PathIndex + 1, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));
 		}
 	}
 }

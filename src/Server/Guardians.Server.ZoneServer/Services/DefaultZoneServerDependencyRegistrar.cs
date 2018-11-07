@@ -179,6 +179,10 @@ namespace Guardians
 				.As<IEntityGuidMappable<IMovementGenerator<GameObject>>>()
 				.SingleInstance();
 
+			builder.RegisterType<DefaultMovementHandlerService>()
+				.As<IMovementDataHandlerService>()
+				.AsSelf();
+
 			RegisterEntityDestructionServices(builder);
 		}
 

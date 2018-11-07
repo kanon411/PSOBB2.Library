@@ -30,8 +30,8 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
 		{
-			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.InitialPosition}");
+			//if(Logger.IsDebugEnabled)
+			//	Logger.Debug($"Recieved Movement Update for: {guid} with Data: {payload.MovementData.InitialPosition}");
 
 			try
 			{

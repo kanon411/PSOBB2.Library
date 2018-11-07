@@ -25,8 +25,8 @@ namespace Guardians
 
 			//TODO: We need to handle multiple movement types
 			//This is just a hacky little thing we're using for the demo
-			if(entity.GetComponent<DemoRemotePlayerInputController>() is DemoRemotePlayerInputController demoController)
-				demoController.RecalculateDemoDirection(MovementData.Direction);
+			if(entity.GetComponent<IMovementDirectionSettable>() is IMovementDirectionSettable demoController)
+				demoController.Direction = MovementData.Direction;
 		}
 
 		/// <inheritdoc />

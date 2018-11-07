@@ -51,7 +51,7 @@ namespace Guardians
 					Logger.Error($"Failed to enter Entity: {ObjectToEntityMapper.ObjectToEntityMap[rootObject]} to Entity Interest ID: {me}");
 			}
 			else if(Logger.IsInfoEnabled)
-				Logger.Info($"Entity entered interest radius of Entity: {me}");
+				Logger.Info($"Entity: {ObjectToEntityMapper.ObjectToEntityMap[rootObject]} entered interest radius of Entity: {me}");
 				
 		}
 

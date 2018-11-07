@@ -183,6 +183,19 @@ namespace Guardians
 				.As<IMovementDataHandlerService>()
 				.AsSelf();
 
+			builder.RegisterType<PathMovementBlockHandler>()
+				.AsImplementedInterfaces()
+				.AsSelf();
+
+			builder.RegisterType<PositionChangeMovementBlockHandler>()
+				.AsImplementedInterfaces()
+				.AsSelf();
+
+			builder.RegisterType<UtcNowNetworkTimeService>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
 			RegisterEntityDestructionServices(builder);
 		}
 

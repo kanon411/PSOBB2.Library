@@ -24,7 +24,8 @@ namespace Guardians
 			/// <inheritdoc />
 			public PathState(int pathIndex, long indexTimeOffset)
 			{
-				if(pathIndex <= 0) throw new ArgumentOutOfRangeException(nameof(pathIndex));
+				//Path can be 0, it can be the initial segment
+				if(pathIndex < 0) throw new ArgumentOutOfRangeException(nameof(pathIndex));
 				if(indexTimeOffset <= 0) throw new ArgumentOutOfRangeException(nameof(indexTimeOffset));
 
 				PathIndex = pathIndex;

@@ -12,13 +12,21 @@ namespace Guardians
 
 		private IEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerator { get; }
 
+		private IEntityGuidMappable<GameObject> GameObjectMap { get; }
+
+		private INetworkTimeService TimeService { get; }
+
 		/// <inheritdoc />
 		public PathMovementBlockHandler(
 			IEntityGuidMappable<IMovementData> movementDataMap,
-			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerator)
+			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerator,
+			IEntityGuidMappable<GameObject> gameObjectMap,
+			INetworkTimeService timeService)
 		{
 			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
 			MovementGenerator = movementGenerator ?? throw new ArgumentNullException(nameof(movementGenerator));
+			GameObjectMap = gameObjectMap ?? throw new ArgumentNullException(nameof(gameObjectMap));
+			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
 		}
 
 		/// <inheritdoc />
@@ -26,6 +34,9 @@ namespace Guardians
 		{
 			MovementDataMap[entityGuid] = data;
 			MovementGenerator[entityGuid] = new PathMovementGenerator(data);
+
+			//TODO: We may not be on the main thread, so we might not be able to do this.
+			MovementGenerator[entityGuid].Update(GameObjectMap[entityGuid], TimeService.CurrentRemoteTime);
 		}
 	}
 }

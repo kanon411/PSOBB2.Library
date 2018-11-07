@@ -56,6 +56,8 @@ namespace Guardians
 
 		private PathState State { get; set; }
 
+		private bool isPathingEnabled { get; set; } = true;
+
 		/// <inheritdoc />
 		public PathMovementGenerator(PathBasedMovementData movementData) 
 			: base(movementData)
@@ -150,13 +152,20 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void InternalUpdate(GameObject entity, long currentTime)
 		{
+			//If we're done pathing we shouldn't do any computation
+			if(!isPathingEnabled)
+				return;
+
 			//Knowing the two points is enough to linerally interpolate between them.
 			long timeSinceSegementState = currentTime - State.TimePathStateCreated;
 			float lerpRatio = (float)timeSinceSegementState / State.PathSegementDuration;
 			entity.transform.position = Vector3.Lerp(MovementData.MovementPath[State.PathIndex], MovementData.MovementPath[State.PathIndex + 1], lerpRatio);
 
 			if(lerpRatio >= 1.0f)
-				State = new PathState(State.PathIndex + 1, 0, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));
+				if(State.PathIndex + 1 >= MovementData.MovementPath.Count)
+					isPathingEnabled = false;
+				else
+					State = new PathState(State.PathIndex + 1, 0, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));
 		}
 	}
 }

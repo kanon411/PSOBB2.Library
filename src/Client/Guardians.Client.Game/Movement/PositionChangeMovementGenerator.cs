@@ -17,6 +17,7 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Start(GameObject entity, long currentTime)
 		{
+			if(entity == null) throw new ArgumentNullException(nameof(entity));
 			//We don't need to deal with time when a position change occurs.
 
 			//TODO: This is demo code, we should handle actual movement differently.
@@ -24,7 +25,8 @@ namespace Guardians
 
 			//TODO: We need to handle multiple movement types
 			//This is just a hacky little thing we're using for the demo
-			entity.GetComponent<DemoRemotePlayerInputController>().RecalculateDemoDirection(MovementData.Direction);
+			if(entity.GetComponent<DemoRemotePlayerInputController>() is DemoRemotePlayerInputController demoController)
+				demoController.RecalculateDemoDirection(MovementData.Direction);
 		}
 
 		/// <inheritdoc />

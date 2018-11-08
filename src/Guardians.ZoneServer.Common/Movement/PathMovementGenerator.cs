@@ -91,16 +91,17 @@ namespace Guardians
 				float distance = distanceVectorOffset.magnitude;
 
 				//This is the time it would have traveled since the timestamp
-				float distancedTraveledSince = (startTimeDiff / TimeSpan.TicksPerMillisecond) * (movementSpeedPerSecond / 1000f);
+				float distancedTraveledSince = ((float)startTimeDiff / TimeSpan.TicksPerMillisecond) * (movementSpeedPerSecond / 1000f);
 
 				if(distancedTraveledSince > distance)
 				{
 					//this means that the time elasped would put us past the initial path point
 					//so we must remove the time taken to travel the the initial ray and continue down the path
-					startTimeDiff -= (long)((distance) / (movementSpeedPerSecond)) * 1000 * TimeSpan.TicksPerMillisecond; // (x / speed) = time
+					startTimeDiff = Math.Max(startTimeDiff - (long)(((distance) / (movementSpeedPerSecond)) * 1000 * TimeSpan.TicksPerMillisecond), 0); // (x / speed) = time
 				}
 				else
 				{
+					//TODO: Rewrite this doc, since it's outdated
 					//TODO: Case where we're somewhere between the points.
 					//Distance Travel / Total Distance = Ratio of how far to move from pointX to pointX+1.
 					//Ratio * normalized distanceOffset is the direction from pointX to pointX+1 so we can multiply that times the direction
@@ -110,7 +111,9 @@ namespace Guardians
 
 					//The current time minus the time taken to reach the current distance traveled from the last point is the offset of how far
 					//we are into a point.
-					return new PathState(i, currentTime, CalculateDistanceLengthInTicks(distance, movementSpeedPerSecond)); // * 1000 to convert secounds to milliseconds
+					//We can't use current time for the start path, because it might already be part way down the path so we must use
+					//the currentTime - TimeTakenToReachDistanceTraveledSince
+					return new PathState(i, currentTime - (long)((distancedTraveledSince / movementSpeedPerSecond) * 1000 * TimeSpan.TicksPerMillisecond), CalculateDistanceLengthInTicks(distance, movementSpeedPerSecond)); // * 1000 to convert secounds to milliseconds
 				}
 			}
 
@@ -151,10 +154,12 @@ namespace Guardians
 			entity.transform.position = Vector3.Lerp(MovementData.MovementPath[State.PathIndex], MovementData.MovementPath[State.PathIndex + 1], lerpRatio);
 
 			if(lerpRatio >= 1.0f)
+			{
 				if(State.PathIndex + 1 >= MovementData.MovementPath.Count)
 					isPathingEnabled = false;
 				else
 					State = new PathState(State.PathIndex + 1, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));
+			}
 		}
 	}
 }

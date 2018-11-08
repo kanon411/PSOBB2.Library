@@ -37,6 +37,7 @@ namespace Guardians
 		/// <summary>
 		/// The current computed time offset.
 		/// (Does no computation).
+		/// Includes Latency.
 		/// </summary>
 		long CurrentTimeOffset { get; }
 

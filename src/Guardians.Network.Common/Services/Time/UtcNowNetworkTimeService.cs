@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Guardians
@@ -16,8 +17,20 @@ namespace Guardians
 		/// <inheritdoc />
 		public long CurrentLatency { get; private set; }
 
+		/*ct - rt = to
+		rt = -(to - ct)
+		rt = ct - to*/
 		/// <inheritdoc />
-		public long CurrentRemoteTime => CurrentLocalTime - CurrentLatency - CurrentTimeOffset;
+		public long CurrentRemoteTime
+		{
+			get
+			{
+				//TODO: How to handle this check.
+				long value = CurrentLocalTime - CurrentTimeOffset;
+				Debug.Assert(value < 0);
+				return value;
+			}
+		}
 
 		/// <inheritdoc />
 		public long CalculateRoundTripTime(long originalLocalTime)
@@ -27,7 +40,8 @@ namespace Guardians
 
 		private long CalculateRoundTripTime(long originalLocalTime, long currentTicks)
 		{
-			return (originalLocalTime - currentTicks);
+			//This is no way this should be negative, but we might want to check.
+			return (currentTicks - originalLocalTime);
 		}
 
 		/// <inheritdoc />

@@ -2,14 +2,16 @@
 using Guardians;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Guardians.Database.GameServer.Migrations.NpcDatabase
 {
     [DbContext(typeof(NpcDatabaseContext))]
-    partial class NpcDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181109190632_NpcEntryColumOrdering")]
+    partial class NpcEntryColumOrdering
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

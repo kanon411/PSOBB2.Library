@@ -26,7 +26,7 @@ namespace Guardians
 			Random random = new Random();
 
 			//TODO: IF we ever have a map table we may need to redo the Random map (might fail FK?)
-			return new NPCEntryModel(random.Next(), new Vector3<float>(NextRandomFloat(random), NextRandomFloat(random), NextRandomFloat(random)), NextRandomFloat(random), random.Next());
+			return new NPCEntryModel(random.Next(), new Vector3<float>(NextRandomFloat(random), NextRandomFloat(random), NextRandomFloat(random)), NextRandomFloat(random), random.Next(), NpcMovementType.Stationary, 1);
 		}
 
 		private static float NextRandomFloat(Random random)
@@ -52,9 +52,9 @@ namespace Guardians
 			INpcEntryRepository entryRepo = BuildEmptyRepository();
 
 			//act
-			await entryRepo.TryCreateAsync(new NPCEntryModel(1, new Vector3<float>(5, 6, 7), 55, mapId));
-			await entryRepo.TryCreateAsync(new NPCEntryModel(2, new Vector3<float>(5, 6, 7), 55, mapId));
-			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, mapId));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(1, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(2, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
 
 			IReadOnlyCollection<NPCEntryModel> entryModels = await entryRepo.RetrieveAllWithMapIdAsync(mapId);
 
@@ -83,12 +83,12 @@ namespace Guardians
 			INpcEntryRepository entryRepo = BuildEmptyRepository();
 
 			//act
-			await entryRepo.TryCreateAsync(new NPCEntryModel(1, new Vector3<float>(5, 6, 7), 55, mapId));
-			await entryRepo.TryCreateAsync(new NPCEntryModel(2, new Vector3<float>(5, 6, 7), 55, mapId));
-			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, mapId));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(1, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(2, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, mapId, NpcMovementType.Stationary, 1));
 
-			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, unavailableMapId));
-			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, unavailableMapId));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, unavailableMapId, NpcMovementType.Stationary, 1));
+			await entryRepo.TryCreateAsync(new NPCEntryModel(3, new Vector3<float>(5, 6, 7), 55, unavailableMapId, NpcMovementType.Stationary, 1));
 
 			IReadOnlyCollection<NPCEntryModel> entryModels = await entryRepo.RetrieveAllWithMapIdAsync(mapId);
 

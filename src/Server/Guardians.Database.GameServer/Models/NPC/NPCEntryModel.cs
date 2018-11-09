@@ -71,9 +71,9 @@ namespace Guardians
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		protected NPCEntryModel(float initialOrientation)
+		protected NPCEntryModel()
 		{
-			InitialOrientation = initialOrientation;
+
 		}
 	}
 }

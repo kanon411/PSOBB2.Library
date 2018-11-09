@@ -48,7 +48,7 @@ namespace Guardians
 				.Build();
 
 			//TODO: Create a Vector3 converter
-			return new ZoneServerNpcEntryModel(guid, npc.NpcTemplateId, new Vector3(npc.SpawnPosition.X, npc.SpawnPosition.Y, npc.SpawnPosition.Z));
+			return new ZoneServerNpcEntryModel(guid, npc.NpcTemplateId, new Vector3(npc.SpawnPosition.X, npc.SpawnPosition.Y, npc.SpawnPosition.Z), npc.MovementType, npc.MovementData);
 		}
 
 		//TODO: Conslidate/centralize name query stuff via entity GUID.

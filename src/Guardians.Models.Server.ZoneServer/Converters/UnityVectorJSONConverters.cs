@@ -33,6 +33,31 @@ namespace Guardians
 		}
 	}
 
+	public class Vector3ArrayConverter : JsonConverter<Vector3[]>
+	{
+		/// <inheritdoc />
+		public override void WriteJson(JsonWriter writer, Vector3[] value, JsonSerializer serializer)
+		{
+			Vector3Converter singleConverter = new Vector3Converter();
+
+			writer.WriteStartArray();
+			for(int i = 0; i < value.Length; i++)
+			{
+				ref Vector3 refVector = ref value[i];
+				singleConverter.WriteJson(writer, refVector, serializer);
+			}
+			writer.WriteEndArray();
+		}
+
+		/// <inheritdoc />
+		public override Vector3[] ReadJson(JsonReader reader, Type objectType, Vector3[] existingValue, bool hasExistingValue, JsonSerializer serializer)
+		{
+			var t = serializer.Deserialize(reader);
+			var iv = JsonConvert.DeserializeObject<Vector3[]>(t.ToString());
+			return iv;
+		}
+	}
+
 	public class Vector3Converter : JsonConverter<Vector3>
 	{
 		public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -55,6 +80,18 @@ namespace Guardians
 			writer.WriteValue(v.y);
 			writer.WritePropertyName("z");
 			writer.WriteValue(v.z);
+			writer.WriteEndObject();
+		}
+
+		public void WriteJson(JsonWriter writer, ref Vector3 value, JsonSerializer serializer)
+		{
+			writer.WriteStartObject();
+			writer.WritePropertyName("x");
+			writer.WriteValue(value.x);
+			writer.WritePropertyName("y");
+			writer.WriteValue(value.y);
+			writer.WritePropertyName("z");
+			writer.WriteValue(value.z);
 			writer.WriteEndObject();
 		}
 	}

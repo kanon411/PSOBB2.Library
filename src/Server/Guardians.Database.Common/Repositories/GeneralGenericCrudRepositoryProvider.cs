@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Guardians
 {
-	public sealed class GeneralGenericCrudRepositoryProvider<TKey, TModelType> : IGenericRepositoryCrudable<TKey, TModelType> 
+	public class GeneralGenericCrudRepositoryProvider<TKey, TModelType> : IGenericRepositoryCrudable<TKey, TModelType> 
 		where TModelType : class
 	{
-		private DbSet<TModelType> ModelSet { get; }
+		protected DbSet<TModelType> ModelSet { get; }
 
-		private DbContext Context { get; }
+		protected DbContext Context { get; }
 
 		/// <inheritdoc />
 		public GeneralGenericCrudRepositoryProvider(DbSet<TModelType> modelSet, DbContext context)
@@ -42,7 +42,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task<TModelType> RetrieveAsync(TKey key)
+		public virtual Task<TModelType> RetrieveAsync(TKey key)
 		{
 			return ModelSet.FindAsync(key);
 		}

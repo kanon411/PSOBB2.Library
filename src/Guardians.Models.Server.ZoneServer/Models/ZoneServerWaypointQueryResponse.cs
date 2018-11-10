@@ -17,7 +17,8 @@ namespace Guardians
 		/// the requested id.
 		/// </summary>
 		[JsonRequired]
-		[JsonProperty]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = nameof(Waypoints))]
+		[JsonConverter(typeof(Vector3ArrayConverter))]
 		private Vector3[] _Waypoints;
 
 		[JsonIgnore]

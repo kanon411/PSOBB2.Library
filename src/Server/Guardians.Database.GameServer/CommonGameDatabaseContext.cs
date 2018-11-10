@@ -31,7 +31,9 @@ namespace Guardians
 
 			base.OnConfiguring(optionsBuilder);
 		}
+#endif
 
+		//Due to composite key inmemory testing we need to have this outside of the usual ifdef
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -41,6 +43,5 @@ namespace Guardians
 			characterEntity
 				.HasKey(p => new {p.PathId, p.PointId});
 		}
-#endif
 	}
 }

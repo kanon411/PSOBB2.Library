@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Guardians
 {
@@ -21,6 +23,20 @@ namespace Guardians
 		public Task<bool> ContainsAsync(PathWaypointKey key)
 		{
 			return WaypointCrudProvider.ContainsAsync(key);
+		}
+
+		/// <inheritdoc />
+		public Task<bool> ContainsPathAsync(int pathId)
+		{
+			return Context.PathWaypoints.AnyAsync(p => p.PathId == pathId);
+		}
+
+		/// <inheritdoc />
+		public async Task<IReadOnlyCollection<PathWaypointModel>> RetrievePointsFromPathAsync(int pathId)
+		{
+			return await Context.PathWaypoints
+				.Where(p => p.PathId == pathId)
+				.ToArrayAsync();
 		}
 
 		/// <inheritdoc />

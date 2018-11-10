@@ -88,6 +88,19 @@ namespace Guardians
 
 			services.AddTransient<INpcTemplateRepository, DatabaseBackedNpcTemplateRepository>();
 			services.AddTransient<INpcEntryRepository, DatabaseBackedNpcEntryRepository>();
+
+			services.AddDbContext<CommonGameDatabaseContext>(o =>
+			{
+				//On local builds we don't want to use config. We want to default to local
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+				throw new NotSupportedException("AWS/Remote database not supported yet.");
+				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
+#else
+				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
+#endif
+			});
+
+			services.AddTransient<IWaypointsRepository, DatabaseBackedWaypointsRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

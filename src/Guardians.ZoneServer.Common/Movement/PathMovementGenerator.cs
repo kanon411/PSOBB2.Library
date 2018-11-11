@@ -65,7 +65,15 @@ namespace Guardians
 			State = ComputeInitialPathState(currentTime);
 
 			//Just call update, which will set the position.
-			InternalUpdate(entity, currentTime);
+			//unless pathing is done, then we can just directly set the position of the entity.
+			if(isPathingEnabled)
+				InternalUpdate(entity, currentTime);
+			{
+				//TODO: Refactor this
+				//TODO: If path is not 2 points long or more this will fail
+				entity.transform.position = MovementData.MovementPath.Last();
+				entity.transform.rotation = Quaternion.LookRotation(MovementData.MovementPath[State.PathIndex] - MovementData.MovementPath[State.PathIndex - 1]);
+			}
 		}
 
 		private PathState ComputeInitialPathState(long currentTime)
@@ -82,7 +90,7 @@ namespace Guardians
 			if(startTimeDiff < 0)
 				throw new InvalidOperationException($"Encountered Negative Time Diff. CurrentTime: {currentTime} MovementStamp: {MovementData.TimeStamp}");
 
-			for(int i = 0; i < this.MovementData.MovementPath.Count - 1; i++)
+			for(int i = 0; i < this.MovementData.MovementPath.Count - 2; i++) //we need to do -2 since it uses i + 1 within the loop
 			{
 				Vector3 distanceVectorOffset = ComputeDistanceOffsetByMovementDataIndex(i);
 
@@ -117,6 +125,7 @@ namespace Guardians
 				}
 			}
 
+			isPathingEnabled = false;
 			return new PathState(MovementData.MovementPath.Count - 1, currentTime, 0);
 		}
 
@@ -134,13 +143,6 @@ namespace Guardians
 			return this.MovementData.MovementPath[i] - this.MovementData.MovementPath[i + 1];
 		}
 
-		private static long CalculateInitialTickOffsetForPathState(float movementSpeedPerSecond, float distance, float distancedTraveledSince)
-		{
-			//This computes how many ticks initially passed since the path segement started
-			//distance (total) - distanceTraveled = displacement
-			return CalculateDistanceLengthInTicks(distance - distancedTraveledSince, movementSpeedPerSecond);
-		}
-
 		/// <inheritdoc />
 		protected override void InternalUpdate(GameObject entity, long currentTime)
 		{
@@ -153,9 +155,12 @@ namespace Guardians
 			float lerpRatio = (float)timeSinceSegementState / State.PathSegementDuration;
 			entity.transform.position = Vector3.Lerp(MovementData.MovementPath[State.PathIndex], MovementData.MovementPath[State.PathIndex + 1], lerpRatio);
 
+			//Point it towards the travel point
+			entity.transform.LookAt(MovementData.MovementPath[State.PathIndex + 1]);
+
 			if(lerpRatio >= 1.0f)
 			{
-				if(State.PathIndex + 1 >= MovementData.MovementPath.Count)
+				if(State.PathIndex + 2 >= MovementData.MovementPath.Count)
 					isPathingEnabled = false;
 				else
 					State = new PathState(State.PathIndex + 1, currentTime, CalculateDistanceLengthInTicks(ComputeDistanceOffsetByMovementDataIndex(State.PathIndex + 1).magnitude, 1.0f));

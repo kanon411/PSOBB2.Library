@@ -78,6 +78,10 @@ namespace Guardians
 				.As<IGameTickable>()
 				.AsSelf()
 				.SingleInstance();
+
+			builder.RegisterType<DefaultLocalPlayerDetails>()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Text;
 using Autofac;
 using Autofac.Core;
 using GladNet;
+using Moq;
 using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;
@@ -13,6 +14,28 @@ namespace Guardians
 	[TestFixture]
 	public class GeneralHandlerTests
 	{
+		//TODO: Refactor and extract this
+		public class MockedUIDependenciesAutofacModule : Module
+		{
+			public MockedUIDependenciesAutofacModule()
+			{
+				
+			}
+
+			/// <inheritdoc />
+			protected override void Load(ContainerBuilder builder)
+			{
+				//TODO: Automate discovery of adapter types
+				IUIText uiText = Mock.Of<IUIText>();
+
+				foreach(UnityUIRegisterationKey key in Enum.GetValues(typeof(UnityUIRegisterationKey)))
+				{
+					builder.RegisterInstance(uiText)
+						.Keyed<IUIText>(key);
+				}
+			}
+		}
+
 		[Test]
 		public void Test_Can_Create_MessageHandlerService_From_DependencyModules()
 		{
@@ -20,6 +43,7 @@ namespace Guardians
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
 			builder.RegisterAssemblyModules(typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly);
+			builder.RegisterModule(new MockedUIDependenciesAutofacModule());
 
 			//Manually register SceneJect services
 			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
@@ -35,7 +59,6 @@ namespace Guardians
 				.SingleInstance();
 
 			IContainer resolver = builder.Build();
-
 
 			MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload> handler = null;
 

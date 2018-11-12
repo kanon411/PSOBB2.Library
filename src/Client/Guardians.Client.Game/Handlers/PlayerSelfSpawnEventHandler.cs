@@ -18,15 +18,19 @@ namespace Guardians
 
 		private IReadOnlyCollection<IGameInitializable> Initializables { get; }
 
+		private ILocalPlayerDetails LocalPlayerDetails { get; }
+
 		/// <inheritdoc />
 		public PlayerSelfSpawnEventHandler(
 			ILog logger, 
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> playerFactory,
-			IReadOnlyCollection<IGameInitializable> initializables)
+			IReadOnlyCollection<IGameInitializable> initializables,
+			ILocalPlayerDetails localPlayerDetails)
 			: base(logger)
 		{
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			Initializables = initializables ?? throw new ArgumentNullException(nameof(initializables));
+			LocalPlayerDetails = localPlayerDetails ?? throw new ArgumentNullException(nameof(localPlayerDetails));
 		}
 
 		/// <inheritdoc />
@@ -41,6 +45,8 @@ namespace Guardians
 			//Don't do any checks for now, we just spawn
 			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer));
 
+			//Set local player entity guid, lots of dependencies need this set to work.
+			LocalPlayerDetails.LocalPlayerGuid = payload.CreationData.EntityGuid;
 
 			//Call all OnGameInitializables
 			foreach(var init in Initializables)

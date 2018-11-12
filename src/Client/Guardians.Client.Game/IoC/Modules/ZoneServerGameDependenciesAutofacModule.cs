@@ -16,6 +16,9 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
+			//Set the sync context
+			UnityExtended.InitializeSyncContext();
+
 			builder.RegisterType<EntityGuidDictionary<IMovementData>>()
 				.AsSelf()
 				.As<IReadonlyEntityGuidMappable<IMovementData>>()

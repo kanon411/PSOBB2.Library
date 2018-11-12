@@ -20,8 +20,10 @@ namespace Guardians
 
 		public void Register(IReadOnlyDictionary<GamePayloadOperationCode, Type> clientPayloadByOpCode, IReadOnlyDictionary<GamePayloadOperationCode, Type> serverPayloadByOpCode)
 		{
-			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
-			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
+			if(!RuntimeTypeModel.Default.IsDefined(typeof(GameClientPacketPayload)))
+				RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
+			if(!RuntimeTypeModel.Default.IsDefined(typeof(GameServerPacketPayload)))
+				RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
 
 			clientPayloadByOpCode
 				.AsEnumerable()
@@ -31,10 +33,14 @@ namespace Guardians
 				{
 					Console.Write($"Registering Type: {pair.Value} Key: {(int)pair.Key}");
 
-					RuntimeTypeModel.Default.Add(pair.Value, true);
+					//TODO: Will this ever prevent a subtype registeration?
+					if(!RuntimeTypeModel.Default.IsDefined(pair.Value))
+					{
+						RuntimeTypeModel.Default.Add(pair.Value, true);
 
-					RuntimeTypeModel.Default[pair.Value.BaseType]
-						.AddSubType((int)pair.Key, pair.Value);
+						RuntimeTypeModel.Default[pair.Value.BaseType]
+							.AddSubType((int)pair.Key, pair.Value);
+					}
 				});
 		}
 	}

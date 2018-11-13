@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 using Autofac.Features.AttributeFilters;
+using Common.Logging;
 using GladNet;
 
 namespace Guardians
@@ -20,6 +21,14 @@ namespace Guardians
 			builder.RegisterType<LoginScreenUIElements>()
 				.AsSelf()
 				.WithAttributeFiltering();
+
+			builder.Register(context => LogLevel.All)
+				.As<LogLevel>()
+				.SingleInstance();
+
+			builder.RegisterType<UnityLogger>()
+				.As<ILog>()
+				.SingleInstance();
 		}
 	}
 }

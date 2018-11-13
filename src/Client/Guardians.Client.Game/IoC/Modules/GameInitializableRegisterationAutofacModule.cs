@@ -40,7 +40,12 @@ namespace Guardians
 		{
 			if(!Enum.IsDefined(typeof(GameInitializableSceneSpecificationAttribute.SceneType), Scene)) throw new InvalidEnumArgumentException(nameof(Scene), (int)Scene, typeof(GameInitializableSceneSpecificationAttribute.SceneType));
 
-			foreach(var gameInit in GetType().Assembly.GetExportedTypes()
+			Load(builder, GetType().Assembly);
+		}
+
+		public void Load(ContainerBuilder builder, Assembly assemblyContainsInitializableTypes)
+		{
+			foreach(var gameInit in assemblyContainsInitializableTypes.GetExportedTypes()
 				.Where(t => t.Implements(typeof(IGameInitializable)))
 				.Where(t => t.Attributes<GameInitializableSceneSpecificationAttribute>().Any(a => a.Scene == Scene)))
 			{

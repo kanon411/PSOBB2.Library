@@ -20,12 +20,13 @@
     <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.17" />
     <PackageReference Include="TypeSafe.Http.Net.Serializer.DotNetXml" Version="2.2.17" />
     <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.17" />
-    <PackageReference Include="Unitysync.Async" Version="1.0.14" />
+    <PackageReference Include="Unitysync.Async" Version="1.0.15" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Common\Guardians.Common.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
@@ -52,6 +53,7 @@
   <ItemGroup>
     <Folder Include="Entity\" />
     <Folder Include="Factory\" />
+    <Folder Include="UI\Attributes\" />
   </ItemGroup>
 
 </Project>

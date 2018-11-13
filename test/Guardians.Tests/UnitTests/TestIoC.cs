@@ -84,7 +84,15 @@ namespace Guardians
 				.As<IManualInjectionStrategy>()
 				.SingleInstance();
 
+			RegisterExpectedInSceneDependecyMocks(builder);
+
 			return builder;
+		}
+
+		public static void RegisterExpectedInSceneDependecyMocks(ContainerBuilder builder)
+		{
+			builder.RegisterInstance(Mock.Of<IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext>>())
+				.As<IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext>>();
 		}
 	}
 }

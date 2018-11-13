@@ -25,12 +25,19 @@ namespace Guardians
 		/// </summary>
 		private ILog Logger { get; }
 
+		private IAuthTokenRepository AuthenticationTokenRepository { get; }
+
 		/// <inheritdoc />
-		public LoginButtonController(LoginScreenUIElements uiElements, IAuthenticationService authService, ILog logger)
+		public LoginButtonController(
+			LoginScreenUIElements uiElements, 
+			IAuthenticationService authService, 
+			ILog logger,
+			IAuthTokenRepository authenticationTokenRepository)
 		{
 			UIElements = uiElements ?? throw new ArgumentNullException(nameof(uiElements));
 			AuthService = authService ?? throw new ArgumentNullException(nameof(authService));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			AuthenticationTokenRepository = authenticationTokenRepository ?? throw new ArgumentNullException(nameof(authenticationTokenRepository));
 		}
 
 		/// <inheritdoc />
@@ -58,6 +65,13 @@ namespace Guardians
 			{
 				await new UnityYieldAwaitable();
 				UIElements.LoginButton.IsInteractable = true;
+			}
+			else
+			{
+				//If we're successful then we'll just set the auth token for future consumers for this session
+				AuthenticationTokenRepository.Update(jwtModel.AccessToken);
+
+				//TODO: We should load to the next level.
 			}
 		}
 

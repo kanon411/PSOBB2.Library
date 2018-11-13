@@ -22,6 +22,7 @@ namespace Guardians
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
+		//TODO: Add exception logging support
 		/// <inheritdoc />
 		public abstract Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, TSpecificPayloadType payload);
 	}

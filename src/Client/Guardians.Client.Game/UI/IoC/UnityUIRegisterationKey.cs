@@ -12,6 +12,12 @@ namespace Guardians
 	{
 		Unknown = 0,
 
-		PlayerUnitFrame = 1
+		PlayerUnitFrame = 1,
+
+		UsernameTextBox = 2,
+
+		PasswordTextBox = 3,
+
+		Login = 4
 	}
 }

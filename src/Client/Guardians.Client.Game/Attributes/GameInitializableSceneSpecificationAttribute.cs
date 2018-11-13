@@ -19,7 +19,9 @@ namespace Guardians
 		{
 			TitleScreen = 1,
 
-			ZoneGameScene = 2
+			ZoneGameScene = 2,
+			
+			CharacterSelection = 3
 		}
 
 		/// <summary>

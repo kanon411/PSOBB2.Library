@@ -24,7 +24,12 @@ namespace Guardians
 		public sealed override void Register(ContainerBuilder register)
 		{
 			//We just register the autofac module.
-			register.RegisterModule<TModuleType>();
+			register.RegisterModule(CreateModule());
+		}
+
+		protected virtual TModuleType CreateModule()
+		{
+			return new TModuleType();
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using SceneJect.Common;
 using UnityEngine;
 
@@ -14,14 +15,26 @@ namespace Guardians
 		[Inject]
 		private IReadOnlyCollection<IGameInitializable> Initializables { get; }
 
+		[Inject]
+		private ILog Logger { get; }
+
 		private async Task Start()
 		{
-			var taskList = Initializables
-				.Select(i => i.OnGameInitialized())
-				.ToList();
+			try
+			{
+				var taskList = Initializables
+					.Select(i => i.OnGameInitialized())
+					.ToList();
 
-			await Task.WhenAll(taskList)
-				.ConfigureAwait(false);
+				await Task.WhenAll(taskList)
+					.ConfigureAwait(false);
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Encounter Exception In Game Initializables: {e.Message}\n\nStack: {e.StackTrace}");
+				throw;
+			}
 		}
 	}
 }

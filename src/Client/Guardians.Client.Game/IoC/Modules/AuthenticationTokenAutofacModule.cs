@@ -6,7 +6,7 @@ using GladNet;
 
 namespace Guardians
 {
-	public sealed class AuthenticationTokenAutofacModule : Module
+	public class AuthenticationTokenAutofacModule : Module
 	{
 		public AuthenticationTokenAutofacModule()
 		{
@@ -15,6 +15,11 @@ namespace Guardians
 
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
+		{
+			RegisterAuthenticationTokenRepository(builder);
+		}
+
+		protected virtual void RegisterAuthenticationTokenRepository(ContainerBuilder builder)
 		{
 			//This is used in many scenes to get and/or set the
 			//the auth token for the session.

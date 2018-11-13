@@ -29,6 +29,19 @@ namespace Guardians
 			}
 		}
 
+		/// <summary>
+		/// Default ctor, does not initialize the token.
+		/// </summary>
+		public AuthenticationTokenRepository()
+		{
+			//No default value
+		}
+
+		public AuthenticationTokenRepository(string authToken)
+		{
+			AuthToken = authToken;
+		}
+
 		/// <inheritdoc />
 		public string RetrieveWithType()
 		{

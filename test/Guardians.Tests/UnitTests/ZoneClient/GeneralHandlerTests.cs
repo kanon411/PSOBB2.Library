@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 using Autofac.Core;
+using GaiaOnline;
 using GladNet;
 using Moq;
 using NUnit.Framework;
@@ -27,12 +28,24 @@ namespace Guardians
 			{
 				//TODO: Automate discovery of adapter types
 				IUIText uiText = Mock.Of<IUIText>();
+				IUIImage uiImage = Mock.Of<IUIImage>();
+
+				IGaiaOnlineImageCDNClient gaiaCdnClient = Mock.Of<IGaiaOnlineImageCDNClient>();
+				IGaiaOnlineQueryClient gaiaQueryClient = Mock.Of<IGaiaOnlineQueryClient>();
 
 				foreach(UnityUIRegisterationKey key in Enum.GetValues(typeof(UnityUIRegisterationKey)))
 				{
 					builder.RegisterInstance(uiText)
 						.Keyed<IUIText>(key);
+
+					builder.RegisterInstance(uiImage)
+						.Keyed<IUIImage>(key);
 				}
+
+				builder.RegisterInstance(gaiaCdnClient)
+					.As<IGaiaOnlineImageCDNClient>();
+				builder.RegisterInstance(gaiaQueryClient)
+					.As<IGaiaOnlineQueryClient>();
 			}
 		}
 

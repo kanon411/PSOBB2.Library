@@ -17,40 +17,6 @@ namespace Guardians
 	[TestFixture]
 	public class GeneralHandlerTests
 	{
-		//TODO: Refactor and extract this
-		public class MockedUIDependenciesAutofacModule : Module
-		{
-			public MockedUIDependenciesAutofacModule()
-			{
-				
-			}
-
-			/// <inheritdoc />
-			protected override void Load(ContainerBuilder builder)
-			{
-				//TODO: Automate discovery of adapter types
-				IUIText uiText = Mock.Of<IUIText>();
-				IUIImage uiImage = Mock.Of<IUIImage>();
-
-				IGaiaOnlineImageCDNClient gaiaCdnClient = Mock.Of<IGaiaOnlineImageCDNClient>();
-				IGaiaOnlineQueryClient gaiaQueryClient = Mock.Of<IGaiaOnlineQueryClient>();
-
-				foreach(UnityUIRegisterationKey key in Enum.GetValues(typeof(UnityUIRegisterationKey)))
-				{
-					builder.RegisterInstance(uiText)
-						.Keyed<IUIText>(key);
-
-					builder.RegisterInstance(uiImage)
-						.Keyed<IUIImage>(key);
-				}
-
-				builder.RegisterInstance(gaiaCdnClient)
-					.As<IGaiaOnlineImageCDNClient>();
-				builder.RegisterInstance(gaiaQueryClient)
-					.As<IGaiaOnlineQueryClient>();
-			}
-		}
-
 		[Test]
 		public void Test_Can_Create_MessageHandlerService_From_DependencyModules()
 		{

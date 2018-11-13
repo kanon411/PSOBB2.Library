@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Autofac;
 using Fasterflect;
+using GaiaOnline;
+using Moq;
 using SceneJect;
 using SceneJect.Common;
 
@@ -11,6 +13,44 @@ namespace Guardians
 {
 	internal static class TestIoC
 	{
+		//TODO: Refactor and extract this
+		public class MockedUIDependenciesAutofacModule : Module
+		{
+			public MockedUIDependenciesAutofacModule()
+			{
+
+			}
+
+			/// <inheritdoc />
+			protected override void Load(ContainerBuilder builder)
+			{
+				//TODO: Automate discovery of adapter types
+				IUIText uiText = Mock.Of<IUIText>();
+				IUIImage uiImage = Mock.Of<IUIImage>();
+				IUIButton uiButton = Mock.Of<IUIButton>();
+
+				IGaiaOnlineImageCDNClient gaiaCdnClient = Mock.Of<IGaiaOnlineImageCDNClient>();
+				IGaiaOnlineQueryClient gaiaQueryClient = Mock.Of<IGaiaOnlineQueryClient>();
+
+				foreach(UnityUIRegisterationKey key in Enum.GetValues(typeof(UnityUIRegisterationKey)))
+				{
+					builder.RegisterInstance(uiText)
+						.Keyed<IUIText>(key);
+
+					builder.RegisterInstance(uiImage)
+						.Keyed<IUIImage>(key);
+
+					builder.RegisterInstance(uiButton)
+						.Keyed<IUIButton>(key);
+				}
+
+				builder.RegisterInstance(gaiaCdnClient)
+					.As<IGaiaOnlineImageCDNClient>();
+				builder.RegisterInstance(gaiaQueryClient)
+					.As<IGaiaOnlineQueryClient>();
+			}
+		}
+
 		public static ContainerBuilder CreateDefaultContainer()
 		{
 			ContainerBuilder builder = new ContainerBuilder();
@@ -23,7 +63,7 @@ namespace Guardians
 			{
 				builder.RegisterModule(Activator.CreateInstance(module) as Module);
 			}
-			builder.RegisterModule(new GeneralHandlerTests.MockedUIDependenciesAutofacModule());
+			builder.RegisterModule(new MockedUIDependenciesAutofacModule());
 
 			//Register every GameInit module
 			foreach(GameInitializableSceneSpecificationAttribute.SceneType sceneType in Enum.GetValues(typeof(GameInitializableSceneSpecificationAttribute.SceneType)))

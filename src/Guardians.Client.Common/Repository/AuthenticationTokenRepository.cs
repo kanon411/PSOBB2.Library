@@ -37,9 +37,13 @@ namespace Guardians
 			//No default value
 		}
 
-		public AuthenticationTokenRepository(string authToken)
+		/// <summary>
+		/// Initializes the <see cref="AuthToken"/> with the provided <see cref="AuthToken"/>
+		/// </summary>
+		/// <param name="authToken"></param>
+		public AuthenticationTokenRepository([NotNull] string authToken)
 		{
-			AuthToken = authToken;
+			AuthToken = authToken ?? throw new ArgumentNullException(nameof(authToken));
 		}
 
 		/// <inheritdoc />

@@ -28,6 +28,13 @@ namespace Guardians
 			AddOnClickListener(() => AsyncUnityEngineButtonCallbackHandler(action));
 		}
 
+		/// <inheritdoc />
+		public bool IsInteractable
+		{
+			get => UnityUIObject.interactable;
+			set => UnityUIObject.interactable = value;
+		}
+
 		private void AsyncUnityEngineButtonCallbackHandler(Func<Task> action)
 		{
 			if(action == null) throw new ArgumentNullException(nameof(action));

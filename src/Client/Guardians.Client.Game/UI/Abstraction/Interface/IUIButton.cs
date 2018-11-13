@@ -21,5 +21,10 @@ namespace Guardians
 		/// </summary>
 		/// <param name="action">The asynccallback to register.</param>
 		void AddOnClickListenerAsync(Func<Task> action);
+
+		/// <summary>
+		/// Indicates if the button is interactable.
+		/// </summary>
+		bool IsInteractable { get; set; }
 	}
 }

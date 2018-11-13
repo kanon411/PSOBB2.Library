@@ -18,8 +18,7 @@ namespace Guardians
 			//arrange
 			//TODO: This won't work if we have multiple configurable modules.
 			//arrange
-			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterAssemblyModules(typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly);
+			ContainerBuilder builder = TestIoC.CreateDefaultContainer();
 
 			//Manually register SceneJect services
 			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))

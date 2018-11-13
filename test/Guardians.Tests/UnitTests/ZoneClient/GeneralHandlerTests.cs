@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Autofac;
 using Autofac.Core;
+using Fasterflect;
 using GaiaOnline;
 using GladNet;
 using Moq;
@@ -54,22 +56,7 @@ namespace Guardians
 		{
 			//TODO: This won't work if we have multiple configurable modules.
 			//arrange
-			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterAssemblyModules(typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly);
-			builder.RegisterModule(new MockedUIDependenciesAutofacModule());
-
-			//Manually register SceneJect services
-			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
-				.As<IGameObjectFactory>()
-				.SingleInstance();
-
-			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
-				.As<IGameObjectComponentAttachmentFactory>()
-				.SingleInstance();
-
-			builder.Register(context => new DefaultManualInjectionStrategy(context.Resolve<IComponentContext>()))
-				.As<IManualInjectionStrategy>()
-				.SingleInstance();
+			ContainerBuilder builder = TestIoC.CreateDefaultContainer();
 
 			IContainer resolver = builder.Build();
 

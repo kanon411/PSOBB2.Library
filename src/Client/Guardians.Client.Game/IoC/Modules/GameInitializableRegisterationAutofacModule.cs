@@ -25,7 +25,7 @@ namespace Guardians
 		/// </summary>
 		public GameInitializableRegisterationAutofacModule()
 		{
-
+			//We shouldn't call this, I don't think.
 		}
 
 		/// <inheritdoc />

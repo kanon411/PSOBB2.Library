@@ -28,6 +28,9 @@ namespace Guardians
 		/// <inheritdoc />
 		public override void Register(ContainerBuilder register)
 		{
+			//Set the sync context
+			UnityExtended.InitializeSyncContext();
+
 			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

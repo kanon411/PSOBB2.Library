@@ -13,6 +13,17 @@ namespace Guardians
 	/// </summary>
 	public sealed class GameInitializablesRegisterModule : AutofacBasedDependencyRegister<GameInitializableRegisterationAutofacModule>
 	{
+		/// <summary>
+		/// The scene to gather initializables for.
+		/// </summary>
+		[Tooltip("Should indicate the scene type to gather IGameInitializables for.")]
+		[SerializeField]
+		private GameInitializableSceneSpecificationAttribute.SceneType Scene = GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene;
 
+		/// <inheritdoc />
+		protected override GameInitializableRegisterationAutofacModule CreateModule()
+		{
+			return new GameInitializableRegisterationAutofacModule(Scene);
+		}
 	}
 }

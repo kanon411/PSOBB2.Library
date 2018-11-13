@@ -2,27 +2,37 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Features.AttributeFilters;
 using Fasterflect;
 using GladNet;
 using UnityEngine;
+using Module = Autofac.Module;
 
 namespace Guardians
 {
 	public sealed class GameInitializableRegisterationAutofacModule : Module
 	{
 		/// <summary>
-		/// The scene to gather initializables for.
+		/// The scene to load initializables for.
 		/// </summary>
-		[Tooltip("Should indicate the scene type to gather IGameInitializables for.")]
-		[SerializeField]
-		private GameInitializableSceneSpecificationAttribute.SceneType Scene = GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene;
+		private GameInitializableSceneSpecificationAttribute.SceneType Scene { get; }
 
+		/// <summary>
+		/// Default autofac ctor.
+		/// </summary>
 		public GameInitializableRegisterationAutofacModule()
 		{
 
+		}
+
+		/// <inheritdoc />
+		public GameInitializableRegisterationAutofacModule(GameInitializableSceneSpecificationAttribute.SceneType scene)
+		{
+			if(!Enum.IsDefined(typeof(GameInitializableSceneSpecificationAttribute.SceneType), scene)) throw new InvalidEnumArgumentException(nameof(scene), (int)scene, typeof(GameInitializableSceneSpecificationAttribute.SceneType));
+			Scene = scene;
 		}
 
 		/// <inheritdoc />

@@ -19,6 +19,7 @@ using UnityEngine;
 
 namespace Guardians
 {
+	//TODO: Extract this into an Autofac module
 	public sealed class GuardiansUnityCharacterScreenDependencyContainer : NonBehaviourDependency
 	{
 		[SerializeField]

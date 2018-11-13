@@ -18,6 +18,9 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
+			//Set the sync context
+			UnityExtended.InitializeSyncContext();
+
 			builder.RegisterType<LoginScreenUIElements>()
 				.AsSelf()
 				.WithAttributeFiltering();

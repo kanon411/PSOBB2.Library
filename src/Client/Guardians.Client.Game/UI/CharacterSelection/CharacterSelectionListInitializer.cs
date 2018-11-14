@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Guardians
 {
+	//TODO: Refactor this, it's ABSOLUTELY HUGE and messy.
 	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.CharacterSelection)]
 	public sealed class CharacterSelectionListInitializer : IGameInitializable
 	{
@@ -23,6 +24,8 @@ namespace Guardians
 
 		private IUIImage AvatarDisplay { get; }
 
+		private ICharacterDataRepository CharacterRepository { get; }
+
 		/// <inheritdoc />
 		public CharacterSelectionListInitializer(
 			ICharacterService characterQueryable, 
@@ -30,7 +33,8 @@ namespace Guardians
 			ILog logger, 
 			IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> characterSlotFactory,
 			IAvatarTextureQueryable avatarTextureLookup, 
-			[KeyFilter(UnityUIRegisterationKey.PlayerUnitFrame)] IUIImage avatarDisplay)
+			[KeyFilter(UnityUIRegisterationKey.PlayerUnitFrame)] IUIImage avatarDisplay,
+			ICharacterDataRepository characterRepository)
 		{
 			CharacterQueryable = characterQueryable ?? throw new ArgumentNullException(nameof(characterQueryable));
 			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
@@ -38,6 +42,7 @@ namespace Guardians
 			CharacterSlotFactory = characterSlotFactory;
 			AvatarTextureLookup = avatarTextureLookup ?? throw new ArgumentNullException(nameof(avatarTextureLookup));
 			AvatarDisplay = avatarDisplay;
+			CharacterRepository = characterRepository ?? throw new ArgumentNullException(nameof(characterRepository));
 		}
 
 		/// <inheritdoc />
@@ -88,11 +93,11 @@ namespace Guardians
 			{
 				//We only want to emulate the click if it was toggled ON
 				if(toggled)
-					await OnCharacterSlotButtonClickedAsync(0, character);
+					await OnCharacterSlotButtonClickedAsync(character);
 			});
 		}
 
-		private async Task OnCharacterSlotButtonClickedAsync(int slotNumber, int characterId)
+		private async Task OnCharacterSlotButtonClickedAsync(int characterId)
 		{
 			//TODO: Disable toggle
 			//When the slot button is clicked we need to initialize the avatar display of the one selected
@@ -104,6 +109,9 @@ namespace Guardians
 
 			//We just set the avatar display
 			AvatarDisplay.SetSpriteTexture(avatarDisplay);
+
+			//Just set the new character id so anything else can make decisions based on it.
+			CharacterRepository.UpdateCharacterId(characterId);
 		}
 	}
 }

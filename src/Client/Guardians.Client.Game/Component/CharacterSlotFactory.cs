@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Guardians
 {
@@ -17,6 +18,9 @@ namespace Guardians
 		[SerializeField]
 		private GameObject CharacterListContainer;
 
+		[SerializeField]
+		private ToggleGroup Group;
+
 		/// <inheritdoc />
 		public CharacterSlotUIElements Create(EmptyFactoryContext context)
 		{
@@ -27,6 +31,10 @@ namespace Guardians
 			model.transform.localScale = CharacterSlotPrefab.transform.localScale;
 			model.transform.localPosition = CharacterSlotPrefab.transform.localPosition;
 			model.transform.localRotation = CharacterSlotPrefab.transform.localRotation;
+
+			//We need to get the Toggle to add it to the toggle group
+			//so Unity can manage the annoying parts of Toggles
+			Group.RegisterToggle(model.GetComponent<Toggle>());
 
 			//TODO: Verify that this has the component
 			//Now we just pull the CharacterSlotUIElements off the slot

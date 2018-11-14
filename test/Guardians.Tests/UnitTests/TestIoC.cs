@@ -59,6 +59,7 @@ namespace Guardians
 			foreach(var module in typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly
 				.GetExportedTypes()
 				.Where(t => t.Inherits(typeof(Autofac.Module)))
+				.Where(t => !t.IsAbstract) //we can't deal with base abstract autofac modules
 				.Where(t => t != typeof(GameInitializableRegisterationAutofacModule))) //TODO: Make this so we can override the modules better
 			{
 				builder.RegisterModule(Activator.CreateInstance(module) as Module);

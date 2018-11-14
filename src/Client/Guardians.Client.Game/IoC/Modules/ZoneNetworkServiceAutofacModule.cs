@@ -15,6 +15,8 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
+			base.Load(builder);
+
 			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

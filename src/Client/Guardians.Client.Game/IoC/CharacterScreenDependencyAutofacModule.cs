@@ -29,6 +29,8 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
+			base.Load(builder);
+
 			ContainerBuilder register = builder;
 
 			//Set the sync context

@@ -26,6 +26,9 @@ namespace Guardians
 		[ProtoMember(1, IsPacked = true)]
 		private int[] InternalArray { get; }
 
+		/// <summary>
+		/// The internal integer array representing the bitmask.
+		/// </summary>
 		[ProtoIgnore]
 		public IReadOnlyCollection<int> InternalIntegerArray => InternalArray;
 
@@ -51,7 +54,7 @@ namespace Guardians
 		{
 			if(length < 0) throw new ArgumentOutOfRangeException(nameof(length));
 
-			InternalArray = new int[GetArrayLength(length, BitsPerInt32)];
+			InternalArray = new int[length * BitsPerInt32];
 
 			int fillValue = defaultValue ? unchecked(((int)0xffffffff)) : 0;
 			for(int i = 0; i < InternalArray.Length; i++)
@@ -101,14 +104,8 @@ namespace Guardians
 
 		public bool this[int index]
 		{
-			get
-			{
-				return Get(index);
-			}
-			set
-			{
-				Set(index, value);
-			}
+			get => Get(index);
+			set => Set(index, value);
 		}
 
 		/*=========================================================================
@@ -119,7 +116,7 @@ namespace Guardians
 		=========================================================================*/
 		public bool Get(int index)
 		{
-			if(index < 0 || index >= InternalArray.Length)
+			if(index < 0 || index >= InternalArray.Length * BitsPerInt32)
 			{
 				throw new ArgumentOutOfRangeException(nameof(index), index, $"Provided Index: {index} was not in range. {nameof(InternalArray)} is of Length: {InternalArray.Length}");
 			}
@@ -135,7 +132,7 @@ namespace Guardians
 		=========================================================================*/
 		public void Set(int index, bool value)
 		{
-			if(index < 0 || index >= InternalArray.Length)
+			if(index < 0 || index >= InternalArray.Length * BitsPerInt32)
 			{
 				throw new ArgumentOutOfRangeException(nameof(index), index, $"Provided Index: {index} was not in range. {nameof(InternalArray)} is of Length: {InternalArray.Length}");
 			}

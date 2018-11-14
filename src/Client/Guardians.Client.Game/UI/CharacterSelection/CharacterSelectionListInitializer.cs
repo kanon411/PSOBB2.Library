@@ -84,7 +84,12 @@ namespace Guardians
 
 			//When a slot is created we need to disable the Toggle (assuming it's maybe on)
 			//Then we need prepare the button click callbacks.
-			elements.CharacterSlotButton.AddOnClickListenerAsync(() => OnCharacterSlotButtonClickedAsync(0, character));
+			elements.CharacterSlotToggle.AddOnToggleChangedListenerAsync(async toggled =>
+			{
+				//We only want to emulate the click if it was toggled ON
+				if(toggled)
+					await OnCharacterSlotButtonClickedAsync(0, character);
+			});
 		}
 
 		private async Task OnCharacterSlotButtonClickedAsync(int slotNumber, int characterId)

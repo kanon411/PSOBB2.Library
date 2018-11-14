@@ -12,7 +12,7 @@ namespace Guardians
 		private UnityTextUITextAdapter _CharacterNameText;
 
 		[SerializeField]
-		private UnityButtonUIButtonAdapter _CharacterSlotButton;
+		private UnityToggleUIToggleAdapter _CharacterSlotToggle;
 
 		/// <summary>
 		/// The character name UI Text.
@@ -20,8 +20,8 @@ namespace Guardians
 		public IUIText CharacterNameText => _CharacterNameText;
 
 		/// <summary>
-		/// The button element for the character slot.
+		/// The toggle element for the character slot.
 		/// </summary>
-		public IUIButton CharacterSlotButton => _CharacterSlotButton;
+		public IUIToggle CharacterSlotToggle => _CharacterSlotToggle;
 	}
 }

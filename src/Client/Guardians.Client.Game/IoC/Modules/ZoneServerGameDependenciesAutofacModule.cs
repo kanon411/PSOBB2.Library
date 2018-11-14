@@ -82,6 +82,10 @@ namespace Guardians
 			builder.RegisterType<DefaultLocalPlayerDetails>()
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			builder.RegisterType<LocalCharacterDataRepository>()
+				.As<ICharacterDataRepository>()
+				.SingleInstance();
 		}
 	}
 }

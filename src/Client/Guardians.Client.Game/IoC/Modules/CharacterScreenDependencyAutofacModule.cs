@@ -77,7 +77,8 @@ namespace Guardians
 				.SingleInstance();
 
 			register.RegisterType<CharacterAvatarQueryService>()
-				.AsImplementedInterfaces();
+				.AsImplementedInterfaces()
+				.AsSelf();
 		}
 	}
 }

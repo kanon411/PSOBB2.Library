@@ -94,6 +94,9 @@ namespace Guardians
 		{
 			builder.RegisterInstance(Mock.Of<IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext>>())
 				.As<IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext>>();
+
+			builder.RegisterInstance(Mock.Of<ISceneManager>())
+				.As<ISceneManager>();
 		}
 	}
 }

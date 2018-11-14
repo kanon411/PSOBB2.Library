@@ -34,7 +34,7 @@ namespace Guardians
 
 			//We need to get the Toggle to add it to the toggle group
 			//so Unity can manage the annoying parts of Toggles
-			Group.RegisterToggle(model.GetComponent<Toggle>());
+			model.GetComponent<Toggle>().group = Group;
 
 			//TODO: Verify that this has the component
 			//Now we just pull the CharacterSlotUIElements off the slot

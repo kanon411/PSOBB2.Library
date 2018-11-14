@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -17,17 +19,25 @@ namespace Guardians
 
 		private IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> CharacterSlotFactory { get; }
 
+		private IAvatarTextureQueryable AvatarTextureLookup { get; }
+
+		private IUIImage AvatarDisplay { get; }
+
 		/// <inheritdoc />
 		public CharacterSelectionListInitializer(
 			ICharacterService characterQueryable, 
 			IReadonlyAuthTokenRepository authTokenRepository, 
 			ILog logger, 
-			IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> characterSlotFactory)
+			IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> characterSlotFactory,
+			IAvatarTextureQueryable avatarTextureLookup, 
+			[KeyFilter(UnityUIRegisterationKey.PlayerUnitFrame)] IUIImage avatarDisplay)
 		{
 			CharacterQueryable = characterQueryable ?? throw new ArgumentNullException(nameof(characterQueryable));
 			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			CharacterSlotFactory = characterSlotFactory;
+			AvatarTextureLookup = avatarTextureLookup ?? throw new ArgumentNullException(nameof(avatarTextureLookup));
+			AvatarDisplay = avatarDisplay;
 		}
 
 		/// <inheritdoc />
@@ -47,23 +57,48 @@ namespace Guardians
 			//the factory takes care of the heavy lifting for us.
 			foreach(var character in listResponse.CharacterIds)
 			{
-				CharacterSlotUIElements elements = CharacterSlotFactory.Create(EmptyFactoryContext.Instance);
-
-				//Once the actual UI element is created we need to initialize the name and callbacks
-				NameQueryResponse nameQueryResponse = await CharacterQueryable.NameQuery(character)
-					.ConfigureAwait(true);
-
-				if(!nameQueryResponse.isSuccessful)
-				{
-					if(Logger.IsErrorEnabled)
-						Logger.Error($"Failed to Query Name for CharacterId: {character}. ResultCode: {nameQueryResponse.ResultCode}");
-					elements.CharacterNameText.Text = "Unknown";
-				}
-				else
-				{
-					elements.CharacterNameText.Text = nameQueryResponse.EntityName;
-				}
+				await CreateSlotForCharacter(character)
+					.ConfigureAwait(true); //stay on main thread
 			}
+		}
+
+		private async Task CreateSlotForCharacter(int character)
+		{
+			CharacterSlotUIElements elements = CharacterSlotFactory.Create(EmptyFactoryContext.Instance);
+
+			//Once the actual UI element is created we need to initialize the name and callbacks
+			NameQueryResponse nameQueryResponse = await CharacterQueryable.NameQuery(character)
+				.ConfigureAwait(true);
+
+			if(!nameQueryResponse.isSuccessful)
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to Query Name for CharacterId: {character}. ResultCode: {nameQueryResponse.ResultCode}");
+
+				elements.CharacterNameText.Text = "Unknown";
+			}
+			else
+			{
+				elements.CharacterNameText.Text = nameQueryResponse.EntityName;
+			}
+
+			//When a slot is created we need to disable the Toggle (assuming it's maybe on)
+			//Then we need prepare the button click callbacks.
+			elements.CharacterSlotButton.AddOnClickListenerAsync(() => OnCharacterSlotButtonClickedAsync(0, character));
+		}
+
+		private async Task OnCharacterSlotButtonClickedAsync(int slotNumber, int characterId)
+		{
+			//TODO: Disable toggle
+			//When the slot button is clicked we need to initialize the avatar display of the one selected
+			//then we need to disable the toggle of all BUT this slot and
+			//set the current state to the character id.
+			Texture2D avatarDisplay = await AvatarTextureLookup.GetAvatarByCharacterId(characterId);
+
+			await new UnityYieldAwaitable();
+
+			//We just set the avatar display
+			AvatarDisplay.SetSpriteTexture(avatarDisplay);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using UnityEngine.SceneManagement;
 
 namespace Guardians
 {
@@ -27,17 +28,21 @@ namespace Guardians
 
 		private IAuthTokenRepository AuthenticationTokenRepository { get; }
 
+		private ISceneManager SceneService { get; }
+
 		/// <inheritdoc />
 		public LoginButtonController(
 			LoginScreenUIElements uiElements, 
 			IAuthenticationService authService, 
 			ILog logger,
-			IAuthTokenRepository authenticationTokenRepository)
+			IAuthTokenRepository authenticationTokenRepository,
+			ISceneManager sceneService)
 		{
 			UIElements = uiElements ?? throw new ArgumentNullException(nameof(uiElements));
 			AuthService = authService ?? throw new ArgumentNullException(nameof(authService));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			AuthenticationTokenRepository = authenticationTokenRepository ?? throw new ArgumentNullException(nameof(authenticationTokenRepository));
+			SceneService = sceneService ?? throw new ArgumentNullException(nameof(sceneService));
 		}
 
 		/// <inheritdoc />
@@ -61,9 +66,10 @@ namespace Guardians
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Auth Response for User: {UIElements.UsernameText.Text} Result: {jwtModel.isTokenValid} OptionalError: {jwtModel.Error} OptionalErrorDescription: {jwtModel.ErrorDescription}");
 
+			await new UnityYieldAwaitable();
+
 			if(!jwtModel.isTokenValid)
 			{
-				await new UnityYieldAwaitable();
 				UIElements.LoginButton.IsInteractable = true;
 			}
 			else
@@ -72,6 +78,7 @@ namespace Guardians
 				AuthenticationTokenRepository.Update(jwtModel.AccessToken);
 
 				//TODO: We should load to the next level.
+				SceneService.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.CharacterSelection, LoadSceneMode.Single);
 			}
 		}
 

@@ -26,8 +26,16 @@ namespace Guardians
 		/// See the set bits in <see cref="FieldValueUpdateMask"/> to
 		/// known what these values are.
 		/// </summary>
-		[ProtoMember(1, IsPacked = true)]
-		public int[] FieldValueUpdates { get; private set; }
+		[ProtoMember(2, IsPacked = true)]
+		private int[] _FieldValueUpdates { get; set; }
+
+		/// <summary>
+		/// The updated field values.
+		/// See the set bits in <see cref="FieldValueUpdateMask"/> to
+		/// known what these values are.
+		/// </summary>
+		[ProtoIgnore]
+		public IReadOnlyCollection<int> FieldValueUpdates => _FieldValueUpdates;
 
 		/// <inheritdoc />
 		public FieldValueUpdate([NotNull] WireReadyBitArray fieldValueUpdateMask, [NotNull] int[] fieldValueUpdates)
@@ -37,7 +45,7 @@ namespace Guardians
 			if(fieldValueUpdates.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(fieldValueUpdates));
 
 			FieldValueUpdateMask = fieldValueUpdateMask ?? throw new ArgumentNullException(nameof(fieldValueUpdateMask));
-			FieldValueUpdates = fieldValueUpdates;
+			_FieldValueUpdates = fieldValueUpdates;
 		}
 
 		/// <summary>

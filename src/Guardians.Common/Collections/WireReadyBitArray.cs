@@ -23,7 +23,13 @@ namespace Guardians
 		[ProtoIgnore]
 		private const int BitsPerInt32 = 32;
 
-		[ProtoMember(1, IsPacked = true)]
+		/// <summary>
+		/// The length in bits of the bit array.
+		/// </summary>
+		[ProtoMember(1)]
+		public int Length { get; private set; }
+
+		[ProtoMember(2, IsPacked = true)]
 		private int[] InternalArray { get; }
 
 		/// <summary>
@@ -32,6 +38,7 @@ namespace Guardians
 		[ProtoIgnore]
 		public IReadOnlyCollection<int> InternalIntegerArray => InternalArray;
 
+		
 		/*=========================================================================
 		** Allocates space to hold length bit values. All of the values in the bit
 		** array are set to false.
@@ -50,11 +57,12 @@ namespace Guardians
 		**
 		** Exceptions: ArgumentOutOfRangeException if length < 0.
 		=========================================================================*/
-		public WireReadyBitArray(int length, bool defaultValue)
+		public WireReadyBitArray(int bitLength, bool defaultValue)
 		{
-			if(length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+			if(bitLength < 0) throw new ArgumentOutOfRangeException(nameof(bitLength));
 
-			InternalArray = new int[length * BitsPerInt32];
+			InternalArray = new int[GetArrayLength(bitLength, BitsPerInt32)];
+			Length = bitLength;
 
 			int fillValue = defaultValue ? unchecked(((int)0xffffffff)) : 0;
 			for(int i = 0; i < InternalArray.Length; i++)
@@ -78,9 +86,16 @@ namespace Guardians
 				throw new ArgumentNullException(nameof(values));
 			}
 
+			// this value is chosen to prevent overflow when computing m_length
+			if(values.Length > int.MaxValue / BitsPerInt32)
+			{
+				throw new ArgumentException("TODO", nameof(values));
+			}
+
 			//TODO: This could be slower for some lengths: https://stackoverflow.com/a/33865267
 			InternalArray = new int[values.Length];
 			Buffer.BlockCopy(values, 0, InternalArray, 0, values.Length * 4);
+			Length = values.Length * BitsPerInt32;
 		}
 
 		/*=========================================================================
@@ -100,6 +115,7 @@ namespace Guardians
 			//TODO: This could be slower for some lengths: https://stackoverflow.com/a/33865267
 			InternalArray = new int[arrayLength];
 			Buffer.BlockCopy(bits.InternalArray, 0, InternalArray, 0, arrayLength * 4);
+			Length = bits.Length;
 		}
 
 		public bool this[int index]
@@ -116,7 +132,7 @@ namespace Guardians
 		=========================================================================*/
 		public bool Get(int index)
 		{
-			if(index < 0 || index >= InternalArray.Length * BitsPerInt32)
+			if(index < 0 || index >= Length)
 			{
 				throw new ArgumentOutOfRangeException(nameof(index), index, $"Provided Index: {index} was not in range. {nameof(InternalArray)} is of Length: {InternalArray.Length}");
 			}
@@ -132,7 +148,7 @@ namespace Guardians
 		=========================================================================*/
 		public void Set(int index, bool value)
 		{
-			if(index < 0 || index >= InternalArray.Length * BitsPerInt32)
+			if(index < 0 || index >= Length)
 			{
 				throw new ArgumentOutOfRangeException(nameof(index), index, $"Provided Index: {index} was not in range. {nameof(InternalArray)} is of Length: {InternalArray.Length}");
 			}
@@ -269,7 +285,7 @@ namespace Guardians
 		{
 			int bitIndex = 0;
 
-			for(int i = 0; i < InternalArray.Length; i++)
+			for(int i = 0; i < InternalArray.Length && bitIndex < Length; i++)
 			{
 				//TODO: Will fixed byte ptr and byte value checking (8 instead of 32) bits cause increased gain?
 				//If the 4 byte chunk are all 0, which could happen in many cases for this project later in development,
@@ -279,6 +295,12 @@ namespace Guardians
 					//We need to step through each bit.
 					for(int j = 0; j < BitsPerInt32; j++)
 					{
+						//TODO: Is there a more efficient way to track this?
+						//If the offset into the current Integer AND the total bitIndex being tracked
+						//is greater than the Bitlength of the stored bitarray we need to finish
+						if(j + bitIndex > Length)
+							yield break;
+
 						if(this.Get(bitIndex + j))
 							yield return bitIndex + j;
 					}

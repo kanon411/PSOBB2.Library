@@ -20,6 +20,8 @@ namespace Guardians
 
 		MovementDataUpdate = 4,
 
-		ServerTimeSyncronization = 5
+		ServerTimeSyncronization = 5,
+
+		FieldValueUpdate = 6
 	}
 }

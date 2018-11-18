@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Generic.Math;
+using Reinterpret.Net;
 
 namespace Guardians
 {
-	public sealed class EntityFieldDataCollection<TFieldType> : IReadonlyEntityDataFieldContainer, IReadonlyEntityDataFieldContainer<TFieldType>
+	public sealed class EntityFieldDataCollection<TFieldType> : IEntityDataFieldContainer, IEntityDataFieldContainer<TFieldType>
 		where TFieldType : struct //TODO: When C# 8.0 or 7.3 is better supported switch to it for Enum constraint
 	{
 		//TODO: This is a hack until Enum constraint.
@@ -55,11 +56,32 @@ namespace Guardians
 		public TValueType GetFieldValue<TValueType>(int index)
 			where TValueType : struct
 		{
-			if(index >= InternalDataFields.Length)
-				throw new ArgumentOutOfRangeException(nameof(index), $"Provided Index: {index} was out of range. Max index for Type: {typeof(TFieldType).Name} is Index: {InternalDataFields.Length - 1}");
+			IfIndexExceedsLengthThrow(index);
 
 			//Just assume we can do it, the caller is responsible for the diaster.
 			return Unsafe.As<int, TValueType>(ref InternalDataFields[index]);
+		}
+
+		private void IfIndexExceedsLengthThrow(int index)
+		{
+			if(index >= InternalDataFields.Length)
+				throw new ArgumentOutOfRangeException(nameof(index), $"Provided Index: {index} was out of range. Max index for Type: {typeof(TFieldType).Name} is Index: {InternalDataFields.Length - 1}");
+		}
+
+		/// <inheritdoc />
+		public void SetFieldValue<TValueType>(int index, TValueType value) 
+			where TValueType : struct
+		{
+			IfIndexExceedsLengthThrow(index);
+
+			InternalDataFields[index] = Unsafe.As<TValueType, int>(ref value);
+		}
+
+		/// <inheritdoc />
+		public void SetFieldValue<TValueType>(TFieldType index, TValueType value) 
+			where TValueType : struct
+		{
+			SetFieldValue<TValueType>(GenericMath.Convert<TFieldType, int>(index), value);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace Guardians.BitArray
+namespace Guardians.Tests.Collections
 {
 	public static class WireReadyBitArrayGetSetTests
 	{

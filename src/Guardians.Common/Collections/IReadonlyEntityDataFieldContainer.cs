@@ -18,7 +18,7 @@ namespace Guardians
 	/// Contract for containers that hold
 	/// field values.
 	/// </summary>
-	public interface IReadonlyEntityDataFieldContainer<in TFieldType>
+	public interface IReadonlyEntityDataFieldContainer<in TFieldType> : IReadonlyEntityDataFieldContainer
 	{
 		TValueType GetFieldValue<TValueType>(TFieldType index)
 			where TValueType : struct;

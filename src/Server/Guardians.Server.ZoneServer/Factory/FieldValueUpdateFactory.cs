@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-	public sealed class FieldValueUpdateFactory<TDataCollectionType> : IFactoryCreatable<FieldValueUpdate, IChangeTrackableEntityDataCollection>
+	public sealed class FieldValueUpdateFactory : IFactoryCreatable<FieldValueUpdate, IChangeTrackableEntityDataCollection>
 	{
 		/// <inheritdoc />
 		public FieldValueUpdate Create(IChangeTrackableEntityDataCollection context)

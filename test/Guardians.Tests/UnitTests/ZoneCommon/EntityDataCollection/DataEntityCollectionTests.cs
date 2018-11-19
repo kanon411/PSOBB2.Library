@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace Guardians.Tests.Collections
 {
 	[TestFixture]
-	public sealed class DataEntityCollectionTests
+	public class DataEntityCollectionTests
 	{
 		[Test]
 		public void Test_Can_Create_Ctor()
 		{
-			Assert.DoesNotThrow(() => new EntityFieldDataCollection<TestFieldType>());
+			Assert.DoesNotThrow(() => CreateEntityDataCollection());
 		}
 
 		[Test]
@@ -56,11 +56,45 @@ namespace Guardians.Tests.Collections
 			Assert.DoesNotThrow(() => GenericInitialValueTest<float>(index));
 		}
 
-		private static void GenericInitialValueTest<TValueType>(int index) 
+		[Test]
+		public void Test_Value_Set_Same_Read_Value([EntityDataCollectionTestRange] int index, [Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
+		{
+			//arrange
+			IEntityDataFieldContainer<TestFieldType> collection = CreateEntityDataCollection();
+
+			//act
+			collection.SetFieldValue<int>(index, value);
+			int getValue = collection.GetFieldValue<int>(index);
+
+			//assert
+			Assert.AreEqual(value, getValue, $"Set Value: {value} at Index: {index} was wrong Value: {getValue} instead.");
+		}
+
+		[Test]
+		public void Test_Value_Set_Multiple_Times_Is_Latest_Value([EntityDataCollectionTestRange] int index, [Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
+		{
+			//arrange
+			IEntityDataFieldContainer<TestFieldType> collection = CreateEntityDataCollection();
+
+			//act
+			collection.SetFieldValue<int>(index, 5000); //test set to 5000, will check the resulting end value
+			collection.SetFieldValue<int>(index, value);
+			int getValue = collection.GetFieldValue<int>(index);
+
+			//assert
+			Assert.AreEqual(value, getValue, $"Set Value: {value} at Index: {index} was wrong Value: {getValue} instead.");
+		}
+
+		protected virtual IEntityDataFieldContainer<TestFieldType> CreateEntityDataCollection()
+		{
+			return new EntityFieldDataCollection<TestFieldType>();
+		}
+
+		private void GenericInitialValueTest<TValueType>(int index) 
 			where TValueType : struct
 		{
 			//arrange
-			EntityFieldDataCollection<TestFieldType> collection = new EntityFieldDataCollection<TestFieldType>();
+			IEntityDataFieldContainer<TestFieldType> collection = CreateEntityDataCollection();
 
 			//act
 			TValueType value = collection.GetFieldValue<TValueType>(index);

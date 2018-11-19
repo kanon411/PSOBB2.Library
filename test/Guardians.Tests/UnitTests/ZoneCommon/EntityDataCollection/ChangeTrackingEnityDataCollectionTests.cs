@@ -37,6 +37,23 @@ namespace Guardians.Tests.Collections
 		}
 
 		[Test]
+		public void Test_PendingChanges_Not_True_When_EquivalentValues_Set([EntityDataCollectionTestRange] int index, [Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
+		{
+			//arrange
+			ChangeTrackingEntityFieldDataCollectionDecorator<TestFieldType> collection = new ChangeTrackingEntityFieldDataCollectionDecorator<TestFieldType>(base.CreateEntityDataCollection());
+
+			//act
+			collection.SetFieldValue<int>(index, value);
+			collection.ClearTrackedChanges(); //clear to remove set track bits
+			collection.SetFieldValue<int>(index, value); //re set the same value at the same index
+			bool isSet = collection.ChangeTrackingArray.Get(index); //this should be false because it should not have been a new value
+
+			//assert
+			Assert.False(isSet, $"Set Value: {value} at Index: {index} should not have a set bit since clearing and re setting same value.");
+			Assert.False(collection.HasPendingChanges, $"Set Value: {value} at Index: {index} should cause changes pending after setting same value after clear.");
+		}
+
+		[Test]
 		public void Test_Indicies_Set_Are_Tracked_And_Unset_Not_Tracked([Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
 		{
 			//arrange

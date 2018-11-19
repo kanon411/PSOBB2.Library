@@ -15,12 +15,8 @@ namespace Guardians
 			//TODO: This will be a source of contetion. This method will likely be called for N entities meaning lots of allocations and slowdown. We need a better solution
 			List<int> changedValues = new List<int>(5); //TODO: What is the best estimate?
 
-			//We just enumerator the changed bits and get the new values in a temporary collection
-			var e = context.ChangeTrackingArray.EnumerateSetBitsByIndex();
-			while(e.MoveNext())
+			foreach(int changedValueIndex in context.ChangeTrackingArray.EnumerateSetBitsByIndex())
 			{
-				int changedValueIndex = e.Current;
-
 				changedValues.Add(context.GetFieldValue<int>(changedValueIndex));
 			}
 

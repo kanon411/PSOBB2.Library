@@ -275,40 +275,68 @@ namespace Guardians
 			return n > 0 ? (((n - 1) / div) + 1) : 0;
 		}
 
+		private class EnumerateSetBitsIndiciesEnumerator : IEnumerable<int>
+		{
+			private WireReadyBitArray ArrayToEnumerate { get; }
+
+			/// <inheritdoc />
+			public EnumerateSetBitsIndiciesEnumerator(WireReadyBitArray arrayToEnumerate)
+			{
+				ArrayToEnumerate = arrayToEnumerate ?? throw new ArgumentNullException(nameof(arrayToEnumerate));
+			}
+
+			//TODO: We should do performance testing. We actually NEED this to be highly performant. This is a hot path for the project.
+			/// <summary>
+			/// Enumerates over all the set/true bits providing
+			/// the bit index value of all true bits.
+			/// </summary>
+			/// <returns>An enumerable that can produce all the set/true bits.</returns>
+			public IEnumerator<int> GetEnumerator()
+			{
+				int bitIndex = 0;
+
+				for(int i = 0; i < ArrayToEnumerate.InternalArray.Length && bitIndex < ArrayToEnumerate.Length; i++)
+				{
+					//TODO: Will fixed byte ptr and byte value checking (8 instead of 32) bits cause increased gain?
+					//If the 4 byte chunk are all 0, which could happen in many cases for this project later in development,
+					//then we skip checking the 32 bits
+					if(ArrayToEnumerate.InternalArray[i] != 0)
+					{
+						//We need to step through each bit.
+						for(int j = 0; j < BitsPerInt32; j++)
+						{
+							//TODO: Is there a more efficient way to track this?
+							//If the offset into the current Integer AND the total bitIndex being tracked
+							//is greater than the Bitlength of the stored bitarray we need to finish
+							if(j + bitIndex > ArrayToEnumerate.Length)
+								yield break;
+
+							if(ArrayToEnumerate.Get(bitIndex + j))
+								yield return bitIndex + j;
+						}
+					}
+
+					//We're done or it was 0, either way we looked at the first 32 bits.
+					bitIndex += BitsPerInt32;
+				}
+			}
+
+			/// <inheritdoc />
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+		}
+
 		//TODO: We should do performance testing. We actually NEED this to be highly performant. This is a hot path for the project.
 		/// <summary>
 		/// Enumerates over all the set/true bits providing
 		/// the bit index value of all true bits.
 		/// </summary>
 		/// <returns>An enumerable that can produce all the set/true bits.</returns>
-		public IEnumerator<int> EnumerateSetBitsByIndex()
+		public IEnumerable<int> EnumerateSetBitsByIndex()
 		{
-			int bitIndex = 0;
-
-			for(int i = 0; i < InternalArray.Length && bitIndex < Length; i++)
-			{
-				//TODO: Will fixed byte ptr and byte value checking (8 instead of 32) bits cause increased gain?
-				//If the 4 byte chunk are all 0, which could happen in many cases for this project later in development,
-				//then we skip checking the 32 bits
-				if(InternalArray[i] != 0)
-				{
-					//We need to step through each bit.
-					for(int j = 0; j < BitsPerInt32; j++)
-					{
-						//TODO: Is there a more efficient way to track this?
-						//If the offset into the current Integer AND the total bitIndex being tracked
-						//is greater than the Bitlength of the stored bitarray we need to finish
-						if(j + bitIndex > Length)
-							yield break;
-
-						if(this.Get(bitIndex + j))
-							yield return bitIndex + j;
-					}
-				}
-
-				//We're done or it was 0, either way we looked at the first 32 bits.
-				bitIndex += BitsPerInt32;
-			}
+			return new EnumerateSetBitsIndiciesEnumerator(this);
 		}
 	}
 }

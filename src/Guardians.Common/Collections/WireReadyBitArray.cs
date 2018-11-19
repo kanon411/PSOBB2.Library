@@ -308,7 +308,7 @@ namespace Guardians
 							//TODO: Is there a more efficient way to track this?
 							//If the offset into the current Integer AND the total bitIndex being tracked
 							//is greater than the Bitlength of the stored bitarray we need to finish
-							if(j + bitIndex > ArrayToEnumerate.Length)
+							if(j + bitIndex >= ArrayToEnumerate.Length)
 								yield break;
 
 							if(ArrayToEnumerate.Get(bitIndex + j))

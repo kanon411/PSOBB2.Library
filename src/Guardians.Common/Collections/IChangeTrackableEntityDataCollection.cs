@@ -19,5 +19,11 @@ namespace Guardians
 		/// Clears the tracked changes in the <see cref="ChangeTrackingArray"/>
 		/// </summary>
 		void ClearTrackedChanges();
+
+		/// <summary>
+		/// Indicates if the collection has pending changes
+		/// being tracked.
+		/// </summary>
+		bool HasPendingChanges { get; }
 	}
 }

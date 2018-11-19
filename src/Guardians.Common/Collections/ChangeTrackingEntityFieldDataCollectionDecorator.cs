@@ -21,10 +21,14 @@ namespace Guardians
 		public WireReadyBitArray ChangeTrackingArray { get; }
 
 		/// <inheritdoc />
+		public bool HasPendingChanges { get; private set; } = false;
+
+		/// <inheritdoc />
 		public void ClearTrackedChanges()
 		{
 			//TODO: This is slow and inefficient. We should maintain and memcpy an array of false bits. We may have to do this hundreds/thousands of a minute.
 			ChangeTrackingArray.SetAll(false);
+			HasPendingChanges = false;
 		}
 
 		/// <summary>
@@ -74,6 +78,9 @@ namespace Guardians
 			{
 				ChangeTrackingArray.Set(index, true);
 				EntityDataCollection.SetFieldValue(index, value);
+				
+				//We only have pending changes if the value is not equal
+				HasPendingChanges = true;
 			}
 		}
 

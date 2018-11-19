@@ -15,45 +15,45 @@ namespace Guardians.Tests.Collections
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero([EntityDataCollectionTestRange] int index)
 		{
 			GenericInitialValueTest<int>(index);
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_Int64([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_Int64([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<Int64>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<Int64>(index));
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_UInt64([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_UInt64([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<UInt64>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<UInt64>(index));
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_Short([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_Short([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<short>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<short>(index));
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_UShort([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_UShort([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<ushort>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<ushort>(index));
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_Byte([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_Byte([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<byte>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<byte>(index));
 		}
 
 		[Test]
-		public void Test_Initial_Index_Is_Zero_As_Float([Range(0, 5)] int index)
+		public void Test_Initial_Index_Is_Zero_As_Float([EntityDataCollectionTestRange] int index)
 		{
-			GenericInitialValueTest<float>(index);
+			Assert.DoesNotThrow(() => GenericInitialValueTest<float>(index));
 		}
 
 		private static void GenericInitialValueTest<TValueType>(int index) 
@@ -67,16 +67,6 @@ namespace Guardians.Tests.Collections
 
 			//assert
 			Assert.AreEqual(default(TValueType), value, $"Value at Index: {index} is suppose to be zero or default value: {default(TValueType)}.");
-		}
-
-		public enum TestFieldType
-		{
-			Value1 = 0,
-			Value2 = 1,
-			Value3 = 2,
-			Value4 = 3,
-			Value5 = 4,
-			Value6 = 5
 		}
 	}
 }

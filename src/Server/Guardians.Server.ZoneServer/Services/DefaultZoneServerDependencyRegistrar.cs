@@ -18,6 +18,7 @@ using UnityEngine.Rendering;
 
 namespace Guardians
 {
+	//TODO: Refactor to the Autofac module system
 	public sealed class DefaultZoneServerDependencyRegistrar
 	{
 		private ILog LoggerToRegister { get; }
@@ -196,6 +197,23 @@ namespace Guardians
 				.AsImplementedInterfaces()
 				.SingleInstance();
 
+			builder.RegisterType<FieldValueUpdateFactory>()
+				.AsSelf()
+				.AsImplementedInterfaces();
+
+			//TODO: Is this the best way to deal with this?
+			builder.RegisterType<EntityGuidDictionary<IEntityDataFieldContainer>>()
+				.As<IEntityGuidMappable<IEntityDataFieldContainer>>()
+				.As<IReadonlyEntityGuidMappable<IEntityDataFieldContainer>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.RegisterType<EntityGuidDictionary<IChangeTrackableEntityDataCollection>>()
+				.As<IEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
+				.As<IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
+				.AsSelf()
+				.SingleInstance();
+
 			RegisterEntityDestructionServices(builder);
 		}
 
@@ -273,6 +291,11 @@ namespace Guardians
 				.SingleInstance();
 
 			builder.RegisterType<PlayerEntityMovementDataUpdateManager>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			builder.RegisterType<EntityDataUpdateManager>()
 				.AsSelf()
 				.As<IGameTickable>()
 				.SingleInstance();

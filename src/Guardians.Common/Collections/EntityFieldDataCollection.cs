@@ -24,10 +24,14 @@ namespace Guardians
 		//and the largest 64bit fields can just take up 2 slots.
 		private int[] InternalDataFields { get; }
 
+		/// <inheritdoc />
+		public WireReadyBitArray DataSetIndicationArray { get; }
+
 		public EntityFieldDataCollection()
 		{
 			//TODO: Make this allocation more efficient. Maybe even use pooling.
 			InternalDataFields = new int[ComputeDataFieldCollectionLength()];
+			DataSetIndicationArray = new WireReadyBitArray(ComputeDataFieldCollectionLength());
 		}
 
 		private static int ComputeDataFieldCollectionLength()
@@ -46,6 +50,7 @@ namespace Guardians
 		}
 
 		//TFieldType
+
 		public TValueType GetFieldValue<TValueType>(TFieldType index)
 			where TValueType : struct
 		{
@@ -53,6 +58,7 @@ namespace Guardians
 		}
 
 		//TODO: Would ref return be better here? Maybe only for 64bits?
+
 		public TValueType GetFieldValue<TValueType>(int index)
 			where TValueType : struct
 		{
@@ -73,6 +79,9 @@ namespace Guardians
 			where TValueType : struct
 		{
 			IfIndexExceedsLengthThrow(index);
+
+			//Whenever someone sets, even if the value is not changing, we should set it being set (not changed).
+			DataSetIndicationArray.Set(index, true);
 
 			InternalDataFields[index] = Unsafe.As<TValueType, int>(ref value);
 		}

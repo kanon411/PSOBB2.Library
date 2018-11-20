@@ -20,6 +20,10 @@ namespace Guardians
 		/// </summary>
 		public WireReadyBitArray ChangeTrackingArray { get; }
 
+		//Just forward to decorated
+		/// <inheritdoc />
+		public WireReadyBitArray DataSetIndicationArray => EntityDataCollection.DataSetIndicationArray;
+
 		/// <inheritdoc />
 		public bool HasPendingChanges { get; private set; } = false;
 
@@ -67,7 +71,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public void SetFieldValue<TValueType>(int index, TValueType value) 
+		public void SetFieldValue<TValueType>(int index, TValueType value)
 			where TValueType : struct
 		{
 			int potentialNewValue = Unsafe.As<TValueType, int>(ref value);
@@ -78,11 +82,17 @@ namespace Guardians
 			{
 				ChangeTrackingArray.Set(index, true);
 				EntityDataCollection.SetFieldValue(index, value);
-				
+
 				//We only have pending changes if the value is not equal
 				HasPendingChanges = true;
 			}
-		}
+			else
+			{
+				//TODO: This kinda exposing an implementation detail because if we started with 0 and setting 0 the above if will fail.
+				//The reasoning is if we explictly set 0 then we set the bit because it might not be set
+				DataSetIndicationArray.Set(index, true);
+			}
+	}
 
 		private static int ComputeDataFieldCollectionLength()
 		{

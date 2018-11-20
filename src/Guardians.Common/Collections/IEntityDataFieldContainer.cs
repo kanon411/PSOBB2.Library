@@ -6,6 +6,13 @@ namespace Guardians
 {
 	public interface IEntityDataFieldContainer : IReadonlyEntityDataFieldContainer
 	{
+		/// <summary>
+		/// Bit array that indicates what data fields have been set.
+		/// This is not related to the dirty/tracked changes bit array
+		/// and only indicates which fields have been set.
+		/// </summary>
+		WireReadyBitArray DataSetIndicationArray { get; }
+
 		void SetFieldValue<TValueType>(int index, TValueType value)
 			where TValueType : struct;
 	}

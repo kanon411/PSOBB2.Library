@@ -71,6 +71,23 @@ namespace Guardians.Tests.Collections
 		}
 
 		[Test]
+		public void Test_DataIndexSetTracking_Indicates_Set_Indicies([EntityDataCollectionTestRange] int index1, [EntityDataCollectionTestRange] int index2, [Values(-1, 0, 1, 2)] int value1, [Values(-1, 0, 1, 2)] int value2)
+		{
+			//arrange
+			IEntityDataFieldContainer<TestFieldType> collection = CreateEntityDataCollection();
+
+			//act
+			collection.SetFieldValue<int>(index1, value1);
+			collection.SetFieldValue<int>(index2, value2);
+			bool isSet1 = collection.DataSetIndicationArray.Get(index1);
+			bool isSet2 = collection.DataSetIndicationArray.Get(index2);
+
+			//assert
+			Assert.True(isSet1, $"Index: {index1} being set should have caused indication array to be set.");
+			Assert.True(isSet2, $"Index: {index2} being set should have caused indication array to be set.");
+		}
+
+		[Test]
 		public void Test_Value_Set_Multiple_Times_Is_Latest_Value([EntityDataCollectionTestRange] int index, [Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
 		{
 			//arrange

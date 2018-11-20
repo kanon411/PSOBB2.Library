@@ -35,7 +35,8 @@ namespace Guardians.Tests.Collections
 			//assert
 			Assert.True(isSet, $"Set Value: {value} at Index: {index} did not set change tracked bit.");
 		}
-
+		
+		//TODO: Refactor set tests to be generic
 		[Test]
 		public void Test_PendingChanges_Not_True_When_EquivalentValues_Set([EntityDataCollectionTestRange] int index, [Values(1, 2, 3, 4, 5, 6, 7, 8)] int value)
 		{
@@ -46,6 +47,24 @@ namespace Guardians.Tests.Collections
 			collection.SetFieldValue<int>(index, value);
 			collection.ClearTrackedChanges(); //clear to remove set track bits
 			collection.SetFieldValue<int>(index, value); //re set the same value at the same index
+			bool isSet = collection.ChangeTrackingArray.Get(index); //this should be false because it should not have been a new value
+
+			//assert
+			Assert.False(isSet, $"Set Value: {value} at Index: {index} should not have a set bit since clearing and re setting same value.");
+			Assert.False(collection.HasPendingChanges, $"Set Value: {value} at Index: {index} should cause changes pending after setting same value after clear.");
+		}
+
+		//Similar to above but testing float comparision
+		[Test]
+		public void Test_PendingChanges_Not_True_When_EquivalentValues_Set_Float([EntityDataCollectionTestRange] int index, [Values(1.2f, 2.5f, 3.6335f, 4.673f, 5.22222f, 6.63f, 7.123f, 8.789f)] float value)
+		{
+			//arrange
+			ChangeTrackingEntityFieldDataCollectionDecorator<TestFieldType> collection = new ChangeTrackingEntityFieldDataCollectionDecorator<TestFieldType>(base.CreateEntityDataCollection());
+
+			//act
+			collection.SetFieldValue(index, value);
+			collection.ClearTrackedChanges(); //clear to remove set track bits
+			collection.SetFieldValue(index, value); //re set the same value at the same index
 			bool isSet = collection.ChangeTrackingArray.Get(index); //this should be false because it should not have been a new value
 
 			//assert

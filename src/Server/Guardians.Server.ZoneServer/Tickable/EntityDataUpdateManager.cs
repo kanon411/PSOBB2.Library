@@ -15,7 +15,7 @@ namespace Guardians
 
 		private IReadonlyEntityGuidMappable<InterestCollection> GuidToInterestCollectionMappable { get; }
 
-		private IFactoryCreatable<FieldValueUpdate, IChangeTrackableEntityDataCollection> UpdateFactory { get; }
+		private IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> UpdateFactory { get; }
 
 		private IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackingCollections { get; }
 
@@ -24,7 +24,7 @@ namespace Guardians
 			[NotNull] IPlayerEntityGuidEnumerable playerGuids, 
 			IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> sessionMappable, 
 			IReadonlyEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable, 
-			IFactoryCreatable<FieldValueUpdate, IChangeTrackableEntityDataCollection> updateFactory, 
+			IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> updateFactory, 
 			IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackingCollections)
 		{
 			PlayerGuids = playerGuids ?? throw new ArgumentNullException(nameof(playerGuids));
@@ -56,7 +56,8 @@ namespace Guardians
 
 					//TODO: We should cache this update value so we don't need to recompute it for ALL players who are interested
 					//This is the update collection for the particular Entity with guid interestingEntityGuid
-					FieldValueUpdate update = UpdateFactory.Create(ChangeTrackingCollections[interestingEntityGuid]);
+					//We want to use the CHANGE TRACKING bitarray for updates. If this was initial discovery we'd use the SIT bitarray to send all set values.
+					FieldValueUpdate update = UpdateFactory.Create(new EntityFieldUpdateCreationContext(ChangeTrackingCollections[interestingEntityGuid], ChangeTrackingCollections[interestingEntityGuid].ChangeTrackingArray));
 
 					updates.Add(new EntityAssociatedData<FieldValueUpdate>(interestingEntityGuid, update));
 				}

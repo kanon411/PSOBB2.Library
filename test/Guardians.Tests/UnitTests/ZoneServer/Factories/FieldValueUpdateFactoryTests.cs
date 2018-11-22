@@ -24,7 +24,7 @@ namespace Guardians
 
 			//act
 			collection.SetFieldValue<int>(index, value);
-			FieldValueUpdate fieldValueUpdate = updateFactory.Create(collection);
+			FieldValueUpdate fieldValueUpdate = updateFactory.Create(new EntityFieldUpdateCreationContext(collection, collection.ChangeTrackingArray));
 
 
 			//assert
@@ -44,7 +44,7 @@ namespace Guardians
 			collection.SetFieldValue<int>(1, 5);
 			collection.SetFieldValue<int>(2, 4);
 			collection.SetFieldValue<int>(3, 7);
-			FieldValueUpdate fieldValueUpdate = updateFactory.Create(collection);
+			FieldValueUpdate fieldValueUpdate = updateFactory.Create(new EntityFieldUpdateCreationContext(collection, collection.ChangeTrackingArray));
 
 
 			//assert

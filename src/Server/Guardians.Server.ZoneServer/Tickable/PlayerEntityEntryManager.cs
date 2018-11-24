@@ -26,12 +26,14 @@ namespace Guardians
 			[NotNull] IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> playerEntitySessionDequeable, 
 			[NotNull] IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory,
 			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender,
-			[NotNull] ILog logger)
+			[NotNull] ILog logger,
+			[NotNull] IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> entityDataUpdateFactory)
 		{
 			PlayerEntitySessionDequeable = playerEntitySessionDequeable ?? throw new ArgumentNullException(nameof(playerEntitySessionDequeable));
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			SpawnPayloadSender = spawnPayloadSender ?? throw new ArgumentNullException(nameof(spawnPayloadSender));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			EntityDataUpdateFactory = entityDataUpdateFactory ?? throw new ArgumentNullException(nameof(entityDataUpdateFactory));
 		}
 
 		/// <inheritdoc />

@@ -34,6 +34,25 @@ namespace Guardians
 			DataSetIndicationArray = new WireReadyBitArray(ComputeDataFieldCollectionLength());
 		}
 
+		/// <summary>
+		/// Overload that supports initializing custom (by the exactly sized)
+		/// <see cref="initialDataSetIndicationArray"/> and entity data <see cref="entityData"/>.
+		/// </summary>
+		/// <param name="initialDataSetIndicationArray">The initial data set array.</param>
+		/// <param name="entityData"></param>
+		public EntityFieldDataCollection(WireReadyBitArray initialDataSetIndicationArray, int[] entityData)
+		{
+			if(initialDataSetIndicationArray == null) throw new ArgumentNullException(nameof(initialDataSetIndicationArray));
+
+			//TODO: Make this allocation more efficient. Maybe even use pooling.
+			InternalDataFields = entityData ?? throw new ArgumentNullException(nameof(entityData));
+
+			if(InternalDataFields.Length != initialDataSetIndicationArray.Length)
+				throw new ArgumentException($"Failed to initialize entity field data collection due to incorrect Length: {initialDataSetIndicationArray.Length} vs Field Length: {InternalDataFields.Length}");
+
+			DataSetIndicationArray = initialDataSetIndicationArray;
+		}
+
 		private static int ComputeDataFieldCollectionLength()
 		{
 			return Enum.GetValues(typeof(TFieldType)).Length;

@@ -62,7 +62,9 @@ namespace Guardians
 					updates.Add(new EntityAssociatedData<FieldValueUpdate>(interestingEntityGuid, update));
 				}
 
-				SessionMappable[guid].SendMessageImmediately(new FieldValueUpdateEvent(updates.ToArray()));
+				//It's possible no entity had updates, so we should not send a packet update
+				if(updates.Count != 0)
+					SessionMappable[guid].SendMessageImmediately(new FieldValueUpdateEvent(updates.ToArray()));
 			}
 
 			foreach(var dataEntityCollection in ChangeTrackingCollections.Values)

@@ -38,6 +38,13 @@ namespace Guardians
 		[ProtoIgnore]
 		public IReadOnlyCollection<int> InternalIntegerArray => InternalArray;
 
+		/// <summary>
+		/// Serializer ctor.
+		/// </summary>
+		private WireReadyBitArray()
+		{
+			
+		}
 		
 		/*=========================================================================
 		** Allocates space to hold length bit values. All of the values in the bit

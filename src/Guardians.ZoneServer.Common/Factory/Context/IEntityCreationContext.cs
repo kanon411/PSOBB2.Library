@@ -9,5 +9,10 @@ namespace Guardians
 		IMovementData MovementData { get; }
 
 		EntityPrefab PrefabType { get; }
+
+		/// <summary>
+		/// The initial data for the entity.
+		/// </summary>
+		IEntityDataFieldContainer EntityData { get; }
 	}
 }

@@ -19,6 +19,8 @@ namespace Guardians
 
 		private ILog Logger { get; }
 
+		private IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> EntityDataUpdateFactory { get; }
+
 		/// <inheritdoc />
 		public PlayerEntityEntryManager(
 			[NotNull] IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> playerEntitySessionDequeable, 
@@ -47,26 +49,29 @@ namespace Guardians
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Dequeueing entity creation request for: {dequeuedPlayerSession.Key.EntityType}:{dequeuedPlayerSession.Key.EntityId}");
 
+				//TODO: This is test data
+				EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
+
 				//TODO: Time stamp
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
-				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value.SessionContext, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer));
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(dequeuedPlayerSession.Key, dequeuedPlayerSession.Value.SessionContext, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer, testData));
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");
 
 				//Once added we then need to send to the client a packet indicating its creation
-				SpawnPayloadSender.Send(BuildSpawnEventPayload(dequeuedPlayerSession));
+				SpawnPayloadSender.Send(BuildSpawnEventPayload(dequeuedPlayerSession, testData));
 
 				//TODO: If we want to do anything post-creation with the provide gameobject we could. But we really don't want to at the moment.
 			}
 		}
 
-		private static GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession)
+		private GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession, EntityFieldDataCollection<EntityDataFieldType> testData)
 		{
 			//TODO: Time stamp
 			//TODO: get real movement info
-			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero));
+			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero), EntityDataUpdateFactory.Create(new EntityFieldUpdateCreationContext(testData, testData.DataSetIndicationArray)));
 
 			return new GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>(dequeuedPlayerSession.Key, new PlayerSelfSpawnEventPayload(data));
 		}

@@ -86,6 +86,19 @@ namespace Guardians
 			builder.RegisterType<LocalCharacterDataRepository>()
 				.As<ICharacterDataRepository>()
 				.SingleInstance();
+
+			//TODO: Is this the best way to deal with this?
+			builder.RegisterType<EntityGuidDictionary<IEntityDataFieldContainer>>()
+				.As<IEntityGuidMappable<IEntityDataFieldContainer>>()
+				.As<IReadonlyEntityGuidMappable<IEntityDataFieldContainer>>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.RegisterType<EntityGuidDictionary<IChangeTrackableEntityDataCollection>>()
+				.As<IEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
+				.As<IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
+				.AsSelf()
+				.SingleInstance();
 		}
 	}
 }

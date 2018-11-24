@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -40,10 +41,12 @@ namespace Guardians
 			if(Logger.IsInfoEnabled)
 				Logger.Info($"Recieved server commanded PlayerSpawn. Player GUID: {payload.CreationData.EntityGuid} Position: {payload.CreationData.InitialMovementData.InitialPosition}");
 
+			EntityFieldDataCollection<EntityDataFieldType> entityData = CreateEntityDataCollectionFromPayload(payload.CreationData.InitialFieldValues);
+
 			await new UnityYieldAwaitable();
 
 			//Don't do any checks for now, we just spawn
-			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer));
+			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer, entityData));
 
 			//Set local player entity guid, lots of dependencies need this set to work.
 			LocalPlayerDetails.LocalPlayerGuid = payload.CreationData.EntityGuid;
@@ -56,6 +59,21 @@ namespace Guardians
 			//TODO: We need to make this the first packet, or couple of packets. We don't want to do this inbetween potentially slow operatons.
 			await context.PayloadSendService.SendMessageImmediately(new ServerTimeSyncronizationRequestPayload(DateTime.UtcNow.Ticks))
 				.ConfigureAwait(false);
+		}
+
+		private static EntityFieldDataCollection<EntityDataFieldType> CreateEntityDataCollectionFromPayload(FieldValueUpdate fieldUpdateValues)
+		{
+			//TODO: We need better initial handling for entity data
+			EntityFieldDataCollection<EntityDataFieldType> entityData = new EntityFieldDataCollection<EntityDataFieldType>();
+
+			int currentSentIndex = 0;
+			foreach(var setIndex in fieldUpdateValues.FieldValueUpdateMask.EnumerateSetBitsByIndex())
+			{
+				entityData.SetFieldValue(setIndex, fieldUpdateValues.FieldValueUpdates.ElementAt(currentSentIndex));
+				currentSentIndex++;
+			}
+
+			return entityData;
 		}
 	}
 }

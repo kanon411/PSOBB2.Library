@@ -17,6 +17,10 @@ namespace Guardians
 				.As<LogLevel>()
 				.SingleInstance();
 
+			builder.RegisterType<UnityLogger>()
+				.As<ILog>()
+				.SingleInstance();
+
 			ProtobufNetGladNetSerializerAdapter serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
 			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
 			payloadRegister.RegisterDefaults();
@@ -40,11 +44,6 @@ namespace Guardians
 
 			builder.RegisterType<PayloadInterceptMessageSendService<GameClientPacketPayload>>()
 				.As<IPeerRequestSendService<GameClientPacketPayload>>()
-				.SingleInstance();
-
-			//TODO: Support log level.
-			builder.RegisterType<UnityLogger>()
-				.As<ILog>()
 				.SingleInstance();
 		}
 	}

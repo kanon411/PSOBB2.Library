@@ -17,12 +17,16 @@ namespace Guardians
 		public EntityPrefab PrefabType { get; }
 
 		/// <inheritdoc />
-		public DefaultEntityCreationContext(NetworkEntityGuid entityGuid, IMovementData movementData, EntityPrefab prefabType)
+		public IEntityDataFieldContainer EntityData { get; }
+
+		/// <inheritdoc />
+		public DefaultEntityCreationContext(NetworkEntityGuid entityGuid, IMovementData movementData, EntityPrefab prefabType, [NotNull] IEntityDataFieldContainer entityData)
 		{
 			if(!Enum.IsDefined(typeof(EntityPrefab), prefabType)) throw new InvalidEnumArgumentException(nameof(prefabType), (int)prefabType, typeof(EntityPrefab));
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
 			PrefabType = prefabType;
+			EntityData = entityData ?? throw new ArgumentNullException(nameof(entityData));
 		}
 	}
 }

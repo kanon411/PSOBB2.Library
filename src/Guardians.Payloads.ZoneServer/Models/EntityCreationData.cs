@@ -24,11 +24,18 @@ namespace Guardians
 		[ProtoMember(2, IsRequired = true)]
 		public IMovementData InitialMovementData { get; }
 
+		/// <summary>
+		/// The initial data fields for the entity.
+		/// </summary>
+		[ProtoMember(3, IsRequired = true)]
+		public FieldValueUpdate InitialFieldValues { get; }
+
 		/// <inheritdoc />
-		public EntityCreationData([NotNull] NetworkEntityGuid entityGuid, [NotNull] IMovementData initialMovementData)
+		public EntityCreationData([NotNull] NetworkEntityGuid entityGuid, [NotNull] IMovementData initialMovementData, [NotNull] FieldValueUpdate initialFieldValues)
 		{
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			InitialMovementData = initialMovementData ?? throw new ArgumentNullException(nameof(initialMovementData));
+			InitialFieldValues = initialFieldValues ?? throw new ArgumentNullException(nameof(initialFieldValues));
 		}
 
 		/// <summary>
@@ -36,7 +43,7 @@ namespace Guardians
 		/// </summary>
 		protected EntityCreationData()
 		{
-			
+
 		}
 	}
 }

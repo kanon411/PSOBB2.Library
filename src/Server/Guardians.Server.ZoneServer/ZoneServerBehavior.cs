@@ -74,9 +74,23 @@ namespace Guardians
 				//Join main thread
 				await new UnityYieldAwaitable();
 
-				//TODO: Timestamp
-				foreach(var entry in response.Entries)
-					entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, new PositionChangeMovementData(0, entry.InitialPosition, Vector2.zero), EntityPrefab.NetworkNpc));
+				try
+				{
+					//TODO: Timestamp
+					foreach(var entry in response.Entries)
+					{
+						//TODO: This is test data
+						EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
+
+						entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, await CreateNpcMovementData(entry, zoneGameServerClient), EntityPrefab.NetworkNpc, testData));
+					}
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Exception: {e.Message}\n\nStack: {e.StackTrace}");
+					throw;
+				}
 			}
 			catch(Exception e)
 			{
@@ -89,6 +103,34 @@ namespace Guardians
 
 			if(container.ApplicationBase.Logger.IsWarnEnabled)
 				container.ApplicationBase.Logger.Warn($"Server is shutting down.");
+		}
+
+		private async Task<IMovementData> CreateNpcMovementData(ZoneServerNpcEntryModel entry, IZoneServerToGameServerClient zoneGameServerClient)
+		{
+			if(entry.Movement == NpcMovementType.Stationary)
+				return new PositionChangeMovementData(DateTime.UtcNow.Ticks, entry.InitialPosition, Vector2.zero);
+
+			if(entry.Movement == NpcMovementType.WapointBased)
+			{
+				ZoneServerWaypointQueryResponse response = await zoneGameServerClient.GetPathWaypoints(entry.MovementData);
+
+				if(!response.isSuccessful)
+					throw new InvalidOperationException($"Failed to create MovementData for Entity: {entry.Guid} Path: {entry.MovementData}");
+
+				return new PathBasedMovementData(response.Waypoints.ToArrayTryAvoidCopy(), DateTime.UtcNow.Ticks);
+			}
+
+			throw new InvalidOperationException($"Encountered unhandled MovementType: {entry.Movement}:{(int)entry.Movement}");
+
+			/*return new PathBasedMovementData(new Vector3[]
+			{
+				new Vector3(2,3,4),
+				new Vector3(-5, 1, 5),
+				new Vector3(-5, 1, 17),
+				new Vector3(10, 1, 17),
+				new Vector3(10, 1, 5)
+			}, DateTime.UtcNow.Ticks);*/
+			//return new PositionChangeMovementData(0, entry.InitialPosition, Vector2.zero);
 		}
 
 		//TODO: Create factory/clean this up

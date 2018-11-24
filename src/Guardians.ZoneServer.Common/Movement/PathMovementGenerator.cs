@@ -67,12 +67,15 @@ namespace Guardians
 			//Just call update, which will set the position.
 			//unless pathing is done, then we can just directly set the position of the entity.
 			if(isPathingEnabled)
+			{
 				InternalUpdate(entity, currentTime);
+			}
+			else
 			{
 				//TODO: Refactor this
 				//TODO: If path is not 2 points long or more this will fail
 				entity.transform.position = MovementData.MovementPath.Last();
-				entity.transform.rotation = Quaternion.LookRotation(MovementData.MovementPath[State.PathIndex] - MovementData.MovementPath[State.PathIndex - 1]);
+				entity.transform.rotation = Quaternion.LookRotation(MovementData.MovementPath[MovementData.MovementPath.Count - 1] - MovementData.MovementPath[MovementData.MovementPath.Count - 2]);
 			}
 		}
 

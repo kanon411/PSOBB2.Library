@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace Guardians
 {
+	//TODO: Refactor this, it's becoming quie bloated and depends on nearly everything.
 	public class DefaultEntityFactory<TCreationContext> : IFactoryCreatable<GameObject, TCreationContext>
 		where TCreationContext : IEntityCreationContext
 	{
@@ -26,6 +27,10 @@ namespace Guardians
 
 		private IMovementDataHandlerService MovementHandlerService { get; }
 
+		private IEntityGuidMappable<IEntityDataFieldContainer> FieldDataContainers { get; }
+
+		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableEntityDataFieldContainers { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityFactory(
 			ILog logger, 
@@ -34,7 +39,9 @@ namespace Guardians
 			IGameObjectToEntityMappable gameObjectToEntityMap, 
 			IGameObjectFactory objectFactory,
 			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory,
-			IMovementDataHandlerService movementHandlerService)
+			IMovementDataHandlerService movementHandlerService, 
+			IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers, 
+			IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
@@ -43,6 +50,8 @@ namespace Guardians
 			ObjectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
 			PrefabFactory = prefabFactory ?? throw new ArgumentNullException(nameof(prefabFactory));
 			MovementHandlerService = movementHandlerService ?? throw new ArgumentNullException(nameof(movementHandlerService));
+			FieldDataContainers = fieldDataContainers;
+			ChangeTrackableEntityDataFieldContainers = changeTrackableEntityDataFieldContainers;
 		}
 
 		/// <inheritdoc />
@@ -65,6 +74,14 @@ namespace Guardians
 			//TODO: Is it best to do this here?
 			if(!MovementHandlerService.TryHandleMovement(context.EntityGuid, context.MovementData))
 				throw new InvalidOperationException($"Cannot handle MovementType: {context.MovementData.GetType().Name} for Entity: {context.EntityGuid}");
+
+			//Entity data needs to be change trackable
+			var changeTrackableEntityDataCollection = new ChangeTrackingEntityFieldDataCollectionDecorator(context.EntityData);
+
+			//Now we should add the entity data to the mappable collection
+			//This lets it be looked up in both ways
+			FieldDataContainers.Add(context.EntityGuid, changeTrackableEntityDataCollection);
+			ChangeTrackableEntityDataFieldContainers.Add(context.EntityGuid, changeTrackableEntityDataCollection);
 
 			return entityGameObject;
 		}

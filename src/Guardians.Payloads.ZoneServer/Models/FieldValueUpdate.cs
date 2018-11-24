@@ -42,7 +42,9 @@ namespace Guardians
 		{
 			//We shouldn't send an a field value update if there are no fields to even update. It's pointless bandwidth wasted
 			if(fieldValueUpdates == null) throw new ArgumentNullException(nameof(fieldValueUpdates));
-			if(fieldValueUpdates.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(fieldValueUpdates));
+			//if(fieldValueUpdates.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(fieldValueUpdates));
+
+			//TODO: Should we do a debug assert or whatever for testing if lengths match or field update isn't empty?
 
 			FieldValueUpdateMask = fieldValueUpdateMask ?? throw new ArgumentNullException(nameof(fieldValueUpdateMask));
 			_FieldValueUpdates = fieldValueUpdates;

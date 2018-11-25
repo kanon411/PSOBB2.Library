@@ -8,7 +8,7 @@ namespace Guardians
 {
 	//Used for revalidation
 	[ExecuteInEditMode]
-	public sealed class UnityImageUIFillableImageAdapter : BaseUnityUIAdapter<Image, IUIFillableImage>
+	public sealed class UnityImageUIFillableImageAdapter : BaseUnityUIImageAdapter<IUIFillableImage>, IUIFillableImage
 	{
 		//TODO: This won't hold up if the Type changes.
 		//Override validation to check image is fillable
@@ -34,6 +34,13 @@ namespace Guardians
 		{
 			//Just call to revalidation
 			ValidateInitializedObject(UnityUIObject);
+		}
+
+		/// <inheritdoc />
+		public float FillAmount
+		{
+			get => UnityUIObject.fillAmount;
+			set => UnityUIObject.fillAmount = Mathf.Clamp(value, 0, 1.0f);
 		}
 	}
 }

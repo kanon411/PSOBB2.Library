@@ -14,6 +14,6 @@ namespace Guardians
 		/// Should be bounded between 0 and 1.
 		/// Implementers should clamp.
 		/// </summary>
-		float FillAmount { get; }
+		float FillAmount { get; set; }
 	}
 }

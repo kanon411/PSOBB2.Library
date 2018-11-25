@@ -47,7 +47,21 @@ namespace Guardians
 			if(obj == null)
 				throw new InvalidOperationException($"Failed to find {typeof(TAdaptedUnityEngineType).Name} on GameObject: {name}.");
 
+			if(!ValidateInitializedObject(obj))
+				return;
+
 			_UnityUIObject = obj;
+		}
+
+		/// <summary>
+		/// Validates that the provided <see cref="obj"/>
+		/// is valid to be initialized as the adapted engine object.
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns>True if it's valid.</returns>
+		protected virtual bool ValidateInitializedObject(TAdaptedUnityEngineType obj)
+		{
+			return obj != null;
 		}
 
 		/// <summary>

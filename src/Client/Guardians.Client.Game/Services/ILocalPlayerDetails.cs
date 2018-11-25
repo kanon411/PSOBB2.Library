@@ -12,5 +12,7 @@ namespace Guardians
 	public interface IReadonlyLocalPlayerDetails
 	{
 		NetworkEntityGuid LocalPlayerGuid { get; }
+
+		IEntityDataFieldContainer<EntityDataFieldType> EntityData { get; }
 	}
 }

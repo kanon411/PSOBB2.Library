@@ -75,8 +75,9 @@ namespace Guardians
 			if(!MovementHandlerService.TryHandleMovement(context.EntityGuid, context.MovementData))
 				throw new InvalidOperationException($"Cannot handle MovementType: {context.MovementData.GetType().Name} for Entity: {context.EntityGuid}");
 
+			//TODO: We need a better way to handle the entity data collection, we're casting and downcasting in afew spots
 			//Entity data needs to be change trackable
-			var changeTrackableEntityDataCollection = new ChangeTrackingEntityFieldDataCollectionDecorator(context.EntityData);
+			var changeTrackableEntityDataCollection = new ChangeTrackingEntityFieldDataCollectionDecorator<EntityDataFieldType>((IEntityDataFieldContainer<EntityDataFieldType>)context.EntityData);
 
 			//Now we should add the entity data to the mappable collection
 			//This lets it be looked up in both ways

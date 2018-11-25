@@ -43,6 +43,8 @@ namespace Guardians
 
 			EntityFieldDataCollection<EntityDataFieldType> entityData = CreateEntityDataCollectionFromPayload(payload.CreationData.InitialFieldValues);
 
+			LogEntityDataFields(payload);
+
 			await new UnityYieldAwaitable();
 
 			//Don't do any checks for now, we just spawn
@@ -59,6 +61,21 @@ namespace Guardians
 			//TODO: We need to make this the first packet, or couple of packets. We don't want to do this inbetween potentially slow operatons.
 			await context.PayloadSendService.SendMessageImmediately(new ServerTimeSyncronizationRequestPayload(DateTime.UtcNow.Ticks))
 				.ConfigureAwait(false);
+		}
+
+		private void LogEntityDataFields(PlayerSelfSpawnEventPayload payload)
+		{
+			StringBuilder entityFieldDataString = new StringBuilder("Entity Field Data:\n");
+
+			foreach(var entry in payload.CreationData.InitialFieldValues.FieldValueUpdateMask
+				.EnumerateSetBitsByIndex()
+				.Zip(payload.CreationData.InitialFieldValues.FieldValueUpdates, (setIndex, value) => new { setIndex, value }))
+			{
+				entityFieldDataString.Append($"Index: {(EntityDataFieldType)entry.setIndex}:{entry.setIndex} Value(int): {entry.value}\n");
+			}
+
+			if(Logger.IsDebugEnabled)
+				Logger.Debug(entityFieldDataString.ToString());
 		}
 
 		private static EntityFieldDataCollection<EntityDataFieldType> CreateEntityDataCollectionFromPayload(FieldValueUpdate fieldUpdateValues)

@@ -18,6 +18,8 @@ namespace Guardians
 
 		PasswordTextBox = 3,
 
-		Login = 4
+		Login = 4,
+
+		PlayerHealthBar = 5,
 	}
 }

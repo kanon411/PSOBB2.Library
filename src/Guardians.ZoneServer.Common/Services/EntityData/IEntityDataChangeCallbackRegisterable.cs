@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-	public interface IEntityDataChangeCallbackService
+	public interface IEntityDataChangeCallbackRegisterable
 	{
 		/// <summary>
 		/// Registers a callback for when a value changes for <see cref="entity"/>.
@@ -15,7 +15,8 @@ namespace Guardians
 		/// <param name="entity"></param>
 		/// <param name="dataField"></param>
 		/// <param name="callback"></param>
-		void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EnityDataChangedArgs<TCallbackValueCastType>> callback);
+		void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EnityDataChangedArgs<TCallbackValueCastType>> callback)
+			where TCallbackValueCastType : struct;
 
 		//TODO: Add unregisteration for callbacks
 	}

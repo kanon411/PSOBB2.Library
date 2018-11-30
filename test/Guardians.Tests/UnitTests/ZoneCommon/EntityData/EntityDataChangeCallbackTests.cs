@@ -134,5 +134,36 @@ namespace Guardians
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
 			testCallback2.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
 		}
+
+		[Test]
+		public void Test_Can_Registered_Multiple_Seperate_Callbacks_Called_Be_Called_Only()
+		{
+			//arrange
+			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
+			Mock<IEnumerable> testCallback2 = new Mock<IEnumerable>(MockBehavior.Loose);
+			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
+
+			//act
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback.Object.GetEnumerator();
+			});
+
+			//Of the same type
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback2.Object.GetEnumerator();
+			});
+
+			//Call twice
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>());
+
+			//assert
+			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(1));
+			testCallback2.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(1));
+		}
 	}
 }

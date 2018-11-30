@@ -54,11 +54,24 @@ namespace Guardians.Service.ContentServer
 
 			//This provides JwtBearer support for Authorize attribute/header
 			services.AddJwtAuthorization(cert);
+
+			//Adds and registers S3 service for URLBuilding and communication/credentials and etc
+			services.AddS3Service(Configuration);
+			services.AddTransient<IWorldEntryRepository, DatabaseBackedWorldEntryRepository>();
 		}
 
 		private static void RegisterDatabaseServices(IServiceCollection services)
 		{
-			//TODO: Register world database
+			services.AddDbContext<WorldDatabaseContext>(o =>
+			{
+				//On local builds we don't want to use config. We want to default to local
+#if !DEBUG_LOCAL && !RELEASE_LOCAL
+				throw new NotSupportedException("AWS/Remote database not supported yet.");
+				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
+#else
+				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
+#endif
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

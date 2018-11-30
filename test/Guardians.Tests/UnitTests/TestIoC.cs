@@ -29,6 +29,8 @@ namespace Guardians
 				IUIImage uiImage = Mock.Of<IUIImage>();
 				IUIButton uiButton = Mock.Of<IUIButton>();
 
+				IUIFillableImage fillableImage = Mock.Of<IUIFillableImage>();
+
 				IGaiaOnlineImageCDNClient gaiaCdnClient = Mock.Of<IGaiaOnlineImageCDNClient>();
 				IGaiaOnlineQueryClient gaiaQueryClient = Mock.Of<IGaiaOnlineQueryClient>();
 
@@ -42,6 +44,9 @@ namespace Guardians
 
 					builder.RegisterInstance(uiButton)
 						.Keyed<IUIButton>(key);
+
+					builder.RegisterInstance(fillableImage)
+						.Keyed<IUIFillableImage>(key);
 				}
 
 				builder.RegisterInstance(gaiaCdnClient)

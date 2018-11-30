@@ -33,24 +33,19 @@ namespace Guardians
 		[JsonIgnore]
 		public bool isSuccessful => ResultCode == CharacterSessionEnterResponseCode.Success;
 
-		[JsonProperty]
-		public GameZoneType ZoneType { get; private set; }
-
 		/// <summary>
 		/// Creates a successful enter response.
 		/// <see cref="ResultCode"/> will be set to success.
 		/// </summary>
 		/// <param name="zoneId"></param>
 		/// <param name="zoneType"></param>
-		public CharacterSessionEnterResponse(int zoneId, GameZoneType zoneType)
+		public CharacterSessionEnterResponse(int zoneId)
 		{
 			if(zoneId < 0) throw new ArgumentOutOfRangeException(nameof(zoneId));
-			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
 
 			//We know the response code is success if we have a zoneid
 			ResultCode = CharacterSessionEnterResponseCode.Success;
 			ZoneId = zoneId;
-			ZoneType = zoneType;
 		}
 
 		/// <summary>

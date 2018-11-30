@@ -143,7 +143,7 @@ namespace Guardians
 
 		private static CharacterLocationModel BuildCharacterLocationFromSave(int characterId, ZoneServerCharacterLocationSaveRequest saveRequest)
 		{
-			return new CharacterLocationModel(characterId, GameZoneType.ZoneFirst, saveRequest.Position.x, saveRequest.Position.y, saveRequest.Position.z);
+			return new CharacterLocationModel(characterId, saveRequest.Position.x, saveRequest.Position.y, saveRequest.Position.z);
 		}
 
 		[ProducesJson]

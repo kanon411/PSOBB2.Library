@@ -79,7 +79,7 @@ namespace Guardians
 				CharacterSessionModel sessionModel = await CharacterSessionRepository.RetrieveAsync(characterId);
 
 				//TODO: Handle case when we have an inactive session that can be claimed
-				return new CharacterSessionEnterResponse(sessionModel.ZoneId, GameZoneType.ZoneFirst);
+				return new CharacterSessionEnterResponse(sessionModel.ZoneId);
 			}
 
 			//If we've made it this far we'll need to create a session (because one does not exist) for the character
@@ -90,7 +90,7 @@ namespace Guardians
 				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.GeneralServerError);
 			
 			//TODO: Better zone handling
-			return new CharacterSessionEnterResponse(1, GameZoneType.ZoneFirst);
+			return new CharacterSessionEnterResponse(1);
 		}
 
 		/// <summary>

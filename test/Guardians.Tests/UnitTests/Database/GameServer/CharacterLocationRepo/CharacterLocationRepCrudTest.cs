@@ -22,7 +22,7 @@ namespace Guardians
 			int characterId = Interlocked.Increment(ref CharacterIdIncrementable);
 
 			Random random = new Random();
-			return new CharacterLocationModel(generateKey ? characterId : 0, GameZoneType.ZoneFirst, (float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
+			return new CharacterLocationModel(generateKey ? characterId : 0, (float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
 		}
 
 		/// <inheritdoc />

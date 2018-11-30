@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Guardians
 {
+	//TODO: Support instance/world linking so that we can load back into the same map/instance we logged out from (if the instance is still up)
 	[Table("character_locations")]
 	public class CharacterLocationModel
 	{
@@ -16,13 +17,6 @@ namespace Guardians
 		[Key]
 		[ForeignKey(nameof(Character))]
 		public int CharacterId { get; private set; }
-
-		/// <summary>
-		/// Indicates the zone type.
-		/// (If this is transient we should check session table to reconnect to it maybe)
-		/// </summary>
-		[Required]
-		public GameZoneType ZoneType { get; private set; }
 
 		/// <summary>
 		/// Navigation property to the character table.
@@ -55,14 +49,12 @@ namespace Guardians
 		public DateTime LastUpdated { get; private set; }
 
 		/// <inheritdoc />
-		public CharacterLocationModel(int characterId, GameZoneType zoneType, float xPosition, float yPosition, float zPosition)
+		public CharacterLocationModel(int characterId, float xPosition, float yPosition, float zPosition)
 		{
 			//We don't check this because unit tests may set 0, as the CLR default for updating.
 			//if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
-			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
 
 			CharacterId = characterId;
-			ZoneType = zoneType;
 			XPosition = xPosition;
 			YPosition = yPosition;
 			ZPosition = zPosition;

@@ -17,3 +17,7 @@ cd ..
 cd gameserv
 start "gameserv" cmd /c dotnet Guardians.Service.GameServer.dll --url=http://0.0.0.0:5004
 cd ..
+
+cd contentserv
+start "contentserv" cmd /c dotnet Guardians.Service.ContentServer.dll --url=http://0.0.0.0:5005
+cd ..

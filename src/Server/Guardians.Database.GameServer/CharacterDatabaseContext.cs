@@ -86,10 +86,6 @@ namespace Guardians
 				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
 
 			EntityTypeBuilder<ZoneInstanceEntryModel> zoneEntity = modelBuilder.Entity<ZoneInstanceEntryModel>();
-
-			zoneEntity
-				.HasIndex(z => z.ZoneGuid)
-				.IsUnique();
 		}
 #endif
 	}

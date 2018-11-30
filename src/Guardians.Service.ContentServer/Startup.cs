@@ -6,7 +6,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +33,7 @@ namespace Guardians.Service.ContentServer
 					//so it will cause stack overflows. This will avoid it.
 					options.ModelMetadataDetailsProviders.Add(new SuppressChildValidationMetadataProvider(typeof(Vector3)));
 				})
-				.RegisterHealthCheckController()
-				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+				.RegisterHealthCheckController();
 
 			RegisterDatabaseServices(services);
 

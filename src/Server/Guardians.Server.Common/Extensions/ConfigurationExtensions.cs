@@ -29,7 +29,7 @@ namespace Guardians
 		/// <param name="services">Service container to register to.</param>
 		/// <param name="configuration">The configuration object.</param>
 		/// <returns>The service collection to fluently build on.</returns>
-		public static IServiceCollection RegisterConfigOptions<TConfigType>(this IServiceCollection services, IConfigurationRoot configuration) 
+		public static IServiceCollection RegisterConfigOptions<TConfigType>(this IServiceCollection services, IConfiguration configuration) 
 			where TConfigType : class
 		{
 			if(services == null) throw new ArgumentNullException(nameof(services));

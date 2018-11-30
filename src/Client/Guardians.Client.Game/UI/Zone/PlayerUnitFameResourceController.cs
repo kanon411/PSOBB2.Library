@@ -59,7 +59,7 @@ namespace Guardians
 			PlayerHealthBar.FillAmount = healthPercentage;
 
 			//Also we want to see the percentage text
-			PlayerHealthPercentageText.Text = $"{(int)healthPercentage}%";
+			PlayerHealthPercentageText.Text = $"{(int)(healthPercentage * 100.0f)}%";
 		}
 
 		private void OnCurrentHealthChangedValue(NetworkEntityGuid source, EntityDataChangedArgs<int> changeArgs)

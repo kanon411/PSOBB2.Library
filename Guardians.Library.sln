@@ -77,7 +77,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.ZoneServer.Server
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.ZoneServer.Common", "src\Guardians.ZoneServer.Common\Guardians.ZoneServer.Common.csproj", "{FDC602F7-05D3-432E-BD39-F6FBBD65A32E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Models.ContentServer", "src\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj", "{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Models.ContentServer", "src\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj", "{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.ContentServer", "src\Server\Guardians.Service.ContentServer\Guardians.Service.ContentServer.csproj", "{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -368,6 +370,16 @@ Global
 		{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
 		{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Debug-Local|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -409,6 +421,7 @@ Global
 		{5FD28B56-0D0C-483F-8957-EFB4410889B1} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 		{FDC602F7-05D3-432E-BD39-F6FBBD65A32E} = {D0FA9394-9069-405B-9E01-274A489B84A2}
 		{8138AAB0-2CE8-4ADB-BC32-134F7E96BCBC} = {BECC74B7-AAF8-4BCB-BAF5-31F479A4F9B0}
+		{168D608E-2997-4C49-B2B5-6BF4CB4B02C5} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

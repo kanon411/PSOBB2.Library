@@ -46,9 +46,9 @@ namespace Guardians
 			IServiceProvider provider = BuildServiceProvider<ZoneServerController>("Test", 1);
 			ZoneServerController controller = provider.GetService<ZoneServerController>();
 			IZoneServerRepository repo = provider.GetService<IZoneServerRepository>();
-			await repo.TryCreateAsync(new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, "127.0.0.1", 1080));
-			await repo.TryCreateAsync(new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, "127.0.0.1", 1080));
-			await repo.TryCreateAsync(new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, "127.0.0.1", 1080));
+			await repo.TryCreateAsync(new ZoneInstanceEntryModel("127.0.0.1", 1080, 1));
+			await repo.TryCreateAsync(new ZoneInstanceEntryModel("127.0.0.1", 1080, 1));
+			await repo.TryCreateAsync(new ZoneInstanceEntryModel("127.0.0.1", 1080, 1));
 
 			//assert
 			ResolveServiceEndpointResponse result = GetActionResultObject<ResolveServiceEndpointResponse>(await controller.GetServerEndpoint(25));
@@ -66,7 +66,7 @@ namespace Guardians
 			IServiceProvider provider = BuildServiceProvider<ZoneServerController>("Test", 1);
 			ZoneServerController controller = provider.GetService<ZoneServerController>();
 			IZoneServerRepository repo = provider.GetService<IZoneServerRepository>();
-			await repo.TryCreateAsync(new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, endpoint, (short)port));
+			await repo.TryCreateAsync(new ZoneInstanceEntryModel(endpoint, (short)port, 1));
 
 			//assert
 			ResolveServiceEndpointResponse result = GetActionResultObject<ResolveServiceEndpointResponse>(await controller.GetServerEndpoint(1));

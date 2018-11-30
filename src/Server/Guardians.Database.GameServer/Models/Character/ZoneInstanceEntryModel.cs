@@ -14,41 +14,44 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ZoneId { get; private set; }
 
-		[Required]
-		public Guid ZoneGuid { get; private set; }
-
-		/// <summary>
-		/// The type of the registered zone.
-		/// Indicates if the zone itself is a static zone, not being transient.
-		/// (Dynamic zones are like instances that are spun up and spun down)
-		/// </summary>
-		[Required]
-		public GameZoneType ZoneType { get; private set; }
-
 		/// <summary>
 		/// The address (IP or even domain) of the instance/zone.
 		/// </summary>
 		[Required]
 		public string ZoneServerAddress { get; private set; }
 
+		/// <summary>
+		/// The public port the zone server can be connected to.
+		/// </summary>
 		[Required]
 		public short ZoneServerPort { get; private set; }
 
-		//TODO: Add zone type
-		//TODO: Health checks?
+		/// <summary>
+		/// The ID of the world this zone instance is running/based on.
+		/// There can be many instances running the same world. It's ok
+		/// that this isn't unique.
+		/// </summary>
+		[Required]
+		[Range(0, long.MaxValue)]
+		public long WorldId { get; private set; }
+
+		/// <summary>
+		/// Navigation property for the world entry this zone instance
+		/// is running.
+		/// </summary>
+		[ForeignKey(nameof(WorldId))]
+		public virtual WorldEntryModel WorldEntry { get; private set; }
 
 		/// <inheritdoc />
-		public ZoneInstanceEntryModel(Guid zoneGuid, GameZoneType zoneType, string zoneServerAddress, short zoneServerPort)
+		public ZoneInstanceEntryModel(string zoneServerAddress, short zoneServerPort, long worldId)
 		{
-			if(!Enum.IsDefined(typeof(GameZoneType), zoneType)) throw new InvalidEnumArgumentException(nameof(zoneType), (int)zoneType, typeof(GameZoneType));
 			if(string.IsNullOrWhiteSpace(zoneServerAddress)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(zoneServerAddress));
 			if(zoneServerPort < 0) throw new ArgumentOutOfRangeException(nameof(zoneServerPort));
-			if(zoneGuid == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(zoneGuid), "A Zone Guid must not be the empty guid.");
+			if(worldId <= 0) throw new ArgumentOutOfRangeException(nameof(worldId));
 
-			ZoneGuid = zoneGuid;
-			ZoneType = zoneType;
 			ZoneServerAddress = zoneServerAddress;
 			ZoneServerPort = zoneServerPort;
+			WorldId = worldId;
 		}
 
 		private ZoneInstanceEntryModel()

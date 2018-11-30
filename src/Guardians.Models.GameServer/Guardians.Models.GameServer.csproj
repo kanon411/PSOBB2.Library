@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Guardians.Models.Common\Guardians.Models.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

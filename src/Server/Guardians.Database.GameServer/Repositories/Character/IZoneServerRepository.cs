@@ -10,11 +10,6 @@ namespace Guardians
 	/// </summary>
 	public interface IZoneServerRepository : IGenericRepositoryCrudable<int, ZoneInstanceEntryModel>
 	{
-		/// <summary>
-		/// Retrieves the zone entry by guid. 
-		/// </summary>
-		/// <param name="zoneGuid">The guid.</param>
-		/// <returns></returns>
-		Task<ZoneInstanceEntryModel> RetrieveByGuidAsync(Guid zoneGuid);
+
 	}
 }

@@ -17,7 +17,7 @@ namespace Guardians
 		/// <inheritdoc />
 		public override ZoneInstanceEntryModel BuildRandomModel(bool generateKey)
 		{
-			return new ZoneInstanceEntryModel(Guid.NewGuid(), GameZoneType.ZoneFirst, "127.0.0.1", 5080);
+			return new ZoneInstanceEntryModel("127.0.0.1", 5080, 1);
 		}
 
 		/// <inheritdoc />

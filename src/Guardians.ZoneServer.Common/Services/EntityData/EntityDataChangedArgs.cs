@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-	public sealed class EnityDataChangedArgs<TValueType> : EventArgs
+	public sealed class EntityDataChangedArgs<TValueType> : EventArgs
 	{
 		//TODO: We don't currently have a way to handle original value. It's not persisted.
 		public TValueType OriginalValue { get; }
@@ -12,7 +12,7 @@ namespace Guardians
 		public TValueType NewValue { get; }
 
 		/// <inheritdoc />
-		public EnityDataChangedArgs(TValueType originalValue, TValueType newValue)
+		public EntityDataChangedArgs(TValueType originalValue, TValueType newValue)
 		{
 			OriginalValue = originalValue;
 			NewValue = newValue;

@@ -15,7 +15,7 @@ namespace Guardians
 		/// <param name="entity"></param>
 		/// <param name="dataField"></param>
 		/// <param name="callback"></param>
-		void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EnityDataChangedArgs<TCallbackValueCastType>> callback)
+		void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback)
 			where TCallbackValueCastType : struct;
 
 		//TODO: Add unregisteration for callbacks

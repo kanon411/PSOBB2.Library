@@ -16,7 +16,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EnityDataChangedArgs<TCallbackValueCastType>> callback) 
+		public void RegisterCallback<TCallbackValueCastType>(NetworkEntityGuid entity, EntityDataFieldType dataField, Action<NetworkEntityGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback) 
 			where TCallbackValueCastType : struct
 		{
 			//TODO: Anyway we can avoid this for registering callbacks, wasted cycles kinda
@@ -28,7 +28,7 @@ namespace Guardians
 			{
 				//TODO: If we ever support original value we should change this
 				//So, the callback needs to send the entity guid and the entity data change args which contain the original (not working yet) and new value.
-				callback(entity, new EnityDataChangedArgs<TCallbackValueCastType>(default(TCallbackValueCastType), dataContainer.GetFieldValue<TCallbackValueCastType>((int)dataField)));
+				callback(entity, new EntityDataChangedArgs<TCallbackValueCastType>(default(TCallbackValueCastType), dataContainer.GetFieldValue<TCallbackValueCastType>((int)dataField)));
 			};
 
 			//We need to add a null action here or it will throw when we try to add the action. But if one exists we need to Delegate.Combine

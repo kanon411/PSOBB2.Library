@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Moq;
 using NUnit.Framework;
 
 namespace Guardians
@@ -47,6 +49,90 @@ namespace Guardians
 
 			//assert
 			Assert.DoesNotThrow(() => callbackManager.InvokeChangeEvents(NetworkEntityGuid.Empty, EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>()));
+		}
+
+		[Test]
+		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
+		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
+		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
+		public void Test_Can_Registered_Callback_Called(long guid, EntityDataFieldType fieldType)
+		{
+			//arrange
+			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
+			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
+
+			//act
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)guid), fieldType, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback.Object.GetEnumerator();
+			});
+
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+
+			//assert
+			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Once);
+		}
+
+		//Mostly check the next call will still invoke the same callbacks
+		[Test]
+		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
+		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
+		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
+		public void Test_Can_Registered_Callback_Called_Be_Called_Twice(long guid, EntityDataFieldType fieldType)
+		{
+			//arrange
+			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
+			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
+
+			//act
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)guid), fieldType, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback.Object.GetEnumerator();
+			});
+
+			//Call twice
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+
+			//assert
+			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
+		}
+
+		//Mostly check the next call will still invoke the same callbacks
+		[Test]
+		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
+		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
+		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
+		public void Test_Can_Registered_Multiple_Callbacks_Called_Be_Called_Twice(long guid, EntityDataFieldType fieldType)
+		{
+			//arrange
+			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
+			Mock<IEnumerable> testCallback2 = new Mock<IEnumerable>(MockBehavior.Loose);
+			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
+
+			//act
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)guid), fieldType, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback.Object.GetEnumerator();
+			});
+
+			//Of the same type
+			callbackManager.RegisterCallback<float>(new NetworkEntityGuid((ulong)guid), fieldType, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback2.Object.GetEnumerator();
+			});
+
+			//Call twice
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+
+			//assert
+			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
+			testCallback2.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
 		}
 	}
 }

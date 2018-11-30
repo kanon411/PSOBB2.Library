@@ -23,12 +23,19 @@ namespace Guardians
 			if(!CallbackMap.ContainsKey(entity))
 				CallbackMap.Add(entity, new Dictionary<EntityDataFieldType, Action<IEntityDataFieldContainer>>());
 
-			CallbackMap[entity][dataField] += dataContainer =>
+			//TODO: This isn't thread safe, this whole thinjg isn't. That could be problematic
+			Action<IEntityDataFieldContainer> dataChangeEvent = dataContainer =>
 			{
 				//TODO: If we ever support original value we should change this
 				//So, the callback needs to send the entity guid and the entity data change args which contain the original (not working yet) and new value.
 				callback(entity, new EnityDataChangedArgs<TCallbackValueCastType>(default(TCallbackValueCastType), dataContainer.GetFieldValue<TCallbackValueCastType>((int)dataField)));
 			};
+
+			//We need to add a null action here or it will throw when we try to add the action. But if one exists we need to Delegate.Combine
+			if(!CallbackMap[entity].ContainsKey(dataField))
+				CallbackMap[entity].Add(dataField, dataChangeEvent);
+			else
+				CallbackMap[entity][dataField] += dataChangeEvent;
 		}
 
 		/// <inheritdoc />

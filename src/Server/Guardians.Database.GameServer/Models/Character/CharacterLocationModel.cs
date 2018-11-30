@@ -42,6 +42,23 @@ namespace Guardians
 		public float ZPosition { get; private set; }
 
 		/// <summary>
+		/// The world/map this location is for.
+		/// Indicates what world/map this character is conceptually in.
+		/// This should be checked against the zone/session being created
+		/// and used if the location world id matches the zone worldid. Otherwise, the character
+		/// is joining an entirely new map/world and it should be ignored.
+		/// </summary>
+		[Required]
+		[Range(0, long.MaxValue)]
+		public long WorldId { get; private set; }
+
+		/// <summary>
+		/// Navigation property for the world/map this character is located within.
+		/// </summary>
+		[ForeignKey(nameof(WorldId))]
+		public virtual WorldEntryModel WorldEntry { get; private set; }
+
+		/// <summary>
 		/// Indicates the last time the location was updated.
 		/// </summary>
 		[Column(TypeName = "TIMESTAMP(6)")]
@@ -49,8 +66,9 @@ namespace Guardians
 		public DateTime LastUpdated { get; private set; }
 
 		/// <inheritdoc />
-		public CharacterLocationModel(int characterId, float xPosition, float yPosition, float zPosition)
+		public CharacterLocationModel(int characterId, float xPosition, float yPosition, float zPosition, long worldId)
 		{
+			if(worldId <= 0) throw new ArgumentOutOfRangeException(nameof(worldId));
 			//We don't check this because unit tests may set 0, as the CLR default for updating.
 			//if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
 
@@ -58,6 +76,7 @@ namespace Guardians
 			XPosition = xPosition;
 			YPosition = yPosition;
 			ZPosition = zPosition;
+			WorldId = worldId;
 		}
 
 		public CharacterLocationModel()

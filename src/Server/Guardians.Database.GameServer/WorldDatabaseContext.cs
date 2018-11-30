@@ -11,7 +11,7 @@ namespace Guardians
 	{
 		public DbSet<WorldEntryModel> Worlds { get; set; }
 
-		public WorldDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
+		public WorldDatabaseContext(DbContextOptions<WorldDatabaseContext> options) 
 			: base(options)
 		{
 

@@ -45,6 +45,12 @@ namespace Guardians
 		[Required]
 		public Guid StorageGuid { get; private set; }
 
+		/// <summary>
+		/// Indicates if the asset bundle has been validated.
+		/// </summary>
+		[Required]
+		public bool IsValidated { get; set; } = false; //default to not validated
+
 		public WorldEntryModel(int accountId, string creationIp, Guid storageGuid)
 		{
 			if(string.IsNullOrWhiteSpace(creationIp)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(creationIp));

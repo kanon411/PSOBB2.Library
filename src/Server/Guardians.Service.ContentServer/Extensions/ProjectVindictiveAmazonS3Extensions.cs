@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Amazon;
 using Amazon.Runtime;
+using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +31,10 @@ namespace Guardians
 
 			services.RegisterConfigOptions<AmazonS3Config>(configuration);
 			services.AddSingleton<IStorageUrlBuilder, AmazonS3URLBuilder>();
+			services.AddTransient<IAmazonS3, AmazonS3Client>(provider =>
+			{
+				return new AmazonS3Client(Amazon.Util.ProfileManager.GetAWSCredentials("projectvindictive-dev"), RegionEndpoint.USWest2);
+			});
 
 			//TODO: Handle this differently
 			services.AddSingleton<AWSCredentials>(sp => new StoredProfileAWSCredentials("projectvindictive-dev"));

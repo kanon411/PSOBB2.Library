@@ -27,17 +27,12 @@ namespace Guardians
 
 			//TODO: Handle credentials properly
 			//TODO: Don't let this go into prod.
-			Amazon.Util.ProfileManager.RegisterProfile("projectvindictive-dev", Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"), Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"));
 
 			services.RegisterConfigOptions<AmazonS3Config>(configuration);
 			services.AddSingleton<IStorageUrlBuilder, AmazonS3URLBuilder>();
-			services.AddTransient<IAmazonS3, AmazonS3Client>(provider =>
-			{
-				return new AmazonS3Client(Amazon.Util.ProfileManager.GetAWSCredentials("projectvindictive-dev"), RegionEndpoint.USWest2);
-			});
+			services.AddTransient<IAmazonS3, AmazonS3Client>();
 
-			//TODO: Handle this differently
-			services.AddSingleton<AWSCredentials>(sp => new StoredProfileAWSCredentials("projectvindictive-dev"));
+			services.AddSingleton<AWSCredentials>(provider => new EnvironmentVariablesAWSCredentials());
 
 			return services;
 		}

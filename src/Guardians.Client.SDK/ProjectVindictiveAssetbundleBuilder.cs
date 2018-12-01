@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,18 @@ namespace Guardians.SDK
 			bundle.assetBundleName = Guid.NewGuid().ToString();
 			bundle.assetBundleVariant = "default";
 			bundle.assetNames = new string[1] { assetPath };
+
+			string projectPath = Application.dataPath.ToLower().TrimEnd(@"/assets".ToCharArray());
+			if(!Directory.Exists(Path.Combine(projectPath, "AssetBundles")))
+			{
+				Directory.CreateDirectory(Path.Combine(projectPath, "AssetBundles"));
+				
+			}
+
+			if(!Directory.Exists(Path.Combine(projectPath, "AssetBundles", "Temp")))
+			{
+				Directory.CreateDirectory(Path.Combine(projectPath, "AssetBundles", "Temp"));
+			}
 
 			//TODO: Is it ok to specify build target like this?
 			return BuildPipeline.BuildAssetBundles("AssetBundles/temp/", new AssetBundleBuild[1] { bundle }, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows);

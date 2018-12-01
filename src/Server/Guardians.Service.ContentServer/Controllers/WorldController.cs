@@ -51,9 +51,12 @@ namespace Guardians
 			//TODO: Abstract this behind an issuer
 			Guid worldGuid = Guid.NewGuid();
 
-			//TODO: Check if the result is valid? We should maybe return bool from this API
+			//TODO: Check if the result is valid? We should maybe return bool from this API (we do return bool from this API now)
 			//The idea is to create an entry which will contain a GUID. From that GUID we can then generate the upload URL
-			bool result = await worldEntryRepository.TryCreateAsync(new WorldEntryModel(userId, this.HttpContext.Connection.RemoteIpAddress.ToString(), worldGuid)); //TODO: Ok to just provide a guid right?
+			WorldEntryModel world = new WorldEntryModel(userId, this.HttpContext.Connection.RemoteIpAddress.ToString(), worldGuid);
+			bool result = await worldEntryRepository.TryCreateAsync(world); //TODO: Ok to just provide a guid right?
+
+			//TODO: Check world's worldid has been set
 
 			string uploadUrl = await urlBuilder.BuildUploadUrl(UserContentType.World, worldGuid);
 
@@ -68,7 +71,7 @@ namespace Guardians
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Success. Sending {ClaimsReader.GetUserName(User)} URL: {uploadUrl}");
 
-			return new JsonResult(RequestedUrlResponseModel.CreateSuccess(uploadUrl));
+			return new JsonResult(RequestedUrlResponseModel.CreateSuccess(uploadUrl, world.WorldId));
 		}
 	}
 }

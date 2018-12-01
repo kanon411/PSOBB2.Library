@@ -34,6 +34,26 @@ namespace Guardians
 			return null;
 		}*/
 
+		/// <summary>
+		/// Returns the world (think map) of the zone.
+		/// This can be used by clients to determine what world they should start downloading.
+		/// </summary>
+		/// <param name="zoneId"></param>
+		/// <returns>The world id or a failure.</returns>
+		[HttpGet("{id}/worldid")]
+		[ResponseCache]
+		public async Task<IActionResult> GetZoneWorld([FromQuery(Name = "id")] int zoneId)
+		{
+			if(!await ZoneRepository.ContainsAsync(zoneId).ConfigureAwait(false))
+				return NotFound();
+
+			ZoneInstanceEntryModel entryModel = await ZoneRepository.RetrieveAsync(zoneId)
+				.ConfigureAwait(false);
+
+			//We just return the world that this zone is for.
+			return Ok(entryModel.WorldId);
+		}
+
 		//We don't require authorization because it's not unique per-player
 		//It's also not a secret. They could auth then grab every endpoint.
 		//No reason to try to hide it.

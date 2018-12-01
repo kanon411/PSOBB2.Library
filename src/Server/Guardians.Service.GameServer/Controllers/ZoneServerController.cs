@@ -42,7 +42,7 @@ namespace Guardians
 		/// <returns>The world id or a failure.</returns>
 		[HttpGet("{id}/worldid")]
 		[ResponseCache(Duration = 300)]
-		public async Task<IActionResult> GetZoneWorld([FromQuery(Name = "id")] int zoneId)
+		public async Task<IActionResult> GetZoneWorld([FromRoute(Name = "id")] int zoneId)
 		{
 			if(!await ZoneRepository.ContainsAsync(zoneId).ConfigureAwait(false))
 				return NotFound();
@@ -60,7 +60,7 @@ namespace Guardians
 		[HttpGet("{id}/endpoint")]
 		[ProducesJson]
 		[ResponseCache(Duration = 300)]
-		public async Task<IActionResult> GetServerEndpoint([FromQuery(Name = "id")] int zoneId)
+		public async Task<IActionResult> GetServerEndpoint([FromRoute(Name = "id")] int zoneId)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(new ResolveServiceEndpointResponse(ResolveServiceEndpointResponseCode.GeneralRequestError));

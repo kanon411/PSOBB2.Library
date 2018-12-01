@@ -45,7 +45,7 @@ namespace Guardians
 
 		private Task<string> GetPresignedS3URL(Guid key, HttpVerb httpVerb)
 		{
-			using(IAmazonS3 client = new AmazonS3Client(AWSCredentials, new Amazon.S3.AmazonS3Config() { SignatureVersion = "V4", RegionEndpoint = RegionEndpoint.USEast2, SignatureMethod = SigningAlgorithm.HmacSHA256 }))
+			using(IAmazonS3 client = new AmazonS3Client(AWSCredentials, new Amazon.S3.AmazonS3Config() { SignatureVersion = "V4", RegionEndpoint = RegionEndpoint.USWest2, SignatureMethod = SigningAlgorithm.HmacSHA256 }))
 			{
 				GetPreSignedUrlRequest request = GeneratePresignedRequest(key, httpVerb);
 

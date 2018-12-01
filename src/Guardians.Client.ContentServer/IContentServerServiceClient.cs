@@ -20,7 +20,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="authToken">The user authentication token.</param>
 		/// <returns>A model representing the result of the world URL generation request.</returns>
-		[Post("/api/World")]
+		[Post("/api/World/create")]
 		Task<RequestedUrlResponseModel> GetNewWorldUploadUrl([DynamicHeader("Authorization")] string authToken);
 	}
 }

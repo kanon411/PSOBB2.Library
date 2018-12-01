@@ -32,8 +32,8 @@ namespace Guardians
 		/// The user must be authorized.
 		/// </summary>
 		/// <returns>A <see cref="RequestedUrlResponseModel"/> that either contains error information or the upload URL if it was successful.</returns>
-		[HttpPost]
-		[Authorize]
+		[HttpPost("create")]
+		[AuthorizeJwt]
 		public async Task<IActionResult> RequestWorldUploadUrl([FromServices] IWorldEntryRepository worldEntryRepository, [FromServices] IStorageUrlBuilder urlBuilder)
 		{
 			if(worldEntryRepository == null) throw new ArgumentNullException(nameof(worldEntryRepository));

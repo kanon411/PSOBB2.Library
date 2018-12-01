@@ -34,6 +34,10 @@ namespace Guardians
 
 			AmazonConfig = amazonConfig;
 			AWSCredentials = awsCredentials;
+
+			//Validate the config
+			if(String.IsNullOrWhiteSpace(AmazonConfig.Value.BucketName))
+				throw new InvalidOperationException($"Provided Amazon bucket config was invalid.");
 		}
 
 		//TODO: Why should this expose handling for contenttype. Create a factory service for it.

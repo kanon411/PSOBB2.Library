@@ -41,7 +41,7 @@ namespace Guardians
 		/// <param name="zoneId"></param>
 		/// <returns>The world id or a failure.</returns>
 		[HttpGet("{id}/worldid")]
-		[ResponseCache]
+		[ResponseCache(Duration = 300)]
 		public async Task<IActionResult> GetZoneWorld([FromQuery(Name = "id")] int zoneId)
 		{
 			if(!await ZoneRepository.ContainsAsync(zoneId).ConfigureAwait(false))
@@ -59,7 +59,7 @@ namespace Guardians
 		//No reason to try to hide it.
 		[HttpGet("{id}/endpoint")]
 		[ProducesJson]
-		[ResponseCache]
+		[ResponseCache(Duration = 300)]
 		public async Task<IActionResult> GetServerEndpoint([FromQuery(Name = "id")] int zoneId)
 		{
 			if(!ModelState.IsValid)

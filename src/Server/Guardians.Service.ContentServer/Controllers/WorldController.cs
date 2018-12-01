@@ -56,7 +56,7 @@ namespace Guardians
 			//Now that we know the world is in the database and the account making this authorized requests owns it
 			//we can now actually check that the resource exists on the storeage system
 			//TODO: This relies on some outdated API/deprecated stuff.
-			bool resourceExists = await S3ResourceExists(storageClient, "projectvindictive-dev", (await Amazon.Util.ProfileManager.GetAWSCredentials("projectvindictive-dev").GetCredentialsAsync().ConfigureAwait(false)).AccessKey)
+			bool resourceExists = await S3ResourceExists(storageClient, "projectvindictiveworlds-dev", model.StorageGuid)
 				.ConfigureAwait(false); //TODO: Don't hardcore bucket name
 
 			//TODO: Be more descriptive
@@ -78,7 +78,7 @@ namespace Guardians
 			return Ok();
 		}
 
-		private async Task<bool> S3ResourceExists(IAmazonS3 client, string bucket, string key)
+		private async Task<bool> S3ResourceExists(IAmazonS3 client, string bucket, Guid worldGuidKey)
 		{
 			//This is actually how the old AWS client worked: https://github.com/aws/aws-sdk-net/blob/master/sdk/src/Services/S3/Custom/_bcl/IO/S3FileInfo.cs
 			//Kinda bad design tbh Amazon lol
@@ -87,7 +87,7 @@ namespace Guardians
 				var request = new GetObjectMetadataRequest
 				{
 					BucketName = bucket,
-					Key = key.Replace('\\', '/') //S3helper.EncodeKey: https://github.com/aws/aws-sdk-net/blob/b691e46e57a3e24477e6a5fa2e849da44db7002f/sdk/src/Services/S3/Custom/_bcl/IO/S3Helper.cs
+					Key = worldGuidKey.ToString().Replace('\\', '/') //S3helper.EncodeKey: https://github.com/aws/aws-sdk-net/blob/b691e46e57a3e24477e6a5fa2e849da44db7002f/sdk/src/Services/S3/Custom/_bcl/IO/S3Helper.cs
 				};
 				((Amazon.Runtime.Internal.IAmazonWebServiceRequest)request).AddBeforeRequestHandler(FileIORequestEventHandler);
 
@@ -99,6 +99,7 @@ namespace Guardians
 			}
 			catch(AmazonS3Exception e)
 			{
+				Logger.LogError($"Encountered AWS Error: {e.Message}");
 				return false;
 			}
 		}

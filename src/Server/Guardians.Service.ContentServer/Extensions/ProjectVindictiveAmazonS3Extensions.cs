@@ -30,7 +30,10 @@ namespace Guardians
 
 			services.RegisterConfigOptions<AmazonS3Config>(configuration);
 			services.AddSingleton<IStorageUrlBuilder, AmazonS3URLBuilder>();
-			services.AddTransient<IAmazonS3, AmazonS3Client>();
+			services.AddTransient<IAmazonS3, AmazonS3Client>(provider =>
+			{
+				return new AmazonS3Client(provider.GetService<AWSCredentials>(), RegionEndpoint.USEast2);
+			});
 
 			services.AddSingleton<AWSCredentials>(provider => new EnvironmentVariablesAWSCredentials());
 

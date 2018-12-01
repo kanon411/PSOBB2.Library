@@ -74,6 +74,7 @@ namespace Guardians
 			services.AddTransient<ICharacterRepository, DatabaseBackedCharacterRepository>();
 			services.AddTransient<ICharacterLocationRepository, DatabaseBackedCharacterLocationRepository>();
 			services.AddTransient<ICharacterSessionRepository, DatabaseBackedCharacterSessionRepository>();
+			services.AddTransient<IZoneServerRepository, DatabaseBackedZoneServerRepository>();
 
 			services.AddDbContext<NpcDatabaseContext>(o =>
 			{

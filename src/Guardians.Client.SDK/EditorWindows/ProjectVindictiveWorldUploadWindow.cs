@@ -64,6 +64,8 @@ namespace Guardians.SDK
 				//TODO: Refactor all this crap
 				AssetBundlePath = manifest.GetAllAssetBundles().First();
 
+				Debug.Log($"Generated AssetBundle with Path: {AssetBundlePath}");
+
 				return;
 			}
 
@@ -78,28 +80,40 @@ namespace Guardians.SDK
 					.RegisterJsonNetSerializer()
 					.Build();
 
+				//Done out here, must be called on the main thread
+				string projectPath = Application.dataPath.ToLower().TrimEnd(@"/assets".ToCharArray());
+
 				Thread uploadThread = new Thread(new ThreadStart(async () =>
 				{
-					Debug.Log("Recieved URL Response.");
-					//HttpWebRequest httpRequest = WebRequest.Create(ucmService.GetNewWorldUploadUrl(AuthToken).Result.UploadUrl) as HttpWebRequest;
-					HttpWebRequest httpRequest = WebRequest.Create((await ucmService.GetNewWorldUploadUrl(AuthToken)).UploadUrl) as HttpWebRequest;
-					Debug.Log("Built http request with URL");
-
-					httpRequest.Method = "PUT";
-					using(Stream dataStream = httpRequest.GetRequestStream())
+					try
 					{
-						byte[] buffer = new byte[8000];
-						using(FileStream fileStream = new FileStream(Path.Combine("AssetBundles/temp/", AssetBundlePath), FileMode.Open, FileAccess.Read))
+						Debug.Log("Requesting URL.");
+						//HttpWebRequest httpRequest = WebRequest.Create(ucmService.GetNewWorldUploadUrl(AuthToken).Result.UploadUrl) as HttpWebRequest;
+						HttpWebRequest httpRequest = WebRequest.Create((await ucmService.GetNewWorldUploadUrl(AuthToken)).UploadUrl) as HttpWebRequest;
+						Debug.Log("Built http request with URL");
+
+						httpRequest.Method = "PUT";
+						using(Stream dataStream = httpRequest.GetRequestStream())
 						{
-							int bytesRead = 0;
-							while((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+							
+							byte[] buffer = new byte[8000];
+							using(FileStream fileStream = new FileStream(Path.Combine(projectPath, "AssetBundles", "temp", AssetBundlePath), FileMode.Open, FileAccess.Read))
 							{
-								dataStream.Write(buffer, 0, bytesRead);
+								int bytesRead = 0;
+								while((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+								{
+									dataStream.Write(buffer, 0, bytesRead);
+								}
 							}
 						}
-					}
 
-					HttpWebResponse response = httpRequest.GetResponse() as HttpWebResponse;
+						HttpWebResponse response = httpRequest.GetResponse() as HttpWebResponse;
+					}
+					catch(Exception e)
+					{
+						Debug.LogError($"{e.Message}\n\n{e.StackTrace}");
+						throw;
+					}
 				}));
 
 				uploadThread.Start();

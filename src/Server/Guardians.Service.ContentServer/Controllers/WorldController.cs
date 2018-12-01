@@ -31,7 +31,7 @@ namespace Guardians
 			Logger = logger;
 		}
 
-		[HttpPost("/{id}/uploaded")]
+		[HttpPost("{id}/uploaded")]
 		[AuthorizeJwt]
 		public async Task<IActionResult> SetWorldAsUploaded([FromRoute(Name = "id")] long worldId, [FromServices] IWorldEntryRepository worldEntryRepository, [FromServices] IAmazonS3 storageClient)
 		{

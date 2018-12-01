@@ -74,7 +74,7 @@ namespace Guardians.SDK
 
 				IContentServerServiceClient ucmService = TypeSafeHttpBuilder<IContentServerServiceClient>.Create()
 					.RegisterDefaultSerializers()
-					.RegisterDotNetHttpClient("https://localhost:5002/")
+					.RegisterDotNetHttpClient("http://localhost:5005/")
 					.RegisterJsonNetSerializer()
 					.Build();
 
@@ -114,7 +114,7 @@ namespace Guardians.SDK
 			//TODO: Service discovery
 			IAuthenticationService authService = TypeSafeHttpBuilder<IAuthenticationService>.Create()
 				.RegisterDefaultSerializers()
-				.RegisterDotNetHttpClient("https://localhost:5001/")
+				.RegisterDotNetHttpClient("http://localhost:5001/")
 				.RegisterJsonNetSerializer()
 				.Build();
 

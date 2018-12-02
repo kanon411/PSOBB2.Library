@@ -9,6 +9,7 @@ namespace Guardians
 	[ProtoContract]
 	[ProtoInclude(1, typeof(PositionChangeMovementData))]
 	[ProtoInclude(2, typeof(PathBasedMovementData))]
+	[ProtoInclude(3, typeof(PositionChangeMovementDataWithLook))]
 	public interface IMovementData
 	{
 		/// <summary>

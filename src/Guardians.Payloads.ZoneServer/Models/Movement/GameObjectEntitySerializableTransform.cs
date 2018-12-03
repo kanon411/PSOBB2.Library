@@ -33,7 +33,7 @@ namespace Guardians
 		}
 
 		public GameObjectEntitySerializableTransform(Transform entityTransform)
-			: this(entityTransform.localPosition, entityTransform.localEulerAngles)
+			: this(entityTransform.position, entityTransform.eulerAngles)
 		{
 
 		}

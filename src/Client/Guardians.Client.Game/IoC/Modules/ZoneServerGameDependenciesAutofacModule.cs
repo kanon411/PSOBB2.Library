@@ -68,6 +68,10 @@ namespace Guardians
 				.As<IMovementBlockHandler>()
 				.AsSelf();
 
+			builder.RegisterType<PositionChangeMovementWithLookBlockHandler>()
+				.As<IMovementBlockHandler>()
+				.AsSelf();
+
 			builder.RegisterType<EntityGuidDictionary<IMovementGenerator<GameObject>>>()
 				.AsSelf()
 				.As<IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>>>()

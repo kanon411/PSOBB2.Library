@@ -20,6 +20,8 @@ namespace Guardians
 
 		public void Register(IReadOnlyDictionary<GamePayloadOperationCode, Type> clientPayloadByOpCode, IReadOnlyDictionary<GamePayloadOperationCode, Type> serverPayloadByOpCode)
 		{
+			RuntimeTypeModel.Default.AutoCompile = false;
+
 			RuntimeTypeModel.Default.Add(typeof(GameClientPacketPayload), true);
 			RuntimeTypeModel.Default.Add(typeof(GameServerPacketPayload), true);
 

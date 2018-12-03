@@ -75,10 +75,6 @@ namespace Guardians
 			register.RegisterType<LocalCharacterDataRepository>()
 				.As<ICharacterDataRepository>()
 				.SingleInstance();
-
-			register.RegisterType<CharacterAvatarQueryService>()
-				.AsImplementedInterfaces()
-				.AsSelf();
 		}
 	}
 }

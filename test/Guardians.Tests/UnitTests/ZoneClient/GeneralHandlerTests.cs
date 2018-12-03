@@ -5,7 +5,6 @@ using System.Text;
 using Autofac;
 using Autofac.Core;
 using Fasterflect;
-using GaiaOnline;
 using GladNet;
 using Moq;
 using NUnit.Framework;

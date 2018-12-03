@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Autofac;
 using Fasterflect;
-using GaiaOnline;
 using Moq;
 using SceneJect;
 using SceneJect.Common;
@@ -31,8 +30,6 @@ namespace Guardians
 
 				IUIFillableImage fillableImage = Mock.Of<IUIFillableImage>();
 
-				IGaiaOnlineImageCDNClient gaiaCdnClient = Mock.Of<IGaiaOnlineImageCDNClient>();
-				IGaiaOnlineQueryClient gaiaQueryClient = Mock.Of<IGaiaOnlineQueryClient>();
 
 				foreach(UnityUIRegisterationKey key in Enum.GetValues(typeof(UnityUIRegisterationKey)))
 				{
@@ -49,10 +46,6 @@ namespace Guardians
 						.Keyed<IUIFillableImage>(key);
 				}
 
-				builder.RegisterInstance(gaiaCdnClient)
-					.As<IGaiaOnlineImageCDNClient>();
-				builder.RegisterInstance(gaiaQueryClient)
-					.As<IGaiaOnlineQueryClient>();
 			}
 		}
 

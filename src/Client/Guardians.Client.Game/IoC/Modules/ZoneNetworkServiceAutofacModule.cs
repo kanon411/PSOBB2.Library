@@ -22,7 +22,7 @@ namespace Guardians
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
+			/*builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
 				.As<IServiceDiscoveryService>()
 				.WithParameter(new TypedParameter(typeof(string), @"http://localhost:5003"))
 				.SingleInstance();
@@ -44,7 +44,50 @@ namespace Guardians
 			//Name query service
 			builder.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
 				.As<INameQueryService>()
-				.SingleInstance();
+				.SingleInstance();*/
+
+			//TODO: Unity 2018 issues with TypeSafe.Http.Net
+			builder.RegisterInstance(new MockedINameQueryService())
+				.As<INameQueryService>();
+
+			builder.RegisterInstance(new MockedICharacterService())
+				.As<ICharacterService>();
+		}
+
+		private class MockedICharacterService : ICharacterService
+		{
+			/// <inheritdoc />
+			public Task<CharacterListResponse> GetCharacters(string authToken)
+			{
+				throw new NotImplementedException();
+			}
+
+			/// <inheritdoc />
+			public Task<NameQueryResponse> NameQuery(int characterId)
+			{
+				throw new NotImplementedException();
+			}
+
+			/// <inheritdoc />
+			public Task<CharacterSessionEnterResponse> TryEnterSession(int characterId, string authToken)
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		private class MockedINameQueryService : INameQueryService
+		{
+			/// <inheritdoc />
+			public string Retrieve(int id)
+			{
+				throw new NotImplementedException();
+			}
+
+			/// <inheritdoc />
+			public Task<string> RetrieveAsync(int id)
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		//TODO: Put this in a base class or something

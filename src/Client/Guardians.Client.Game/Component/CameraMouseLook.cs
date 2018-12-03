@@ -10,9 +10,19 @@ namespace Guardians
 		[SerializeField]
 		private float LookSpeed = 3;
 
+		private Vector3 CurrentRotation;
+
+		void Start()
+		{
+			CurrentRotation = transform.eulerAngles;
+		}
+
 		void Update()
 		{
-			transform.eulerAngles += new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0.0f) * LookSpeed;
+			//TODO: Kinda slow
+			CurrentRotation = new Vector3(Mathf.Clamp(-Input.GetAxis("Mouse Y") * LookSpeed + CurrentRotation.x, -60.0f, 60.0f), Mathf.Clamp(Input.GetAxis("Mouse X") * LookSpeed + CurrentRotation.y, -60.0f, 60.0f), 0);
+
+			transform.eulerAngles = CurrentRotation;
 		}
 	}
 }

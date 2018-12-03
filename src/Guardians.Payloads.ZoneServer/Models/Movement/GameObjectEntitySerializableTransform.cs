@@ -32,6 +32,12 @@ namespace Guardians
 			EulerRotation = eulerRotation;
 		}
 
+		public GameObjectEntitySerializableTransform(Transform entityTransform)
+			: this(entityTransform.localPosition, entityTransform.localEulerAngles)
+		{
+
+		}
+
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>

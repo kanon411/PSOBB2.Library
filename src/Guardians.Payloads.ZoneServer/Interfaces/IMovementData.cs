@@ -10,6 +10,7 @@ namespace Guardians
 	[ProtoInclude(1, typeof(PositionChangeMovementData))]
 	[ProtoInclude(2, typeof(PathBasedMovementData))]
 	[ProtoInclude(3, typeof(PositionChangeMovementDataWithLook))]
+	[ProtoInclude(4, typeof(PositionChangeMovementDataDefaultVR))]
 	public interface IMovementData
 	{
 		/// <summary>

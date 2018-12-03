@@ -11,7 +11,7 @@ namespace Guardians
 		public ClientPositionChangeDataDefaultVRMovementGenerator(PositionChangeMovementDataDefaultVR movementData) 
 			: base(movementData)
 		{
-				
+			
 		}
 
 		/// <inheritdoc />
@@ -27,14 +27,17 @@ namespace Guardians
 			//TODO: This is hacky, we need a clean efficient way to set this replicated data.
 			DemoSettableTrackers trackersComponent = entity.GetComponent<DemoSettableTrackers>();
 
-			trackersComponent.CameraTrackerTransform.localEulerAngles = MovementData.CameraTransform.EulerRotation;
-			trackersComponent.CameraTrackerTransform.localPosition = MovementData.CameraTransform.Position;
+			trackersComponent.CameraTrackerTransform.eulerAngles = MovementData.CameraTransform.EulerRotation;
+			trackersComponent.CameraTrackerTransform.position = MovementData.CameraTransform.Position;
 
-			trackersComponent.RightHandTrackerTransform.localEulerAngles = MovementData.RightHandTransform.EulerRotation;
-			trackersComponent.RightHandTrackerTransform.localPosition = MovementData.RightHandTransform.Position;
+			trackersComponent.RightHandTrackerTransform.eulerAngles = MovementData.RightHandTransform.EulerRotation;
+			trackersComponent.RightHandTrackerTransform.position = MovementData.RightHandTransform.Position;
 
-			trackersComponent.LeftHandTrackerTransform.localEulerAngles = MovementData.LeftHandTransform.EulerRotation;
-			trackersComponent.LeftHandTrackerTransform.localPosition = MovementData.LeftHandTransform.Position;
+			trackersComponent.LeftHandTrackerTransform.eulerAngles = MovementData.LeftHandTransform.EulerRotation;
+			trackersComponent.LeftHandTrackerTransform.position = MovementData.LeftHandTransform.Position;
+
+			//TODO: Remove debugging
+			Debug.Log($"Recieved VR Update: {MovementData}");
 		}
 
 		/// <inheritdoc />

@@ -20,8 +20,6 @@ namespace Guardians
 
 		private IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> CharacterSlotFactory { get; }
 
-		private IAvatarTextureQueryable AvatarTextureLookup { get; }
-
 		private IUIImage AvatarDisplay { get; }
 
 		private ICharacterDataRepository CharacterRepository { get; }
@@ -32,7 +30,6 @@ namespace Guardians
 			IReadonlyAuthTokenRepository authTokenRepository, 
 			ILog logger, 
 			IFactoryCreatable<CharacterSlotUIElements, EmptyFactoryContext> characterSlotFactory,
-			IAvatarTextureQueryable avatarTextureLookup, 
 			[KeyFilter(UnityUIRegisterationKey.PlayerUnitFrame)] IUIImage avatarDisplay,
 			ICharacterDataRepository characterRepository)
 		{
@@ -40,7 +37,6 @@ namespace Guardians
 			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			CharacterSlotFactory = characterSlotFactory;
-			AvatarTextureLookup = avatarTextureLookup ?? throw new ArgumentNullException(nameof(avatarTextureLookup));
 			AvatarDisplay = avatarDisplay;
 			CharacterRepository = characterRepository ?? throw new ArgumentNullException(nameof(characterRepository));
 		}
@@ -103,13 +99,10 @@ namespace Guardians
 			//When the slot button is clicked we need to initialize the avatar display of the one selected
 			//then we need to disable the toggle of all BUT this slot and
 			//set the current state to the character id.
-			Texture2D avatarDisplay = await AvatarTextureLookup.GetAvatarByCharacterId(characterId);
 
 			await new UnityYieldAwaitable();
 
 			//We just set the avatar display
-			AvatarDisplay.SetSpriteTexture(avatarDisplay);
-
 			//Just set the new character id so anything else can make decisions based on it.
 			CharacterRepository.UpdateCharacterId(characterId);
 		}

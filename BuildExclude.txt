@@ -29,3 +29,5 @@ System.Dynamic.Runtime.dll
 System.ComponentModel.dll
 System.Collections.Concurrent.dll
 Microsoft.CSharp.dll
+System.ServiceModel.dll
+System.ServiceModel.Primitives.dll

@@ -17,11 +17,9 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task<bool> ContainsAsync(int key)
+		public async Task<bool> ContainsAsync(int key)
 		{
-			return Context
-				.ZoneEntries
-				.AnyAsync(z => z.ZoneId == key);
+			return await Context.ZoneEntries.FindAsync(key).ConfigureAwait(false) != null;
 		}
 
 		/// <inheritdoc />

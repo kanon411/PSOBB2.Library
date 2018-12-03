@@ -18,13 +18,13 @@ namespace Guardians
 		/// in the request sender.
 		/// </summary>
 		[Inject]
-		protected IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }
+		protected IPeerPayloadSendService<GameClientPacketPayload> SendService { get; set; }
 
 		/// <summary>
 		/// The network send service used to send the messages
 		/// in the request sender.
 		/// </summary>
 		[Inject]
-		protected IPeerRequestSendService<GameClientPacketPayload> SendServiceAsync { get; }
+		protected IPeerRequestSendService<GameClientPacketPayload> SendServiceAsync { get; set; }
 	}
 }

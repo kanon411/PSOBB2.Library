@@ -23,13 +23,13 @@ namespace Guardians
 		public int TileGatewayId => ComputeTileId();
 
 		[Inject]
-		private IInterestTileManager TileManager { get; }
+		private IInterestTileManager TileManager { get; set; }
 
 		[Inject]
-		private ILog Logger { get; }
+		private ILog Logger { get; set; }
 
 		[Inject]
-		private IReadonlyGameObjectToEntityMappable ObjectToEntityMapper { get; }
+		private IReadonlyGameObjectToEntityMappable ObjectToEntityMapper { get; set; }
 
 		[Cache]
 		private int ComputeTileId()

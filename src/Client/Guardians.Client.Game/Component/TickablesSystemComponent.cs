@@ -11,10 +11,10 @@ namespace Guardians
 	public sealed class TickablesSystemComponent : MonoBehaviour
 	{
 		[Inject]
-		private IReadOnlyCollection<IGameTickable> GameTickables { get; }
+		private IReadOnlyCollection<IGameTickable> GameTickables { get; set; }
 
 		[Inject]
-		private ILog Logger { get; }
+		private ILog Logger { get; set; }
 
 		void Update()
 		{

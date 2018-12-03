@@ -11,13 +11,13 @@ namespace Guardians
 	public abstract class InterestMonitorComponent : MonoBehaviour, IPhysicsTriggerCallbackable
 	{
 		[Inject]
-		protected IReadonlyGameObjectToEntityMappable ObjectToEntityMapper { get; }
+		protected IReadonlyGameObjectToEntityMappable ObjectToEntityMapper { get; private set; }
 
 		[Inject]
-		protected ILog Logger { get; }
+		protected ILog Logger { get; private set; }
 
 		[Inject]
-		protected IInterestRadiusManager RadiusManager { get; }
+		protected IInterestRadiusManager RadiusManager { get; private set; }
 
 		/// <inheritdoc />
 		public abstract void OnTriggerEnter(Collider other);

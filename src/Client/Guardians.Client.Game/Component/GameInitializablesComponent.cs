@@ -13,10 +13,10 @@ namespace Guardians
 	public sealed class GameInitializablesComponent : MonoBehaviour
 	{
 		[Inject]
-		private IReadOnlyCollection<IGameInitializable> Initializables { get; }
+		private IReadOnlyCollection<IGameInitializable> Initializables { get; set; }
 
 		[Inject]
-		private ILog Logger { get; }
+		private ILog Logger { get; set; }
 
 		private async Task Start()
 		{

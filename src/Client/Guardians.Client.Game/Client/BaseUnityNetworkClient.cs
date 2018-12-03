@@ -27,7 +27,7 @@ namespace Guardians
 		/// The managed network client that the Unity3D client is implemented on-top of.
 		/// </summary>
 		[Inject]
-		protected IManagedNetworkClient<TOutgoingPayloadType, TIncomingPayloadType> Client { get; }
+		protected IManagedNetworkClient<TOutgoingPayloadType, TIncomingPayloadType> Client { get; private set; }
 
 		/// <summary>
 		/// The message handler service.
@@ -39,17 +39,17 @@ namespace Guardians
 		/// The logger for the client.
 		/// </summary>
 		[Inject]
-		public ILog Logger { get; }
+		public ILog Logger { get; private set; }
 
 		/// <summary>
 		/// The message context factory that builds the contexts
 		/// for the handlers.
 		/// </summary>
 		[Inject]
-		protected IPeerMessageContextFactory MessageContextFactory { get; }
+		protected IPeerMessageContextFactory MessageContextFactory { get; private set; }
 
 		[Inject]
-		private IGameObjectComponentAttachmentFactory AttachmentFactory { get; }
+		private IGameObjectComponentAttachmentFactory AttachmentFactory { get; set; }
 
 		//TODO: Move to IoC
 		private IPeerRequestSendService<TOutgoingPayloadType> RequestService { get; set; }

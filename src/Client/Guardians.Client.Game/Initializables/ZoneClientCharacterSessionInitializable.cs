@@ -14,10 +14,10 @@ namespace Guardians
 	public sealed class ZoneClientCharacterSessionInitializable : MonoBehaviour
 	{
 		[Inject]
-		private IPeerPayloadSendService<GameClientPacketPayload> PayloadSender { get; }
+		private IPeerPayloadSendService<GameClientPacketPayload> PayloadSender { get; set; }
 
 		[Inject]
-		private ICharacterDataRepository CharacterRepository { get; }
+		private ICharacterDataRepository CharacterRepository { get; set; }
 
 		/// <inheritdoc />
 		public ZoneClientCharacterSessionInitializable(IPeerPayloadSendService<GameClientPacketPayload> payloadSender, ICharacterDataRepository characterRepository)

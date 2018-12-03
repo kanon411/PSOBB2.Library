@@ -11,12 +11,12 @@ namespace Guardians
 		where TViewType : class
 	{
 		[Inject]
-		protected ILog Logger { get; }
+		protected ILog Logger { get; private set; }
 
 		[Inject]
-		protected TViewType View { get; }
+		protected TViewType View { get; private set; }
 
 		[Inject]
-		protected IErrorUIView ErrorView { get; }
+		protected IErrorUIView ErrorView { get; private set; }
 	}
 }

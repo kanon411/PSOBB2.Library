@@ -30,7 +30,7 @@ namespace Guardians
 		/// </summary>
 		/// <returns>A <see cref="WorldDownloadURLResponse"/> that either contains error information or the upload URL if it was successful.</returns>
 		[HttpPost("{id}/downloadurl")]
-		[Authorize]
+		[AuthorizeJwt]
 		[NoResponseCache]
 		public async Task<IActionResult> RequestWorldDownloadUrl(
 			[FromRoute(Name = "id")] long worldId,

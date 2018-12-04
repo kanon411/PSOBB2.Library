@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Client\Guardians.Client.Game\Guardians.Client.Game.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Network.Common\Guardians.Network.Common.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />

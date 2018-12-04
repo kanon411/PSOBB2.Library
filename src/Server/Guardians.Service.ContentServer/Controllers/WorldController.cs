@@ -24,6 +24,61 @@ namespace Guardians
 
 		}
 
+		/// <summary>
+		/// POST request that requests an a download URL for a world.
+		/// The user must be authorized.
+		/// </summary>
+		/// <returns>A <see cref="WorldDownloadURLResponse"/> that either contains error information or the upload URL if it was successful.</returns>
+		[HttpPost("{id}/downloadurl")]
+		[Authorize]
+		[NoResponseCache]
+		public async Task<IActionResult> RequestWorldDownloadUrl(
+			[FromRoute(Name = "id")] long worldId,
+			[FromServices] IWorldEntryRepository worldEntryRepository,
+			[FromServices] IStorageUrlBuilder urlBuilder,
+			[FromServices] IContentDownloadAuthroizationValidator downloadAuthorizer)
+		{
+			if(worldEntryRepository == null) throw new ArgumentNullException(nameof(worldEntryRepository));
+
+			//TODO: We want to rate limit access to this API
+			//TODO: We should use both app logging but also another logging service that always gets hit
+
+			//TODO: Consolidate this shared logic between controllers
+			if(Logger.IsEnabled(LogLevel.Information))
+				Logger.LogInformation($"Recieved {nameof(RequestWorldDownloadUrl)} request from {ClaimsReader.GetUserName(User)}:{ClaimsReader.GetUserId(User)}.");
+
+			//TODO: We should probably check the flags of world to see if it's private (IE hidden from user). Or if it's unlisted or removed.
+			//It's possible a user is requesting a world that doesn't exist
+			//Could be malicious or it could have been deleted for whatever reason
+			if(!await worldEntryRepository.ContainsAsync(worldId).ConfigureAwait(false))
+				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.NoWorld));
+
+			//TODO: Refactor this into a validation dependency
+			//Now we need to do some validation to determine if they should even be downloading this world
+			//we do not want people downloading a world they have no business of going to
+			int userId = ClaimsReader.GetUserIdInt(User);
+
+			if(!await downloadAuthorizer.CanUserAccessWorldContet(userId, worldId))
+				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.AuthorizationFailed));
+
+			//We can get the URL from the urlbuilder if we provide the world storage GUID
+			string downloadUrl = await urlBuilder.BuildRetrivalUrl(UserContentType.World, (await worldEntryRepository.RetrieveAsync(worldId)).StorageGuid);
+
+			//TODO: Should we be validating S3 availability?
+			if(String.IsNullOrEmpty(downloadUrl))
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"Failed to create world upload URL for {ClaimsReader.GetUserName(User)}:{ClaimsReader.GetUserId(User)} with ID: {worldId}.");
+
+				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.WorldDownloadServiceUnavailable));
+			}
+
+			if(Logger.IsEnabled(LogLevel.Information))
+				Logger.LogInformation($"Success. Sending {ClaimsReader.GetUserName(User)} URL: {downloadUrl}");
+
+			return Json(new WorldDownloadURLResponse(downloadUrl));
+		}
+
 		[HttpPost("{id}/uploaded")]
 		[AuthorizeJwt]
 		public async Task<IActionResult> SetWorldAsUploaded([FromRoute(Name = "id")] long worldId, [FromServices] IWorldEntryRepository worldEntryRepository, [FromServices] IAmazonS3 storageClient)

@@ -42,6 +42,7 @@ namespace Guardians
 			if(string.IsNullOrWhiteSpace(downloadUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(downloadUrl));
 
 			DownloadURL = downloadUrl;
+			ResultCode = WorldDownloadURLResponseCode.Success;
 		}
 
 		/// <summary>

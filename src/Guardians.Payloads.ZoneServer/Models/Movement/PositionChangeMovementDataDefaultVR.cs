@@ -52,5 +52,11 @@ namespace Guardians
 		{
 
 		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return $"Pos: {InitialPosition}\nCam: {CameraTransform.Position}:{CameraTransform.EulerRotation}\nRHand: {RightHandTransform.Position}:{RightHandTransform.EulerRotation}\nLHand: {LeftHandTransform.Position}:{LeftHandTransform.EulerRotation}";
+		}
 	}
 }

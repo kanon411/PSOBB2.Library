@@ -54,6 +54,10 @@ namespace Guardians
 				//TODO: This is test data
 				EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
 
+				//TODO: Test values set
+				testData.SetFieldValue(EntityDataFieldType.EntityCurrentHealth, 100);
+				testData.SetFieldValue(EntityDataFieldType.EntityMaxHealth, 120);
+
 				//TODO: Time stamp
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.

@@ -3,16 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Guardians
 {
 	[Route("api/[controller]")]
-	public class ZoneServerController : Controller
+	public class ZoneServerController : AuthorizationReadyController
 	{
 		private IZoneServerRepository ZoneRepository { get; }
-
 		/// <inheritdoc />
-		public ZoneServerController([FromServices] IZoneServerRepository zoneRepository)
+		public ZoneServerController([FromServices] IZoneServerRepository zoneRepository, IClaimsPrincipalReader claimsReader, ILogger<AuthorizationReadyController> logger) 
+			: base(claimsReader, logger)
 		{
 			ZoneRepository = zoneRepository ?? throw new ArgumentNullException(nameof(zoneRepository));
 		}
@@ -34,6 +35,7 @@ namespace Guardians
 			return null;
 		}*/
 
+
 		/// <summary>
 		/// Returns the world (think map) of the zone.
 		/// This can be used by clients to determine what world they should start downloading.
@@ -45,7 +47,10 @@ namespace Guardians
 		public async Task<IActionResult> GetZoneWorld([FromRoute(Name = "id")] int zoneId)
 		{
 			if(!await ZoneRepository.ContainsAsync(zoneId).ConfigureAwait(false))
+			{
+				Logger.LogError($"Failed to query for WorldId for Zone: {zoneId}");
 				return NotFound();
+			}
 
 			ZoneInstanceEntryModel entryModel = await ZoneRepository.RetrieveAsync(zoneId)
 				.ConfigureAwait(false);

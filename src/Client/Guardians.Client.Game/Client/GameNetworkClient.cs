@@ -55,7 +55,7 @@ namespace Guardians
 
 			//TODO: Don't hardcode gameserver connection details
 			//As soon as we start we should attempt to connect to the login server.
-			bool result = await Client.ConnectAsync(IPAddress.Parse("127.0.0.1"), 5006)
+			bool result = await Client.ConnectAsync(IPAddress.Parse("72.190.177.214"), 5006)
 				.ConfigureAwait(true);
 
 			if(!result)

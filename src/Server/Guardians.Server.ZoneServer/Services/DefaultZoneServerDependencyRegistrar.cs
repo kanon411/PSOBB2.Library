@@ -299,6 +299,11 @@ namespace Guardians
 				.AsSelf()
 				.As<IGameTickable>()
 				.SingleInstance();
+
+			builder.RegisterType<DemoTestingGameTickable>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
 		}
 	}
 }

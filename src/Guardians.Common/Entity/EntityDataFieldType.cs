@@ -9,7 +9,7 @@ namespace Guardians
 	/// Each entry in this enumeration represents a 4 byte field
 	/// of entity data.
 	/// </summary>
-	public enum EntityDataFieldType
+	public enum EntityDataFieldType : int
 	{
 		/// <summary>
 		/// The maximum health of the entity.
@@ -20,6 +20,8 @@ namespace Guardians
 		/// <summary>
 		/// The current health of the entity.
 		/// </summary>
-		EntityCurrentHealth = 1
+		EntityCurrentHealth = 1,
+
+		EntityMaximumMana = 2
 	}
 }

@@ -24,6 +24,10 @@ namespace Guardians
 		/// </summary>
 		WorldDownloadServiceUnavailable = 2,
 
+		/// <summary>
+		/// Indicates that the world download is not authorize for the
+		/// requesting user.
+		/// </summary>
 		AuthorizationFailed = 3,
 	}
 }

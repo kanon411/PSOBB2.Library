@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using TypeSafe.Http.Net;
+using Refit;
 
 namespace Guardians
 {

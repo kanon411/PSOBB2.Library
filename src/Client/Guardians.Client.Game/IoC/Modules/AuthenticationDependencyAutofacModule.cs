@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using GladNet;
-using TypeSafe.Http.Net;
+using Refit;
 using UnityEngine;
 
 namespace Guardians
@@ -35,21 +35,15 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
-				.WithParameter(new TypedParameter(typeof(string), ServiceDiscoveryUrl))
 				.SingleInstance();
 
 			builder.Register<IAuthenticationService>(context =>
 			{
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-				return TypeSafeHttpBuilder<IAuthenticationService>
-					.Create()
-					.RegisterDefaultSerializers()
-					.RegisterJsonNetSerializer()
-					.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "Authentication"), new FiddlerEnabledWebProxyHandler())
-					.Build();
+				return new AsyncEndpointAuthenticationService(QueryForRemoteServiceEndpoint(serviceDiscovery, "Authentication"), new RefitSettings() { HttpMessageHandlerFactory = () => new FiddlerEnabledWebProxyHandler() });
 			});
 		}
 

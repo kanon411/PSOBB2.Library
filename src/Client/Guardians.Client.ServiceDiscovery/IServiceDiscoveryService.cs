@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
+using Refit;
 
 namespace Guardians
 {
@@ -11,7 +11,7 @@ namespace Guardians
 	/// Contract for REST service that provides
 	/// services discovery endpoints.
 	/// </summary>
-	[Header("User-Agent", "GuardiansClient")]
+	[Headers("User-Agent: GuardiansClient")]
 	public interface IServiceDiscoveryService
 	{
 		/// <summary>

@@ -8,9 +8,9 @@
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="FluentValidation" Version="7.6.103" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-    <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.16" />
   </ItemGroup>
 
   <ItemGroup>

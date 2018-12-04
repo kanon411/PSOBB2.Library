@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Refit;
+
+namespace Guardians
+{
+	//
+	public sealed class AsyncEndpointAuthenticationService : BaseAsyncEndpointService<IAuthenticationService>, IAuthenticationService
+	{
+		/// <inheritdoc />
+		public AsyncEndpointAuthenticationService([NotNull] Task<string> futureEndpoint) 
+			: base(futureEndpoint)
+		{
+
+		}
+
+		public AsyncEndpointAuthenticationService([NotNull] Task<string> futureEndpoint, [NotNull] RefitSettings settings) 
+			: base(futureEndpoint, settings)
+		{
+
+		}
+
+		/// <inheritdoc />
+		public async Task<JWTModel> TryAuthenticate(AuthenticationRequestModel request)
+		{
+			IAuthenticationService service = await GetService()
+				.ConfigureAwait(false);
+
+			return await service.TryAuthenticate(request)
+				.ConfigureAwait(false);
+		}
+	}
+}

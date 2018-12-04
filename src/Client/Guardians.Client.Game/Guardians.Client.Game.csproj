@@ -11,13 +11,10 @@
     <PackageReference Include="GladNet3.Handler.API" Version="3.0.49" />
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.49" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="SceneJect.Common" Version="3.0.29" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-    <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.17" />
-    <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.17" />
-    <PackageReference Include="TypeSafe.Http.Net.Serializer.DotNetXml" Version="2.2.17" />
-    <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.17" />
     <PackageReference Include="Unitysync.Async" Version="1.0.15" />
   </ItemGroup>
 

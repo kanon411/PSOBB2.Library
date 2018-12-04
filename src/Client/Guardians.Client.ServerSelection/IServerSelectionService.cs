@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
+using Refit;
 
 namespace Guardians
 {
 	/// <summary>
 	/// Proxy interface for ServerSelection (List) Server RPCs.
 	/// </summary>
-	[Header("User-Agent", "GuardiansClient")]
+	[Headers("User-Agent: GuardiansClient")]
 	public interface IServerSelectionService
 	{
 		/// <summary>
@@ -18,7 +18,7 @@ namespace Guardians
 		/// any filtering.
 		/// </summary>
 		/// <returns>All known gameservers from the service.</returns>
-		[Header("Cache-Control", "max-age=60")]
+		[Headers("Cache-Control: max-age=60")]
 		[Get("/api/gameservers/all")]
 		Task<GameServerListResponseModel> GetServers();
 		

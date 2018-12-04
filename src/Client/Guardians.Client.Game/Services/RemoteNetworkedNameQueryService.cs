@@ -32,7 +32,7 @@ namespace Guardians
 				.ConfigureAwait(false);
 
 			if(!queryResponse.isSuccessful)
-				throw new KeyNotFoundException($"Failed to retrieve Key: {id} from {nameof(RemoteNetworkCharacterService)}. Error: {queryResponse.ResultCode}");
+				throw new KeyNotFoundException($"Failed to retrieve Key: {id} from {nameof(INameQueryService)}. Error: {queryResponse.ResultCode}");
 
 			return queryResponse.EntityName;
 		}

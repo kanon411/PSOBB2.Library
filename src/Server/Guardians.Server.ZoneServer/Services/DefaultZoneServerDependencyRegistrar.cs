@@ -11,8 +11,8 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
+using Refit;
 using SceneJect.Common;
-using TypeSafe.Http.Net;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -155,21 +155,12 @@ namespace Guardians
 				.As<INetworkMessageSender<EntityMovementMessageContext>>()
 				.AsSelf();
 
-			builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
-				.As<IServiceDiscoveryService>()
-				.WithParameter(new TypedParameter(typeof(string), @"http://localhost:5003"))
-				.SingleInstance();
-
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://localhost:5003"));
 			builder.Register(context =>
 			{
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-				return TypeSafeHttpBuilder<IZoneServerToGameServerClient>
-					.Create()
-					.RegisterJsonNetSerializer()
-					.RegisterDefaultSerializers()
-					.RegisterDotNetHttpClient(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new FiddlerEnabledWebProxyHandler())
-					.Build();
+				return new AsyncEndpointZoneServerToGameServerService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
 			})
 				.As<IZoneServerToGameServerClient>()
 				.SingleInstance();

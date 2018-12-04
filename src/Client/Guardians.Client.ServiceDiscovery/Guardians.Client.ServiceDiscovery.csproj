@@ -7,14 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.16" />
-    <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.16" />
-    <PackageReference Include="TypeSafe.Http.Net.Metadata" Version="2.2.16" />
-    <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.16" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
 
   <ItemGroup>

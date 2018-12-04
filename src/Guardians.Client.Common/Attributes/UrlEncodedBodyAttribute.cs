@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using Refit;
 
-namespace Guardians.Client.Common.Attributes
+namespace Guardians
 {
 	/// <summary>
 	/// Stub/Mock for old TypeSafe.Http.Net to help return to it
 	/// in the future should a transition back occur.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-	public class AuthenticationTokenAttribute : AuthorizeAttribute
+	[AttributeUsage(AttributeTargets.Parameter)]
+	public sealed class UrlEncodedBodyAttribute : BodyAttribute
 	{
-		public AuthenticationTokenAttribute()
+		public UrlEncodedBodyAttribute()
+			: base(BodySerializationMethod.UrlEncoded)
 		{
 			
 		}

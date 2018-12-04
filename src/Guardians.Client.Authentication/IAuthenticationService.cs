@@ -4,14 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
+using Refit;
 
 namespace Guardians
 {
 	/// <summary>
 	/// Proxy interface for Authentication Server RPCs.
 	/// </summary>
-	[Header("User-Agent", "GuardiansClient")]
+	[Headers("User-Agent: GuardiansClient")]
 	public interface IAuthenticationService
 	{
 		/// <summary>
@@ -21,7 +21,8 @@ namespace Guardians
 		/// </summary>
 		/// <param name="request">The request model.</param>
 		/// <returns>The authentication result.</returns>
-		[SupressResponseErrorCodes((int)HttpStatusCode.BadRequest)] //OAuth spec returns 400 BadRequest on failed auth
+		//TODO: Refit doesn't support error code suppresion.
+		//[SupressResponseErrorCodes((int)HttpStatusCode.BadRequest)] //OAuth spec returns 400 BadRequest on failed auth
 		[Post("/api/auth")]
 		Task<JWTModel> TryAuthenticate([UrlEncodedBody] AuthenticationRequestModel request);
 	}

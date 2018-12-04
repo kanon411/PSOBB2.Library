@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Autofac;
 using Common.Logging;
+using Refit;
 
 namespace Guardians
 {
@@ -48,9 +49,8 @@ namespace Guardians
 				.As<IAuthTokenRepository>()
 				.SingleInstance();
 
-			register.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
+			register.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
-				.WithParameter(new TypedParameter(typeof(string), ServiceDiscoveryUrl))
 				.SingleInstance();
 
 			register.Register(context =>
@@ -62,12 +62,13 @@ namespace Guardians
 				//we query the the gameserver's service discovery.
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-				return new RemoteNetworkCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
+				return new AsyncEndpointCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
 			})
 				.As<ICharacterService>()
 				.SingleInstance();
 
 			//Name query service
+			//TODO: We should hand;e this differently
 			register.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
 				.As<INameQueryService>()
 				.SingleInstance();

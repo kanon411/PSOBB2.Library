@@ -22,9 +22,6 @@
     <PackageReference Include="SceneJect.Common" Version="3.0.29" />
     <PackageReference Include="SceneJect.Editor" Version="3.0.29" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
-    <PackageReference Include="TypeSafe.Http.Net.Core" Version="2.2.16" />
-    <PackageReference Include="TypeSafe.Http.Net.HttpClient" Version="2.2.16" />
-    <PackageReference Include="TypeSafe.Http.Net.Serializer.JsonNET" Version="2.2.16" />
   </ItemGroup>
 
   <ItemGroup>

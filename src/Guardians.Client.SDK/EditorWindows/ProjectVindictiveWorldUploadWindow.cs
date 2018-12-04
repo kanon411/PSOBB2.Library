@@ -8,7 +8,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -74,11 +73,7 @@ namespace Guardians.SDK
 				//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 				ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
-				IContentServerServiceClient ucmService = TypeSafeHttpBuilder<IContentServerServiceClient>.Create()
-					.RegisterDefaultSerializers()
-					.RegisterDotNetHttpClient("http://localhost:5005/")
-					.RegisterJsonNetSerializer()
-					.Build();
+				IContentServerServiceClient ucmService = Refit.RestService.For<IContentServerServiceClient>("http://localhost:5005/");
 
 				//Done out here, must be called on the main thread
 				string projectPath = Application.dataPath.ToLower().TrimEnd(@"/assets".ToCharArray());
@@ -126,11 +121,7 @@ namespace Guardians.SDK
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
 			//TODO: Service discovery
-			IAuthenticationService authService = TypeSafeHttpBuilder<IAuthenticationService>.Create()
-				.RegisterDefaultSerializers()
-				.RegisterDotNetHttpClient("http://localhost:5001/")
-				.RegisterJsonNetSerializer()
-				.Build();
+			IAuthenticationService authService = Refit.RestService.For<IAuthenticationService>("http://localhost:5001/");
 
 			//Authentication using provided credentials
 			JWTModel result = authService.TryAuthenticate(new AuthenticationRequestModel(AccountName, Password)).Result;

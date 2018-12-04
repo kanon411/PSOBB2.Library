@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
+using Guardians.Client.Common.Attributes;
+using Refit;
 
 namespace Guardians
 {
 	/// <summary>
 	/// Proxy interface for character service requests.
 	/// </summary>
-	[Header("User-Agent", "GuardiansClient")]
+	[Headers("User-Agent: GuardiansClient")]
 	public interface ICharacterService
 	{
 		/// <summary>
@@ -19,7 +20,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="authToken">The authentication token.</param>
 		/// <returns>The character request.</returns>
-		[Header("Cache-Control", "max-age=60")]
+		[Headers("Cache-Control: max-age=60")]
 		[Get("api/characters")]
 		Task<CharacterListResponse> GetCharacters([AuthenticationToken] string authToken);
 
@@ -28,7 +29,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="characterId"></param>
 		/// <returns></returns>
-		[Header("Cache-Control", "max-age=360")]
+		[Headers("Cache-Control: max-age=360")]
 		[Get("api/characters/name/{id}")]
 		Task<NameQueryResponse> NameQuery([AliasAs("id")] int characterId);
 

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using TypeSafe.Http.Net;
+using Refit;
 
 namespace Guardians
 {
 	//TODO: We shouldn't combine all the zoneserver query stuff in a single interface
 	//TODO: We need to do authorization headers for zoneserver stuff
-	[Header("User-Agent", "ZoneServer")]
+	[Headers("User-Agent: ZoneServer")]
 	public interface IZoneServerToGameServerClient
 	{
 		/// <summary>
@@ -16,7 +16,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="mapId">The ID of the map to load the NPC entries for.</param>
 		/// <returns>HTTP response.</returns>
-		[Header("Cache-Control", "max-age=5000")]
+		[Headers("Cache-Control: max-age=5000")]
 		[Get("/api/npcdata/map/{id}")]
 		Task<ZoneServerNPCEntryCollectionResponse> GetNPCEntriesByMapId([AliasAs("id")] int mapId);
 

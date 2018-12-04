@@ -34,6 +34,8 @@ namespace Guardians
 
 			if(resultCode == WorldDownloadURLResponseCode.Success)
 				throw new ArgumentException("Cannot provide Success to a failing response ctor.", nameof(resultCode));
+
+			ResultCode = resultCode;
 		}
 
 		/// <inheritdoc />

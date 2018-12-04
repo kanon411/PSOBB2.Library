@@ -5,12 +5,12 @@
 		/// <summary>
 		/// 
 		/// </summary>
-		Success = 0,
+		Success = 1,
 
-		ServiceUnavailable,
+		ServiceUnavailable = 2,
 
-		AuthorizationFailed,
+		AuthorizationFailed = 3,
 
-		InvalidRequest
+		InvalidRequest = 4
 	}
 }

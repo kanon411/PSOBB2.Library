@@ -12,22 +12,22 @@ namespace Guardians
 		/// <summary>
 		/// Indicates the request was successful.
 		/// </summary>
-		Success = 0,
+		Success = 1,
 
 		/// <summary>
 		/// Indicates that the world does not exist.
 		/// </summary>
-		NoWorld = 1,
+		NoWorld = 2,
 
 		/// <summary>
 		/// Indicates that the service for downloading worlds is unavailable.
 		/// </summary>
-		WorldDownloadServiceUnavailable = 2,
+		WorldDownloadServiceUnavailable = 3,
 
 		/// <summary>
 		/// Indicates that the world download is not authorize for the
 		/// requesting user.
 		/// </summary>
-		AuthorizationFailed = 3,
+		AuthorizationFailed = 4
 	}
 }

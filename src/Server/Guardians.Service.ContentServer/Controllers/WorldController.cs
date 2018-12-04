@@ -16,19 +16,12 @@ namespace Guardians
 	[Route("api/[controller]")]
 	public class WorldController : AuthorizationReadyController
 	{
-		/// <summary>
-		/// Logging serivce.
-		/// </summary>
-		private ILogger<WorldController> Logger { get; }
-
 		// GET api/values
 		/// <inheritdoc />
 		public WorldController(IClaimsPrincipalReader claimsReader, ILogger<WorldController> logger)
 			: base(claimsReader, logger)
 		{
-			if(logger == null) throw new ArgumentNullException(nameof(logger));
 
-			Logger = logger;
 		}
 
 		[HttpPost("{id}/uploaded")]

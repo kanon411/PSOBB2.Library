@@ -16,8 +16,16 @@ namespace Guardians
 				case EntityPrefab.Unknown:
 					break;
 				case EntityPrefab.LocalPlayer:
-					//TODO: We should handle prefabs better
-					return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar");
+					//TODO: Hack to support VR builds with in-editor non-VR.
+					if(Application.isEditor)
+					{
+						//TODO: We should handle prefabs better
+						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar");
+					}
+					else
+					{
+						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar_vr");
+					}
 				case EntityPrefab.RemotePlayer:
 					//TODO: We should handle prefabs better
 					return Resources.Load<GameObject>("Prefabs/RemotePlayerAvatar");

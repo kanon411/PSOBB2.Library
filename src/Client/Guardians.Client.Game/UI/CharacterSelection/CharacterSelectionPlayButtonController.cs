@@ -56,7 +56,8 @@ namespace Guardians
 
 				//Prevent multiple play interactions.
 				PlayButton.IsInteractable = false;
-				SceneManagementService.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene, LoadSceneMode.Single);
+				//Should go to the world downloading screen
+				SceneManagementService.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single);
 
 			});
 		}

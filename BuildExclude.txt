@@ -31,3 +31,4 @@ System.Collections.Concurrent.dll
 Microsoft.CSharp.dll
 System.ServiceModel.dll
 System.ServiceModel.Primitives.dll
+System.ComponentModel.Primitives.dll

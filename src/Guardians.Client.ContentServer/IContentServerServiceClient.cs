@@ -22,5 +22,9 @@ namespace Guardians
 		/// <returns>A model representing the result of the world URL generation request.</returns>
 		[Post("/api/World/create")]
 		Task<RequestedUrlResponseModel> GetNewWorldUploadUrl([Authorize] string authToken);
+
+		//TODO: Doc
+		[Post("{id}/downloadurl")]
+		Task<WorldDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [Authorize] string authToken);
 	}
 }

@@ -29,10 +29,13 @@ namespace Guardians
 		/// ONLY zoneserver roles should be able to call this. NEVER allow clients to call this endpoint.
 		/// </summary>
 		/// <returns></returns>
-		[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)]
 		[HttpPost("claim")]
 		public async Task<IActionResult> TryClaimSession([FromBody] ZoneServerTryClaimSessionRequest request)
 		{
+			//TODO: Renable auth for session claiming
+			ProjectVersionStage.AssertAlpha();
+
 			if(!this.ModelState.IsValid)
 				return BadRequest(); //TODO: Send JSON back too.
 

@@ -14,18 +14,20 @@ namespace Guardians
 		/// <inheritdoc />
 		public override void Register(ContainerBuilder register)
 		{
-			foreach(var go in SceneManager.GetActiveScene().GetRootGameObjects())
-			{
-				foreach(var registerable in go.GetComponentsInChildren<SerializedMonoBehaviour>()
-					.Select(m => m as IUIAdapterRegisterable)
-					.Where(m => m != null))
+			//Because of active load scene, we have to iterate each scene
+			for(int i = 0; i < SceneManager.sceneCount; i++)
+				foreach(var go in SceneManager.GetSceneAt(i).GetRootGameObjects())
 				{
-					//Registers the adapter with the specified Key and Service Type.
-					register.RegisterInstance(registerable)
-						.SingleInstance()
-						.Keyed(registerable.RegisterationKey, registerable.UISerivdeType);
+					foreach(var registerable in go.GetComponentsInChildren<SerializedMonoBehaviour>()
+						.Select(m => m as IUIAdapterRegisterable)
+						.Where(m => m != null))
+					{
+						//Registers the adapter with the specified Key and Service Type.
+						register.RegisterInstance(registerable)
+							.SingleInstance()
+							.Keyed(registerable.RegisterationKey, registerable.UISerivdeType);
+					}
 				}
-			}
 		}
 	}
 }

@@ -12,6 +12,10 @@
     "GameServer": {
       "endpointAddress": "http://localhost.",
       "endpointPort": 5004
+    },
+    "ContentServer": {
+      "endpointAddress": "http://localhost.",
+      "endpointPort": 5005
     }
   }
 }

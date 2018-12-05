@@ -59,7 +59,7 @@ namespace Guardians
 					//we query the the gameserver's service discovery.
 					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-					return new AsyncEndpointCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
+					return new AsyncEndpointCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new RefitSettings() { HttpMessageHandlerFactory = () => new FiddlerEnabledWebProxyHandler()});
 				})
 				.As<ICharacterService>()
 				.SingleInstance();

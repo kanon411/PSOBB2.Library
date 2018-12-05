@@ -10,9 +10,10 @@ namespace Guardians
 	/// in the future should a transition back occur.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-	public class AuthenticationTokenAttribute : AuthorizeAttribute
+	public class AuthenticationTokenAttribute : HeaderAttribute
 	{
 		public AuthenticationTokenAttribute()
+			: base("Authorization")
 		{
 			
 		}

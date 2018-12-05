@@ -44,5 +44,11 @@ namespace Guardians
 		{
 			return await (await GetService().ConfigureAwait(false)).GetPathWaypoints(pathId).ConfigureAwait(false);
 		}
+
+		/// <inheritdoc />
+		public async Task ReleaseActiveSession(int characterId)
+		{
+			await (await GetService().ConfigureAwait(false)).ReleaseActiveSession(characterId);
+		}
 	}
 }

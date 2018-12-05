@@ -36,6 +36,8 @@ namespace Guardians
 		{
 			//TODO: A hack, that removes this entity from other nearby interest lists
 			//TODO: This really isn't a good solution, we need something that scales better and that isn't faulty. This could have some odd race conditions to cause ghost entities.
+			ProjectVersionStage.AssertAlpha();
+
 			SphereCollider ourCollider = GuidToGameObjectMap[obj.EntityGuid].GetComponentInChildren<SphereCollider>();
 			//This is slow, and hacky. We need a better solution for entities getting deconstructed.
 			foreach(var exit in Physics.OverlapSphere(ourCollider.transform.position, ourCollider.radius)

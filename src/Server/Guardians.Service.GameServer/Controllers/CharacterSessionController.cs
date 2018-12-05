@@ -88,9 +88,12 @@ namespace Guardians
 		/// <returns>OK if successful. Errors if not.</returns>
 		[HttpDelete("{id}")]
 		[NoResponseCache]
-		[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //only zone servers should EVER be able to release the active session. They should also likely only be able to release an active session if it's on them.
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //only zone servers should EVER be able to release the active session. They should also likely only be able to release an active session if it's on them.
 		public async Task<IActionResult> ReleaseActiveSession([FromRoute(Name = "id")] int characterId)
 		{
+			//We NEED to AUTH for zoneserver JWT.
+			ProjectVersionStage.AssertAlpha();
+
 			//If an active session does NOT exist we have a BIG problem.
 			if(!await CharacterSessionRepository.ContainsAsync(characterId))
 			{

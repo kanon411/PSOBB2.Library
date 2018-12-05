@@ -29,10 +29,10 @@ namespace Guardians
 		Task<ZoneServerCharacterLocationResponse> GetCharacterLocation([AliasAs("id")] int characterId);
 
 		//TODO: Doc
-		[Post("api/characters/location")]
+		[Post("/api/characters/location")]
 		Task SaveCharacterLocation([JsonBody] ZoneServerCharacterLocationSaveRequest saveRequest);
 
-		[Get("api/zoneserverdata/waypoint/{id}")]
+		[Get("/api/zoneserverdata/waypoint/{id}")]
 		Task<ZoneServerWaypointQueryResponse> GetPathWaypoints([AliasAs("id")] int pathId);
 	}
 }

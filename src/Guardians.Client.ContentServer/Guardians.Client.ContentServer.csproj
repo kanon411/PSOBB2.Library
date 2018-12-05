@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj" />
   </ItemGroup>
 

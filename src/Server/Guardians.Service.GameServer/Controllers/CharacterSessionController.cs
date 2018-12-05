@@ -52,6 +52,33 @@ namespace Guardians
 			return Ok(new ZoneServerTryClaimSessionResponse(sessionClaimed ? ZoneServerTryClaimSessionResponseCode.Success : ZoneServerTryClaimSessionResponseCode.GeneralServerError)); //TODO
 		}
 
+		[HttpGet("{id}/data")]
+		[AuthorizeJwt]
+		[NoResponseCache]
+		public async Task<CharacterSessionDataResponse> GetCharacterZoneId([FromRoute(Name = "id")] int characterId)
+		{
+			int accountId = ClaimsReader.GetUserIdInt(User);
+
+			//TODO: Do we want to expose this to non-controlers?
+			//First we should validate that the account that is authorized owns the character it is requesting session data from
+
+			if(!(await CharacterRepository.CharacterIdsForAccountId(accountId).ConfigureAwait(false))
+				.Contains(characterId))
+			{
+				//Requesting session data about an unowned character.
+				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.Unauthorized);
+			}
+
+			//Active sessions don't matter, we just want session data for this character.
+			if(await CharacterSessionRepository.ContainsAsync(characterId).ConfigureAwait(false))
+			{
+				//If there is a session, we should just send the zone. Maybe in the future we want to send more data but we only need the zone at the moment.
+				return new CharacterSessionDataResponse((await CharacterSessionRepository.RetrieveAsync(characterId).ConfigureAwait(false)).ZoneId);
+			}
+			else
+				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.NoSessionAvailable);
+		}
+
 		[HttpPost("enter/{id}")]
 		[NoResponseCache]
 		[AuthorizeJwt]

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians.Client.Common.Attributes;
 using Refit;
 
 namespace Guardians

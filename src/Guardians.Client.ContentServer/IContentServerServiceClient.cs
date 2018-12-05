@@ -21,10 +21,10 @@ namespace Guardians
 		/// <param name="authToken">The user authentication token.</param>
 		/// <returns>A model representing the result of the world URL generation request.</returns>
 		[Post("/api/World/create")]
-		Task<RequestedUrlResponseModel> GetNewWorldUploadUrl([Authorize] string authToken);
+		Task<RequestedUrlResponseModel> GetNewWorldUploadUrl([AuthenticationToken] string authToken);
 
 		//TODO: Doc
 		[Post("/{id}/downloadurl")]
-		Task<WorldDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [Authorize] string authToken);
+		Task<WorldDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [AuthenticationToken] string authToken);
 	}
 }

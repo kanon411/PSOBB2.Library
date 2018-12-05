@@ -36,12 +36,11 @@ namespace Guardians
 			if(!this.ModelState.IsValid)
 				return BadRequest(); //TODO: Send JSON back too.
 
-			//We do not use the actual requesting ZoneServer's JWT id.
-			//We must use the user id they're trying to claim a session for.
-			string guid = ClaimsReader.GetGloballyUniqueUserId(User);
+			//TODO: We should validate a lot things. One, that the character has a session on this zoneserver.
+			//We should also validate that the account owns the character. We need a new auth process for entering users.
+			//We have to do this validation, somehow. Or malicious players could spoof this.
+			ProjectVersionStage.AssertAlpha();
 
-			//TODO: Load the zone id.
-			
 			//TODO: Verify that the zone id is correct. Right now we aren't providing it and the query doesn't enforce it.
 			//We don't validate characterid/accountid association manually. It is implemented in the tryclaim SQL instead.
 			//It additionally also checks the zone relation for the session so it will fail if it's invalid for the provided zone.

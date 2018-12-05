@@ -14,10 +14,14 @@ namespace Guardians
 	{
 		private CharacterDatabaseContext Context { get; }
 
+		//TODO: Move over to generic crud for crud methods. only delete is using it atm
+		private IGenericRepositoryCrudable<int, CharacterSessionModel> GenericCrudService { get; }
+
 		/// <inheritdoc />
 		public DatabaseBackedCharacterSessionRepository(CharacterDatabaseContext context)
 		{
 			Context = context ?? throw new ArgumentNullException(nameof(context));
+			GenericCrudService = new GeneralGenericCrudRepositoryProvider<int, CharacterSessionModel>(context.CharacterSessions, context);
 		}
 
 		/// <inheritdoc />
@@ -64,7 +68,7 @@ namespace Guardians
 		/// <inheritdoc />
 		public Task<bool> TryDeleteAsync(int key)
 		{
-			throw new NotImplementedException();
+			return GenericCrudService.TryDeleteAsync(key);
 		}
 
 		/// <inheritdoc />

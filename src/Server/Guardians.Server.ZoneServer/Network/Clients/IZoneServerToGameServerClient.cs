@@ -34,5 +34,11 @@ namespace Guardians
 
 		[Get("/api/zoneserverdata/waypoint/{id}")]
 		Task<ZoneServerWaypointQueryResponse> GetPathWaypoints([AliasAs("id")] int pathId);
+
+		//TODO: Eventually will require auth
+		[Delete("/api/charactersession/{id}")]
+		//[NoResponseCache] //TODO
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //only zone servers should EVER be able to release the active session. They should also likely only be able to release an active session if it's on them.
+		Task ReleaseActiveSession([AliasAs("id")] int characterId);
 	}
 }

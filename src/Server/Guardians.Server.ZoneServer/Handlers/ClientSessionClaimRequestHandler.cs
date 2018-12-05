@@ -34,7 +34,20 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientSessionClaimRequestPayload payload)
 		{
-			//TODO: We should actually send a request to the gameserver to try to validate this. But for now, so we can move on, it remains unimplemented
+			//TODO: We need better validation/authorization for clients trying to claim a session. Right now it's open to malicious attack
+			ProjectVersionStage.AssertAlpha();
+			var zoneServerTryClaimSessionResponse = await GameServerClient.TryClaimSession(new ZoneServerTryClaimSessionRequest(await GameServerClient.GetAccountIdFromToken(payload.JWT), payload.CharacterId))
+				.ConfigureAwait(false);
+
+			if(!zoneServerTryClaimSessionResponse.isSuccessful)
+			{
+				//TODO: Better error code
+				await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.SessionUnavailable))
+					.ConfigureAwait(false);
+
+				return;
+			}
+			
 			NetworkEntityGuidBuilder builder = new NetworkEntityGuidBuilder();
 
 			builder

@@ -21,7 +21,9 @@ namespace Guardians
 
 			ZoneGameScene = 2,
 			
-			CharacterSelection = 3
+			CharacterSelection = 3,
+
+			WorldDownloadingScreen = 4
 		}
 
 		/// <summary>

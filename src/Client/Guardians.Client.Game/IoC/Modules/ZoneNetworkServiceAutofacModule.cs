@@ -73,6 +73,12 @@ namespace Guardians
 			{
 				throw new NotImplementedException();
 			}
+
+			/// <inheritdoc />
+			public Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId, string authToken)
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		private class MockedINameQueryService : INameQueryService

@@ -43,5 +43,10 @@ namespace Guardians
 
 		[Post("/api/charactersession/{id}/claim")]
 		Task<ZoneServerTryClaimSessionResponse> TryClaimSession([JsonBody] ZoneServerTryClaimSessionRequest request);
+
+		//[AuthorizeJwt]
+		[Get("/api/Authorization/user/id")] //TODO: Is this a good path?
+		//[NoResponseCache] //TODO: No cache
+		Task<int> GetAccountIdFromToken([AuthenticationToken] string authToken);
 	}
 }

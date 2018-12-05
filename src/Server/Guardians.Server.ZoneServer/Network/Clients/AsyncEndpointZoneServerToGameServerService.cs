@@ -50,5 +50,18 @@ namespace Guardians
 		{
 			await (await GetService().ConfigureAwait(false)).ReleaseActiveSession(characterId);
 		}
+
+		/// <inheritdoc />
+		public async Task<ZoneServerTryClaimSessionResponse> TryClaimSession(ZoneServerTryClaimSessionRequest request)
+		{
+			return await (await GetService().ConfigureAwait(false)).TryClaimSession(request).ConfigureAwait(false);
+		}
+
+		//TODO: This should actually be in another service
+		/// <inheritdoc />
+		public async Task<int> GetAccountIdFromToken(string authToken)
+		{
+			return await (await GetService().ConfigureAwait(false)).GetAccountIdFromToken(authToken).ConfigureAwait(false);
+		}
 	}
 }

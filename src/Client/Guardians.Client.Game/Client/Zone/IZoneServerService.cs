@@ -19,7 +19,7 @@ namespace Guardians
 		/// </summary>
 		/// <param name="zoneId">The zone id.</param>
 		/// <returns>The id of the zoneserver. Throws if it doesn't exist.</returns>
-		[Get("{id}/worldid")]
+		[Get("/{id}/worldid")]
 		[Headers("Cache-Control: max-age=300")]
 		Task<long> GetZoneWorld([AliasAs("id")] int zoneId);
 	}

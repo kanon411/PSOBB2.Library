@@ -21,7 +21,7 @@ namespace Guardians
 		/// <param name="authToken">The authentication token.</param>
 		/// <returns>The character request.</returns>
 		[Headers("Cache-Control: max-age=60")]
-		[Get("api/characters")]
+		[Get("/api/characters")]
 		Task<CharacterListResponse> GetCharacters([AuthenticationToken] string authToken);
 
 		/// <summary>
@@ -30,7 +30,7 @@ namespace Guardians
 		/// <param name="characterId"></param>
 		/// <returns></returns>
 		[Headers("Cache-Control: max-age=360")]
-		[Get("api/characters/name/{id}")]
+		[Get("/api/characters/name/{id}")]
 		Task<NameQueryResponse> NameQuery([AliasAs("id")] int characterId);
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Guardians
 		/// <param name="characterId"></param>
 		/// <param name="authToken"></param>
 		/// <returns></returns>
-		[Post("api/charactersession/enter/{id}")]
+		[Post("/api/charactersession/enter/{id}")]
 		Task<CharacterSessionEnterResponse> TryEnterSession([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Guardians
 		/// <param name="characterId">The character id to get session data for.</param>
 		/// <param name="authToken">The authentication token for authorization.</param>
 		/// <returns>The session data response.</returns>
-		[Get("{id}/data")]
+		[Get("/{id}/data")]
 		[Headers("Cache-Control: NoCache")] //TODO: I frgot what this is suppose to be
 		Task<CharacterSessionDataResponse> GetCharacterSessionData([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
 	}

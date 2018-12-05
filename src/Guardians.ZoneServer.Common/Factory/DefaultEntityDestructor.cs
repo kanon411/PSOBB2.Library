@@ -16,17 +16,25 @@ namespace Guardians
 
 		private IEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerators { get; }
 
+		private IEntityGuidMappable<IEntityDataFieldContainer> FieldDataContainers { get; }
+
+		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableEntityDataFieldContainers { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityDestructor(
 			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
 			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap,
-			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerators)
+			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerators,
+			[NotNull] IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers,
+			[NotNull] IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
 			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
 			MovementGenerators = movementGenerators ?? throw new ArgumentNullException(nameof(movementGenerators));
+			FieldDataContainers = fieldDataContainers ?? throw new ArgumentNullException(nameof(fieldDataContainers));
+			ChangeTrackableEntityDataFieldContainers = changeTrackableEntityDataFieldContainers ?? throw new ArgumentNullException(nameof(changeTrackableEntityDataFieldContainers));
 		}
 
 		/// <inheritdoc />
@@ -47,6 +55,10 @@ namespace Guardians
 			//Not all entities will have a movement generator sometimes.
 			if(MovementGenerators.ContainsKey(obj))
 				MovementGenerators.Remove(obj);
+
+			//From entity data from collections
+			FieldDataContainers.Remove(obj);
+			ChangeTrackableEntityDataFieldContainers.Remove(obj);
 
 			return true;
 		}

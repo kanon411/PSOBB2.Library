@@ -38,5 +38,11 @@ namespace Guardians
 		{
 			return await (await GetService().ConfigureAwait(false)).TryEnterSession(characterId, authToken);
 		}
+
+		/// <inheritdoc />
+		public async Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId, string authToken)
+		{
+			return await (await GetService().ConfigureAwait(false)).GetCharacterSessionData(characterId, authToken).ConfigureAwait(false);
+		}
 	}
 }

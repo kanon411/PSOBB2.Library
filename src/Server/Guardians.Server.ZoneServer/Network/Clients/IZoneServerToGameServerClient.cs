@@ -41,7 +41,7 @@ namespace Guardians
 		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //only zone servers should EVER be able to release the active session. They should also likely only be able to release an active session if it's on them.
 		Task ReleaseActiveSession([AliasAs("id")] int characterId);
 
-		[Post("/api/charactersession/{id}/claim")]
+		[Post("/api/charactersession/claim")]
 		Task<ZoneServerTryClaimSessionResponse> TryClaimSession([JsonBody] ZoneServerTryClaimSessionRequest request);
 
 		//[AuthorizeJwt]

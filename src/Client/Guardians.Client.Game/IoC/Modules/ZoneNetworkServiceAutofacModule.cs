@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Refit;
 using UnityEngine;
 
 namespace Guardians
@@ -22,9 +23,8 @@ namespace Guardians
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			/*builder.RegisterType<TypeSafeServiceDiscoveryServiceClient>()
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://localhost:5003"))
 				.As<IServiceDiscoveryService>()
-				.WithParameter(new TypedParameter(typeof(string), @"http://localhost:5003"))
 				.SingleInstance();
 
 			builder.Register(context =>
@@ -36,7 +36,7 @@ namespace Guardians
 					//we query the the gameserver's service discovery.
 					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
 
-					return new RemoteNetworkCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
+					return new AsyncEndpointCharacterService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
 				})
 				.As<ICharacterService>()
 				.SingleInstance();
@@ -44,56 +44,7 @@ namespace Guardians
 			//Name query service
 			builder.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
 				.As<INameQueryService>()
-				.SingleInstance();*/
-
-			//TODO: Unity 2018 issues with TypeSafe.Http.Net
-			builder.RegisterInstance(new MockedINameQueryService())
-				.As<INameQueryService>();
-
-			builder.RegisterInstance(new MockedICharacterService())
-				.As<ICharacterService>();
-		}
-
-		private class MockedICharacterService : ICharacterService
-		{
-			/// <inheritdoc />
-			public Task<CharacterListResponse> GetCharacters(string authToken)
-			{
-				throw new NotImplementedException();
-			}
-
-			/// <inheritdoc />
-			public Task<NameQueryResponse> NameQuery(int characterId)
-			{
-				throw new NotImplementedException();
-			}
-
-			/// <inheritdoc />
-			public Task<CharacterSessionEnterResponse> TryEnterSession(int characterId, string authToken)
-			{
-				throw new NotImplementedException();
-			}
-
-			/// <inheritdoc />
-			public Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId, string authToken)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		private class MockedINameQueryService : INameQueryService
-		{
-			/// <inheritdoc />
-			public string Retrieve(int id)
-			{
-				throw new NotImplementedException();
-			}
-
-			/// <inheritdoc />
-			public Task<string> RetrieveAsync(int id)
-			{
-				throw new NotImplementedException();
-			}
+				.SingleInstance();
 		}
 
 		//TODO: Put this in a base class or something

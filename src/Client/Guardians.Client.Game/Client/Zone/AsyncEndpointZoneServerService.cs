@@ -27,5 +27,11 @@ namespace Guardians
 		{
 			return await (await GetService().ConfigureAwait(false)).GetZoneWorld(zoneId).ConfigureAwait(false);
 		}
+
+		/// <inheritdoc />
+		public async Task<ResolveServiceEndpointResponse> GetServerEndpoint(int zoneId)
+		{
+			return await (await GetService().ConfigureAwait(false)).GetServerEndpoint(zoneId).ConfigureAwait(false);
+		}
 	}
 }

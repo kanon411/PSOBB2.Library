@@ -22,5 +22,10 @@ namespace Guardians
 		[Get("/api/zoneserver/{id}/worldid")]
 		[Headers("Cache-Control: max-age=300")]
 		Task<long> GetZoneWorld([AliasAs("id")] int zoneId);
+
+		//TODO: We should add authorization to this
+		[Get("/api/zoneserver/{id}/endpoint")]
+		//[ResponseCache(Duration = 300)] //TODO: Cache
+		Task<ResolveServiceEndpointResponse> GetServerEndpoint([AliasAs("id")] int zoneId);
 	}
 }

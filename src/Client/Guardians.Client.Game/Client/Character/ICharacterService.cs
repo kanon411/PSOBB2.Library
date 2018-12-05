@@ -47,7 +47,7 @@ namespace Guardians
 		/// <param name="characterId">The character id to get session data for.</param>
 		/// <param name="authToken">The authentication token for authorization.</param>
 		/// <returns>The session data response.</returns>
-		[Get("/{id}/data")]
+		[Get("/api/{id}/data")]
 		[Headers("Cache-Control: NoCache")] //TODO: I frgot what this is suppose to be
 		Task<CharacterSessionDataResponse> GetCharacterSessionData([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
 	}

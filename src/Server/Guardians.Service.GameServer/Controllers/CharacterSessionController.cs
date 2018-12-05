@@ -79,6 +79,46 @@ namespace Guardians
 				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.NoSessionAvailable);
 		}
 
+		/// <summary>
+		/// Should be called by zone servers to release the active session on a character.
+		/// When the active session exists the character cannot log into ANY other zone instance. They are stuck.
+		/// So it is CRITICAL that the zoneserver does this.
+		/// </summary>
+		/// <param name="characterId">The ID of the character to free the session for.</param>
+		/// <returns>OK if successful. Errors if not.</returns>
+		[HttpDelete("{id}")]
+		[NoResponseCache]
+		[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //only zone servers should EVER be able to release the active session. They should also likely only be able to release an active session if it's on them.
+		public async Task<IActionResult> ReleaseActiveSession([FromRoute(Name = "id")] int characterId)
+		{
+			//If an active session does NOT exist we have a BIG problem.
+			if(!await CharacterSessionRepository.ContainsAsync(characterId))
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"ZoneServer requested ActiveSession for Player: {characterId} be removed. Session DOES NOT EXIST. This should NOT HAPPEN.");
+
+				return NotFound();
+			}
+
+			//We should try to remove the active sesison.
+			//One this active session is revoked the character/account is free to claim any existing session
+			//including the same one that was just freed.
+			if(!await CharacterSessionRepository.TryDeleteAsync(characterId))
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"ZoneServer requested ActiveSession for Player: {characterId} be removed. Session DOES NOT EXIST. This should NOT HAPPEN.");
+
+				return BadRequest();
+			}
+			else
+			{
+				if(Logger.IsEnabled(LogLevel.Information))
+					Logger.LogInformation($"Removed ActiveSession for Player: {characterId}");
+
+				return Ok();
+			}
+		}
+
 		[HttpPost("enter/{id}")]
 		[NoResponseCache]
 		[AuthorizeJwt]

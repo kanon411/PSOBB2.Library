@@ -117,6 +117,11 @@ namespace Guardians
 				.As<IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
 				.AsSelf()
 				.SingleInstance();
+
+			//Auth token
+			builder.RegisterType<AuthenticationTokenRepository>()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 	}
 }

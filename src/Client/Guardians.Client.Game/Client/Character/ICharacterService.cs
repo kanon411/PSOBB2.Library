@@ -41,5 +41,15 @@ namespace Guardians
 		/// <returns></returns>
 		[Post("api/charactersession/enter/{id}")]
 		Task<CharacterSessionEnterResponse> TryEnterSession([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
+
+		/// <summary>
+		/// Gets a character's session id, if authorized.
+		/// </summary>
+		/// <param name="characterId">The character id to get session data for.</param>
+		/// <param name="authToken">The authentication token for authorization.</param>
+		/// <returns>The session data response.</returns>
+		[Get("{id}/data")]
+		[Headers("Cache-Control: NoCache")] //TODO: I frgot what this is suppose to be
+		Task<CharacterSessionDataResponse> GetCharacterSessionData([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
 	}
 }

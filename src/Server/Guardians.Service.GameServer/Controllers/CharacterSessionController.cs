@@ -55,7 +55,7 @@ namespace Guardians
 		[HttpGet("{id}/data")]
 		[AuthorizeJwt]
 		[NoResponseCache]
-		public async Task<CharacterSessionDataResponse> GetCharacterZoneId([FromRoute(Name = "id")] int characterId)
+		public async Task<CharacterSessionDataResponse> GetCharacterSessionData([FromRoute(Name = "id")] int characterId)
 		{
 			int accountId = ClaimsReader.GetUserIdInt(User);
 

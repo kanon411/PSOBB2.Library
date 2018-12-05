@@ -36,6 +36,8 @@ namespace Guardians
 		}*/
 
 
+		//TODO: Create response model instead, incase the zoneserver doesn't exist.
+		//We don't need to auth this, anyone can know the world.
 		/// <summary>
 		/// Returns the world (think map) of the zone.
 		/// This can be used by clients to determine what world they should start downloading.

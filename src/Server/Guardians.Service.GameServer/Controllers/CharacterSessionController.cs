@@ -92,6 +92,8 @@ namespace Guardians
 			//This checks to see if the account, not just the character, has an active session.
 			//We do this before we check anything to reject quick even though the query behind this
 			//may be abit more expensive
+			//As a note, this checks (or should) CLAIMED SESSIONS. So, it won't prevent multiple session entries for an account
+			//This is good because we actually use the left over session data to re-enter the instances on disconnect.
 			if(await CharacterSessionRepository.AccountHasActiveSession(accountId))
 				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.AccountAlreadyHasCharacterSession);
 

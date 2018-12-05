@@ -19,6 +19,9 @@ namespace Guardians
 		[Inject]
 		private ICharacterDataRepository CharacterRepository { get; set; }
 
+		[Inject]
+		private IReadonlyAuthTokenRepository AuthTokenRepo { get; set; }
+
 		/// <inheritdoc />
 		public ZoneClientCharacterSessionInitializable(IPeerPayloadSendService<GameClientPacketPayload> payloadSender, ICharacterDataRepository characterRepository)
 		{
@@ -31,7 +34,8 @@ namespace Guardians
 		{
 			await Task.Delay(1500);
 
-			await PayloadSender.SendMessage(new ClientSessionClaimRequestPayload("TODO", CharacterRepository.CharacterId));
+			//TODO: We're sending with Bearer but there is nothing validating both sides expect that.
+			await PayloadSender.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepo.RetrieveWithType(), CharacterRepository.CharacterId));
 		}
 	}
 }

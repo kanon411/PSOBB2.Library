@@ -82,6 +82,12 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
+		public async Task<bool> CharacterHasActiveSession(int characterId)
+		{
+			return await Context.ClaimedSession.FindAsync(characterId).ConfigureAwait(false) != null;
+		}
+
+		/// <inheritdoc />
 		public async Task<bool> TryClaimUnclaimedSession(int accountId, int characterId)
 		{
 			//TODO: Pomelo MySql doesn't support out values on stored proc see: https://github.com/mysql-net/MySqlConnector/issues/231

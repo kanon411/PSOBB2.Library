@@ -17,6 +17,14 @@ namespace Guardians
 		Task<bool> AccountHasActiveSession(int accountId);
 
 		/// <summary>
+		/// Indicates if the account (not a character or characterid)
+		/// has an active on-going session.
+		/// </summary>
+		/// <param name="characterId">The character id to check.</param>
+		/// <returns>True if an active character session exists for the account id.</returns>
+		Task<bool> CharacterHasActiveSession(int characterId);
+
+		/// <summary>
 		/// Tries to claim an available session with the provided <see cref="characterId"/>
 		/// using <see cref="accountId"/> to verify ownership.
 		/// </summary>

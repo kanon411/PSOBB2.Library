@@ -118,10 +118,9 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task<bool> TryDeleteClaimedSession(int characterId)
 		{
-			Context.ClaimedSession
-				.Remove(new ClaimedSessionsModel(characterId));
-
-			return (await Context.SaveChangesAsync() != 0);
+			return await new GeneralGenericCrudRepositoryProvider<int, ClaimedSessionsModel>(Context.ClaimedSession, Context)
+				.TryDeleteAsync(characterId)
+				.ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

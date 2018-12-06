@@ -34,7 +34,7 @@ namespace Guardians
 		{
 			ProjectVersionStage.AssertAlpha();
 			//TODO: We need this? Can we add support to GladNet3 to queue up unconnected messages?
-			await Task.Delay(1500);
+			//await Task.Delay(1500);
 
 			//TODO: We're sending with Bearer but there is nothing validating both sides expect that.
 			await PayloadSender.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepo.RetrieveWithType(), CharacterRepository.CharacterId));

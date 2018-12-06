@@ -13,6 +13,7 @@ namespace Guardians
 
 		public DbSet<CharacterSessionModel> CharacterSessions { get; set; }
 
+		//TODO: This should not be in the character database
 		public DbSet<ZoneInstanceEntryModel> ZoneEntries { get; set; }
 
 		public DbSet<CharacterLocationModel> CharacterLocations { get; set; }
@@ -86,6 +87,10 @@ namespace Guardians
 				.HasForeignKey<ClaimedSessionsModel>(s => s.CharacterId);
 
 			EntityTypeBuilder<ZoneInstanceEntryModel> zoneEntity = modelBuilder.Entity<ZoneInstanceEntryModel>();
+
+			//This makes it so only one public IP/Port can be in the database by making the data pair unique
+			zoneEntity
+				.HasAlternateKey(model => new {model.ZoneServerAddress, model.ZoneServerPort});
 		}
 #endif
 	}

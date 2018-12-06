@@ -54,6 +54,65 @@ namespace Guardians
 			return Ok(new ZoneServerTryClaimSessionResponse(sessionClaimed ? ZoneServerTryClaimSessionResponseCode.Success : ZoneServerTryClaimSessionResponseCode.GeneralServerError)); //TODO
 		}
 
+		//This method name is abit misleading, it's more like "Create a new session data with the clients recommendation"
+		//the client may want to go to a new world and zone, so they indicate what/where they want to do.
+		//it's possible they aren't allowed to go there, and we should validate that and reject them.
+		[HttpPost("{charid}/data")]
+		[AuthorizeJwt]
+		[NoResponseCache]
+		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData([FromRoute(Name = "charid")] int characterId, [FromRoute(Name = "zoneid")] int zoneId)
+		{
+			if(!await VerifyCharacterOwnedByAccount(characterId))
+			{
+				//TODO: Return not authed in JSON
+				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.InvalidCharacterIdError);
+			}
+
+			//This case is actually pretty likely, they will likely be trying to move to another server
+			//before their active session is cleaned up. Retry logic will be required to get past this.
+			if(await CharacterSessionRepository.AccountHasActiveSession(ClaimsReader.GetUserIdInt(User)))
+			{
+				//TODO: Return JSON that says active session
+				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.AccountAlreadyHasCharacterSession);
+			}
+
+			//We can't check if it contains and then update, because that will there is a data race with
+			//zoneserver deregisteration and cascading delteing.
+			//So we only check for removal, and then remove and create
+
+			if(!await CharacterSessionRepository.TryDeleteClaimedSession(characterId))
+			{
+				//TODO: This could fail, potentially removed during race. But it's ok. It's ok that it's gone but may want to log it
+			}
+
+			//TODO: Refactor
+			if(!await CharacterSessionRepository.TryCreateAsync(new CharacterSessionModel(characterId, zoneId)))
+			{
+				//Not sure what it wrong, no way to know really.
+				return new CharacterSessionEnterResponse(CharacterSessionEnterResponseCode.GeneralServerError);
+			}
+				
+			//It passed, they're allowed to join this zone.
+			return new CharacterSessionEnterResponse(zoneId);
+		}
+
+		/// <summary>
+		/// Verifies that the provided <see cref="characterId"/>
+		/// is owned by the current User claim.
+		/// </summary>
+		/// <param name="characterId"></param>
+		/// <returns></returns>
+		public async Task<bool> VerifyCharacterOwnedByAccount(int characterId)
+		{
+			int accountId = ClaimsReader.GetUserIdInt(User);
+
+			//TODO: Do we want to expose this to non-controlers?
+			//First we should validate that the account that is authorized owns the character it is requesting session data from
+
+			return (await CharacterRepository.CharacterIdsForAccountId(accountId).ConfigureAwait(false))
+				.Contains(characterId);
+		}
+
 		[HttpGet("{id}/data")]
 		[AuthorizeJwt]
 		[NoResponseCache]

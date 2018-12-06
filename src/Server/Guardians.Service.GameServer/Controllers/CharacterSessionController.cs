@@ -60,7 +60,7 @@ namespace Guardians
 		[HttpPost("{charid}/data")]
 		[AuthorizeJwt]
 		[NoResponseCache]
-		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData([FromRoute(Name = "charid")] int characterId, [FromRoute(Name = "zoneid")] int zoneId)
+		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData([FromRoute(Name = "charid")] int characterId, [FromBody] int zoneId)
 		{
 			if(!await VerifyCharacterOwnedByAccount(characterId))
 			{

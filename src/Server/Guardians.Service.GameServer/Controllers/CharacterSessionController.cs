@@ -97,7 +97,7 @@ namespace Guardians
 			ProjectVersionStage.AssertAlpha();
 
 			//If an active session does NOT exist we have a BIG problem.
-			if(!await CharacterSessionRepository.ContainsAsync(characterId))
+			if(!await CharacterSessionRepository.CharacterHasActiveSession(characterId))
 			{
 				if(Logger.IsEnabled(LogLevel.Error))
 					Logger.LogError($"ZoneServer requested ActiveSession for Player: {characterId} be removed. Session DOES NOT EXIST. This should NOT HAPPEN.");
@@ -108,7 +108,7 @@ namespace Guardians
 			//We should try to remove the active sesison.
 			//One this active session is revoked the character/account is free to claim any existing session
 			//including the same one that was just freed.
-			if(!await CharacterSessionRepository.TryDeleteAsync(characterId))
+			if(!await CharacterSessionRepository.TryDeleteClaimedSession(characterId))
 			{
 				if(Logger.IsEnabled(LogLevel.Error))
 					Logger.LogError($"ZoneServer requested ActiveSession for Player: {characterId} be removed. Session DOES NOT EXIST. This should NOT HAPPEN.");

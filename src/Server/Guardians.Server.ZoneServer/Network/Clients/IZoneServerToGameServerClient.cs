@@ -48,5 +48,10 @@ namespace Guardians
 		[Get("/api/Authorization/user/id")] //TODO: Is this a good path?
 		//[NoResponseCache] //TODO: No cache
 		Task<int> GetAccountIdFromToken([AuthenticationToken] string authToken);
+
+		//TODO: Auth
+		[Post("/api/zoneserver/register")]
+		//[AuthorizeJwt(GuardianApplicationRole.ZoneServer)] //TODO: Eventually we'll need to auth these zoneservers.
+		Task<ZoneServerRegisterationResponse> RegisterZoneServer([JsonBody] ZoneServerRegisterationRequest request);
 	}
 }

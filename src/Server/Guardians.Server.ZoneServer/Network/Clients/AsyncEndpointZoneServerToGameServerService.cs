@@ -63,5 +63,11 @@ namespace Guardians
 		{
 			return await (await GetService().ConfigureAwait(false)).GetAccountIdFromToken(authToken).ConfigureAwait(false);
 		}
+
+		/// <inheritdoc />
+		public async Task<ZoneServerRegisterationResponse> RegisterZoneServer(ZoneServerRegisterationRequest request)
+		{
+			return await (await GetService().ConfigureAwait(false)).RegisterZoneServer(request).ConfigureAwait(false);
+		}
 	}
 }

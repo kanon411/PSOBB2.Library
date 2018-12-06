@@ -49,55 +49,58 @@ namespace Guardians
 			CharacterSessionDataResponse characterSessionData = await CharacterService.GetCharacterSessionData(LocalCharacterData.CharacterId, AuthTokenRepo.RetrieveWithType())
 				.ConfigureAwait(false);
 
-			//TODO: Handle failure
-			if(characterSessionData.isSuccessful)
+			if(!characterSessionData.isSuccessful)
 			{
-				ProjectVersionStage.AssertAlpha();
-				//TODO: Handle throwing/error
-				//We need to know the world the zone is it, so we can request a download URL for it.
-				long worldId = await ZoneDataService.GetZoneWorld(characterSessionData.ZoneId)
-					.ConfigureAwait(false);
+				Logger.Error($"Failed to query Character Session Data: {characterSessionData.ResultCode}:{(int)characterSessionData.ResultCode}");
+				return;
+			}
 
-				//With the worldid we can get the download URL.
-				WorldDownloadURLResponse urlDownloadResponse = await ContentService.RequestWorldDownloadUrl(worldId, AuthTokenRepo.RetrieveWithType())
-					.ConfigureAwait(false);
+			//TODO: Handle failure
+			ProjectVersionStage.AssertAlpha();
+			//TODO: Handle throwing/error
+			//We need to know the world the zone is it, so we can request a download URL for it.
+			long worldId = await ZoneDataService.GetZoneWorld(characterSessionData.ZoneId)
+				.ConfigureAwait(false);
 
-				//TODO: Handle failure
-				if(urlDownloadResponse.isSuccessful)
+			//With the worldid we can get the download URL.
+			WorldDownloadURLResponse urlDownloadResponse = await ContentService.RequestWorldDownloadUrl(worldId, AuthTokenRepo.RetrieveWithType())
+				.ConfigureAwait(false);
+
+			//TODO: Handle failure
+			if(urlDownloadResponse.isSuccessful)
+			{
+				if(Logger.IsInfoEnabled)
+					Logger.Info($"Download URL: {urlDownloadResponse.DownloadURL}");
+
+				//Can't do web request not on the main thread, sadly.
+				await new UnityYieldAwaitable();
+
+				//TODO: Do we need to be on the main unity3d thread
+				UnityWebRequestAsyncOperation asyncOperation = UnityWebRequestAssetBundle.GetAssetBundle(urlDownloadResponse.DownloadURL, 0).SendWebRequest();
+
+				//TODO: We should render these operations to the loading screen UI.
+				asyncOperation.completed += operation =>
 				{
-					if(Logger.IsInfoEnabled)
-						Logger.Info($"Download URL: {urlDownloadResponse.DownloadURL}");
+					AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(asyncOperation.webRequest);
 
-					//Can't do web request not on the main thread, sadly.
-					await new UnityYieldAwaitable();
+					string[] paths = bundle.GetAllScenePaths();
 
-					//TODO: Do we need to be on the main unity3d thread
-					UnityWebRequestAsyncOperation asyncOperation = UnityWebRequestAssetBundle.GetAssetBundle(urlDownloadResponse.DownloadURL, 0).SendWebRequest();
+					foreach(string p in paths)
+						Debug.Log($"Found Scene in Bundle: {p}");
 
-					//TODO: We should render these operations to the loading screen UI.
-					asyncOperation.completed += operation =>
+					AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(System.IO.Path.GetFileNameWithoutExtension(paths.First()));
+
+					sceneAsync.completed += operation1 =>
 					{
-						AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(asyncOperation.webRequest);
+						//When the scene is finished loading we should cleanup the asset bundle
+						//Don't clean up the WHOLE BUNDLE, just the compressed downloaded data
+						bundle.Unload(false);
 
-						string[] paths = bundle.GetAllScenePaths();
-
-						foreach(string p in paths)
-							Debug.Log($"Found Scene in Bundle: {p}");
-
-						AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(System.IO.Path.GetFileNameWithoutExtension(paths.First()));
-
-						sceneAsync.completed += operation1 =>
-						{
-							//When the scene is finished loading we should cleanup the asset bundle
-							//Don't clean up the WHOLE BUNDLE, just the compressed downloaded data
-							bundle.Unload(false);
-
-							//TODO: We need a way/system to reference the bundle later so it can be cleaned up inbetween scene loads.
-						};
-
-						sceneAsync.allowSceneActivation = true;
+						//TODO: We need a way/system to reference the bundle later so it can be cleaned up inbetween scene loads.
 					};
-				}
+
+					sceneAsync.allowSceneActivation = true;
+				};
 			}
 		}
 	}

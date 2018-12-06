@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using GladNet;
 using Nito.AsyncEx;
 using SceneJect.Common;
@@ -34,7 +35,8 @@ namespace Guardians
 			//Just load
 			int zoneId = Int32.Parse(Input.text);
 
-			AsyncContext.Run(async () =>
+			//Do not use AsyncContext, it will deadlock
+			TaskEx.Run(async () =>
 			{
 				await ConnectionService.DisconnectAsync(0)
 					.ConfigureAwait(false);
@@ -47,6 +49,9 @@ namespace Guardians
 					if(enterResponse.isSuccessful)
 						break;
 
+					await Task.Delay(500)
+						.ConfigureAwait(false);
+
 					Debug.LogError($"Failed to set character session data to ZoneId: {zoneId} for Reason: {enterResponse.ResultCode}");
 				}
 
@@ -56,6 +61,10 @@ namespace Guardians
 				//We just load to the loading screen and we'll reload the into the current zone
 				SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;
 			});
+
+			//We can't await to unwrap exceptions because
+			//the other thing joins the unity3d main thread via synccontext hack
+			//and therefore will deadlock
 		}
 	}
 }

@@ -11,6 +11,7 @@
     <PackageReference Include="GladNet3.Handler.API" Version="3.0.49" />
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.49" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
     <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="SceneJect.Common" Version="3.0.29" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />

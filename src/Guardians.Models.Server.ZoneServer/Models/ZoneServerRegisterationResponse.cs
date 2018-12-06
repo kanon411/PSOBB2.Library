@@ -11,13 +11,13 @@ namespace Guardians
 	{
 		/// <inheritdoc />
 		[JsonProperty]
-		public ZoneServerRegisterationResponseCode ResultCode { get; }
+		public ZoneServerRegisterationResponseCode ResultCode { get; private set; }
 
 		/// <summary>
 		/// The ID of the world that is assigned to this zone.
 		/// </summary>
 		[JsonProperty]
-		public long WorldId { get; }
+		public long WorldId { get; private set; }
 
 		/// <inheritdoc />
 		[JsonIgnore]

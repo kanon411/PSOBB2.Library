@@ -36,13 +36,19 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task<CharacterSessionEnterResponse> TryEnterSession(int characterId, string authToken)
 		{
-			return await (await GetService().ConfigureAwait(false)).TryEnterSession(characterId, authToken);
+			return await (await GetService().ConfigureAwait(false)).TryEnterSession(characterId, authToken).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
 		public async Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId, string authToken)
 		{
 			return await (await GetService().ConfigureAwait(false)).GetCharacterSessionData(characterId, authToken).ConfigureAwait(false);
+		}
+
+		/// <inheritdoc />
+		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData(int characterId, int zoneId, string authToken)
+		{
+			return await (await GetService().ConfigureAwait(false)).SetCharacterSessionData(characterId, zoneId, authToken).ConfigureAwait(false);
 		}
 	}
 }

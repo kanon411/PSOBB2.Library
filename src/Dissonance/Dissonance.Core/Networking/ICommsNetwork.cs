@@ -296,13 +296,5 @@ namespace Dissonance.Networking
         /// <remarks>The implementation of this method MUST NOT keep a reference to the given array beyond the scope of this method (the array is recycled for other uses)</remarks>
         /// <param name="data">The encoded audio data to send.</param>
         void SendVoice(ArraySegment<byte> data);
-
-        /// <summary>
-        /// Send a text message to a destination
-        /// </summary>
-        /// <param name="data">The message to send</param>
-        /// <param name="recipientType">Type of recipinent for this message (either to a room or to a player)</param>
-        /// <param name="recipientId">ID of the recipient (either a room ID or a player ID depending upon the recipinent type parameter)</param>
-        void SendText(string data, ChannelType recipientType, string recipientId);
     }
 }

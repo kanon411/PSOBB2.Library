@@ -326,16 +326,6 @@ namespace Dissonance.Networking
             recipient = ReadUInt16();
         }
 
-        public TextPacket ReadTextPacket()
-        {
-            var options = ReadByte();
-            var senderId = ReadUInt16();
-            var target = ReadUInt16();
-            var txt = ReadString();
-
-            return new TextPacket(senderId, (ChannelType)options, target, txt);
-        }
-
         public uint ReadErrorWrongSession()
         {
             return ReadUInt32();

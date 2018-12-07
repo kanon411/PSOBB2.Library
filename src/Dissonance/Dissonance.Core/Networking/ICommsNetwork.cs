@@ -271,11 +271,6 @@ namespace Dissonance.Networking
         event Action<VoicePacket> VoicePacketReceived;
 
         /// <summary>
-        /// Event which is raised when a text packet is received
-        /// </summary>
-        event Action<TextMessage> TextPacketReceived;
-
-        /// <summary>
         /// Event which is raised when a remote player begins speaking. Passed the unique ID of the player
         /// </summary>
         event Action<string> PlayerStartedSpeaking;

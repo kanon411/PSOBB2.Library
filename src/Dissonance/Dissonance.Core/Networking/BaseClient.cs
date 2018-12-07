@@ -69,7 +69,6 @@ namespace Dissonance.Networking
 
         private readonly VoiceReceiver<TPeer> _voiceReceiver;
         private readonly VoiceSender<TPeer> _voiceSender;
-        private readonly TextReceiver<TPeer> _textReceiver;
         private readonly TextSender<TPeer> _textSender;
 
         private readonly TrafficCounter _recvRemoveClient = new TrafficCounter();
@@ -115,7 +114,6 @@ namespace Dissonance.Networking
             _voiceReceiver = new VoiceReceiver<TPeer>(_serverNegotiator, _peers, _events, network.Rooms, byteArrayPool, channelListPool);
             _voiceSender = new VoiceSender<TPeer>(_sendQueue, _serverNegotiator, _peers, _events, network.PlayerChannels, network.RoomChannels);
 
-            _textReceiver = new TextReceiver<TPeer>(_events, network.Rooms, _peers);
             _textSender = new TextSender<TPeer>(_sendQueue, _serverNegotiator, _peers);
         }
         #endregion
@@ -267,14 +265,6 @@ namespace Dissonance.Networking
                     {
                         _voiceReceiver.ReceiveVoiceData(ref reader);
                         _recvVoiceData.Update(reader.Read.Count);
-                    }
-                    break;
-
-                case MessageTypes.TextData:
-                    if (CheckSessionId(ref reader, header))
-                    {
-                        _textReceiver.ProcessTextMessage(ref reader);
-                        _recvTextData.Update(reader.Read.Count);
                     }
                     break;
 

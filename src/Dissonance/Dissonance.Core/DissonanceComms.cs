@@ -35,7 +35,6 @@ namespace Dissonance
         private readonly Rooms _rooms = new Rooms();
         private readonly PlayerChannels _playerChannels;
         private readonly RoomChannels _roomChannels;
-        private readonly TextChat _text;
         private readonly OpenChannelVolumeDuck _autoChannelDuck;
 
         private readonly PlayerTrackerManager _playerTrackers;
@@ -73,7 +72,6 @@ namespace Dissonance
             _playbackPool = new PlaybackPool((IPriorityManager)this, (IVolumeProvider)this);
             _playerChannels = new PlayerChannels((IChannelPriorityProvider)this);
             _roomChannels = new RoomChannels((IChannelPriorityProvider)this);
-            _text = new TextChat(() => _net);
             _autoChannelDuck = new OpenChannelVolumeDuck(_roomChannels, _playerChannels);
             _playerTrackers = new PlayerTrackerManager(_players);
             _playbackPriorityManager = new PriorityManager(_players);
@@ -144,14 +142,6 @@ namespace Dissonance
         [NotNull] public RoomChannels RoomChannels
         {
             get { return _roomChannels; }
-        }
-
-        /// <summary>
-        /// Get an object to send and receive text messages
-        /// </summary>
-        [NotNull] public TextChat Text
-        {
-            get { return _text; }
         }
 
         /// <summary>
@@ -348,7 +338,6 @@ namespace Dissonance
             net.VoicePacketReceived += Net_VoicePacketReceived;
             net.PlayerStartedSpeaking += Net_PlayerStartedSpeaking;
             net.PlayerStoppedSpeaking += Net_PlayerStoppedSpeaking;
-            net.TextPacketReceived += _text.OnMessageReceived;
 
             //If an explicit name has not been set generate a GUID based name
             if (string.IsNullOrEmpty(LocalPlayerName))

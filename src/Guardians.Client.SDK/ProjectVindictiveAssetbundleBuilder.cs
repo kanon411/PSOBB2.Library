@@ -45,17 +45,22 @@ namespace Guardians.SDK
 			bundle.assetBundleVariant = "default";
 			bundle.assetNames = new string[1] { assetPath };
 
-			string projectPath = Application.dataPath.ToLower().TrimEnd(@"/assets".ToCharArray());
+			string projectPath = Application.dataPath.ToLower().TrimEnd(@"assets".ToCharArray());
 			if(!Directory.Exists(Path.Combine(projectPath, "AssetBundles")))
 			{
+				Debug.Log($"Creating AssetBundles Path At: {projectPath}");
 				Directory.CreateDirectory(Path.Combine(projectPath, "AssetBundles"));
-				
 			}
+			else
+				Debug.Log($"AssetBundles Path At: {projectPath} exists");
 
 			if(!Directory.Exists(Path.Combine(projectPath, "AssetBundles", "Temp")))
 			{
+				Debug.Log($"Creating AssetBundles Path At: {Path.Combine(projectPath, "AssetBundles", "Temp")}");
 				Directory.CreateDirectory(Path.Combine(projectPath, "AssetBundles", "Temp"));
 			}
+			else
+				Debug.Log($"Temp Path At: {Path.Combine(projectPath, "AssetBundles")} exists");
 
 			//TODO: Is it ok to specify build target like this?
 			return BuildPipeline.BuildAssetBundles("AssetBundles/temp/", new AssetBundleBuild[1] { bundle }, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows);

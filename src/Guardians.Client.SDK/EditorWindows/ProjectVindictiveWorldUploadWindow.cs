@@ -76,7 +76,7 @@ namespace Guardians.SDK
 				IContentServerServiceClient ucmService = Refit.RestService.For<IContentServerServiceClient>("http://localhost:5005/");
 
 				//Done out here, must be called on the main thread
-				string projectPath = Application.dataPath.ToLower().TrimEnd(@"/assets".ToCharArray());
+				string projectPath = Application.dataPath.ToLower().TrimEnd(@"assets".ToCharArray());
 
 				Thread uploadThread = new Thread(new ThreadStart(async () =>
 				{

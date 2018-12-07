@@ -233,7 +233,6 @@ namespace Dissonance.Networking
         public event Action<string, CodecSettings> PlayerJoined;
         public event Action<string> PlayerLeft;
         public event Action<VoicePacket> VoicePacketReceived;
-        public event Action<TextMessage> TextPacketReceived;
         public event Action<string> PlayerStartedSpeaking;
         public event Action<string> PlayerStoppedSpeaking;
         public event Action<RoomEvent> PlayerEnteredRoom;
@@ -437,7 +436,6 @@ namespace Dissonance.Networking
             Client.PlayerEnteredRoom += OnPlayerEnteredRoom;
             Client.PlayerExitedRoom += OnPlayerExitedRoom;
             Client.VoicePacketReceived += OnVoicePacketReceived;
-            Client.TextMessageReceived += OnTextPacketReceived;
             Client.PlayerStartedSpeaking += OnPlayerStartedSpeaking;
             Client.PlayerStoppedSpeaking += OnPlayerStoppedSpeaking;
 
@@ -468,7 +466,6 @@ namespace Dissonance.Networking
             Client.PlayerJoined -= OnPlayerJoined;
             Client.PlayerLeft -= OnPlayerLeft;
             Client.VoicePacketReceived -= OnVoicePacketReceived;
-            Client.TextMessageReceived -= OnTextPacketReceived;
             Client.PlayerStartedSpeaking -= OnPlayerStartedSpeaking;
             Client.PlayerStoppedSpeaking -= OnPlayerStoppedSpeaking;
 
@@ -515,12 +512,6 @@ namespace Dissonance.Networking
         private void OnVoicePacketReceived(VoicePacket obj)
         {
             var handler = VoicePacketReceived;
-            if (handler != null) handler(obj);
-        }
-
-        private void OnTextPacketReceived(TextMessage obj)
-        {
-            var handler = TextPacketReceived;
             if (handler != null) handler(obj);
         }
 

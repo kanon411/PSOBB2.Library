@@ -46,11 +46,7 @@ namespace Dissonance.Networking
             add { _events.VoicePacketReceived += value; }
             remove { _events.VoicePacketReceived -= value; }
         }
-        public event Action<TextMessage> TextMessageReceived
-        {
-            add { _events.TextMessageReceived += value; }
-            remove { _events.TextMessageReceived -= value; }
-        }
+
         public event Action<string> PlayerStartedSpeaking
         {
             add { _events.PlayerStartedSpeaking += value; }

@@ -95,16 +95,6 @@ namespace Dissonance.Networking.Client
                     return _voicePacket;
                 }
             }
-
-            private readonly TextMessage _textMessage;
-            public TextMessage TextMessage
-            {
-                get
-                {
-                    Check(EventType.TextMessage);
-                    return _textMessage;
-                }
-            }
             
             #region constructors
             public NetworkEvent(EventType type)
@@ -116,19 +106,12 @@ namespace Dissonance.Networking.Client
                 _allRooms = null;
                 _codecSettings = default(CodecSettings);
                 _voicePacket = default(VoicePacket);
-                _textMessage = default(TextMessage);
             }
 
             public NetworkEvent(VoicePacket voice)
                 : this(EventType.VoiceData)
             {
                 _voicePacket = voice;
-            }
-
-            public NetworkEvent(TextMessage text)
-                : this(EventType.TextMessage)
-            {
-                _textMessage = text;
             }
             #endregion
 
@@ -170,7 +153,6 @@ namespace Dissonance.Networking.Client
         public event Action<RoomEvent> PlayerEnteredRoom;
         public event Action<RoomEvent> PlayerExitedRoom;
         public event Action<VoicePacket> VoicePacketReceived;
-        public event Action<TextMessage> TextMessageReceived;
         public event Action<string> PlayerStartedSpeaking;
         public event Action<string> PlayerStoppedSpeaking;
 
@@ -235,9 +217,6 @@ namespace Dissonance.Networking.Client
                                 _channelsListPool.Recycle(e.VoicePacket.Channels);
                             }
                             _byteArrayPool.Recycle(e.VoicePacket.EncodedAudioFrame.Array);
-                            break;
-                        case EventType.TextMessage:
-                            error |= InvokeEvent(e.TextMessage, TextMessageReceived);
                             break;
                         case EventType.PlayerEnteredRoom:
                             var evtEnter = CreateRoomEvent(e, true);
@@ -374,12 +353,6 @@ namespace Dissonance.Networking.Client
                 _pendingVoicePackets++;
                 events.Value.Add(new NetworkEvent(data));
             }
-        }
-
-        public void EnqueueTextData(TextMessage data)
-        {
-            using (var events = _queuedEvents.Lock())
-                events.Value.Add(new NetworkEvent(data));
         }
         #endregion
     }

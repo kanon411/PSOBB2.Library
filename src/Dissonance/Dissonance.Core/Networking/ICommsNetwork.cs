@@ -79,40 +79,6 @@ namespace Dissonance.Networking
             Channels = channels;
         }
     }
-    
-    /// <summary>
-    /// A text message from a player
-    /// </summary>
-    public struct TextMessage
-    {
-        /// <summary>
-        /// ID of the player who sent this message
-        /// </summary>
-        public readonly string Sender;
-
-        /// <summary>
-        /// The type of channel this message is directed to
-        /// </summary>
-        public readonly ChannelType RecipientType;
-
-        /// <summary>
-        /// The name of the recipient (either a room or a player, depends upon RecipientType
-        /// </summary>
-        public readonly string Recipient;
-
-        /// <summary>
-        /// The actual text of the message
-        /// </summary>
-        public readonly string Message;
-
-        public TextMessage(string sender, ChannelType recipientType, string recipient, string message)
-        {
-            Sender = sender;
-            RecipientType = recipientType;
-            Recipient = recipient;
-            Message = message;
-        }
-    }
 
     /// <summary>
     /// A player entered or exited a room

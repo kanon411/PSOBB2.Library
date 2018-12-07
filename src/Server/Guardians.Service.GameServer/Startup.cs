@@ -60,7 +60,7 @@ namespace Guardians
 			services.AddSingleton<IZoneInstanceWorkQueue, LocalInMemoryZoneInstanceWorkQueue>(provider =>
 			{
 				//TODO: This is for testing purposes, we want and have the request to boot up at map 1 as an instance.
-				return new LocalInMemoryZoneInstanceWorkQueue(new ZoneInstanceWorkEntry(1));
+				return new LocalInMemoryZoneInstanceWorkQueue(new ZoneInstanceWorkEntry(1), new ZoneInstanceWorkEntry(1));
 			});
 		}
 

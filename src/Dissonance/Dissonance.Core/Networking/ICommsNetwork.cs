@@ -5,35 +5,15 @@ using Dissonance.Audio.Playback;
 
 namespace Dissonance.Networking
 {
-    /// <summary>
-    /// A packet of encoded voice data
-    /// </summary>
-    public struct VoicePacket
+	/// <summary>
+	/// A packet of encoded voice data
+	/// </summary>
+	public struct VoicePacket
     {
         /// <summary>
         /// ID of the player who sent this voice packet
         /// </summary>
         public readonly string SenderPlayerId;
-
-        //ncrunch: no coverage start (Justification: obsolete)
-        /// <summary>
-        /// Indicates if this packet should be played with positional playback
-        /// </summary>
-        [Obsolete("Use `PlaybackOptions.IsPositional` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
-        public bool Positional { get { return PlaybackOptions.IsPositional; } }
-
-        /// <summary>
-        /// Priority of the voice in this packet
-        /// </summary>
-        [Obsolete("Use `PlaybackOptions.Priority` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
-        public ChannelPriority Priority { get { return PlaybackOptions.Priority; } }
-
-        /// <summary>
-        /// Volume multiplier to apply to this audio
-        /// </summary>
-        [Obsolete("Use `PlaybackOptions.AmplitudeMultiplier` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
-        public float AmplitudeMultiplier { get { return PlaybackOptions.AmplitudeMultiplier; } }
-        //ncrunch: no coverage end
 
         /// <summary>
         /// The encoded audio to pass directly to the codec

@@ -15,6 +15,9 @@ namespace Guardians
 	{
 		void Awake()
 		{
+			//This zeros the camera out
+			Camera.main.gameObject.transform.rotation = Quaternion.Euler(Vector3.zero);
+
 			Camera.main.gameObject.transform.parent = this.transform;
 			Camera.main.gameObject.transform.localPosition = Vector3.zero;
 			Camera.main.enabled = true;

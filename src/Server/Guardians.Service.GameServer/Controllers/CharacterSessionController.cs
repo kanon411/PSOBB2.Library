@@ -80,7 +80,9 @@ namespace Guardians
 			//zoneserver deregisteration and cascading delteing.
 			//So we only check for removal, and then remove and create
 
-			if(!await CharacterSessionRepository.TryDeleteClaimedSession(characterId))
+			//Don't try to delete the claimed session, we should try to delete the current session data. Since they want to change zones
+			//and we consider that a new session
+			if(!await CharacterSessionRepository.TryDeleteAsync(characterId))
 			{
 				//TODO: This could fail, potentially removed during race. But it's ok. It's ok that it's gone but may want to log it
 			}

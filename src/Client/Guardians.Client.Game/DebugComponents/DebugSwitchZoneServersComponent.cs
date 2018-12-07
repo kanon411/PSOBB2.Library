@@ -42,9 +42,11 @@ namespace Guardians
 					.ConfigureAwait(false);
 
 				//Now we need to try to create a new session
-				for(CharacterSessionEnterResponse enterResponse = await CharacterService.SetCharacterSessionData(DataRepo.CharacterId, zoneId, AuthTokenRepo.RetrieveWithType())
-					.ConfigureAwait(false);;)
+				while(true)
 				{
+					CharacterSessionEnterResponse enterResponse = await CharacterService.SetCharacterSessionData(DataRepo.CharacterId, zoneId, AuthTokenRepo.RetrieveWithType())
+						.ConfigureAwait(false);
+
 					//While the response isn't successful we shouild log way, and continue if it's
 					if(enterResponse.isSuccessful)
 						break;

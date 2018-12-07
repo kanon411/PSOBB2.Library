@@ -35,8 +35,24 @@ namespace Guardians
 		private async Task Start()
 		{
 			//TODO: Refactor this into a factory.
+			long worldId = 0;
 
-			ApplicationBaseContainerPair container = BuildApplicationBase();
+			int port = 0;
+			try
+			{
+				//TODO: This is just for testing.
+				port = int.Parse(Environment.GetCommandLineArgs().Skip(1).First().Trim('-'));
+			}
+			catch(Exception e)
+			{
+				Debug.LogError(e.Message);
+
+				foreach(string line in Environment.GetCommandLineArgs())
+					Debug.LogError($"Found Env Line: {line}");
+				throw;
+			}
+
+			ApplicationBaseContainerPair container = BuildApplicationBase(port);
 
 			Logger = container.ServiceContainer.Resolve<ILog>();
 
@@ -54,13 +70,29 @@ namespace Guardians
 				.Resolve<IEnumerable<IGameTickable>>()
 				.ToArray();
 
+			//TODO: We need a better way to set all this stuff up
 			//We need to start spawning in all the NPCs and stuff.
 			IZoneServerToGameServerClient zoneGameServerClient = container.ServiceContainer
 				.Resolve<IZoneServerToGameServerClient>();
 
 			try
 			{
-				var response = await zoneGameServerClient.GetNPCEntriesByMapId(MapId)
+				//TODO: Fix this mess
+				for(ZoneServerRegisterationResponse response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("127.0.0.1", port)))
+					.ConfigureAwait(false);; response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("127.0.0.1", port)))
+					.ConfigureAwait(false))
+				{
+					if(response.isSuccessful)
+					{
+						worldId = response.WorldId;
+						break;
+					}
+					else
+						await Task.Delay(1500);
+				}
+
+				//This was demo NPC code
+				/*var response = await zoneGameServerClient.GetNPCEntriesByMapId(MapId)
 					.ConfigureAwait(false);
 
 				//TODO: We're assuming it was successful, which is ok for now but we'll need to handle it failing eventually.
@@ -90,7 +122,7 @@ namespace Guardians
 					if(Logger.IsErrorEnabled)
 						Logger.Error($"Exception: {e.Message}\n\nStack: {e.StackTrace}");
 					throw;
-				}
+				}*/
 			}
 			catch(Exception e)
 			{
@@ -134,11 +166,11 @@ namespace Guardians
 		}
 
 		//TODO: Create factory/clean this up
-		private static ApplicationBaseContainerPair BuildApplicationBase()
+		private static ApplicationBaseContainerPair BuildApplicationBase(int port)
 		{
 			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
 
-			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("0.0.0.0"), 5006)));
+			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("0.0.0.0"), port)));
 		}
 
 		void FixedUpdate()

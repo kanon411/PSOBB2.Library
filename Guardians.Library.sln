@@ -81,11 +81,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Models.ContentSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Service.ContentServer", "src\Server\Guardians.Service.ContentServer\Guardians.Service.ContentServer.csproj", "{168D608E-2997-4C49-B2B5-6BF4CB4B02C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.SDK", "src\Guardians.Client.SDK\Guardians.Client.SDK.csproj", "{E1197C90-0BBF-4739-9EC5-1C1539E87AA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.SDK", "src\Guardians.Client.SDK\Guardians.Client.SDK.csproj", "{E1197C90-0BBF-4739-9EC5-1C1539E87AA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.ContentServer", "src\Guardians.Client.ContentServer\Guardians.Client.ContentServer.csproj", "{F65F9464-D1C8-4D1A-8369-73F095649B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.ContentServer", "src\Guardians.Client.ContentServer\Guardians.Client.ContentServer.csproj", "{F65F9464-D1C8-4D1A-8369-73F095649B0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Client.Authentication", "src\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj", "{6F43D196-DB82-4429-8BD8-8D759B153B88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guardians.Client.Authentication", "src\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj", "{6F43D196-DB82-4429-8BD8-8D759B153B88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Voice", "Voice", "{AE5373CE-6ECE-4314-95AF-A382C8A87E1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dissonance.Core", "src\Dissonance\Dissonance.Core\Dissonance.Core.csproj", "{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dissonance.Editor", "src\Dissonance\Dissonance.Editor\Dissonance.Editor.csproj", "{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dissonance.GladNet.Client", "src\Dissonance\Dissonance.GladNet.Client\Dissonance.GladNet.Client.csproj", "{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -416,6 +424,36 @@ Global
 		{6F43D196-DB82-4429-8BD8-8D759B153B88}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
 		{6F43D196-DB82-4429-8BD8-8D759B153B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F43D196-DB82-4429-8BD8-8D759B153B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -461,6 +499,10 @@ Global
 		{E1197C90-0BBF-4739-9EC5-1C1539E87AA7} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{F65F9464-D1C8-4D1A-8369-73F095649B0A} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 		{6F43D196-DB82-4429-8BD8-8D759B153B88} = {8C598CE2-9578-41F6-A195-24678617AE6F}
+		{AE5373CE-6ECE-4314-95AF-A382C8A87E1C} = {8C598CE2-9578-41F6-A195-24678617AE6F}
+		{AFA05BF2-3F36-46BF-9DA1-B8FA869B32E2} = {AE5373CE-6ECE-4314-95AF-A382C8A87E1C}
+		{A6DFC3F2-5CB5-4F14-8AA8-02BD88A1DBFB} = {AE5373CE-6ECE-4314-95AF-A382C8A87E1C}
+		{DE6C909B-B08D-4CE7-A75C-7C93B11289CA} = {AE5373CE-6ECE-4314-95AF-A382C8A87E1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="protobuf-net" Version="2.3.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Guardians.Models.Common\Guardians.Models.Common.csproj" />
+    <ProjectReference Include="..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
+  </ItemGroup>
+
+</Project>

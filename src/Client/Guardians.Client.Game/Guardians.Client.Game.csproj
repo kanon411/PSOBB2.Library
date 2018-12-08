@@ -20,12 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Dissonance\Dissonance.GladNet.Client\Dissonance.GladNet.Client.csproj" />
     <ProjectReference Include="..\..\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj" />
     <ProjectReference Include="..\..\Guardians.Client.Common\Guardians.Client.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Client.ContentServer\Guardians.Client.ContentServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Common\Guardians.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Payloads.Voice\Guardians.Payloads.Voice.csproj" />
     <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.ZoneServer.Common\Guardians.ZoneServer.Common.csproj" />

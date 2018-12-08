@@ -206,6 +206,12 @@ namespace Guardians
 				.SingleInstance();
 
 			RegisterEntityDestructionServices(builder);
+
+			//Honestly, before running this I think it'll be a MIRACLE if this actually works
+			//Registering the generic networkmessage sender
+			builder.RegisterGeneric(typeof(GenericMessageSender<>))
+				.As(typeof(INetworkMessageSender<>).MakeGenericType(typeof(GenericSingleTargetMessageContext<>)))
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityDestructionServices(ContainerBuilder builder)

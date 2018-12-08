@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;UNITY_EDITOR</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dissonance.Models\Dissonance.Models.csproj" />

@@ -7,6 +7,7 @@ using Dissonance.VAD;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using SceneJect.Common;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -22,6 +23,7 @@ namespace Dissonance
 	///     Provides the API for opening and closing channels.
 	/// </remarks>
 	// ReSharper disable once InheritdocConsiderUsage
+	[Injectee]
 	[HelpURL("https://placeholder-software.co.uk/dissonance/docs/Reference/Components/Dissonance-Comms/")]
 	public sealed partial class DissonanceComms
 		: MonoBehaviour, IAccessTokenCollection, IVolumeProvider, IVoiceActivisionSubscribable
@@ -40,6 +42,7 @@ namespace Dissonance
 		private readonly CodecSettingsLoader _codecSettingsLoader = new CodecSettingsLoader();
 		private readonly CapturePipelineManager _capture;
 
+		[Inject]
 		private ICommsNetwork _net;
 		private string _localPlayerName;
 

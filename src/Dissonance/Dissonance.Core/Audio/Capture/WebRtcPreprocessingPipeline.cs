@@ -55,7 +55,9 @@ namespace Dissonance.Audio.Capture
 
             _isVadDetectingSpeech = _preprocessor.Process(WebRtcPreprocessor.SampleRates.SampleRate48KHz, frame, frame, latencyMs);
 
-            SendSamplesToSubscribers(frame);
+            //Custom Change: Can't come up with a better way to handle this other than to not send the sample to subscribers if VAD fails.
+            if(_isVadDetectingSpeech)
+                SendSamplesToSubscribers(frame);
         }
 
         internal static WebRtcPreprocessor.FilterState GetAecFilterState()

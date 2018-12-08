@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\src\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Network.Common\Guardians.Network.Common.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Payloads.Voice\Guardians.Payloads.Voice.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Database.Common\Guardians.Database.Common.csproj" />
     <ProjectReference Include="..\..\src\Server\Guardians.Database.GameServer\Guardians.Database.GameServer.csproj" />

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Dissonance.Audio.Playback
 {
     internal interface IVoicePlaybackInternal
-        : IRemoteChannelProvider, IVoicePlayback
+        : IVoicePlayback
     {
         /// <summary>
         /// Get or set if speech from this instance is muted
@@ -86,10 +86,5 @@ namespace Dissonance.Audio.Playback
         /// Get the standard deviation of latency of packets delivered to be played back through this instance
         /// </summary>
         float Jitter { get; }
-
-        /// <summary>
-        /// Get the current priority of audio being played through this instance
-        /// </summary>
-        ChannelPriority Priority { get; }
     }
 }

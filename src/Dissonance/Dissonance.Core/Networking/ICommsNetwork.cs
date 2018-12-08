@@ -25,11 +25,6 @@ namespace Dissonance.Networking
         /// </summary>
         public readonly uint SequenceNumber;
 
-        /// <summary>
-        /// The list of channels this voice packet is being delivered with
-        /// </summary>
-        [CanBeNull] public readonly List<RemoteChannel> Channels;
-
         private readonly PlaybackOptions _options;
         public PlaybackOptions PlaybackOptions
         {
@@ -48,15 +43,13 @@ namespace Dissonance.Networking
         /// <param name="sequence"></param>
         /// <param name="channels">List of all channels this voice packet is being spoken on. Data will be copied out of the list as soon as it is
         /// passed to the decoder pipeline (i.e. you can re-use this array right away)</param>
-        public VoicePacket(string senderPlayerId, ChannelPriority priority, float ampMul, bool positional, ArraySegment<byte> encodedAudioFrame, uint sequence, [CanBeNull] List<RemoteChannel> channels = null)
+        public VoicePacket(string senderPlayerId, float ampMul, bool positional, ArraySegment<byte> encodedAudioFrame, uint sequence)
         {
-            _options = new PlaybackOptions(positional, ampMul, priority);
+            _options = new PlaybackOptions(positional, ampMul);
 
             SenderPlayerId = senderPlayerId;
             EncodedAudioFrame = encodedAudioFrame;
             SequenceNumber = sequence;
-
-            Channels = channels;
         }
     }
 
@@ -189,7 +182,7 @@ namespace Dissonance.Networking
         /// <param name="playerChannels">The player channels collection the network should track.</param>
         /// <param name="roomChannels">The room channels collection the network should track.</param>
         /// <param name="codecSettings">The audio codec being used on the network.</param>
-        void Initialize(string playerName, Rooms rooms, PlayerChannels playerChannels, RoomChannels roomChannels, CodecSettings codecSettings);
+        void Initialize(string playerName, Rooms rooms, CodecSettings codecSettings);
 
         /// <summary>
         /// Event which is raised when the network mode changes.

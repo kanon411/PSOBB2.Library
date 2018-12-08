@@ -79,11 +79,6 @@ namespace Dissonance
         public abstract float Amplitude { get; }
 
         /// <summary>
-        /// Current priority of speech from this speaker (null if the speaker is not currently speaking)
-        /// </summary>
-        public abstract ChannelPriority? SpeakerPriority { get; }
-
-        /// <summary>
         /// Get or set the volume which voice from this player should be played at (must be between 0 and 1)
         /// </summary>
         public abstract float Volume { get; set; }
@@ -169,12 +164,6 @@ namespace Dissonance
         }
         #endregion
 
-        /// <summary>
-        /// Get the list of channels that this player is currently speaking to
-        /// </summary>
-        /// <param name="output"></param>
-        public abstract void GetSpeakingChannels([NotNull] List<RemoteChannel> output);
-
         internal abstract void Update();
     }
 
@@ -187,51 +176,23 @@ namespace Dissonance
 
         [NotNull] private readonly IAmplitudeProvider _micAmplitude;
         [NotNull] private readonly Rooms _rooms;
-        [NotNull] private readonly RoomChannels _roomChannels;
-        [NotNull] private readonly PlayerChannels _playerChannels;
         [NotNull] private readonly ILossEstimator _loss;
         #endregion
 
         #region constructor
-        public LocalVoicePlayerState(string name, [NotNull] IAmplitudeProvider micAmplitude, [NotNull] Rooms rooms, [NotNull] RoomChannels roomChannels, [NotNull] PlayerChannels playerChannels, [NotNull] ILossEstimator loss)
+        public LocalVoicePlayerState(string name, [NotNull] IAmplitudeProvider micAmplitude, [NotNull] Rooms rooms, [NotNull] ILossEstimator loss)
             : base(name)
         {
             _rooms = rooms;
             _micAmplitude = micAmplitude;
-            _roomChannels = roomChannels;
-            _playerChannels = playerChannels;
             _loss = loss;
 
             rooms.JoinedRoom += OnLocallyEnteredRoom;
             rooms.LeftRoom += OnLocallyExitedRoom;
-            roomChannels.OpenedChannel += OnChannelOpened;
-            roomChannels.ClosedChannel += OnChannelClosed;
-            playerChannels.OpenedChannel += OnChannelOpened;
-            playerChannels.ClosedChannel += OnChannelClosed;
         }
         #endregion
 
         #region event invokers
-        private void OnChannelOpened(string channel, ChannelProperties properties)
-        {
-            var count = _playerChannels.Count + _roomChannels.Count;
-            if (count == 1)
-            {
-                Log.Debug("Local player started speaking");
-                InvokeOnStartedSpeaking();
-            }
-        }
-
-        private void OnChannelClosed(string channel, ChannelProperties properties)
-        {
-            var count = _playerChannels.Count + _roomChannels.Count;
-            if (count == 0)
-            {
-                Log.Debug("Local player stopped speaking");
-                InvokeOnStoppedSpeaking();
-            }
-        }
-
         private void OnLocallyEnteredRoom([NotNull] string room)
         {
             InvokeOnEnteredRoom(new RoomEvent(Name, room, true, Rooms));
@@ -290,11 +251,6 @@ namespace Dissonance
             }
         }
 
-        public override ChannelPriority? SpeakerPriority
-        {
-            get { return null; }
-        }
-
         public override float Volume
         {
             get { return 1; }
@@ -313,7 +269,8 @@ namespace Dissonance
 
         public override bool IsSpeaking
         {
-            get { return _roomChannels.Count > 0 || _playerChannels.Count > 0; }
+            get { throw new NotImplementedException($"TODO: How do we handle this, channels have been deleted."); }
+            //get { return _roomChannels.Count > 0 || _playerChannels.Count > 0; }
         }
 
         public override float? PacketLoss
@@ -321,29 +278,6 @@ namespace Dissonance
             get { return _loss.PacketLoss; }
         }
         #endregion
-
-        public override void GetSpeakingChannels(List<RemoteChannel> channels)
-        {
-            //In both these the enumerator is a struct, so this does not allocate
-
-            using (var enumerator = _roomChannels.GetEnumerator())
-                while (enumerator.MoveNext())
-                    channels.Add(CreateRemoteChannel(enumerator.Current.Value, ChannelType.Room));
-
-            using (var enumerator = _playerChannels.GetEnumerator())
-                while (enumerator.MoveNext())
-                    channels.Add(CreateRemoteChannel(enumerator.Current.Value, ChannelType.Player));
-        }
-
-        private static RemoteChannel CreateRemoteChannel<T>([NotNull] T item, ChannelType type)
-            where T : IChannel<string>
-        {
-            return new RemoteChannel(
-                item.TargetId,
-                type,
-                new PlaybackOptions(item.Properties.Positional, item.Properties.AmplitudeMultiplier, item.Properties.TransmitPriority)
-            );
-        }
 
         internal override void Update()
         {
@@ -413,18 +347,6 @@ namespace Dissonance
             }
         }
 
-        public override ChannelPriority? SpeakerPriority
-        {
-            get
-            {
-                var playback = PlaybackInternal;
-                if (playback != null && playback.IsSpeaking && !playback.IsMuted)
-                    return playback.Priority;
-
-                return null;
-            }
-        }
-
         internal override IVoicePlaybackInternal PlaybackInternal
         {
             get { return IsConnected ? _playback : null; }
@@ -490,15 +412,6 @@ namespace Dissonance
             var p = PlaybackInternal;
             if (Tracker != null && p != null && Tracker.IsTracking)
                 p.SetTransform(Tracker.Position, Tracker.Rotation);
-        }
-
-        public override void GetSpeakingChannels(List<RemoteChannel> channels)
-        {
-            channels.Clear();
-
-            var p = Playback;
-            if (p != null)
-                ((IRemoteChannelProvider)p).GetRemoteChannels(channels);
         }
 
         #region event invokers

@@ -10,7 +10,7 @@ using UnityEditor;
 
 namespace Dissonance.Networking
 {
-    public abstract class BaseCommsNetwork<TServer, TClient, TPeer, TClientParam, TServerParam>
+    /*public abstract class BaseCommsNetwork<TServer, TClient, TPeer, TClientParam, TServerParam>
         : MonoBehaviour, ICommsNetwork, ICommsNetworkState
         where TPeer: struct, IEquatable<TPeer>
         where TServer: BaseServer<TServer, TClient, TPeer>
@@ -225,8 +225,6 @@ namespace Dissonance.Networking
 
         public string PlayerName { get; private set; }
         public Rooms Rooms { get; private set; }
-        public PlayerChannels PlayerChannels { get; private set; }
-        public RoomChannels RoomChannels { get; private set; }
         public CodecSettings CodecSettings { get; private set; }
 
         public event Action<NetworkMode> ModeChanged;
@@ -289,21 +287,15 @@ namespace Dissonance.Networking
         /// </summary>
         protected virtual void Initialize() { }
 
-        void ICommsNetwork.Initialize([NotNull] string playerName, [NotNull] Rooms rooms, [NotNull] PlayerChannels playerChannels, [NotNull] RoomChannels roomChannels, CodecSettings codecSettings)
+        void ICommsNetwork.Initialize([NotNull] string playerName, [NotNull] Rooms rooms, CodecSettings codecSettings)
         {
             if (playerName == null)
                 throw new ArgumentNullException("playerName");
             if (rooms == null)
                 throw new ArgumentNullException("rooms");
-            if (playerChannels == null)
-                throw new ArgumentNullException("playerChannels");
-            if (roomChannels == null)
-                throw new ArgumentNullException("roomChannels");
 
             PlayerName = playerName;
             Rooms = rooms;
-            PlayerChannels = playerChannels;
-            RoomChannels = roomChannels;
             CodecSettings = codecSettings;
 
             Profiler.BeginSample("virtual void Initialize");
@@ -634,5 +626,5 @@ namespace Dissonance.Networking
             }
 #endif
         }
-    }
+    }*/
 }

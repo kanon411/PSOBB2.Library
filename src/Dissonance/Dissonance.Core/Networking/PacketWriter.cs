@@ -358,9 +358,8 @@ namespace Dissonance.Networking
         /// <param name="channels">List of local open channels</param>
         /// <param name="encodedAudio">The encoded audio data</param>
         /// <returns>A copy of this writer (after the write has been applied)</returns>
-        internal PacketWriter WriteVoiceData(uint session, ushort senderId, ushort sequenceNumber, byte channelSession, [NotNull] IList<OpenChannel> channels, ArraySegment<byte> encodedAudio)
+        internal PacketWriter WriteVoiceData(uint session, ushort senderId, ushort sequenceNumber, byte channelSession, ArraySegment<byte> encodedAudio)
         {
-            if (channels == null) throw new ArgumentNullException("channels");
             if (encodedAudio.Array == null) throw new ArgumentNullException("encodedAudio");
 
             WriteMagic();
@@ -371,15 +370,7 @@ namespace Dissonance.Networking
             Write(VoicePacketOptions.Pack(channelSession).Bitfield);
             Write(sequenceNumber);
 
-            //Write out a list of channels this packet is for
-            Write((ushort)channels.Count);
-            for (var i = 0; i < channels.Count; i++)
-            {
-                var channel = channels[i];
-
-                Write(channel.Bitfield);
-                Write(channel.Recipient);
-            }
+            throw new NotImplementedException("TODO: I've changed how it writes this data, it will FAIL because it will not have channel data.");
 
             //Write out the encoded audio
             Write(encodedAudio);

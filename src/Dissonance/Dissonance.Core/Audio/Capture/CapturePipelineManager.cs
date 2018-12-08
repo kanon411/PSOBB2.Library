@@ -16,8 +16,6 @@ namespace Dissonance.Audio.Capture
         private bool _isMobilePlatform;
 
         private readonly CodecSettingsLoader _codecSettingsLoader;
-        private readonly RoomChannels _roomChannels;
-        private readonly PlayerChannels _playerChannels;
         private readonly PacketLossMonitor _receivingPacketLossMonitor;
         [CanBeNull] private ICommsNetwork _network;
 
@@ -82,16 +80,12 @@ namespace Dissonance.Audio.Capture
         #endregion
 
         #region constructor
-        public CapturePipelineManager([NotNull] CodecSettingsLoader codecSettingsLoader, [NotNull] RoomChannels roomChannels, [NotNull] PlayerChannels playerChannels, [NotNull] ReadOnlyCollection<VoicePlayerState> players)
+        public CapturePipelineManager([NotNull] CodecSettingsLoader codecSettingsLoader, [NotNull] ReadOnlyCollection<VoicePlayerState> players)
         {
             if (codecSettingsLoader == null) throw new ArgumentNullException("codecSettingsLoader");
-            if (roomChannels == null) throw new ArgumentNullException("roomChannels");
-            if (playerChannels == null) throw new ArgumentNullException("playerChannels");
             if (players == null) throw new ArgumentNullException("players");
 
             _codecSettingsLoader = codecSettingsLoader;
-            _roomChannels = roomChannels;
-            _playerChannels = playerChannels;
             _receivingPacketLossMonitor = new PacketLossMonitor(players);
         }
         #endregion
@@ -147,7 +141,7 @@ namespace Dissonance.Audio.Capture
 
         public void Update(bool muted, float deltaTime)
         {
-			_receivingPacketLossMonitor.Update();
+            _receivingPacketLossMonitor.Update();
 
 
             //Early exit if we don't need to record audio
@@ -196,8 +190,7 @@ namespace Dissonance.Audio.Capture
                 // - If mute is explicitly set then do not sub
                 // - if there are open channels then sub
                 var shouldSub = !(_encoder.Stopping && !_encoder.Stopped)
-                             && !muted
-                             && (_roomChannels.Count + _playerChannels.Count) > 0;
+                    && !muted;
 
                 //Change the encoder state to the desired state
                 if (shouldSub != _encoderSubscribed)
@@ -289,10 +282,6 @@ namespace Dissonance.Audio.Capture
             //If we created a mic (can be null if e.g. there is no mic)
             if (format != null)
             {
-                //Close and re-open all channels, propogating this restart to the receiving end
-                _roomChannels.Refresh();
-                _playerChannels.Refresh();
-
                 //Create preprocessor and subscribe it to microphone (webrtc preprocessor always wants audio to drive VAD+AEC)
                 _preprocessor = CreatePreprocessor(format);
                 _preprocessor.UpstreamLatency = _microphone.Latency;

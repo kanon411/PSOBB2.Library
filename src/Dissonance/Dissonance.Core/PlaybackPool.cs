@@ -9,19 +9,15 @@ namespace Dissonance
     internal class PlaybackPool
     {
         private readonly Pool<VoicePlayback> _pool;
-        
-        [NotNull] private readonly IPriorityManager _priority;
         [NotNull] private readonly IVolumeProvider _volume;
 
         private GameObject _prefab;
         private Transform _parent;
 
-        public PlaybackPool([NotNull] IPriorityManager priority, [NotNull] IVolumeProvider volume)
+        public PlaybackPool([NotNull] IVolumeProvider volume)
         {
-            if (priority == null) throw new ArgumentNullException("priority");
             if (volume == null) throw new ArgumentNullException("volume");
 
-            _priority = priority;
             _volume = volume;
             _pool = new Pool<VoicePlayback>(6, CreatePlayback);
         }
@@ -68,7 +64,6 @@ namespace Dissonance
 
             //Configure VoicePlayback component
             var playback = entity.GetComponent<VoicePlayback>();
-            playback.PriorityManager = _priority;
             playback.VolumeProvider = _volume;
 
             return playback;

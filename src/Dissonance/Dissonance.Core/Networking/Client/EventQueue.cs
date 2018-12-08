@@ -146,7 +146,6 @@ namespace Dissonance.Networking.Client
         private readonly ReadonlyLockedValue<List<NetworkEvent>> _queuedEvents = new ReadonlyLockedValue<List<NetworkEvent>>(new List<NetworkEvent>());
 
         private readonly IRecycler<byte[]> _byteArrayPool;
-        [NotNull] private readonly IRecycler<List<RemoteChannel>> _channelsListPool;
 
         public event Action<string, CodecSettings> PlayerJoined;
         public event Action<string> PlayerLeft;
@@ -165,13 +164,11 @@ namespace Dissonance.Networking.Client
         private DateTime _previousFlush = DateTime.MaxValue;
         #endregion
 
-        public EventQueue([NotNull]IRecycler<byte[]> byteArrayPool, [NotNull]IRecycler<List<RemoteChannel>> channelsListPool)
+        public EventQueue([NotNull]IRecycler<byte[]> byteArrayPool)
         {
             if (byteArrayPool == null) throw new ArgumentNullException("byteArrayPool");
-            if (channelsListPool == null) throw new ArgumentNullException("channelsListPool");
 
             _byteArrayPool = byteArrayPool;
-            _channelsListPool = channelsListPool;
         }
 
         /// <summary>
@@ -210,12 +207,6 @@ namespace Dissonance.Networking.Client
                             error |= InvokeEvent(e.VoicePacket, VoicePacketReceived);
                             _pendingVoicePackets--;
 
-                            //The voice packet event is special. It has some components which need to be recycled. Do that here
-                            if (e.VoicePacket.Channels != null)
-                            {
-                                e.VoicePacket.Channels.Clear();
-                                _channelsListPool.Recycle(e.VoicePacket.Channels);
-                            }
                             _byteArrayPool.Recycle(e.VoicePacket.EncodedAudioFrame.Array);
                             break;
                         case EventType.PlayerEnteredRoom:

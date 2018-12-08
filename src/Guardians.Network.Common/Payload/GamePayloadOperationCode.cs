@@ -22,6 +22,11 @@ namespace Guardians
 
 		ServerTimeSyncronization = 5,
 
-		FieldValueUpdate = 6
+		FieldValueUpdate = 6,
+
+		//Voice payloads
+		VoiceInitialization = 7,
+
+		VoiceData = 8
 	}
 }

@@ -320,9 +320,10 @@ namespace Dissonance.Networking
             numChannels = ReadUInt16();
         }
 
-        public void ReadVoicePacketChannel(out ChannelBitField bitfield, out ushort recipient)
+        public void ReadVoicePacketChannel(out ushort recipient)
         {
-            bitfield = new ChannelBitField(ReadUInt16());
+            //TODO: What should we do? We don't deal with channels anymore, but it's sent.
+            ReadUInt16();
             recipient = ReadUInt16();
         }
 

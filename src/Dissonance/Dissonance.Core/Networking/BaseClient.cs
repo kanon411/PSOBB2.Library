@@ -6,7 +6,7 @@ using Dissonance.Networking.Client;
 
 namespace Dissonance.Networking
 {
-    public abstract class BaseClient<TServer, TClient, TPeer>
+    /*public abstract class BaseClient<TServer, TClient, TPeer>
         : IClient<TPeer>
         where TPeer : struct
         where TServer : BaseServer<TServer, TClient, TPeer>
@@ -96,18 +96,17 @@ namespace Dissonance.Networking
             const int byteBufferSize = 1024;
             const int channelListSize = 8;
             var byteArrayPool = new ConcurrentPool<byte[]>(poolSize, () => new byte[byteBufferSize]);
-            var channelListPool = new ConcurrentPool<List<RemoteChannel>>(poolSize, () => new List<RemoteChannel>(channelListSize));
 
             _sendQueue = new SendQueue<TPeer>(this, byteArrayPool);
             _serverNegotiator = new ConnectionNegotiator<TPeer>(_sendQueue, network.PlayerName, network.CodecSettings);
             _lossSimulator = new PacketDelaySimulator();
 
-            _events = new EventQueue(byteArrayPool, channelListPool);
+            _events = new EventQueue(byteArrayPool);
             _peers = new SlaveClientCollection<TPeer>(_sendQueue, _serverNegotiator, _events, network.Rooms, network.PlayerName, network.CodecSettings);
             _peers.OnClientJoined += OnAddedClient;
             _peers.OnClientIntroducedP2P += OnMetClient;
 
-            _voiceReceiver = new VoiceReceiver<TPeer>(_serverNegotiator, _peers, _events, network.Rooms, byteArrayPool, channelListPool);
+            _voiceReceiver = new VoiceReceiver<TPeer>(_serverNegotiator, _peers, _events, network.Rooms, byteArrayPool);
             _voiceSender = new VoiceSender<TPeer>(_sendQueue, _serverNegotiator, _peers, _events, network.PlayerChannels, network.RoomChannels);
 
             _textSender = new TextSender<TPeer>(_sendQueue, _serverNegotiator, _peers);
@@ -510,5 +509,5 @@ namespace Dissonance.Networking
             SendUnreliableP2P(destinations, packet);
         }
         #endregion
-    }
+    }*/
 }

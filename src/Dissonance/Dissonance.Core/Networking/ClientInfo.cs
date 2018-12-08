@@ -71,8 +71,6 @@ namespace Dissonance.Networking
         [CanBeNull] public TPeer Connection { get; internal set; }
 
         public bool IsConnected { get; internal set; }
-
-        internal PeerVoiceReceiver VoiceReceiver { get; set; }
         #endregion
 
         public ClientInfo(string playerName, ushort playerId, CodecSettings codecSettings, [CanBeNull] TPeer connection)

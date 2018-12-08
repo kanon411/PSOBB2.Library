@@ -18,19 +18,26 @@ namespace Guardians
 
 		private IReadonlyNetworkTimeService TimeService { get; }
 
+		/// <summary>
+		/// The voice gateway for player entities to enter.
+		/// </summary>
+		private IVoiceGateway VoiceGateway { get; }
+
 		/// <inheritdoc />
 		public NetworkVisibilityChangeEventHandler(
 			ILog logger,
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory,
 			IObjectDestructorable<NetworkEntityGuid> entityDestructor,
 			IReadonlyEntityGuidMappable<GameObject> knownEntites,
-			IReadonlyNetworkTimeService timeService)
+			IReadonlyNetworkTimeService timeService, 
+			IVoiceGateway voiceGateway)
 			: base(logger)
 		{
 			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
+			VoiceGateway = voiceGateway;
 		}
 
 		/// <inheritdoc />
@@ -64,6 +71,10 @@ namespace Guardians
 					Logger.Error($"Failed to Create Entity: {creationData.EntityGuid} Exception: {e.Message}\n\nStack: {e.StackTrace}");
 					throw;
 				}
+
+				//Join players into the voice gateway
+				if(creationData.EntityGuid.EntityType == EntityType.Player)
+					VoiceGateway.JoinVoiceSession(creationData.EntityGuid);
 			}
 
 			foreach(var destroyData in payload.OutOfRangeEntities)
@@ -76,6 +87,10 @@ namespace Guardians
 					continue;
 
 				EntityDestructor.Destroy(destroyData);
+
+				//Join players into the voice gateway
+				if(destroyData.EntityType == EntityType.Player)
+					VoiceGateway.LeaveVoiceSession(destroyData);
 			}
 
 			//We need to spawn newly encountered entites.

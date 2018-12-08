@@ -8,7 +8,7 @@ namespace Guardians
 	//TODO: Refactor interface implementation
 	public sealed class MovementDataCollection : IDirtyableMovementDataCollection, IEntityGuidMappable<IMovementData>
 	{
-		private EntityGuidDictionary<IMovementData> InternallyManagedMovementDictionary { get; }
+		private IEntityGuidMappable<IMovementData> InternallyManagedMovementDictionary { get; }
 
 		private Dictionary<NetworkEntityGuid, bool> DirtyChangesTracker { get; }
 

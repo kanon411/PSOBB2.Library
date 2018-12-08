@@ -5,6 +5,13 @@ using ProtoBuf;
 
 namespace Dissonance
 {
+	public static class CodecDefaults
+	{
+		//Code: Opus FrameSize: 1920 SampleRate: 48000
+		[ProtoIgnore]
+		public static readonly CodecSettings Default = new CodecSettings(Codec.Opus, 1920, 48000);
+	}
+
 	//TODO: Doc from Dissonance
 	/// <summary>
 	/// The Codec settings structure from

@@ -39,10 +39,47 @@ namespace Guardians
 			}
 
 			//We just dispatch to child handler, who will use the payload, context and guid.
-			return HandleMessage(context, payload, ConnectionIdToEntityMap[context.Details.ConnectionId]);
+			return HandleMessage(context, payload, ExtractEntityGuidFromContext(context));
+		}
+
+		private NetworkEntityGuid ExtractEntityGuidFromContext(IPeerSessionMessageContext<GameServerPacketPayload> context)
+		{
+			return ConnectionIdToEntityMap[context.Details.ConnectionId];
 		}
 
 		//TODO: Should we create a new context instead?
 		protected abstract Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload, NetworkEntityGuid guid);
+
+		/// <summary>
+		/// Retrieves the mapped object of type TObjectType from the provided <see cref="map"/>.
+		/// </summary>
+		/// <typeparam name="TObjectType">The object map type.</typeparam>
+		/// <param name="map">The map to retrieve from.</param>
+		/// <param name="context">The context used to get the entity.</param>
+		/// <returns></returns>
+		protected TObjectType GetEntityMappedObject<TObjectType>(IReadonlyEntityGuidMappable<TObjectType> map, IPeerSessionMessageContext<GameServerPacketPayload> context)
+		{
+			return GetEntityMappedObject(map, context.Details.ConnectionId);
+		}
+
+		/// <summary>
+		/// Retrieves the mapped object of type TObjectType from the provided <see cref="map"/>.
+		/// </summary>
+		/// <typeparam name="TObjectType">The object map type.</typeparam>
+		/// <param name="map">The map to retrieve from.</param>
+		/// <param name="connectionId">The context used to get the entity.</param>
+		/// <returns></returns>
+		protected TObjectType GetEntityMappedObject<TObjectType>(IReadonlyEntityGuidMappable<TObjectType> map, int connectionId)
+		{
+			NetworkEntityGuid entityGuid = ConnectionIdToEntityMap[connectionId];
+			if(!map.ContainsKey(entityGuid))
+			{
+				throw new InvalidOperationException($"Entity: {entityGuid} did not have a registered service for Type: {typeof(TObjectType).Name}");
+			}
+
+			//TODO: This is a race condition here
+			ProjectVersionStage.AssertAlpha();
+			return map[entityGuid];
+		}
 	}
 }

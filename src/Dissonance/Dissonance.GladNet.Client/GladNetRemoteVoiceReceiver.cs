@@ -93,7 +93,7 @@ namespace Dissonance.Networking.Client
 
 				//Send the event (buffer will be recycled after the event has been dispatched)
 				_events.EnqueueVoiceData(new VoicePacket(
-					Name, 0.5f, false,
+					Name, 0.5f, true, //assume all voice is positional
 					frame, _localSequenceNumber));
 			}
 		}

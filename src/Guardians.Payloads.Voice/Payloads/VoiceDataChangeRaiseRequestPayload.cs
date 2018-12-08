@@ -10,7 +10,7 @@ namespace Guardians
 	/// </summary>
 	[ProtoContract]
 	[GamePayload(GamePayloadOperationCode.VoiceData)]
-	public sealed class VoiceDataChangeRaiseRequest : GameClientPacketPayload
+	public sealed class VoiceDataChangeRaiseRequestPayload : GameClientPacketPayload
 	{
 		/// <summary>
 		/// The voice data from the client.
@@ -19,16 +19,22 @@ namespace Guardians
 		public VoiceData Data { get; private set; }
 
 		/// <inheritdoc />
-		public VoiceDataChangeRaiseRequest([JetBrains.Annotations.NotNull] byte[] voiceSegmentData, uint sequenceNumber)
+		public VoiceDataChangeRaiseRequestPayload([JetBrains.Annotations.NotNull] byte[] voiceSegmentData, uint sequenceNumber)
 		{
 			if(voiceSegmentData == null) throw new ArgumentNullException(nameof(voiceSegmentData));
 			Data = new VoiceData(voiceSegmentData, sequenceNumber);
 		}
 
+		/// <inheritdoc />
+		public VoiceDataChangeRaiseRequestPayload([JetBrains.Annotations.NotNull] VoiceData data)
+		{
+			Data = data ?? throw new ArgumentNullException(nameof(data));
+		}
+
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private VoiceDataChangeRaiseRequest()
+		private VoiceDataChangeRaiseRequestPayload()
 		{
 
 		}

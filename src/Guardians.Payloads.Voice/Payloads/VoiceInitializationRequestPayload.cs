@@ -13,7 +13,7 @@ namespace Guardians
 	/// </summary>
 	[ProtoContract]
 	[GamePayload(GamePayloadOperationCode.VoiceInitialization)]
-	public sealed class VoiceInitializationRequest : GameClientPacketPayload
+	public sealed class VoiceInitializationRequestPayload : GameClientPacketPayload
 	{
 		/// <summary>
 		/// The settings for the codec.
@@ -22,7 +22,7 @@ namespace Guardians
 		public CodecSettings Settings { get; private set; }
 
 		/// <inheritdoc />
-		public VoiceInitializationRequest(CodecSettings settings)
+		public VoiceInitializationRequestPayload(CodecSettings settings)
 		{
 			Settings = settings;
 		}
@@ -30,7 +30,7 @@ namespace Guardians
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private VoiceInitializationRequest()
+		private VoiceInitializationRequestPayload()
 		{
 			
 		}

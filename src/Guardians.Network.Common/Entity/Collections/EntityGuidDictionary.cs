@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Guardians
 	/// Generic dictionary with <see cref="NetworkEntityGuid"/> key types.
 	/// </summary>
 	/// <typeparam name="TValue">Value type.</typeparam>
-	public class EntityGuidDictionary<TValue> : Dictionary<NetworkEntityGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
+	public class EntityGuidDictionary<TValue> : ConcurrentDictionary<NetworkEntityGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
 	{
 		public EntityGuidDictionary()
 			: base(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
@@ -18,7 +19,7 @@ namespace Guardians
 		}
 
 		public EntityGuidDictionary(int capacity)
-			: base(capacity, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
+			: base(4, capacity, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
 		{
 
 		}

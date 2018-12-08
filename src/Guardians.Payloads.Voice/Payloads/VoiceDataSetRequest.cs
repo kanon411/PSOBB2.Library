@@ -12,33 +12,25 @@ namespace Guardians
 	[GamePayload(GamePayloadOperationCode.VoiceData)]
 	public sealed class VoiceDataChangeRaiseRequest : GameClientPacketPayload
 	{
-		[ProtoMember(1)]
-		private byte[] _VoiceSegmentData { get; set; }
-
-		//Technically, the longer the session goes on the larger the voice data will get due to
-		//protobuf variant encoding.
 		/// <summary>
-		/// The sequence number for the voice data.
+		/// The voice data from the client.
 		/// </summary>
-		[ProtoMember(2)]
-		public uint SequenceNumber { get; private set; }
-
-		[ProtoIgnore]
-		public IReadOnlyCollection<byte> VoiceSegmentData => _VoiceSegmentData;
+		[ProtoMember(1)]
+		public VoiceData Data { get; private set; }
 
 		/// <inheritdoc />
-		public VoiceDataChangeRaiseRequest(byte[] voiceSegmentData, uint sequenceNumber)
+		public VoiceDataChangeRaiseRequest([JetBrains.Annotations.NotNull] byte[] voiceSegmentData, uint sequenceNumber)
 		{
-			_VoiceSegmentData = voiceSegmentData ?? throw new ArgumentNullException(nameof(voiceSegmentData));
-			SequenceNumber = sequenceNumber;
+			if(voiceSegmentData == null) throw new ArgumentNullException(nameof(voiceSegmentData));
+			Data = new VoiceData(voiceSegmentData, sequenceNumber);
 		}
 
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private VoiceDataChangeRaiseRequest(uint sequenceNumber)
+		private VoiceDataChangeRaiseRequest()
 		{
-			SequenceNumber = sequenceNumber;
+
 		}
 	}
 }

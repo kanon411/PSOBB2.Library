@@ -8,3 +8,6 @@
 
 [assembly: InternalsVisibleTo("Dissonance.Editor")]
 [assembly: InternalsVisibleTo("Dissonance.Editor.dll")]
+
+[assembly: InternalsVisibleTo("Dissonance.GladNet.Client")]
+[assembly: InternalsVisibleTo("Dissonance.GladNet.Client.dll")]

@@ -6,7 +6,7 @@ using Dissonance.Threading;
 
 namespace Dissonance.Networking.Client
 {
-    internal class EventQueue
+    public class EventQueue
     {
         #region helper types
         private enum EventType

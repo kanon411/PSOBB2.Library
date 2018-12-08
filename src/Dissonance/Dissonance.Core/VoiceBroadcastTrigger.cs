@@ -22,7 +22,9 @@ namespace Dissonance
 
 		private Fader _activationFader = new Fader();
 		// ReSharper disable once FieldCanBeMadeReadOnly.Local (Justification: Confuses unity serialization)
-		[SerializeField] private VolumeFaderSettings _activationFaderSettings = new VolumeFaderSettings {
+		[SerializeField]
+		private VolumeFaderSettings _activationFaderSettings = new VolumeFaderSettings
+		{
 			Volume = 1,
 			FadeIn = TimeSpan.Zero,
 			FadeOut = TimeSpan.FromSeconds(0.15f)
@@ -30,14 +32,17 @@ namespace Dissonance
 		/// <summary>
 		/// Access volume fader settings which are applied every time the trigger activates with PTT/VAD
 		/// </summary>
-		[NotNull] public VolumeFaderSettings ActivationFader
+		[NotNull]
+		public VolumeFaderSettings ActivationFader
 		{
 			get { return _activationFaderSettings; }
 		}
 
 		private Fader _triggerFader = new Fader();
 		// ReSharper disable once FieldCanBeMadeReadOnly.Local (Justification: Confuses unity serialization)
-		[SerializeField] private VolumeFaderSettings _triggerFaderSettings = new VolumeFaderSettings {
+		[SerializeField]
+		private VolumeFaderSettings _triggerFaderSettings = new VolumeFaderSettings
+		{
 			Volume = 1,
 			FadeIn = TimeSpan.FromSeconds(0.75f),
 			FadeOut = TimeSpan.FromSeconds(1.15f)
@@ -45,7 +50,8 @@ namespace Dissonance
 		/// <summary>
 		/// Access volume fader settings which are applied every time the collider trigger is entered/exited
 		/// </summary>
-		[NotNull] public VolumeFaderSettings ColliderTriggerFader
+		[NotNull]
+		public VolumeFaderSettings ColliderTriggerFader
 		{
 			get { return _triggerFaderSettings; }
 		}
@@ -58,7 +64,7 @@ namespace Dissonance
 			get { return _activationFader.Volume * (UseColliderTrigger ? _triggerFader.Volume : 1); }
 		}
 
-		[SerializeField]private bool _broadcastPosition = true;
+		[SerializeField] private bool _broadcastPosition = true;
 		/// <summary>
 		/// Get or set if voice sent with this broadcast trigger should use positional playback
 		/// </summary>
@@ -67,14 +73,14 @@ namespace Dissonance
 			get { return _broadcastPosition; }
 			set
 			{
-				if (_broadcastPosition != value)
+				if(_broadcastPosition != value)
 				{
 					_broadcastPosition = value;
 				}
 			}
 		}
 
-		[SerializeField]private CommTriggerTarget _channelType;
+		[SerializeField] private CommTriggerTarget _channelType;
 		/// <summary>
 		/// Get or set the target type of voice sent with this trigger
 		/// </summary>
@@ -83,14 +89,17 @@ namespace Dissonance
 			get { return _channelType; }
 			set
 			{
-				if (_channelType != value)
+				if(_channelType != value)
 				{
 					_channelType = value;
+
+					//Close the channel because it's type has been changed. Next update will automatically open the channel if necessary.
+					CloseChannel();
 				}
 			}
 		}
 
-		[SerializeField]private string _inputName;
+		[SerializeField] private string _inputName;
 		/// <summary>
 		/// Get or set the input axis name (only applicable if this trigger is using Push-To-Talk)
 		/// </summary>
@@ -100,7 +109,7 @@ namespace Dissonance
 			set { _inputName = value; }
 		}
 
-		[SerializeField]private CommActivationMode _mode = CommActivationMode.VoiceActivation;
+		[SerializeField] private CommActivationMode _mode = CommActivationMode.VoiceActivation;
 		/// <summary>
 		/// Get or set how the player indicates speaking intent to this trigger
 		/// </summary>
@@ -110,7 +119,7 @@ namespace Dissonance
 			set { _mode = value; }
 		}
 
-		[SerializeField]private string _playerId;
+		[SerializeField] private string _playerId;
 		/// <summary>
 		/// Get or set the target player ID of this trigger (only applicable if the channel type is 'player')
 		/// </summary>
@@ -119,14 +128,18 @@ namespace Dissonance
 			get { return _playerId; }
 			set
 			{
-				if (_playerId != value)
+				if(_playerId != value)
 				{
 					_playerId = value;
+
+					//Since the player ID has changed we need to close the channel. Next update will open it if necessary
+					if(_channelType == CommTriggerTarget.Player)
+						CloseChannel();
 				}
 			}
 		}
 
-		[SerializeField]private bool _useTrigger;
+		[SerializeField] private bool _useTrigger;
 		/// <summary>
 		/// Get or set if this broadcast trigger should use a unity trigger volume
 		/// </summary>
@@ -136,7 +149,7 @@ namespace Dissonance
 			set { _useTrigger = value; }
 		}
 
-		[SerializeField]private string _roomName;
+		[SerializeField] private string _roomName;
 		/// <summary>
 		/// Get or set the target room of this trigger (only applicable if the channel type is 'room')
 		/// </summary>
@@ -145,9 +158,13 @@ namespace Dissonance
 			get { return _roomName; }
 			set
 			{
-				if (_roomName != value)
+				if(_roomName != value)
 				{
 					_roomName = value;
+
+					//Since the room has changed we need to close the channel. Next update will open it if necessary
+					if(_channelType == CommTriggerTarget.Room)
+						CloseChannel();
 				}
 			}
 		}
@@ -157,8 +174,7 @@ namespace Dissonance
 		/// </summary>
 		public bool IsTransmitting
 		{
-			//TODO: How should we deal with this? It used to check channels.
-			get { return true; }
+			get { return shouldBeTransmitting; }
 		}
 
 		public override bool CanTrigger
@@ -166,19 +182,19 @@ namespace Dissonance
 			get
 			{
 				// - Cannot broadcast if Dissonance is not ready
-				if (Comms == null || !Comms.IsStarted)
+				if(Comms == null || !Comms.IsStarted)
 					return false;
 
 				// - Cannot broadcast to self if self is null
-				if (_channelType == CommTriggerTarget.Self && _self == null)
+				if(_channelType == CommTriggerTarget.Self && _self == null)
 					return false;
 
 				// - Cannot broadcast to yourself (by sibling component)!
-				if (_channelType == CommTriggerTarget.Self && _self != null && _self.Type == NetworkPlayerType.Local)
+				if(_channelType == CommTriggerTarget.Self && _self != null && _self.Type == NetworkPlayerType.Local)
 					return false;
 
 				// - Cannot broadcast to yourself (by name)
-				if (_channelType == CommTriggerTarget.Player && Comms.LocalPlayerName == _playerId)
+				if(_channelType == CommTriggerTarget.Player && Comms.LocalPlayerName == _playerId)
 					return false;
 
 				return true;
@@ -195,12 +211,16 @@ namespace Dissonance
 
 		protected override void OnDisable()
 		{
+			CloseChannel();
+
 			base.OnDisable();
 		}
 
 		protected override void OnDestroy()
 		{
-			if (Comms != null)
+			CloseChannel();
+
+			if(Comms != null)
 				Comms.UnsubscribeFromVoiceActivation(this);
 
 			base.OnDestroy();
@@ -211,11 +231,11 @@ namespace Dissonance
 			base.Update();
 
 			//Early exit sanity check (we can't do anything useful if there's no voice comms object)
-			if (!CheckVoiceComm())
+			if(!CheckVoiceComm())
 				return;
 
 			//Reconfigure the trigger to (not) use VAD as necessary
-			if (_previousMode != Mode)
+			if(_previousMode != Mode)
 				SwitchMode();
 
 			//Update volume fader and apply to open channel
@@ -227,29 +247,28 @@ namespace Dissonance
 			var next = ShouldActivate(IsUserActivated());
 
 			//Apply state if changed
-			if (current != next)
+			if(current != next)
 			{
-				if (current)
+				if(current)
 				{
 					//Begin fade out (if it's not already fading to zero)
-					if (Math.Abs(_activationFader.EndVolume) > float.Epsilon)
+					if(Math.Abs(_activationFader.EndVolume) > float.Epsilon)
 						_activationFader.FadeTo(0, (float)_activationFaderSettings.FadeOut.TotalSeconds);
 
 					//Stop transmitting once fade out is complete
-					//if (CurrentFaderVolume <= float.Epsilon)
-					//	CloseChannel();
+					if(CurrentFaderVolume <= float.Epsilon)
+						CloseChannel();
 				}
 				else
 				{
-					//TODO: How do we handle the lack of channels?
 					//Start transmitting
-					//OpenChannel();
+					OpenChannel();
 				}
 			}
-			else if (current)
+			else if(current)
 			{
 				//If we're speaking and the activation fader is not going to the max volume yet, start fading in
-				if (Math.Abs(_activationFader.EndVolume - _activationFaderSettings.Volume) > float.Epsilon)
+				if(Math.Abs(_activationFader.EndVolume - _activationFaderSettings.Volume) > float.Epsilon)
 					_activationFader.FadeTo(1, (float)_activationFaderSettings.FadeIn.TotalSeconds);
 			}
 		}
@@ -259,7 +278,7 @@ namespace Dissonance
 			base.ColliderTriggerChanged();
 
 			//Collision state has changed, begin a fade in or out with the collider fader;
-			if (IsColliderTriggered)
+			if(IsColliderTriggered)
 				_triggerFader.FadeTo(_triggerFaderSettings.Volume, (float)_triggerFaderSettings.FadeIn.TotalSeconds);
 			else
 				_triggerFader.FadeTo(0, (float)_triggerFaderSettings.FadeOut.TotalSeconds);
@@ -267,16 +286,18 @@ namespace Dissonance
 
 		private void SwitchMode()
 		{
-			if (!CheckVoiceComm())
+			if(!CheckVoiceComm())
 				return;
 
-			if (_previousMode == CommActivationMode.VoiceActivation && Mode != CommActivationMode.VoiceActivation)
+			CloseChannel();
+
+			if(_previousMode == CommActivationMode.VoiceActivation && Mode != CommActivationMode.VoiceActivation)
 			{
 				Comms.UnsubscribeFromVoiceActivation(this);
 				_isVadSpeaking = false;
 			}
 
-			if (Mode == CommActivationMode.VoiceActivation)
+			if(Mode == CommActivationMode.VoiceActivation)
 				Comms.SubcribeToVoiceActivation(this);
 
 			_previousMode = Mode;
@@ -285,23 +306,23 @@ namespace Dissonance
 		private bool ShouldActivate(bool intent)
 		{
 			//Early exit if the user isn't trying tp broadcast
-			if (!intent)
+			if(!intent)
 				return false;
 
 			//Check some situations where activating is impossible...
-			if (!CanTrigger)
+			if(!CanTrigger)
 			{
-				if (_channelType == CommTriggerTarget.Self && _self == null)
+				if(_channelType == CommTriggerTarget.Self && _self == null)
 					Log.Error("Attempting to broadcast to 'Self' but no sibling IDissonancePlayer component found");
 				return false;
 			}
 
 			//Only activate if tokens are satisfied
-			if (!TokenActivationState)
+			if(!TokenActivationState)
 				return false;
 
 			//Only activate if collider trigger is triggered (or collider trigger isn't in use)
-			if (UseColliderTrigger && !IsColliderTriggered)
+			if(UseColliderTrigger && !IsColliderTriggered)
 				return false;
 
 			//No reasons not to broadcast
@@ -311,7 +332,7 @@ namespace Dissonance
 		private bool IsUserActivated()
 		{
 			//Test the actual activation systems
-			switch (Mode)
+			switch(Mode)
 			{
 				case CommActivationMode.VoiceActivation:
 					return _isVadSpeaking;
@@ -330,6 +351,25 @@ namespace Dissonance
 					return false;
 			}
 		}
+
+		#region channel management
+		//TODO: This is kinda a hack, we just track if CloseChannel is called because that will indicate if it should be transmitting.
+		private bool shouldBeTransmitting = false;
+
+		private void OpenChannel()
+		{
+			if(!CheckVoiceComm())
+				return;
+
+			shouldBeTransmitting = true;
+		}
+
+		private void CloseChannel()
+		{
+			shouldBeTransmitting = false;
+		}
+
+		#endregion
 
 		#region IVoiceActivationListener impl
 		void IVoiceActivationListener.VoiceActivationStart()

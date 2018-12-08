@@ -410,7 +410,7 @@ namespace Dissonance.Networking
             return this;
         }
 
-        public PacketWriter WriteRelay<TPeer>(uint session, [NotNull] List<ClientInfo<TPeer>> destinations, ArraySegment<byte> segment, bool reliable)
+        public PacketWriter WriteRelay<TPeer>(uint session, [NotNull] List<ClientInfo> destinations, ArraySegment<byte> segment, bool reliable)
         {
             if (destinations == null) throw new ArgumentNullException("destinations");
             if (segment.Array == null) throw new ArgumentNullException("segment");

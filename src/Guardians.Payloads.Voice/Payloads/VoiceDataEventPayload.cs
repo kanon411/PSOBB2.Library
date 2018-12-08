@@ -10,7 +10,7 @@ namespace Guardians
 	/// </summary>
 	[ProtoContract]
 	[GamePayload(GamePayloadOperationCode.VoiceData)]
-	public sealed class VoiceDataEventPayload : GameServerPacketPayload
+	public sealed class VoiceDataChangeRaiseEventPayload : GameServerPacketPayload
 	{
 		/// <summary>
 		/// The current voice data for the entity.
@@ -20,7 +20,7 @@ namespace Guardians
 		public EntityAssociatedData<VoiceData> EntityVoiceData { get; private set; }
 
 		/// <inheritdoc />
-		public VoiceDataEventPayload([JetBrains.Annotations.NotNull] EntityAssociatedData<VoiceData> entityVoiceData)
+		public VoiceDataChangeRaiseEventPayload([JetBrains.Annotations.NotNull] EntityAssociatedData<VoiceData> entityVoiceData)
 		{
 			EntityVoiceData = entityVoiceData ?? throw new ArgumentNullException(nameof(entityVoiceData));
 		}
@@ -28,7 +28,7 @@ namespace Guardians
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private VoiceDataEventPayload()
+		private VoiceDataChangeRaiseEventPayload()
 		{
 			
 		}

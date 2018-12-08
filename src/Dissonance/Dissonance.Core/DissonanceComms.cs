@@ -24,7 +24,7 @@ namespace Dissonance
 	// ReSharper disable once InheritdocConsiderUsage
 	[HelpURL("https://placeholder-software.co.uk/dissonance/docs/Reference/Components/Dissonance-Comms/")]
 	public sealed partial class DissonanceComms
-		: MonoBehaviour, IAccessTokenCollection, IVolumeProvider
+		: MonoBehaviour, IAccessTokenCollection, IVolumeProvider, IVoiceActivisionSubscribable
 	{
 		#region fields
 		private static readonly Log Log = Logs.Create(LogCategory.Core, typeof(DissonanceComms).Name);

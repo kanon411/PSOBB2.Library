@@ -103,7 +103,11 @@ namespace Dissonance.Audio.Playback
             }
 
             _loss.Update(!lostPacket);
-            SequenceNumber++;
+
+			//Custom Change: Either I broke something, or Dissonance always expects data to be sent. We don't always send, so only increment sequence on successful frame read otherwise VAD will desync this.
+			if(frame != null)
+			 SequenceNumber++;
+
             return IsComplete();
         }
 

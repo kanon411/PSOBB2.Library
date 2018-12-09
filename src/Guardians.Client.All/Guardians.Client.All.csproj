@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Client\Guardians.Client.Game\Guardians.Client.Game.csproj" />
     <ProjectReference Include="..\Client\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj" />
     <ProjectReference Include="..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\Dissonance\Dissonance.Editor\Dissonance.Editor.csproj" />
   </ItemGroup>
 
 </Project>

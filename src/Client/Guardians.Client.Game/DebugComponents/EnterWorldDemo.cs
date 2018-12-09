@@ -19,8 +19,8 @@ namespace Guardians
 		void Start()
 		{
 			//TODO: Hack to support VR builds with in-editor non-VR.
-			if(!Application.isEditor)
-				SendCharacterEnterRequest();
+			//if(!Application.isEditor)
+			//	SendCharacterEnterRequest();
 		}
 
 		public void SendCharacterEnterRequest()

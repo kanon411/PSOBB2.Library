@@ -35,9 +35,18 @@ namespace Guardians
 		public async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientSessionClaimRequestPayload payload)
 		{
 			//TODO: We need better validation/authorization for clients trying to claim a session. Right now it's open to malicious attack
-			ProjectVersionStage.AssertAlpha();
-			var zoneServerTryClaimSessionResponse = await GameServerClient.TryClaimSession(new ZoneServerTryClaimSessionRequest(await GameServerClient.GetAccountIdFromToken(payload.JWT), payload.CharacterId))
-				.ConfigureAwait(false);
+			ZoneServerTryClaimSessionResponse zoneServerTryClaimSessionResponse = null;
+			try
+			{
+				ProjectVersionStage.AssertAlpha();
+				zoneServerTryClaimSessionResponse = await GameServerClient.TryClaimSession(new ZoneServerTryClaimSessionRequest(await GameServerClient.GetAccountIdFromToken(payload.JWT), payload.CharacterId))
+					.ConfigureAwait(false);
+			}
+			catch(Exception e) //we could get an unauthorized response
+			{
+				Logger.Error($"Failed to Query for AccountId: {e.Message}. AuthToken provided was: {payload.JWT}");
+			}
+
 
 			if(!zoneServerTryClaimSessionResponse.isSuccessful)
 			{

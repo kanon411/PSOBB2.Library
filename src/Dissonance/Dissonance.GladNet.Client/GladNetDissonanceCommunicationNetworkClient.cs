@@ -101,7 +101,7 @@ namespace Dissonance.GladNet
 			GladNetConnectionService = gladNetConnectionService ?? throw new ArgumentNullException(nameof(gladNetConnectionService));
 			NetworkSendService = networkSendService ?? throw new ArgumentNullException(nameof(networkSendService));
 
-			ConcurrentPool<byte[]> concurrentPool = new ConcurrentPool<byte[]>(200, () => new byte[1024]);
+			ConcurrentPool<byte[]> concurrentPool = new ConcurrentPool<byte[]>(32, () => new byte[1024]);
 			_events = new EventQueue(concurrentPool);
 			VoiceReciever = new GladNetVoiceReceiverManager(_events, concurrentPool);
 		}

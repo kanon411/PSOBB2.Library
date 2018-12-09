@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Dissonance.Audio.Codecs;
 using Dissonance.Networking;
+using GladNet;
 using Guardians;
 using Reinterpret.Net;
 using UnityEngine;
@@ -14,11 +15,13 @@ namespace Dissonance.GladNet
 	{
 		private bool isConnected { get; set; }
 
+		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }
+
 		/// <inheritdoc />
-		public GladNetDissonanceClient(ICommsNetworkState network) 
+		public GladNetDissonanceClient(ICommsNetworkState network, [NotNull] IPeerPayloadSendService<GameClientPacketPayload> sendService) 
 			: base(network)
 		{
-			
+			SendService = sendService ?? throw new ArgumentNullException(nameof(sendService));
 		}
 
 		/// <inheritdoc />
@@ -53,15 +56,6 @@ namespace Dissonance.GladNet
 					PacketWriter packetWriter = new PacketWriter(new byte[DissonanceGladNetConstants.HANDSHAKE_RESPONSE_PACKET_LENGTH]);
 					packetWriter.WriteHandshakeResponse(1, 1, new List<ClientInfo<Unit>>(), new Dictionary<string, List<ClientInfo<Unit>>>());
 					NetworkReceivedPacket(packetWriter.Written); //this spoofs the handshake response
-
-					PacketWriter packetWriter2 = new PacketWriter(new byte[1024]);
-					packetWriter2.WriteClientState(1, "Test", 2, CodecDefaults.Default, new ReadOnlyCollection<string>(new List<string>() {"Global"}));
-
-					NetworkReceivedPacket(packetWriter2.Written);
-
-					//TODO: Spoofing a player join.
-					//_events.EnqueuePlayerJoined("Test", CodecDefaults.Default);
-					//_events.EnqueuePlayerEnteredRoom("Test", "Global", new ReadOnlyCollection<string>(new List<string>()));
 					break;
 			}
 		}
@@ -81,38 +75,14 @@ namespace Dissonance.GladNet
 				case MessageTypes.ClientState:
 					break;
 				case MessageTypes.VoiceData:
-					//Spoofing the sent voice data as RECIEVE voice data
-					//Just change the client id to 2 to say it's TEST
-					packet.Array[packet.Offset + 8] = 2; //sets the LSB of the client id.
 
+					//TODO: We need a way to do this without allocation. And directly write to the stream, like maybe Low Level GladNet3 with (R)UDP.
 					byte[] array = new byte[packet.Count];
 					Array.Copy(packet.Array, packet.Offset, array, 0, packet.Count);
 					NetworkReceivedPacket(new ArraySegment<byte>(array));
-					break;
-				case MessageTypes.TextData:
-					break;
-				case MessageTypes.HandshakeRequest:
-					//This is spoofing the handshake request. We're using id 0 so that no other clientid looks like us.
-					//remote clients will see our client ID as our player's entity guid.
-					//There is actually no reason to write our ID here since the server has to write it in anyway
-					//to prevent players from spoofing voice from others.
-					PacketWriter packetWriter = new PacketWriter(new byte[DissonanceGladNetConstants.HANDSHAKE_RESPONSE_PACKET_LENGTH]);
-					packetWriter.WriteHandshakeResponse(1, 0, new List<ClientInfo<Unit>>(), new Dictionary<string, List<ClientInfo<Unit>>>());
-					NetworkReceivedPacket(packetWriter.Written); //this spoofs the handshake response
-					break;
-				case MessageTypes.HandshakeResponse:
-					break;
-				case MessageTypes.ErrorWrongSession:
-					break;
-				case MessageTypes.ServerRelayReliable:
-					break;
-				case MessageTypes.ServerRelayUnreliable:
-					break;
-				case MessageTypes.DeltaChannelState:
-					break;
-				case MessageTypes.RemoveClient:
-					break;
-				case MessageTypes.HandshakeP2P:
+
+					//TODO: Remove unused sequence number.
+					SendService.SendMessage(new VoiceDataChangeRaiseRequestPayload(array, 0));
 					break;
 			}
 		}
@@ -130,7 +100,7 @@ namespace Dissonance.GladNet
 		/// <inheritdoc />
 		public void Tick()
 		{
-			throw new NotImplementedException();
+			//Nothing, but we may need to do some stuff later.
 		}
 
 		/// <inheritdoc />
@@ -170,6 +140,15 @@ namespace Dissonance.GladNet
 				Debug.LogError($"Recieved messages while not connected to voice.");
 				return;
 			}
+
+			//TODO: We need to do better senderId rewritting to support more than 255 characters. This won't work for long. Won't even work for alpha.
+			ProjectVersionStage.AssertInternalTesting();
+
+			//We need to rewrite the voice packet data
+			//It contains the wrong source/sender id. Well, technically it could contain the right ID
+			//but we should assume the remote clients are LYING and so we should use the provided entity guid.
+			//We don't do this on the server because it's a waste of previous resources
+			voiceData.Array[voiceData.Offset + 8] = (byte)entity.EntityId;
 
 			ushort? id = NetworkReceivedPacket(voiceData);
 

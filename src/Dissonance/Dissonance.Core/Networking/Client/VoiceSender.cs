@@ -322,7 +322,8 @@ namespace Dissonance.Networking.Client
                     unchecked { _sequenceNumber++; }
 
                     //Send packet
-                    _sender.EnqueueUnreliableP2P(_session.LocalId.Value, destinations, packet);
+                    //CUSTOM CHANGE: Don't send voice P2P. Just send it unreliable to the server for broadcasting.
+                    _sender.EnqeueUnreliable(packet);
 
                     //Now that the channels have been sent in a packet we can remove the closing ones from the list
                     ClearClosedChannels();

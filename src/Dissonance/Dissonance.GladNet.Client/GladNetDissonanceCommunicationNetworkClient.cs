@@ -171,7 +171,9 @@ namespace Dissonance.GladNet
 		public void ProcessIncomingVoiceData(NetworkEntityGuid entity, ArraySegment<byte> voiceData, uint sequenceNumber)
 		{
 			//TODO: Move away from string based key
-			_events.EnqueueVoiceData(new VoicePacket(entity.RawGuidValue.ToString(), 0.5f, true, voiceData, sequenceNumber));
+			string s = entity.RawGuidValue.ToString();
+			VoicePacket packet = new VoicePacket(s, 0.5f, true, voiceData, sequenceNumber);
+			VoiceReciever.ReceiveVoiceData(s, ref packet);
 		}
 	}
 }

@@ -2,23 +2,33 @@
 using System.Collections.Generic;
 using System.Text;
 using Dissonance.Networking;
+using GladNet;
+using SceneJect.Common;
 using UnityEngine;
 
 namespace Dissonance.GladNet
 {
+	[Injectee]
 	public sealed class GladNetCommsNetwork : GladNetBaseCommsNetwork<GladNetDissonanceClient, long, Unit>
 	{
+		[Inject]
+		private Func<GladNetDissonanceClient> ClientFactory { get; set; }
+
+		[Inject]
+		private IConnectionService ConnectionService { get; set; }
+
 		protected override GladNetDissonanceClient CreateClient([Dissonance.CanBeNull] Unit connectionParameters)
 		{
 			Debug.Log($"Creating Dissonance.GladNet client.");
-			return new GladNetDissonanceClient(this);
+			return ClientFactory();
 		}
 
 		protected override void Update()
 		{
 			base.Update();
 
-			if(IsInitialized)
+			//TODO: We should also check the entity session state.
+			if(IsInitialized && ConnectionService.isConnected)
 			{
 				if(Mode != NetworkMode.Client)
 					RunAsClient(Unit.None);

@@ -23,7 +23,7 @@ namespace Guardians
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://localhost:5003"))
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://192.168.0.3:5003"))
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();
 

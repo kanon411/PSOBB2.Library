@@ -10,7 +10,7 @@ namespace Guardians
 	{
 		public FiddlerEnabledWebProxyHandler()
 		{
-			Proxy = new WebProxy("localhost", 8888);
+			//Proxy = new WebProxy("localhost", 8888);
 		}
 	}
 }

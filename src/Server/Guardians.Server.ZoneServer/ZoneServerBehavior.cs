@@ -79,8 +79,8 @@ namespace Guardians
 			try
 			{
 				//TODO: Fix this mess
-				for(ZoneServerRegisterationResponse response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("127.0.0.1", port)))
-					.ConfigureAwait(false);; response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("127.0.0.1", port)))
+				for(ZoneServerRegisterationResponse response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
+					.ConfigureAwait(false);; response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
 					.ConfigureAwait(false))
 				{
 					if(response.isSuccessful)
@@ -171,7 +171,7 @@ namespace Guardians
 		{
 			DefaultZoneServerApplicationBaseFactory appBaseFactory = new DefaultZoneServerApplicationBaseFactory();
 
-			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("0.0.0.0"), port)));
+			return appBaseFactory.Create(new ZoneServerApplicationBaseCreationContext(new UnityLogger(LogLevel.All), new NetworkAddressInfo(IPAddress.Parse("192.168.0.3"), port)));
 		}
 
 		void FixedUpdate()

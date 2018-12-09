@@ -155,7 +155,7 @@ namespace Guardians
 				.As<INetworkMessageSender<EntityMovementMessageContext>>()
 				.AsSelf();
 
-			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://localhost:5003"));
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://192.168.0.3:5003"));
 			builder.Register(context =>
 			{
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();

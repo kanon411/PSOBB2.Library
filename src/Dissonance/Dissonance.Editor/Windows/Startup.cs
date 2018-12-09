@@ -60,6 +60,7 @@ namespace Dissonance.Editor.Windows
         /// <returns></returns>
         private static bool CheckInstallLocation()
         {
+            return true;
             //Check if DissonanceComms.cs is where it should be according to the `BasePath` constant. If it is then early exit.
             if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(Path.Combine(DissonanceRootPath.BasePath, "DissonanceComms.cs"))))
                 return true;

@@ -11,6 +11,12 @@ namespace Guardians
 	/// </summary>
 	public static class ProjectVersionStage
 	{
+		public static void AssertInternalTesting()
+		{
+			//TODO: When the project leaves internal testing this should throw on this assert.
+			return;
+		}
+
 		public static void AssertAlpha()
 		{
 			//TODO: When the project leaves alpha we should throw on this assert.

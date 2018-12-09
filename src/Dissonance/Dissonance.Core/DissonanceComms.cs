@@ -252,6 +252,9 @@ namespace Dissonance
 
 		[UsedImplicitly] private void Start()
 		{
+			if(_net == null)
+				throw new InvalidOperationException($"Expected SceneJect to register Type: {typeof(ICommsNetwork).Name} for injection but did not.");
+
 			//Ensure that all settings are loaded before we access them (potentially from other threads)
 			ChatRoomSettings.Preload();
 			DebugSettings.Preload();
@@ -259,15 +262,6 @@ namespace Dissonance
 
 			//Write multithreaded logs ASAP so the logging system knows which is the main thread
 			Logs.WriteMultithreadedLogs();
-
-			//Sanity check (can't run without a network object)
-			ICommsNetwork net = null;
-			if(_net == null)
-			{
-				net = gameObject.GetComponent<ICommsNetwork>();
-				if(net == null)
-					throw new Exception("Cannot find a voice network component. Please attach a voice network component appropriate to your network system to the DissonanceVoiceComms' entity.");
-			}
 
 			//Sanity check (can't run without run in background). This value doesn't work on mobile platforms so don't perform this check there
 			if (!Application.isMobilePlatform && !Application.runInBackground)
@@ -296,13 +290,13 @@ namespace Dissonance
 				}
 			}
 
-			net.PlayerJoined += Net_PlayerJoined;
-			net.PlayerLeft += Net_PlayerLeft;
-			net.PlayerEnteredRoom += Net_PlayerRoomEvent;
-			net.PlayerExitedRoom += Net_PlayerRoomEvent;
-			net.VoicePacketReceived += Net_VoicePacketReceived;
-			net.PlayerStartedSpeaking += Net_PlayerStartedSpeaking;
-			net.PlayerStoppedSpeaking += Net_PlayerStoppedSpeaking;
+			_net.PlayerJoined += Net_PlayerJoined;
+			_net.PlayerLeft += Net_PlayerLeft;
+			_net.PlayerEnteredRoom += Net_PlayerRoomEvent;
+			_net.PlayerExitedRoom += Net_PlayerRoomEvent;
+			_net.VoicePacketReceived += Net_VoicePacketReceived;
+			_net.PlayerStartedSpeaking += Net_PlayerStartedSpeaking;
+			_net.PlayerStoppedSpeaking += Net_PlayerStoppedSpeaking;
 
 			//If an explicit name has not been set generate a GUID based name
 			if (string.IsNullOrEmpty(LocalPlayerName))
@@ -323,8 +317,7 @@ namespace Dissonance
 			//Start the player collection (to set local name)
 			_players.Start(LocalPlayerName, _capture, Rooms, _capture);
 
-			net.Initialize(LocalPlayerName, Rooms, _codecSettingsLoader.Config);
-			_net = net;
+			_net.Initialize(LocalPlayerName, Rooms, _codecSettingsLoader.Config);
 
 			//Begin capture manager, this will create and destroy capture pipelines as necessary (net mode changes, mic name changes, mic requires reset etc)
 			_capture.MicrophoneName = _micName;

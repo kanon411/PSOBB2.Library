@@ -24,7 +24,9 @@ namespace Guardians
 					}
 					else
 					{
-						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar_vr");
+						//TODO: Renable VR builds someday
+						//return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar_vr");
+						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar");
 					}
 				case EntityPrefab.RemotePlayer:
 					//TODO: We should handle prefabs better

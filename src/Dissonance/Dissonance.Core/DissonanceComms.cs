@@ -261,9 +261,13 @@ namespace Dissonance
 			Logs.WriteMultithreadedLogs();
 
 			//Sanity check (can't run without a network object)
-			var net = gameObject.GetComponent<ICommsNetwork>();
-			if (net == null)
-				throw new Exception("Cannot find a voice network component. Please attach a voice network component appropriate to your network system to the DissonanceVoiceComms' entity.");
+			ICommsNetwork net = null;
+			if(_net == null)
+			{
+				net = gameObject.GetComponent<ICommsNetwork>();
+				if(net == null)
+					throw new Exception("Cannot find a voice network component. Please attach a voice network component appropriate to your network system to the DissonanceVoiceComms' entity.");
+			}
 
 			//Sanity check (can't run without run in background). This value doesn't work on mobile platforms so don't perform this check there
 			if (!Application.isMobilePlatform && !Application.runInBackground)

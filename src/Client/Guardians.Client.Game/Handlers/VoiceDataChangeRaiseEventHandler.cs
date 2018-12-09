@@ -14,11 +14,14 @@ namespace Guardians
 	{
 		private IVoiceDataProcessor VoiceProcessingService { get; }
 
+		private ILocalPlayerDetails PlayerDetails { get; }
+
 		/// <inheritdoc />
-		public VoiceDataChangeRaiseEventHandler(ILog logger, [NotNull] IVoiceDataProcessor voiceProcessingService) 
+		public VoiceDataChangeRaiseEventHandler(ILog logger, [NotNull] IVoiceDataProcessor voiceProcessingService, [NotNull] ILocalPlayerDetails playerDetails) 
 			: base(logger)
 		{
 			VoiceProcessingService = voiceProcessingService ?? throw new ArgumentNullException(nameof(voiceProcessingService));
+			PlayerDetails = playerDetails ?? throw new ArgumentNullException(nameof(playerDetails));
 		}
 
 		//TODO: This is a work in progress, we need a time service.
@@ -27,6 +30,10 @@ namespace Guardians
 		{
 			//When we recieve voice data, we need to dispatch it to
 			//the voice data listener.
+
+			//TODO: We just shouldn't send this, not ignore it.
+			if(PlayerDetails.LocalPlayerGuid == payload.EntityVoiceData.EntityGuid)
+				return Task.CompletedTask;
 
 			//The implementation of this assumes it's not going to block
 			VoiceProcessingService.ProcessIncomingVoiceData(payload.EntityVoiceData.EntityGuid, 

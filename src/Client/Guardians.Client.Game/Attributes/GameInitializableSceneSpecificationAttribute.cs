@@ -17,13 +17,13 @@ namespace Guardians
 		/// </summary>
 		public enum SceneType
 		{
-			TitleScreen = 1,
+			TitleScreen = 0,
 
-			ZoneGameScene = 2,
+			ZoneGameScene = 1,
 			
-			CharacterSelection = 3,
+			CharacterSelection = 2,
 
-			WorldDownloadingScreen = 4
+			WorldDownloadingScreen = 3
 		}
 
 		/// <summary>

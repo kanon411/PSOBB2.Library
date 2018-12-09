@@ -4,7 +4,7 @@ using Dissonance.Networking.Server;
 
 namespace Dissonance.Networking
 {
-    /*public abstract class BaseServer<TServer, TClient, TPeer>
+    public abstract class BaseServer<TServer, TClient, TPeer>
         : IServer<TPeer>
         where TPeer : struct
         where TServer : BaseServer<TServer, TClient, TPeer>
@@ -296,5 +296,5 @@ namespace Dissonance.Networking
         {
             AddClient(client);
         }
-    }*/
+    }
 }

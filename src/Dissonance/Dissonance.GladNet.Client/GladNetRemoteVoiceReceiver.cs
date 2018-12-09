@@ -91,10 +91,11 @@ namespace Dissonance.Networking.Client
 				//Copy voice data into another buffer (we can't keep hold of this one, it will be recycled after we finish processing this packet)
 				var frame = voicePacket.EncodedAudioFrame.CopyTo(_byteArrPool.Get());
 
+				throw new NotSupportedException("Too lazy to reimplement this, will need to if you ever want to use this again.");
 				//Send the event (buffer will be recycled after the event has been dispatched)
-				_events.EnqueueVoiceData(new VoicePacket(
+				/*_events.EnqueueVoiceData(new VoicePacket(
 					Name, 0.5f, true, //assume all voice is positional
-					frame, _localSequenceNumber));
+					frame, _localSequenceNumber));*/
 			}
 		}
 

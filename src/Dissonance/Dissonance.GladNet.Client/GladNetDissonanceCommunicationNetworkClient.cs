@@ -17,7 +17,7 @@ using UnityEngine.Experimental.UIElements;
 
 namespace Dissonance.GladNet
 {
-	public sealed class GladNetDissonanceCommunicationNetworkClient : ICommsNetwork, IGameTickable, IVoiceGateway, IVoiceDataProcessor
+	/*public sealed class GladNetDissonanceCommunicationNetworkClient : ICommsNetwork, IGameTickable, IVoiceGateway, IVoiceDataProcessor
 	{
 		/// <inheritdoc />
 		public ConnectionStatus Status
@@ -176,5 +176,5 @@ namespace Dissonance.GladNet
 			VoicePacket packet = new VoicePacket(s, 0.5f, true, voiceData, sequenceNumber);
 			VoiceReciever.ReceiveVoiceData(s, ref packet);
 		}
-	}
+	}*/
 }

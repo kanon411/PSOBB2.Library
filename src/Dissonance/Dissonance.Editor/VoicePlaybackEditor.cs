@@ -30,6 +30,7 @@ namespace Dissonance.Editor
             {
                 EditorGUILayout.LabelField("Player Name", player.PlayerName);
                 EditorGUILayout.LabelField("Positional Playback Available", player.AllowPositionalPlayback.ToString());
+                EditorGUILayout.LabelField("Priority", player.Priority.ToString());
                 EditorGUILayout.LabelField("Packet Loss", string.Format("{0}%", player.PacketLoss ?? 0));
                 EditorGUILayout.LabelField("Network Jitter", string.Format("{0}σms", player.Jitter * 1000));
 

@@ -3,10 +3,15 @@ using System.Collections.Generic;
 
 namespace Dissonance.Networking.Client
 {
-    public interface IClient
+    internal interface IClient<TPeer>
+        where TPeer : struct
     {
         void SendReliable(ArraySegment<byte> arraySegment);
 
         void SendUnreliable(ArraySegment<byte> arraySegment);
+
+        void SendReliableP2P(List<ClientInfo<TPeer?>> destinations, ArraySegment<byte> packet);
+
+        void SendUnreliableP2P(List<ClientInfo<TPeer?>> destinations, ArraySegment<byte> packet);
     }
 }

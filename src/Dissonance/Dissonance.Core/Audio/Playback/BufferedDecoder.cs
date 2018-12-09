@@ -13,7 +13,7 @@ namespace Dissonance.Audio.Playback
     ///     are requested.
     /// </summary>
     internal class BufferedDecoder
-        : IFrameSource
+        : IFrameSource, IRemoteChannelProvider
     {
         private readonly EncodedAudioBuffer _buffer;
         private readonly IVoiceDecoder _decoder;
@@ -27,7 +27,7 @@ namespace Dissonance.Audio.Playback
         public uint SequenceNumber { get { return _buffer.SequenceNumber; } }
         public float PacketLoss { get { return _buffer.PacketLoss; } }
 
-        private readonly LockedValue<PlaybackOptions> _options = new LockedValue<PlaybackOptions>(new PlaybackOptions(false, 1));
+        private readonly LockedValue<PlaybackOptions> _options = new LockedValue<PlaybackOptions>(new PlaybackOptions(false, 1, ChannelPriority.Default));
         public PlaybackOptions LatestPlaybackOptions
         {
             get
@@ -40,6 +40,7 @@ namespace Dissonance.Audio.Playback
         private bool _receivedFirstPacket;
 
         private int _approxChannelCount;
+        private readonly ReadonlyLockedValue<List<RemoteChannel>> _channels = new ReadonlyLockedValue<List<RemoteChannel>>(new List<RemoteChannel>());
 
         public BufferedDecoder([NotNull] IVoiceDecoder decoder, uint frameSize, [NotNull] WaveFormat waveFormat, [NotNull] Action<VoicePacket> recycleFrame)
 		{		
@@ -91,6 +92,9 @@ namespace Dissonance.Audio.Playback
                 using (var l = _options.Lock())
                     l.Value = encoded.Value.PlaybackOptions;
 
+                //Read the channel data into a separate list
+                ExtractChannels(encoded.Value);
+
                 //Recycle the frame for re-use with a future packet. Only done with frames which were not peek ahead frames
                 _recycleFrame(encoded.Value);
             }
@@ -105,6 +109,23 @@ namespace Dissonance.Audio.Playback
             return lastFrame;
         }
 
+        private void ExtractChannels(VoicePacket encoded)
+        {
+            //Expose the channel list for this packet (if it's null just assume the previous value is still correct)
+            if (encoded.Channels != null)
+            {
+                using (var l = _channels.Lock())
+                {
+                    _approxChannelCount = encoded.Channels.Count;
+
+                    l.Value.Clear();
+                    l.Value.AddRange(encoded.Channels);
+                }
+
+                _receivedFirstPacket = true;
+            }
+        }
+
         public void Reset()
         {
             _buffer.Reset();
@@ -113,7 +134,10 @@ namespace Dissonance.Audio.Playback
             _receivedFirstPacket = false;
 
             using (var l = _options.Lock())
-                l.Value = new PlaybackOptions(false, 1);
+                l.Value = new PlaybackOptions(false, 1, ChannelPriority.Default);
+
+            using (var l = _channels.Lock())
+                l.Value.Clear();
 
             if (_diagnosticOutput != null)
             {
@@ -124,13 +148,29 @@ namespace Dissonance.Audio.Playback
 
         public void Push(VoicePacket frame)
         {
+            //If this is the first packet extract the channel data ahead of time so that it is available in the PlayerStartedSpeaking event
+            if (!_receivedFirstPacket)
+                ExtractChannels(frame);
+
             _buffer.Push(frame);
             _receivedFirstPacket = true;
         }
 
-		public void Stop()
-		{
-			_buffer.Stop();
-		}
-	}
+        public void Stop()
+        {
+            _buffer.Stop();
+        }
+
+        public void GetRemoteChannels(List<RemoteChannel> output)
+        {
+            //Do as much busywork outside the lock as possible
+            output.Clear();
+            if (output.Capacity < _approxChannelCount)
+                output.Capacity = _approxChannelCount;
+
+            //Copy across the channel data
+            using (var l = _channels.Lock())
+                output.AddRange(l.Value);
+        }
+    }
 }

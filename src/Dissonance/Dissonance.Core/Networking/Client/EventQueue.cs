@@ -6,7 +6,7 @@ using Dissonance.Threading;
 
 namespace Dissonance.Networking.Client
 {
-    public class EventQueue
+    internal class EventQueue
     {
         #region helper types
         private enum EventType
@@ -95,6 +95,16 @@ namespace Dissonance.Networking.Client
                     return _voicePacket;
                 }
             }
+
+            private readonly TextMessage _textMessage;
+            public TextMessage TextMessage
+            {
+                get
+                {
+                    Check(EventType.TextMessage);
+                    return _textMessage;
+                }
+            }
             
             #region constructors
             public NetworkEvent(EventType type)
@@ -106,12 +116,19 @@ namespace Dissonance.Networking.Client
                 _allRooms = null;
                 _codecSettings = default(CodecSettings);
                 _voicePacket = default(VoicePacket);
+                _textMessage = default(TextMessage);
             }
 
             public NetworkEvent(VoicePacket voice)
                 : this(EventType.VoiceData)
             {
                 _voicePacket = voice;
+            }
+
+            public NetworkEvent(TextMessage text)
+                : this(EventType.TextMessage)
+            {
+                _textMessage = text;
             }
             #endregion
 
@@ -146,12 +163,14 @@ namespace Dissonance.Networking.Client
         private readonly ReadonlyLockedValue<List<NetworkEvent>> _queuedEvents = new ReadonlyLockedValue<List<NetworkEvent>>(new List<NetworkEvent>());
 
         private readonly IRecycler<byte[]> _byteArrayPool;
+        [NotNull] private readonly IRecycler<List<RemoteChannel>> _channelsListPool;
 
         public event Action<string, CodecSettings> PlayerJoined;
         public event Action<string> PlayerLeft;
         public event Action<RoomEvent> PlayerEnteredRoom;
         public event Action<RoomEvent> PlayerExitedRoom;
         public event Action<VoicePacket> VoicePacketReceived;
+        public event Action<TextMessage> TextMessageReceived;
         public event Action<string> PlayerStartedSpeaking;
         public event Action<string> PlayerStoppedSpeaking;
 
@@ -164,11 +183,13 @@ namespace Dissonance.Networking.Client
         private DateTime _previousFlush = DateTime.MaxValue;
         #endregion
 
-        public EventQueue([NotNull]IRecycler<byte[]> byteArrayPool)
+        public EventQueue([NotNull]IRecycler<byte[]> byteArrayPool, [NotNull]IRecycler<List<RemoteChannel>> channelsListPool)
         {
             if (byteArrayPool == null) throw new ArgumentNullException("byteArrayPool");
+            if (channelsListPool == null) throw new ArgumentNullException("channelsListPool");
 
             _byteArrayPool = byteArrayPool;
+            _channelsListPool = channelsListPool;
         }
 
         /// <summary>
@@ -207,7 +228,16 @@ namespace Dissonance.Networking.Client
                             error |= InvokeEvent(e.VoicePacket, VoicePacketReceived);
                             _pendingVoicePackets--;
 
+                            //The voice packet event is special. It has some components which need to be recycled. Do that here
+                            if (e.VoicePacket.Channels != null)
+                            {
+                                e.VoicePacket.Channels.Clear();
+                                _channelsListPool.Recycle(e.VoicePacket.Channels);
+                            }
                             _byteArrayPool.Recycle(e.VoicePacket.EncodedAudioFrame.Array);
+                            break;
+                        case EventType.TextMessage:
+                            error |= InvokeEvent(e.TextMessage, TextMessageReceived);
                             break;
                         case EventType.PlayerEnteredRoom:
                             var evtEnter = CreateRoomEvent(e, true);
@@ -344,6 +374,12 @@ namespace Dissonance.Networking.Client
                 _pendingVoicePackets++;
                 events.Value.Add(new NetworkEvent(data));
             }
+        }
+
+        public void EnqueueTextData(TextMessage data)
+        {
+            using (var events = _queuedEvents.Lock())
+                events.Value.Add(new NetworkEvent(data));
         }
         #endregion
     }

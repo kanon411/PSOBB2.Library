@@ -256,7 +256,12 @@ namespace Dissonance.Editor
                 {
                     using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                     {
-                        EditorGUILayout.LabelField("Channels Removed");
+                        var l = new List<RemoteChannel>();
+                        p.GetSpeakingChannels(l);
+
+                        EditorGUILayout.LabelField("Speaking Through:");
+                        foreach (var channel in l.OrderByDescending(a => a.Type))
+                            EditorGUILayout.LabelField(string.Format(" - {0}: {1}", channel.Type, channel.TargetName));
                     }
                 }
             }

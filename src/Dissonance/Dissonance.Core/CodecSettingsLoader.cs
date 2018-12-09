@@ -1,5 +1,4 @@
-﻿using System;
-using Dissonance.Audio.Codecs;
+﻿using Dissonance.Audio.Codecs;
 using Dissonance.Audio.Codecs.Identity;
 using Dissonance.Audio.Codecs.Opus;
 using Dissonance.Config;
@@ -70,8 +69,7 @@ namespace Dissonance
             switch (_codec)
             {
                 case Codec.Identity:
-                    throw new NotSupportedException("We do not support anything but Opus.");
-                    //return new IdentityEncoder(44100, 441);
+                    return new IdentityEncoder(44100, 441);
 
                 //ncrunch: no coverage start (Justification: We don't want to load the opus binaries into a testing context)
                 case Codec.Opus:

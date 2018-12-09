@@ -5,15 +5,35 @@ using Dissonance.Audio.Playback;
 
 namespace Dissonance.Networking
 {
-	/// <summary>
-	/// A packet of encoded voice data
-	/// </summary>
-	public struct VoicePacket
+    /// <summary>
+    /// A packet of encoded voice data
+    /// </summary>
+    public struct VoicePacket
     {
         /// <summary>
         /// ID of the player who sent this voice packet
         /// </summary>
         public readonly string SenderPlayerId;
+
+        //ncrunch: no coverage start (Justification: obsolete)
+        /// <summary>
+        /// Indicates if this packet should be played with positional playback
+        /// </summary>
+        [Obsolete("Use `PlaybackOptions.IsPositional` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
+        public bool Positional { get { return PlaybackOptions.IsPositional; } }
+
+        /// <summary>
+        /// Priority of the voice in this packet
+        /// </summary>
+        [Obsolete("Use `PlaybackOptions.Priority` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
+        public ChannelPriority Priority { get { return PlaybackOptions.Priority; } }
+
+        /// <summary>
+        /// Volume multiplier to apply to this audio
+        /// </summary>
+        [Obsolete("Use `PlaybackOptions.AmplitudeMultiplier` property")] //Marked obsolete in Dissonance v4.0.0 (2017-11-22)
+        public float AmplitudeMultiplier { get { return PlaybackOptions.AmplitudeMultiplier; } }
+        //ncrunch: no coverage end
 
         /// <summary>
         /// The encoded audio to pass directly to the codec
@@ -24,6 +44,11 @@ namespace Dissonance.Networking
         /// The (wrapping) sequence number of this packet
         /// </summary>
         public readonly uint SequenceNumber;
+
+        /// <summary>
+        /// The list of channels this voice packet is being delivered with
+        /// </summary>
+        [CanBeNull] public readonly List<RemoteChannel> Channels;
 
         private readonly PlaybackOptions _options;
         public PlaybackOptions PlaybackOptions
@@ -43,13 +68,49 @@ namespace Dissonance.Networking
         /// <param name="sequence"></param>
         /// <param name="channels">List of all channels this voice packet is being spoken on. Data will be copied out of the list as soon as it is
         /// passed to the decoder pipeline (i.e. you can re-use this array right away)</param>
-        public VoicePacket(string senderPlayerId, float ampMul, bool positional, ArraySegment<byte> encodedAudioFrame, uint sequence)
+        public VoicePacket(string senderPlayerId, ChannelPriority priority, float ampMul, bool positional, ArraySegment<byte> encodedAudioFrame, uint sequence, [CanBeNull] List<RemoteChannel> channels = null)
         {
-            _options = new PlaybackOptions(positional, ampMul);
+            _options = new PlaybackOptions(positional, ampMul, priority);
 
             SenderPlayerId = senderPlayerId;
             EncodedAudioFrame = encodedAudioFrame;
             SequenceNumber = sequence;
+
+            Channels = channels;
+        }
+    }
+    
+    /// <summary>
+    /// A text message from a player
+    /// </summary>
+    public struct TextMessage
+    {
+        /// <summary>
+        /// ID of the player who sent this message
+        /// </summary>
+        public readonly string Sender;
+
+        /// <summary>
+        /// The type of channel this message is directed to
+        /// </summary>
+        public readonly ChannelType RecipientType;
+
+        /// <summary>
+        /// The name of the recipient (either a room or a player, depends upon RecipientType
+        /// </summary>
+        public readonly string Recipient;
+
+        /// <summary>
+        /// The actual text of the message
+        /// </summary>
+        public readonly string Message;
+
+        public TextMessage(string sender, ChannelType recipientType, string recipient, string message)
+        {
+            Sender = sender;
+            RecipientType = recipientType;
+            Recipient = recipient;
+            Message = message;
         }
     }
 
@@ -182,7 +243,7 @@ namespace Dissonance.Networking
         /// <param name="playerChannels">The player channels collection the network should track.</param>
         /// <param name="roomChannels">The room channels collection the network should track.</param>
         /// <param name="codecSettings">The audio codec being used on the network.</param>
-        void Initialize(string playerName, Rooms rooms, CodecSettings codecSettings);
+        void Initialize(string playerName, Rooms rooms, PlayerChannels playerChannels, RoomChannels roomChannels, CodecSettings codecSettings);
 
         /// <summary>
         /// Event which is raised when the network mode changes.
@@ -210,6 +271,11 @@ namespace Dissonance.Networking
         event Action<VoicePacket> VoicePacketReceived;
 
         /// <summary>
+        /// Event which is raised when a text packet is received
+        /// </summary>
+        event Action<TextMessage> TextPacketReceived;
+
+        /// <summary>
         /// Event which is raised when a remote player begins speaking. Passed the unique ID of the player
         /// </summary>
         event Action<string> PlayerStartedSpeaking;
@@ -235,5 +301,13 @@ namespace Dissonance.Networking
         /// <remarks>The implementation of this method MUST NOT keep a reference to the given array beyond the scope of this method (the array is recycled for other uses)</remarks>
         /// <param name="data">The encoded audio data to send.</param>
         void SendVoice(ArraySegment<byte> data);
+
+        /// <summary>
+        /// Send a text message to a destination
+        /// </summary>
+        /// <param name="data">The message to send</param>
+        /// <param name="recipientType">Type of recipinent for this message (either to a room or to a player)</param>
+        /// <param name="recipientId">ID of the recipient (either a room ID or a player ID depending upon the recipinent type parameter)</param>
+        void SendText(string data, ChannelType recipientType, string recipientId);
     }
 }

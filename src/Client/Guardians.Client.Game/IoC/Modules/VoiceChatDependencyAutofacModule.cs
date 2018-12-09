@@ -15,12 +15,13 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<GladNetDissonanceCommunicationNetworkClient>()
+			throw new NotImplementedException("Need to reimplement this.");
+			/*builder.RegisterType<GladNetDissonanceCommunicationNetworkClient>()
 				.As<ICommsNetwork>()
 				.As<IVoiceGateway>()
 				.As<IVoiceDataProcessor>()
 				.As<IGameTickable>()
-				.SingleInstance();
+				.SingleInstance();*/
 		}
 	}
 }

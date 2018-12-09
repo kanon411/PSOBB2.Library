@@ -24,14 +24,16 @@ namespace Dissonance
             _playersReadOnly = new ReadOnlyCollection<VoicePlayerState>(_players);
         }
 
-        public void Start([NotNull] string name, [NotNull] IAmplitudeProvider micAmplitude, [NotNull] Rooms rooms, [NotNull] ILossEstimator loss)
+        public void Start([NotNull] string name, [NotNull] IAmplitudeProvider micAmplitude, [NotNull] Rooms rooms, [NotNull] RoomChannels roomChannels, [NotNull] PlayerChannels playerChannels, [NotNull] ILossEstimator loss)
         {
             if (name == null) throw new ArgumentException("name");
             if (micAmplitude == null) throw new ArgumentException("micProvider");
             if (rooms == null) throw new ArgumentNullException("rooms");
+            if (roomChannels == null) throw new ArgumentException("roomChannels");
+            if (playerChannels == null) throw new ArgumentException("playerChannels");
             if (loss == null) throw new ArgumentException("playerChannels");
 
-            Local = new LocalVoicePlayerState(name, micAmplitude, rooms, loss);
+            Local = new LocalVoicePlayerState(name, micAmplitude, rooms, roomChannels, playerChannels, loss);
 
             Add(Local);
         }

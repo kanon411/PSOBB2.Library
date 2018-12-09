@@ -18,6 +18,7 @@ namespace Dissonance.Audio.Playback
         private static readonly int FixedDelayToleranceTicks = (int)TimeSpan.FromMilliseconds(33).Ticks;
         private static readonly float InitialBufferDelay = 0.1f;
 
+        private readonly IRemoteChannelProvider _channels;
         private readonly IDecoderPipeline _pipeline;
         private readonly SessionContext _context;
         private readonly DateTime _creationTime;
@@ -28,6 +29,7 @@ namespace Dissonance.Audio.Playback
         public PlaybackOptions PlaybackOptions { get { return _pipeline.PlaybackOptions; } }
         [NotNull] public WaveFormat OutputWaveFormat { get { return _pipeline.OutputFormat; } }
         internal float PacketLoss { get { return _pipeline.PacketLoss; } }
+        internal IRemoteChannelProvider Channels { get { return _channels; } }
 
         public DateTime TargetActivationTime
         {
@@ -56,19 +58,20 @@ namespace Dissonance.Audio.Playback
         }
         #endregion
 
-        private SpeechSession(SessionContext context, IJitterEstimator jitter, IDecoderPipeline pipeline, DateTime now)
+        private SpeechSession(SessionContext context, IJitterEstimator jitter, IDecoderPipeline pipeline, IRemoteChannelProvider channels, DateTime now)
         {
             _context = context;
             _pipeline = pipeline;
+            _channels = channels;
             _creationTime = now;
             _jitter = jitter;
 
             _startTime = now;
         }
 
-        internal static SpeechSession Create(SessionContext context, IJitterEstimator jitter, IDecoderPipeline pipeline, DateTime now)
+        internal static SpeechSession Create(SessionContext context, IJitterEstimator jitter, IDecoderPipeline pipeline, IRemoteChannelProvider channels, DateTime now)
         {
-            return new SpeechSession(context, jitter, pipeline, now);
+            return new SpeechSession(context, jitter, pipeline, channels, now);
         }
 
         public void Prepare(DateTime now, DateTime timeOfFirstDequeueAttempt)

@@ -11,7 +11,7 @@ namespace Dissonance.Audio.Playback
     /// </summary>
     /// ReSharper disable once InheritdocConsiderUsage
     public class VoicePlayback
-        : MonoBehaviour, IVoicePlaybackInternal, IVolumeProvider
+        : MonoBehaviour, IVoicePlaybackInternal, IVolumeProvider, IRemoteChannelProvider
     {
         #region fields and properties
         private static readonly Log Log = Logs.Create(LogCategory.Playback, "Voice Playback Component");
@@ -76,6 +76,24 @@ namespace Dissonance.Audio.Playback
             get { return _player == null ? 0 : _player.ARV; }
         }
 
+        /// <summary>
+        /// Get the current priority of audio being played through this component
+        /// </summary>
+        public ChannelPriority Priority
+        {
+            get
+            {
+                if (_player == null)
+                    return ChannelPriority.None;
+
+                var session = _player.Session;
+                if (!session.HasValue)
+                    return ChannelPriority.None;
+
+                return _cachedPlaybackOptions.Priority;
+            }
+        }
+
         /// <inheritdoc />
         bool IVoicePlaybackInternal.IsMuted { get; set; }
 
@@ -92,6 +110,8 @@ namespace Dissonance.Audio.Playback
         {
             get { return IsApplyingAudioSpatialization; }
         }
+
+        internal IPriorityManager PriorityManager { get; set; }
 
         float? IVoicePlayback.PacketLoss
         {
@@ -253,6 +273,10 @@ namespace Dissonance.Audio.Playback
                 if (((IVoicePlaybackInternal)this).IsMuted)
                     return 0;
 
+                //Mute if the top priority is greater than this priority
+                if (PriorityManager != null && PriorityManager.TopPriority > Priority)
+                    return 0;
+
                 //Get the upstream volume setting (if there is one - default to 1 otherwise)
                 var v = VolumeProvider;
                 var upstream = v == null ? 1 : v.TargetVolume;
@@ -260,6 +284,20 @@ namespace Dissonance.Audio.Playback
                 //No muting applied, so play at chosen volume
                 return ((IVoicePlaybackInternal)this).PlaybackVolume * upstream;
             }
+        }
+
+        void IRemoteChannelProvider.GetRemoteChannels(List<RemoteChannel> output)
+        {
+            output.Clear();
+
+            if (_player == null)
+                return;
+
+            var s = _player.Session;
+            if (!s.HasValue)
+                return;
+
+            s.Value.Channels.GetRemoteChannels(output);
         }
     }
 }

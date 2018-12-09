@@ -14,7 +14,7 @@ namespace Dissonance.Editor
     /// <typeparam name="TPeer"></typeparam>
     /// <typeparam name="TClientParam"></typeparam>
     /// <typeparam name="TServerParam"></typeparam>
-    /*public class BaseDissonnanceCommsNetworkEditor<TComms, TServer, TClient, TPeer, TClientParam, TServerParam>
+    public class BaseDissonnanceCommsNetworkEditor<TComms, TServer, TClient, TPeer, TClientParam, TServerParam>
         : UnityEditor.Editor
         where TComms : BaseCommsNetwork<TServer, TClient, TPeer, TClientParam, TServerParam>
         where TServer : BaseServer<TServer, TClient, TPeer>
@@ -57,5 +57,5 @@ namespace Dissonance.Editor
                 }
             }
         }
-    }*/
+    }
 }

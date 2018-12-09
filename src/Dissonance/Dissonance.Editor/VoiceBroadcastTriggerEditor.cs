@@ -153,6 +153,21 @@ namespace Dissonance.Editor
                     "Please see the Dissonance documentation for instructions on how to set your project up for playback of 3D voice comms.",
                     MessageType.Info);
             }
+
+            transmitter.ChangeWithUndo(
+                "Changed Dissonance Channel Priority",
+                (ChannelPriority)EditorGUILayout.EnumPopup(new GUIContent("Priority", "Priority for speech sent through this trigger"), transmitter.Priority),
+                transmitter.Priority,
+                a => transmitter.Priority = a
+            );
+
+            if (transmitter.Priority == ChannelPriority.None)
+            {
+                EditorGUILayout.HelpBox(
+                    "Priority for the voice sent from this room. Voices will mute all lower priority voices on the receiver while they are speaking.\n\n" +
+                    "'None' means that this room specifies no particular priority and the priority of this player will be used instead",
+                    MessageType.Info);
+            }
         }
 
         private static void ActivationModeGui([NotNull] VoiceBroadcastTrigger transmitter)

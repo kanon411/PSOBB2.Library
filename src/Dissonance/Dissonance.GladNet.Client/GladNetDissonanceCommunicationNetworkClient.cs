@@ -137,8 +137,9 @@ namespace Dissonance.GladNet
 			//We don't need to send an init request, the server assumes we want voice and the codec settings are authorative and can't be changed.
 			//TODO: There is kind of an assumption here that we'll be initializing our voice codec data before we're even in the world
 			//We should send the voice init packet here so that the server knows we're ready for voice.
-			//NetworkSendService.SendMessage(new VoiceInitializationRequest(codecSettings));
+			//NetworkSendService.SendMessage(new VoiceInitializationRequestPayload(codecSettings));
 			isInitialized = true;
+			Debug.Log($"FrameSize: {codecSettings.FrameSize} SampleRate: {codecSettings.SampleRate}");
 		}
 
 

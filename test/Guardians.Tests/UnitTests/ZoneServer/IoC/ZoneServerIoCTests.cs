@@ -17,15 +17,12 @@ namespace Guardians
 		public void Test_Can_Create_IGameTickables()
 		{
 			//arrange
-			DefaultZoneServerDependencyRegistrar registrar = new DefaultZoneServerDependencyRegistrar(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000));
-			ContainerBuilder builder = new ContainerBuilder();
-			registrar.RegisterServices(builder);
-			IContainer build = builder.Build();
+			IContainer container = BuildTestContainer();
 
 			//assert
 			try
 			{
-				build.Resolve<IEnumerable<IGameTickable>>();
+				container.Resolve<IEnumerable<IGameTickable>>();
 			}
 			catch(DependencyResolutionException e)
 			{
@@ -37,6 +34,30 @@ namespace Guardians
 
 				Assert.Fail($"Failed: {dependencyResolveException.Message}\n\n{dependencyResolveException.StackTrace}");
 			}
+		}
+
+		private static IContainer BuildTestContainer()
+		{
+			DefaultZoneServerDependencyRegistrar registrar = new DefaultZoneServerDependencyRegistrar(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000));
+			ContainerBuilder builder = new ContainerBuilder();
+			registrar.RegisterServices(builder);
+			IContainer build = builder.Build();
+			return build;
+		}
+
+		[Test]
+		public void Test_Can_Get_MovementCollection_When_OpenGeneric_Registered()
+		{
+			//arrange
+			IContainer container = BuildTestContainer();
+
+			//act
+			IReadonlyEntityGuidMappable<IMovementData> movementDataCollection = container.Resolve<IReadonlyEntityGuidMappable<IMovementData>>();
+			IReadonlyEntityGuidMappable<int> intTestCollection = container.Resolve<IReadonlyEntityGuidMappable<int>>();
+
+			//assert
+			Assert.True(movementDataCollection is MovementDataCollection, $"Could not create {typeof(MovementDataCollection).Name} while open generic entity mappables were registered.");
+			Assert.True(intTestCollection is EntityGuidDictionary<int>);
 		}
 	}
 }

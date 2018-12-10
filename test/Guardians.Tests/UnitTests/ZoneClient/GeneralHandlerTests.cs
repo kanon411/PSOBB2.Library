@@ -17,7 +17,7 @@ namespace Guardians
 	public class GeneralHandlerTests
 	{
 		[Test]
-		public void Test_Can_Create_MessageHandlerService_From_DependencyModules()
+		public void Test_Client_Can_Create_MessageHandlerService_From_DependencyModules()
 		{
 			//TODO: This won't work if we have multiple configurable modules.
 			//arrange

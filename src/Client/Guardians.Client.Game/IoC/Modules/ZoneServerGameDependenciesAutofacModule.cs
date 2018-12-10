@@ -19,24 +19,6 @@ namespace Guardians
 			//Set the sync context
 			UnityExtended.InitializeSyncContext();
 
-			builder.RegisterType<EntityGuidDictionary<IMovementData>>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<IMovementData>>()
-				.As<IEntityGuidMappable<IMovementData>>()
-				.SingleInstance();
-
-
-			builder.RegisterType<EntityGuidDictionary<GameObject>>()
-				.As<IEntityGuidMappable<GameObject>>()
-				.As<IReadonlyEntityGuidMappable<GameObject>>()
-				.AsSelf()
-				.SingleInstance();
-
-			builder.RegisterType<DefaultGameObjectToEntityMappable>()
-				.As<IReadonlyGameObjectToEntityMappable>()
-				.As<IGameObjectToEntityMappable>()
-				.SingleInstance();
-
 			builder.RegisterType<DefaultEntityFactory<DefaultEntityCreationContext>>()
 				.As<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>()
 				.AsSelf()
@@ -76,12 +58,6 @@ namespace Guardians
 				.As<IMovementBlockHandler>()
 				.AsSelf();
 
-			builder.RegisterType<EntityGuidDictionary<IMovementGenerator<GameObject>>>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>>>()
-				.As<IEntityGuidMappable<IMovementGenerator<GameObject>>>()
-				.SingleInstance();
-
 			builder.RegisterType<MovementSimulationTickable>()
 				.As<IGameTickable>()
 				.AsSelf()
@@ -105,17 +81,16 @@ namespace Guardians
 				.As<ICharacterDataRepository>()
 				.SingleInstance();
 
-			//TODO: Is this the best way to deal with this?
-			builder.RegisterType<EntityGuidDictionary<IEntityDataFieldContainer>>()
-				.As<IEntityGuidMappable<IEntityDataFieldContainer>>()
-				.As<IReadonlyEntityGuidMappable<IEntityDataFieldContainer>>()
+			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
 				.AsSelf()
+				.As(typeof(IReadonlyEntityGuidMappable<>))
+				.As(typeof(IEntityGuidMappable<>))
 				.SingleInstance();
 
-			builder.RegisterType<EntityGuidDictionary<IChangeTrackableEntityDataCollection>>()
-				.As<IEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
-				.As<IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
-				.AsSelf()
+			//TODO: This is legacy
+			builder.RegisterType<DefaultGameObjectToEntityMappable>()
+				.As<IReadonlyGameObjectToEntityMappable>()
+				.As<IGameObjectToEntityMappable>()
 				.SingleInstance();
 
 			//Auth token

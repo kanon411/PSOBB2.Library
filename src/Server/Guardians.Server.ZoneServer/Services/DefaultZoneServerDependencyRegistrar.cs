@@ -73,18 +73,6 @@ namespace Guardians
 			//gametickables
 			RegisterGameTickable(builder);
 
-			//tickable services (may be shared with handlers)
-			builder.RegisterType<EntityGuidDictionary<InterestCollection>>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<InterestCollection>>()
-				.As<IEntityGuidMappable<InterestCollection>>()
-				.SingleInstance(); //only 1, else we will get problems
-
-			//TODO: We should automate the registeration of message senders
-			builder.RegisterType<VisibilityChangeMessageSender>()
-				.AsImplementedInterfaces()
-				.AsSelf();
-
 			builder.RegisterType<MovementDataCollection>()
 				.AsSelf()
 				.As<IReadonlyEntityGuidMappable<IMovementData>>()
@@ -92,17 +80,15 @@ namespace Guardians
 				.As<IDirtyableMovementDataCollection>()
 				.SingleInstance();
 
-			builder.RegisterType<EntityGuidDictionary<IPeerPayloadSendService<GameServerPacketPayload>>>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>>>()
-				.As<IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>>>()
+			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
+				.As(typeof(IReadonlyEntityGuidMappable<>))
+				.As(typeof(IEntityGuidMappable<>))
 				.SingleInstance();
 
-			builder.RegisterType<EntityGuidDictionary<GameObject>>()
-				.As<IEntityGuidMappable<GameObject>>()
-				.As<IReadonlyEntityGuidMappable<GameObject>>()
-				.AsSelf()
-				.SingleInstance();
+			//TODO: We should automate the registeration of message senders
+			builder.RegisterType<VisibilityChangeMessageSender>()
+				.AsImplementedInterfaces()
+				.AsSelf();
 
 			builder.RegisterType<DefaultGameObjectToEntityMappable>()
 				.As<IReadonlyGameObjectToEntityMappable>()
@@ -165,11 +151,7 @@ namespace Guardians
 				.As<IZoneServerToGameServerClient>()
 				.SingleInstance();
 
-			builder.RegisterType<EntityGuidDictionary<IMovementGenerator<GameObject>>>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>>>()
-				.As<IEntityGuidMappable<IMovementGenerator<GameObject>>>()
-				.SingleInstance();
+			
 
 			builder.RegisterType<DefaultMovementHandlerService>()
 				.As<IMovementDataHandlerService>()
@@ -191,19 +173,6 @@ namespace Guardians
 			builder.RegisterType<FieldValueUpdateFactory>()
 				.AsSelf()
 				.AsImplementedInterfaces();
-
-			//TODO: Is this the best way to deal with this?
-			builder.RegisterType<EntityGuidDictionary<IEntityDataFieldContainer>>()
-				.As<IEntityGuidMappable<IEntityDataFieldContainer>>()
-				.As<IReadonlyEntityGuidMappable<IEntityDataFieldContainer>>()
-				.AsSelf()
-				.SingleInstance();
-
-			builder.RegisterType<EntityGuidDictionary<IChangeTrackableEntityDataCollection>>()
-				.As<IEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
-				.As<IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection>>()
-				.AsSelf()
-				.SingleInstance();
 
 			RegisterEntityDestructionServices(builder);
 

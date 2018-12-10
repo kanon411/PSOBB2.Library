@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using Dissonance.Networking;
 using Fasterflect;
 using Moq;
 using SceneJect;
@@ -95,6 +96,9 @@ namespace Guardians
 
 			builder.RegisterInstance(Mock.Of<ISceneManager>())
 				.As<ISceneManager>();
+
+			builder.RegisterInstance(Mock.Of<ICommsNetworkState>())
+				.As<ICommsNetworkState>();
 		}
 	}
 }

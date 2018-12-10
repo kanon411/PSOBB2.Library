@@ -16,8 +16,13 @@ namespace Guardians
 		protected override void Load(ContainerBuilder builder)
 		{
 			builder.RegisterType<GladNetDissonanceClient>()
+				.AsSelf();
+
+			builder.RegisterType<GladNetDissonanceClientCurrentInstanceAdapter>()
 				.As<IVoiceGateway>()
-				.As<IVoiceDataProcessor>();
+				.As<IVoiceDataProcessor>()
+				.AsSelf()
+				.SingleInstance();
 		}
 	}
 }

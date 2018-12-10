@@ -17,10 +17,13 @@ namespace Dissonance.GladNet
 		[Inject]
 		private IConnectionService ConnectionService { get; set; }
 
+		[Inject]
+		private GladNetDissonanceClientCurrentInstanceAdapter ConnectionInstanceProvider { get; set; }
+
 		protected override GladNetDissonanceClient CreateClient([Dissonance.CanBeNull] Unit connectionParameters)
 		{
 			Debug.Log($"Creating Dissonance.GladNet client.");
-			return ClientFactory();
+			return ConnectionInstanceProvider.ClientInstance = ClientFactory();
 		}
 
 		protected override void Update()

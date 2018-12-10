@@ -20,8 +20,9 @@ namespace Guardians
 			[NotNull] ILog logger, 
 			[NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap, 
 			[NotNull] IEntityGuidMappable<IMovementData> movementDataMap,
-			[NotNull] IReadonlyEntityGuidMappable<GameObject> worldEntities) 
-			: base(logger, connectionIdToEntityMap)
+			[NotNull] IReadonlyEntityGuidMappable<GameObject> worldEntities,
+			IContextualResourceLockingPolicy<NetworkEntityGuid> lockingPolicy) 
+			: base(logger, connectionIdToEntityMap, lockingPolicy)
 		{
 			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
 			WorldEntities = worldEntities ?? throw new ArgumentNullException(nameof(worldEntities));

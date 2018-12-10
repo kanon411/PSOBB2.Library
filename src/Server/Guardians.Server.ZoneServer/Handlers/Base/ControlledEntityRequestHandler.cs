@@ -15,10 +15,10 @@ namespace Guardians
 	/// works on locking over an entity globally (read) and grabs the context
 	/// </summary>
 	/// <typeparam name="TSpecificPayloadType"></typeparam>
-	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : ControlledEntityRequestHandler<TSpecificPayloadType, GlobalEntityResourceLockingPolicy, NetworkEntityGuid> where TSpecificPayloadType : GameClientPacketPayload
+	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : ControlledEntityRequestHandler<TSpecificPayloadType, IContextualResourceLockingPolicy<NetworkEntityGuid>, NetworkEntityGuid> where TSpecificPayloadType : GameClientPacketPayload
 	{
 		/// <inheritdoc />
-		protected ControlledEntityRequestHandler(ILog logger, IReadonlyConnectionEntityCollection connectionIdToEntityMap, GlobalEntityResourceLockingPolicy lockingPolicy) 
+		protected ControlledEntityRequestHandler(ILog logger, IReadonlyConnectionEntityCollection connectionIdToEntityMap, IContextualResourceLockingPolicy<NetworkEntityGuid> lockingPolicy) 
 			: base(logger, connectionIdToEntityMap, lockingPolicy)
 		{
 

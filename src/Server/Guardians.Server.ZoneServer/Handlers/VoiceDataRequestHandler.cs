@@ -20,8 +20,9 @@ namespace Guardians
 			ILog logger, 
 			IReadonlyConnectionEntityCollection connectionIdToEntityMap, 
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> interestCollections,
-			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<VoiceDataChangeRaiseEventPayload>> voiceMessageSender) 
-			: base(logger, connectionIdToEntityMap)
+			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<VoiceDataChangeRaiseEventPayload>> voiceMessageSender,
+			IContextualResourceLockingPolicy<NetworkEntityGuid> lockingPolicy) 
+			: base(logger, connectionIdToEntityMap, lockingPolicy)
 		{
 			InterestCollections = interestCollections ?? throw new ArgumentNullException(nameof(interestCollections));
 			VoiceMessageSender = voiceMessageSender ?? throw new ArgumentNullException(nameof(voiceMessageSender));

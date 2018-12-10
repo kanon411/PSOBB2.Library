@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Dissonance.GladNet
 {
-	public sealed class GladNetDissonanceClient : GladNetBaseClient<GladNetDissonanceClient, long>, IGameTickable, IVoiceGateway, IVoiceDataProcessor
+	public sealed class GladNetDissonanceClient : GladNetBaseClient<GladNetDissonanceClient, long>, IVoiceGateway, IVoiceDataProcessor
 	{
 		private bool isConnected { get; set; }
 
@@ -98,12 +98,6 @@ namespace Dissonance.GladNet
 		}
 
 		/// <inheritdoc />
-		public void Tick()
-		{
-			//Nothing, but we may need to do some stuff later.
-		}
-
-		/// <inheritdoc />
 		public void JoinVoiceSession(NetworkEntityGuid entity)
 		{
 			//TODO: ClientId only supports ushort so eventually, after 65,000 players in the database, we WILL have to make some changes here.
@@ -144,7 +138,7 @@ namespace Dissonance.GladNet
 			//TODO: We need to do better senderId rewritting to support more than 255 characters. This won't work for long. Won't even work for alpha.
 			ProjectVersionStage.AssertInternalTesting();
 
-			//We need to rewrite the voice packet data
+			//We need to rewrite the voice packet data-
 			//It contains the wrong source/sender id. Well, technically it could contain the right ID
 			//but we should assume the remote clients are LYING and so we should use the provided entity guid.
 			//We don't do this on the server because it's a waste of previous resources

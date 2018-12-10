@@ -1,48 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
+using Nito.AsyncEx;
 
 namespace Guardians
 {
+	/// <summary>
+	/// Simplfied version of <see cref="ControlledEntityRequestHandler{TSpecificPayloadType, TLockingPolicyType, TLockingContextType}"/> that
+	/// works on locking over an entity globally (read) and grabs the context
+	/// </summary>
+	/// <typeparam name="TSpecificPayloadType"></typeparam>
+	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : ControlledEntityRequestHandler<TSpecificPayloadType, GlobalEntityResourceLockingPolicy, NetworkEntityGuid> where TSpecificPayloadType : GameClientPacketPayload
+	{
+		/// <inheritdoc />
+		protected ControlledEntityRequestHandler(ILog logger, IReadonlyConnectionEntityCollection connectionIdToEntityMap, GlobalEntityResourceLockingPolicy lockingPolicy) 
+			: base(logger, connectionIdToEntityMap, lockingPolicy)
+		{
+
+		}
+
+		/// <inheritdoc />
+		protected sealed override NetworkEntityGuid GenerateLockContext(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
+		{
+			//We just grab the entity, and assume that they want this.
+			return ExtractEntityGuidFromContext(context);
+		}
+	}
+
 	/// <summary>
 	/// Base <see cref="IPeerPayloadSpecificMessageHandler{TPayloadType,TOutgoingPayloadType}"/> handler for
 	/// messages that require a controlled/associated <see cref="NetworkEntityGuid"/> with the session to be handled.
 	/// For example, movement. Can't handle movement packets if the session doesn't even have an associated entity.
 	/// </summary>
 	/// <typeparam name="TSpecificPayloadType"></typeparam>
-	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType> : BaseServerRequestHandler<TSpecificPayloadType>
+	/// <typeparam name="TLockingPolicyType"></typeparam>
+	public abstract class ControlledEntityRequestHandler<TSpecificPayloadType, TLockingPolicyType, TLockingContextType> : BaseServerRequestHandler<TSpecificPayloadType>
 		where TSpecificPayloadType : GameClientPacketPayload
+		where TLockingPolicyType : class, IContextualResourceLockingPolicy<TLockingContextType>
 	{
 		private IReadonlyConnectionEntityCollection ConnectionIdToEntityMap { get; }
 
+		private TLockingPolicyType LockingPolicy { get; }
+
 		//TODO: Don't use dictionary, creatre interface.
-		protected ControlledEntityRequestHandler([NotNull] ILog logger, [NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap)
+		protected ControlledEntityRequestHandler(
+			[NotNull] ILog logger, 
+			[NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap,
+			[NotNull] TLockingPolicyType lockingPolicy)
 			: base(logger)
 		{
 			ConnectionIdToEntityMap = connectionIdToEntityMap ?? throw new ArgumentNullException(nameof(connectionIdToEntityMap));
+			LockingPolicy = lockingPolicy ?? throw new ArgumentNullException(nameof(lockingPolicy));
 		}
 
-		public override Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
+		public override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
 		{
-			//We need to check this, if we recieve a message that requires a controlled entity then we should not handle this message
-			//and log this. It's possible it was spoofed or something. Or there is an error somewhere in logic.
-			if(!ConnectionIdToEntityMap.ContainsKey(context.Details.ConnectionId))
+			//TODO: What do we do in cases where the entity 
+			ProjectVersionStage.AssertBeta();
+			//TODO: We may want a timeout to prevent production deadlocks
+			//Just need reader locking to lock on the policy specified by the implementer.
+			using(var lockObj = await LockingPolicy.ReaderLockAsync(GenerateLockContext(context, payload), CancellationToken.None)
+				.ConfigureAwait(false))
 			{
-				if(Logger.IsErrorEnabled)
-					Logger.Error($"Recieved: {payload.GetType().Name} from Connection: {context.Details.ConnectionId} but no entity guid associated.");
+				//We need to check this, if we recieve a message that requires a controlled entity then we should not handle this message
+				//and log this. It's possible it was spoofed or something. Or there is an error somewhere in logic.
+				if(!ConnectionIdToEntityMap.ContainsKey(context.Details.ConnectionId))
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Recieved: {payload.GetType().Name} from Connection: {context.Details.ConnectionId} but no entity guid associated.");
 
-				return Task.CompletedTask;
+					return;
+				}
+
+				//We just dispatch to child handler, who will use the payload, context and guid.
+				await HandleMessage(context, payload, ExtractEntityGuidFromContext(context))
+					.ConfigureAwait(false);
 			}
-
-			//We just dispatch to child handler, who will use the payload, context and guid.
-			return HandleMessage(context, payload, ExtractEntityGuidFromContext(context));
 		}
 
-		private NetworkEntityGuid ExtractEntityGuidFromContext(IPeerSessionMessageContext<GameServerPacketPayload> context)
+		/// <summary>
+		/// Generates the context required by the specified <typeparamref name="TLockingContextType"/>.
+		/// </summary>
+		/// <returns>The context to use for locking.</returns>
+		protected abstract TLockingContextType GenerateLockContext(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload);
+
+		protected NetworkEntityGuid ExtractEntityGuidFromContext(IPeerSessionMessageContext<GameServerPacketPayload> context)
 		{
 			return ConnectionIdToEntityMap[context.Details.ConnectionId];
 		}

@@ -8,6 +8,7 @@ using SceneJect.Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Unitysync.Async;
 
 namespace Guardians
 {
@@ -35,38 +36,38 @@ namespace Guardians
 			//Just load
 			int zoneId = Int32.Parse(Input.text);
 
-			//Do not use AsyncContext, it will deadlock
-			TaskEx.Run(async () =>
-			{
-				await ConnectionService.DisconnectAsync(0)
-					.ConfigureAwait(false);
-
-				//Now we need to try to create a new session
-				while(true)
-				{
-					CharacterSessionEnterResponse enterResponse = await CharacterService.SetCharacterSessionData(DataRepo.CharacterId, zoneId, AuthTokenRepo.RetrieveWithType())
-						.ConfigureAwait(false);
-
-					//While the response isn't successful we shouild log way, and continue if it's
-					if(enterResponse.isSuccessful)
-						break;
-
-					await Task.Delay(500)
-						.ConfigureAwait(false);
-
-					Debug.LogError($"Failed to set character session data to ZoneId: {zoneId} for Reason: {enterResponse.ResultCode}");
-				}
-
-				//Join main unity thread
-				await new UnityYieldAwaitable();
-
-				//We just load to the loading screen and we'll reload the into the current zone
-				SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;
-			});
+			ConnectionService.DisconnectAsync(0)
+				.UnityAsyncContinueWith(this, () => OnFinishedDisconnecting(zoneId))
+				.ConfigureAwait(false);
 
 			//We can't await to unwrap exceptions because
 			//the other thing joins the unity3d main thread via synccontext hack
 			//and therefore will deadlock
+		}
+
+		private async Task OnFinishedDisconnecting(int zoneId)
+		{
+			//Now we need to try to create a new session
+			while(true)
+			{
+				CharacterSessionEnterResponse enterResponse = await CharacterService.SetCharacterSessionData(DataRepo.CharacterId, zoneId, AuthTokenRepo.RetrieveWithType())
+					.ConfigureAwait(false);
+
+				//While the response isn't successful we shouild log way, and continue if it's
+				if(enterResponse.isSuccessful)
+					break;
+
+				await Task.Delay(500)
+					.ConfigureAwait(false);
+
+				Debug.LogError($"Failed to set character session data to ZoneId: {zoneId} for Reason: {enterResponse.ResultCode}");
+			}
+
+			//Join main unity thread
+			await new UnityYieldAwaitable();
+
+			//We just load to the loading screen and we'll reload the into the current zone
+			SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;
 		}
 	}
 }

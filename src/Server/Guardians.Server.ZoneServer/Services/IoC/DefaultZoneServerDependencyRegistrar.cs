@@ -291,32 +291,32 @@ namespace Guardians
 			builder.RegisterType<DefaultInterestRadiusManager>()
 				.AsSelf()
 				.As<IInterestRadiusManager>()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
 			builder.RegisterType<PlayerEntityEntryManager>()
 				.AsSelf()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
 			builder.RegisterType<PlayerEntityMovementDataUpdateManager>()
 				.AsSelf()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
 			builder.RegisterType<EntityDataUpdateManager>()
 				.AsSelf()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
 			builder.RegisterType<DemoTestingGameTickable>()
 				.AsSelf()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
 			builder.RegisterType<PlayerEntityExitManager>()
 				.AsSelf()
-				.As<IGameTickable>()
+				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 		}
 	}

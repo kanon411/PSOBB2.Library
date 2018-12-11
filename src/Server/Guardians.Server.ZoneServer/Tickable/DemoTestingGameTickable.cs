@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 namespace Guardians
 {
 	//To put some demo/testing code into
+	[CollectionsLocking(LockType.Read)]
 	public sealed class DemoTestingGameTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainer { get; }

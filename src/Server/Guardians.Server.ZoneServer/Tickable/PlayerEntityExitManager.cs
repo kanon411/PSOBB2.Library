@@ -6,6 +6,7 @@ using Nito.AsyncEx;
 
 namespace Guardians
 {
+	[CollectionsLocking(LockType.Write)]
 	public sealed class PlayerEntityExitManager : IGameTickable
 	{
 		/// <summary>

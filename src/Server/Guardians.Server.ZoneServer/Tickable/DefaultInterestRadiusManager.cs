@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace Guardians
 {
+	[CollectionsLocking(LockType.Read)]
 	public sealed class DefaultInterestRadiusManager : IInterestRadiusManager, IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }

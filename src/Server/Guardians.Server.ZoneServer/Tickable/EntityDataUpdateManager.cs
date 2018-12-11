@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 namespace Guardians
 {
 	//TODO: Refactor, this is just for testing
+	[CollectionsLocking(LockType.Read)]
 	public sealed class EntityDataUpdateManager : IGameTickable
 	{
 		private IPlayerEntityGuidEnumerable PlayerGuids { get; }

@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Guardians
 {
 	//TODO: Refactor clean this mess up
+	[CollectionsLocking(LockType.Write)]
 	public sealed class PlayerEntityEntryManager : IGameTickable
 	{
 		private IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> PlayerEntitySessionDequeable { get; }

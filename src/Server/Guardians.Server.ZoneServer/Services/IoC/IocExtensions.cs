@@ -36,6 +36,7 @@ namespace Guardians
 			if(gameTickable == null) throw new ArgumentNullException(nameof(gameTickable));
 			if(argsContext == null) throw new ArgumentNullException(nameof(argsContext));
 
+			IGameTickable originalGameTickable = gameTickable;
 
 			//First let's checking locking attributes, since they are the most important
 			CollectionsLockingAttribute lockingAttribute = gameTickable.GetType().GetCustomAttribute<CollectionsLockingAttribute>();
@@ -44,6 +45,9 @@ namespace Guardians
 				gameTickable = new GlobalCollectionsLockingPolicyTickableDecorator(argsContext.Resolve<GlobalEntityCollectionsLockingPolicy>(), gameTickable, lockingAttribute.DesiredLockingType);
 			}
 
+			//Here we can handle skippables, this was introduced to reduce write lock contention.
+			if(gameTickable is ITickableSkippable skippable)
+				gameTickable = new SkippableTickableDecorator(gameTickable, skippable);
 
 			return gameTickable;
 		}

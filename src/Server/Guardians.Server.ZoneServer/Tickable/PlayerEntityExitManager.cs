@@ -7,7 +7,7 @@ using Nito.AsyncEx;
 namespace Guardians
 {
 	[CollectionsLocking(LockType.Write)]
-	public sealed class PlayerEntityExitManager : IGameTickable
+	public sealed class PlayerEntityExitManager : IGameTickable, ITickableSkippable
 	{
 		/// <summary>
 		/// The queue that contains sesssions that need to be cleaned up.
@@ -25,6 +25,10 @@ namespace Guardians
 		private IZoneServerToGameServerClient ZoneClientGameService { get; }
 
 		private IConnectionEntityCollection ConnectionToEntityMap { get; }
+
+		//If it's empty, we can just skip.
+		/// <inheritdoc />
+		public bool IsTickableSkippable => SessionCleanupQueue.isEmpty;
 
 		/// <inheritdoc />
 		public PlayerEntityExitManager(

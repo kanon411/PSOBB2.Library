@@ -10,7 +10,7 @@ namespace Guardians
 {
 	//TODO: Refactor clean this mess up
 	[CollectionsLocking(LockType.Write)]
-	public sealed class PlayerEntityEntryManager : IGameTickable
+	public sealed class PlayerEntityEntryManager : IGameTickable, ITickableSkippable
 	{
 		private IDequeable<KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext>> PlayerEntitySessionDequeable { get; }
 
@@ -21,6 +21,10 @@ namespace Guardians
 		private ILog Logger { get; }
 
 		private IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> EntityDataUpdateFactory { get; }
+
+		//If it's empty, this can be skipped.
+		/// <inheritdoc />
+		public bool IsTickableSkippable => PlayerEntitySessionDequeable.isEmpty;
 
 		/// <inheritdoc />
 		public PlayerEntityEntryManager(

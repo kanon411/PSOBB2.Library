@@ -64,6 +64,10 @@ namespace Guardians
 			ProjectVersionStage.AssertBeta();
 			//TODO: We may want a timeout to prevent production deadlocks
 			//Just need reader locking to lock on the policy specified by the implementer.
+			//So, as anote it's possible to have aquired this lock while waiting on a Write lock to end. That would
+			//mean, since we use write locks only for removal (usually), that the entity might not exist.
+			//We actually would normally need to do double-check locking BUT the check below of the connection entity map
+			//will detect if it's been removed, thus everything will be ok.
 			using(var lockObj = await LockingPolicy.ReaderLockAsync(GenerateLockContext(context, payload), CancellationToken.None)
 				.ConfigureAwait(false))
 			{

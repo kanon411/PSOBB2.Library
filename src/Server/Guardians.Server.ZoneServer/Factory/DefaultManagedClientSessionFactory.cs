@@ -45,8 +45,9 @@ namespace Guardians
 
 				//We should add this to the session collection, and also make sure it is unregistered on disconnection
 				SessionRegisterable.Register(context.Details.ConnectionId, clientSession);
-				clientSession.OnSessionDisconnection += (source, args) =>
+				clientSession.OnSessionDisconnection += async (source, args) =>
 				{
+					throw new NotImplementedException("TODO: Redo the whole session disconnection crap.");
 					if(Logger.IsDebugEnabled)
 						Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
 

@@ -35,12 +35,6 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		protected override void OnSessionDisconnected()
-		{
-			//TODO: Do some cleanup or something someday
-		}
-
-		/// <inheritdoc />
 		public override Task OnNetworkMessageRecieved(NetworkIncomingMessage<GameClientPacketPayload> message)
 		{
 			if(Logger.IsDebugEnabled)

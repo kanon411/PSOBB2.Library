@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="GladNet3.Client.API" Version="3.0.49" />
-    <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.49" />
-    <PackageReference Include="GladNet3.Handler.API" Version="3.0.45" />
-    <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.49" />
+    <PackageReference Include="GladNet3.Client.API" Version="3.0.46" />
+    <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.46" />
+    <PackageReference Include="GladNet3.Handler.API" Version="3.0.46" />
+    <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.46" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
     <PackageReference Include="Refit" Version="4.6.58" />

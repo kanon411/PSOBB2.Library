@@ -288,34 +288,28 @@ namespace Guardians
 
 		private static void RegisterGameTickable(ContainerBuilder builder)
 		{
-			builder.RegisterType<DefaultInterestRadiusManager>()
-				.AsSelf()
+			builder.RegisterTickableType<DefaultInterestRadiusManager>()
 				.As<IInterestRadiusManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
-			builder.RegisterType<PlayerEntityEntryManager>()
-				.AsSelf()
+			builder.RegisterTickableType<PlayerEntityEntryManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
-			builder.RegisterType<PlayerEntityMovementDataUpdateManager>()
-				.AsSelf()
+			builder.RegisterTickableType<PlayerEntityMovementDataUpdateManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
-			builder.RegisterType<EntityDataUpdateManager>()
-				.AsSelf()
+			builder.RegisterTickableType<EntityDataUpdateManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
-			builder.RegisterType<DemoTestingGameTickable>()
-				.AsSelf()
+			builder.RegisterTickableType<DemoTestingGameTickable>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
-			builder.RegisterType<PlayerEntityExitManager>()
-				.AsSelf()
+			builder.RegisterTickableType<PlayerEntityExitManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 		}

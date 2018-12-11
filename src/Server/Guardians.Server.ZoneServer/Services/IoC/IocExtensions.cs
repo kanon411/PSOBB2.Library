@@ -10,6 +10,12 @@ namespace Guardians
 {
 	public static class IocExtensions
 	{
+		public static IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterTickableType<TTIckableType>(this ContainerBuilder builder)
+			where TTIckableType : IGameTickable
+		{
+			return builder.RegisterType(typeof(TTIckableType));
+		}
+
 		/// <summary>
 		/// Registeres a <see cref="IGameTickable"/>
 		/// </summary>
@@ -46,7 +52,7 @@ namespace Guardians
 			}
 
 			//Here we can handle skippables, this was introduced to reduce write lock contention.
-			if(gameTickable is ITickableSkippable skippable)
+			if(originalGameTickable is ITickableSkippable skippable)
 				gameTickable = new SkippableTickableDecorator(gameTickable, skippable);
 
 			return gameTickable;

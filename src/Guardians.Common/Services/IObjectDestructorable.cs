@@ -17,5 +17,13 @@ namespace Guardians
 		/// <param name="obj">The object to destroy.</param>
 		/// <returns>True if the object could be successfully deconstructed.</returns>
 		bool Destroy(TObjectType obj);
+
+		/// <summary>
+		/// Checks if the provided <see cref="connectionId"/>
+		/// owns an entity that needs to be destructed.
+		/// </summary>
+		/// <param name="connectionId">The connection id to check.</param>
+		/// <returns>True if an entity is owned that needs to be destroyed.</returns>
+		bool OwnsEntityToDestruct(int connectionId);
 	}
 }

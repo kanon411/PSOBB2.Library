@@ -29,5 +29,11 @@ namespace Guardians
 		{
 
 		}
+
+		/// <inheritdoc />
+		public bool RemoveEntityEntry(NetworkEntityGuid entityGuid)
+		{
+			return TryRemove(entityGuid, out var temp);
+		}
 	}
 }

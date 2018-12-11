@@ -17,17 +17,29 @@ namespace Guardians
 
 		private IObjectDestructorable<PlayerSessionDeconstructionContext> SessionDestructor { get; }
 
+		private IEntityDataSaveable EntitySaver { get; }
+
+		private PlayerSessionDeconstructionQueue SessionCleanupQueue { get; }
+
+		private IConnectionEntityCollection ConnectionCollection { get; }
+
 		/// <inheritdoc />
 		public DefaultManagedClientSessionFactory(
 			[NotNull] ILog logger,
 			[NotNull] MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>> handlerService,
 			[NotNull] IRegisterable<int, ZoneClientSession> sessionRegisterable,
-			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor)
+			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor,
+			[NotNull] IEntityDataSaveable entitySaver,
+			PlayerSessionDeconstructionQueue playerDeconstructionQueue,
+			[NotNull] IConnectionEntityCollection connectionCollection)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			HandlerService = handlerService ?? throw new ArgumentNullException(nameof(handlerService));
 			SessionRegisterable = sessionRegisterable ?? throw new ArgumentNullException(nameof(sessionRegisterable));
 			SessionDestructor = sessionDestructor ?? throw new ArgumentNullException(nameof(sessionDestructor));
+			EntitySaver = entitySaver ?? throw new ArgumentNullException(nameof(entitySaver));
+			SessionCleanupQueue = playerDeconstructionQueue;
+			ConnectionCollection = connectionCollection ?? throw new ArgumentNullException(nameof(connectionCollection));
 		}
 
 		/// <inheritdoc />
@@ -47,20 +59,31 @@ namespace Guardians
 				SessionRegisterable.Register(context.Details.ConnectionId, clientSession);
 				clientSession.OnSessionDisconnection += async (source, args) =>
 				{
-					throw new NotImplementedException("TODO: Redo the whole session disconnection crap.");
+					//throw new NotImplementedException("TODO: Redo the whole session disconnection crap.");
 					if(Logger.IsDebugEnabled)
 						Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
 
-					SessionRegisterable.Unregister(source.Details.ConnectionId);
-
 					try
 					{
-						//TODO: This is kinda a hack, we need this to run on the main thread because it destroys a GameObject
-						UnityExtended.UnityMainThreadContext.Post(state =>
+						//It's possible they disconnected before they even own an entity.
+						if(!SessionDestructor.OwnsEntityToDestruct(source.Details.ConnectionId))
 						{
-							//TODO: Create an async OnSessionDisconnection in GladNet3 so we can handle disconnection logic better.
-							SessionDestructor.Destroy(new PlayerSessionDeconstructionContext(context.Details.ConnectionId));
-						}, true);
+							Logger.Debug($"Connection: {source.Details.ConnectionId} disconnecting does not own an entity.");
+							return;
+						}
+						else
+						{
+							//We know that an entity exists, so we must save it. Before we even queue it up for removal.
+							await EntitySaver.SaveAsync(ConnectionCollection[source.Details.ConnectionId])
+								.ConfigureAwait(false);
+						}
+
+						//All collections and world entity stuff is still intact at this point. We've only taken time to
+						//save entity data (maybe on another server/db) and will enqueue actual removal to be handled elsewhere.
+
+						//You may wonder why we're queueing this up for removal. The reason is as follows:
+						//It's possible that the player spawn request is enqueued up and to be handled by the EntryManager. We need to handle checking this on the main thread AFTER entry manager has run.
+						SessionCleanupQueue.Enqueue(new PlayerSessionDeconstructionContext(source.Details.ConnectionId));
 					}
 					catch(Exception e)
 					{

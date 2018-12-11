@@ -73,17 +73,7 @@ namespace Guardians
 			//gametickables
 			RegisterGameTickable(builder);
 
-			builder.RegisterType<MovementDataCollection>()
-				.AsSelf()
-				.As<IReadonlyEntityGuidMappable<IMovementData>>()
-				.As<IEntityGuidMappable<IMovementData>>()
-				.As<IDirtyableMovementDataCollection>()
-				.SingleInstance();
-
-			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
-				.As(typeof(IReadonlyEntityGuidMappable<>))
-				.As(typeof(IEntityGuidMappable<>))
-				.SingleInstance();
+			RegisterEntityMappableCollections(builder);
 
 			//TODO: We should automate the registeration of message senders
 			builder.RegisterType<VisibilityChangeMessageSender>()
@@ -151,8 +141,6 @@ namespace Guardians
 				.As<IZoneServerToGameServerClient>()
 				.SingleInstance();
 
-			
-
 			builder.RegisterType<DefaultMovementHandlerService>()
 				.As<IMovementDataHandlerService>()
 				.AsSelf();
@@ -181,6 +169,61 @@ namespace Guardians
 			builder.RegisterGeneric(typeof(GenericMessageSender<>))
 				.As(typeof(INetworkMessageSender<>).MakeGenericType(typeof(GenericSingleTargetMessageContext<>)))
 				.SingleInstance();
+
+			//QUeue for session cleanup
+			builder.RegisterType<PlayerSessionDeconstructionQueue>()
+				.AsSelf()
+				.As<IDequeable<PlayerSessionDeconstructionContext>>()
+				.SingleInstance();
+
+			RegisterLockingPolicies(builder);
+		}
+
+		private static void RegisterEntityMappableCollections(ContainerBuilder builder)
+		{
+			//The below is kinda a hack to register the non-generic types in the
+			//removabale collection
+			List<IEntityCollectionRemovable> removableComponentsList = new List<IEntityCollectionRemovable>(10);
+
+			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
+				.AsSelf()
+				.As(typeof(IReadonlyEntityGuidMappable<>))
+				.As(typeof(IEntityGuidMappable<>))
+				.OnActivated(args =>
+				{
+					if(args.Instance is IEntityCollectionRemovable removable)
+						removableComponentsList.Add(removable);
+				})
+				.SingleInstance();
+
+			builder.RegisterType<MovementDataCollection>()
+				.AsSelf()
+				.As<IReadonlyEntityGuidMappable<IMovementData>>()
+				.As<IEntityGuidMappable<IMovementData>>()
+				.As<IDirtyableMovementDataCollection>()
+				.OnActivated(args =>
+				{
+					removableComponentsList.Add((IEntityCollectionRemovable)args.Instance);
+				})
+				.SingleInstance();
+
+			//This will allow everyone to register the removable collection collection.
+			builder.RegisterInstance(removableComponentsList)
+				.As<IReadOnlyCollection<IEntityCollectionRemovable>>()
+				.AsSelf()
+				.SingleInstance();
+		}
+
+		private static void RegisterLockingPolicies(ContainerBuilder builder)
+		{
+			//Add a single entity-based locking policy
+			builder.RegisterType<GlobalEntityResourceLockingPolicy>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
+			builder.RegisterType<GlobalEntityCollectionsLockingPolicy>()
+				.AsSelf();
 		}
 
 		private static void RegisterEntityDestructionServices(ContainerBuilder builder)
@@ -267,6 +310,11 @@ namespace Guardians
 				.SingleInstance();
 
 			builder.RegisterType<DemoTestingGameTickable>()
+				.AsSelf()
+				.As<IGameTickable>()
+				.SingleInstance();
+
+			builder.RegisterType<PlayerEntityExitManager>()
 				.AsSelf()
 				.As<IGameTickable>()
 				.SingleInstance();

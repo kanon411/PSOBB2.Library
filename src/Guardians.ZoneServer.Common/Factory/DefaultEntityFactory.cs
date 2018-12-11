@@ -5,6 +5,7 @@ using Common.Logging;
 using SceneJect.Common;
 using UnityEngine;
 using JetBrains.Annotations;
+using Nito.AsyncEx;
 
 namespace Guardians
 {
@@ -31,6 +32,8 @@ namespace Guardians
 
 		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableEntityDataFieldContainers { get; }
 
+		private IEntityGuidMappable<AsyncReaderWriterLock> EntityAsyncLockMap { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityFactory(
 			ILog logger, 
@@ -41,7 +44,8 @@ namespace Guardians
 			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory,
 			IMovementDataHandlerService movementHandlerService, 
 			IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers, 
-			IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers)
+			IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers,
+			[NotNull] IEntityGuidMappable<AsyncReaderWriterLock> entityAsyncLockMap)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
@@ -52,6 +56,7 @@ namespace Guardians
 			MovementHandlerService = movementHandlerService ?? throw new ArgumentNullException(nameof(movementHandlerService));
 			FieldDataContainers = fieldDataContainers;
 			ChangeTrackableEntityDataFieldContainers = changeTrackableEntityDataFieldContainers;
+			EntityAsyncLockMap = entityAsyncLockMap ?? throw new ArgumentNullException(nameof(entityAsyncLockMap));
 		}
 
 		/// <inheritdoc />
@@ -83,6 +88,8 @@ namespace Guardians
 			//This lets it be looked up in both ways
 			FieldDataContainers.Add(context.EntityGuid, changeTrackableEntityDataCollection);
 			ChangeTrackableEntityDataFieldContainers.Add(context.EntityGuid, changeTrackableEntityDataCollection);
+
+			EntityAsyncLockMap.Add(new KeyValuePair<NetworkEntityGuid, AsyncReaderWriterLock>(context.EntityGuid, new AsyncReaderWriterLock()));
 
 			return entityGameObject;
 		}

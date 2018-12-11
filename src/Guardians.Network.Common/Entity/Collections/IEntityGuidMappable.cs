@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guardians
 {
-	public interface IEntityGuidMappable<TValue> : IDictionary<NetworkEntityGuid, TValue>
+	public interface IEntityGuidMappable<TValue> : IDictionary<NetworkEntityGuid, TValue>, IEntityCollectionRemovable
 	{
 		
 	}

@@ -12,22 +12,14 @@ namespace Guardians
 	{
 		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }
 
-		private IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> GuidToSessionMappable { get; }
-
-		private IEntityGuidMappable<InterestCollection> GuidToInterestCollectionMappable { get; }
-
 		private IReadonlyEntityGuidMappable<GameObject> GuidToGameObjectMap { get; }
 
 		/// <inheritdoc />
 		public ServerPlayerEntityDestructor(
 			[NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor, 
-			[NotNull] IEntityGuidMappable<IPeerPayloadSendService<GameServerPacketPayload>> guidToSessionMappable, 
-			[NotNull] IEntityGuidMappable<InterestCollection> guidToInterestCollectionMappable,
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMap)
 		{
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
-			GuidToSessionMappable = guidToSessionMappable ?? throw new ArgumentNullException(nameof(guidToSessionMappable));
-			GuidToInterestCollectionMappable = guidToInterestCollectionMappable ?? throw new ArgumentNullException(nameof(guidToInterestCollectionMappable));
 			GuidToGameObjectMap = guidToGameObjectMap ?? throw new ArgumentNullException(nameof(guidToGameObjectMap));
 		}
 
@@ -49,12 +41,13 @@ namespace Guardians
 				exit.OnTriggerExit(ourCollider);
 			}
 
-			//We have some player specific stuff, especially for the server, that we need to handle
-			//removing that regular Entities won't have have the client or even the server.
-			GuidToSessionMappable.Remove(obj.EntityGuid);
-			GuidToInterestCollectionMappable.Remove(obj.EntityGuid);
-
 			return EntityDestructor.Destroy(obj.EntityGuid);
+		}
+
+		/// <inheritdoc />
+		public bool OwnsEntityToDestruct(int connectionId)
+		{
+			throw new NotSupportedException($"TODO: We shouldn't have the destructor actually check this.");
 		}
 	}
 }

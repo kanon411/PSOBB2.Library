@@ -8,59 +8,45 @@ namespace Guardians
 {
 	public sealed class DefaultEntityDestructor : IObjectDestructorable<NetworkEntityGuid>
 	{
-		private IEntityGuidMappable<GameObject> GuidToGameObjectMappable { get; }
-
-		private IEntityGuidMappable<IMovementData> GuidToMovementInfoMappable { get; }
+		private IReadonlyEntityGuidMappable<GameObject> GuidToGameObjectMappable { get; }
 
 		private IGameObjectToEntityMappable GameObjectToEntityMap { get; }
 
-		private IEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerators { get; }
-
-		private IEntityGuidMappable<IEntityDataFieldContainer> FieldDataContainers { get; }
-
-		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableEntityDataFieldContainers { get; }
+		private IReadOnlyCollection<IEntityCollectionRemovable> RemovableCollections { get; }
 
 		/// <inheritdoc />
 		public DefaultEntityDestructor(
-			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
-			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
+			IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap,
-			IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerators,
-			[NotNull] IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers,
-			[NotNull] IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers)
+			[NotNull] IReadOnlyCollection<IEntityCollectionRemovable> removableCollections)
 		{
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
-			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
-			MovementGenerators = movementGenerators ?? throw new ArgumentNullException(nameof(movementGenerators));
-			FieldDataContainers = fieldDataContainers ?? throw new ArgumentNullException(nameof(fieldDataContainers));
-			ChangeTrackableEntityDataFieldContainers = changeTrackableEntityDataFieldContainers ?? throw new ArgumentNullException(nameof(changeTrackableEntityDataFieldContainers));
+			RemovableCollections = removableCollections ?? throw new ArgumentNullException(nameof(removableCollections));
 		}
 
 		/// <inheritdoc />
 		public bool Destroy(NetworkEntityGuid obj)
 		{
-			//TODO: Verify we even know it.
-			//TODO: We may not want to do this for group members?
-			//We destroy an entity via its entity guid, just remove all references.
-
+			//This removes the world entity from it's special collection AND removes it from the relevant map
 			GameObject rootEntityGameObject = GuidToGameObjectMappable[obj];
-
-			GuidToMovementInfoMappable.Remove(obj);
-			GuidToGameObjectMappable.Remove(obj);
 			GameObjectToEntityMap.ObjectToEntityMap.Remove(rootEntityGameObject);
-
 			GameObject.Destroy(rootEntityGameObject);
 
-			//Not all entities will have a movement generator sometimes.
-			if(MovementGenerators.ContainsKey(obj))
-				MovementGenerators.Remove(obj);
-
-			//From entity data from collections
-			FieldDataContainers.Remove(obj);
-			ChangeTrackableEntityDataFieldContainers.Remove(obj);
+			foreach(var removable in RemovableCollections)
+			{
+				ProjectVersionStage.AssertBeta();
+				//TODO: Should we check this?
+				removable.RemoveEntityEntry(obj);
+			}
 
 			return true;
+		}
+
+		/// <inheritdoc />
+		public bool OwnsEntityToDestruct(int connectionId)
+		{
+			throw new NotSupportedException($"TODO: We shouldn't have the destructor actually check this.");
 		}
 	}
 }

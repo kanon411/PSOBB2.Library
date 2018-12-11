@@ -151,5 +151,11 @@ namespace Guardians
 		{
 			DirtyChangesTracker.Clear();
 		}
+
+		/// <inheritdoc />
+		public bool RemoveEntityEntry(NetworkEntityGuid entityGuid)
+		{
+			return this.Remove(entityGuid);
+		}
 	}
 }

@@ -24,24 +24,19 @@ namespace Guardians
 		/// </summary>
 		private IZoneServerToGameServerClient ZoneClientGameService { get; }
 
-
 		private IConnectionEntityCollection ConnectionToEntityMap { get; }
-
-		private GlobalEntityCollectionsLockingPolicy CollectionLockingPolicy { get; }
 
 		/// <inheritdoc />
 		public PlayerEntityExitManager(
 			[NotNull] IDequeable<PlayerSessionDeconstructionContext> sessionCleanupQueue,
 			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor,
 			[NotNull] IZoneServerToGameServerClient zoneClientGameService,
-			[NotNull] IConnectionEntityCollection connectionToEntityMap,
-			[NotNull] GlobalEntityCollectionsLockingPolicy collectionLockingPolicy)
+			[NotNull] IConnectionEntityCollection connectionToEntityMap)
 		{
 			SessionCleanupQueue = sessionCleanupQueue ?? throw new ArgumentNullException(nameof(sessionCleanupQueue));
 			SessionDestructor = sessionDestructor ?? throw new ArgumentNullException(nameof(sessionDestructor));
 			ZoneClientGameService = zoneClientGameService ?? throw new ArgumentNullException(nameof(zoneClientGameService));
 			ConnectionToEntityMap = connectionToEntityMap ?? throw new ArgumentNullException(nameof(connectionToEntityMap));
-			CollectionLockingPolicy = collectionLockingPolicy ?? throw new ArgumentNullException(nameof(collectionLockingPolicy));
 		}
 
 		/// <inheritdoc />
@@ -58,11 +53,7 @@ namespace Guardians
 
 			NetworkEntityGuid entityGuid = ConnectionToEntityMap[context.ConnectionId];
 
-			//We have to lock here because if we don't people may be iterating the collections.
-			using(var lockObj = CollectionLockingPolicy.WriterLock(null, CancellationToken.None))
-			{
-				SessionDestructor.Destroy(context);
-			}
+			SessionDestructor.Destroy(context);
 
 			//We need to async send the release request, a very important part of session cleanup.
 			//if this failes we have BIG problems. BIG BIG BIG.
@@ -73,9 +64,6 @@ namespace Guardians
 				await ZoneClientGameService.ReleaseActiveSession(entityGuid.EntityId)
 					.ConfigureAwait(false);
 			});
-
-			//TODO: This is a HACK We're in a sync context and we need to send a web request to the gameserver to remove this session.
-			
 		}
 	}
 }

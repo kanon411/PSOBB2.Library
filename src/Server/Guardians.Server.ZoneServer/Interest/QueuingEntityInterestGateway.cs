@@ -16,16 +16,22 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public bool TryEntityEnter(NetworkEntityGuid entryContext, NetworkEntityGuid entityGuid)
+		public bool TryEntityEnter([NotNull] NetworkEntityGuid entryContext, [NotNull] NetworkEntityGuid entityGuid)
 		{
+			if(entryContext == null) throw new ArgumentNullException(nameof(entryContext));
+			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
+
 			ChangeQueue.Enqueue(new EntityInterestChangeContext(entryContext, entityGuid, EntityInterestChangeContext.ChangeType.Enter));
 
 			return true;
 		}
 
 		/// <inheritdoc />
-		public bool TryEntityLeave(NetworkEntityGuid entryContext, NetworkEntityGuid entityGuid)
+		public bool TryEntityLeave([NotNull] NetworkEntityGuid entryContext, [NotNull] NetworkEntityGuid entityGuid)
 		{
+			if(entryContext == null) throw new ArgumentNullException(nameof(entryContext));
+			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
+
 			ChangeQueue.Enqueue(new EntityInterestChangeContext(entryContext, entityGuid, EntityInterestChangeContext.ChangeType.Exit));
 
 			return true;

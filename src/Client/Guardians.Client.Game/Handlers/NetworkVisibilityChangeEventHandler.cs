@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Dissonance;
 using GladNet;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ namespace Guardians
 		/// </summary>
 		private IVoiceGateway VoiceGateway { get; }
 
+		private IPlayerTrackingRegisterable PlayerTracker { get; }
+
 		/// <inheritdoc />
 		public NetworkVisibilityChangeEventHandler(
 			ILog logger,
@@ -30,7 +33,8 @@ namespace Guardians
 			IObjectDestructorable<NetworkEntityGuid> entityDestructor,
 			IReadonlyEntityGuidMappable<GameObject> knownEntites,
 			IReadonlyNetworkTimeService timeService, 
-			IVoiceGateway voiceGateway)
+			IVoiceGateway voiceGateway, 
+			[NotNull] IPlayerTrackingRegisterable playerTracker)
 			: base(logger)
 		{
 			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -38,6 +42,7 @@ namespace Guardians
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
 			VoiceGateway = voiceGateway;
+			PlayerTracker = playerTracker ?? throw new ArgumentNullException(nameof(playerTracker));
 		}
 
 		/// <inheritdoc />
@@ -63,7 +68,14 @@ namespace Guardians
 
 				try
 				{
-					EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, GetInitialMovementData(creationData), ComputePrefabTypeFromGuid(creationData.EntityGuid), testData));
+					GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, GetInitialMovementData(creationData), ComputePrefabTypeFromGuid(creationData.EntityGuid), testData));
+
+					//Join players into the voice gateway
+					if(creationData.EntityGuid.EntityType == EntityType.Player)
+					{
+						VoiceGateway.JoinVoiceSession(creationData.EntityGuid);
+						PlayerTracker.RegisterTracker(entityRootObject.GetComponent<IDissonancePlayer>());
+					}
 				}
 				catch(Exception e)
 				{
@@ -71,10 +83,6 @@ namespace Guardians
 					Logger.Error($"Failed to Create Entity: {creationData.EntityGuid} Exception: {e.Message}\n\nStack: {e.StackTrace}");
 					throw;
 				}
-
-				//Join players into the voice gateway
-				if(creationData.EntityGuid.EntityType == EntityType.Player)
-					VoiceGateway.JoinVoiceSession(creationData.EntityGuid);
 			}
 
 			foreach(var destroyData in payload.OutOfRangeEntities)

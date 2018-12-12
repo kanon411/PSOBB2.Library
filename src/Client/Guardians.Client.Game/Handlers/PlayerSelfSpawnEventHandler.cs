@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Dissonance;
 using GladNet;
 using UnityEngine;
 
@@ -21,17 +22,21 @@ namespace Guardians
 
 		private ILocalPlayerDetails LocalPlayerDetails { get; }
 
+		private IPlayerTrackingRegisterable PlayerTracker { get; }
+
 		/// <inheritdoc />
 		public PlayerSelfSpawnEventHandler(
 			ILog logger, 
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> playerFactory,
 			IReadOnlyCollection<IGameInitializable> initializables,
-			ILocalPlayerDetails localPlayerDetails)
+			ILocalPlayerDetails localPlayerDetails,
+			[NotNull] IPlayerTrackingRegisterable playerTracker)
 			: base(logger)
 		{
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			Initializables = initializables ?? throw new ArgumentNullException(nameof(initializables));
 			LocalPlayerDetails = localPlayerDetails ?? throw new ArgumentNullException(nameof(localPlayerDetails));
+			PlayerTracker = playerTracker ?? throw new ArgumentNullException(nameof(playerTracker));
 		}
 
 		/// <inheritdoc />
@@ -48,10 +53,13 @@ namespace Guardians
 			await new UnityYieldAwaitable();
 
 			//Don't do any checks for now, we just spawn
-			PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer, entityData));
+			GameObject playerGameObject = PlayerFactory.Create(new DefaultEntityCreationContext(payload.CreationData.EntityGuid, payload.CreationData.InitialMovementData, EntityPrefab.LocalPlayer, entityData));
 
 			//Set local player entity guid, lots of dependencies need this set to work.
 			LocalPlayerDetails.LocalPlayerGuid = payload.CreationData.EntityGuid;
+
+			//TODO: Assuming that the root has the player tracking data
+			PlayerTracker.RegisterTracker(playerGameObject.GetComponent<IDissonancePlayer>());
 
 			//Call all OnGameInitializables
 			foreach(var init in Initializables)

@@ -67,7 +67,10 @@ namespace Guardians
 
 			//load the entity's prefab from the factory
 			GameObject prefab = PrefabFactory.Create(context.PrefabType);
-			GameObject entityGameObject = ObjectFactory.Create(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
+
+			GameObject entityGameObject = ObjectFactory.CreateBuilder()
+				.With(Service<NetworkEntityGuid>.As(context.EntityGuid))
+				.Create(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(entityGameObject, context.EntityGuid);
 

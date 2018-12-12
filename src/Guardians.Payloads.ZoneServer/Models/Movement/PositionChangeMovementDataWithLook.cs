@@ -34,13 +34,25 @@ namespace Guardians
 		[ProtoMember(4)]
 		public Vector3 CameraLookDirection { get; }
 
+		/// <summary>
+		/// The rotation around the Y axis.
+		/// </summary>
+		[ProtoMember(5)]
+		public float YAxisRotation { get; }
+
 		/// <inheritdoc />
-		public PositionChangeMovementDataWithLook(long timeStamp, Vector3 initialPosition, Vector2 direction, Vector3 cameraLookDirection)
+		public PositionChangeMovementDataWithLook(
+			long timeStamp, 
+			Vector3 initialPosition, 
+			Vector2 direction, 
+			Vector3 cameraLookDirection, 
+			float yAxisRotation)
 		{
 			TimeStamp = timeStamp;
 			InitialPosition = initialPosition;
 			Direction = direction;
 			CameraLookDirection = cameraLookDirection;
+			YAxisRotation = yAxisRotation;
 		}
 
 		protected PositionChangeMovementDataWithLook()

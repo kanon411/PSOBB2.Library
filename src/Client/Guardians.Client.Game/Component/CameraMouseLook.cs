@@ -10,19 +10,31 @@ namespace Guardians
 		[SerializeField]
 		private float LookSpeed = 3;
 
+		[SerializeField]
+		private Vector2 MaxLookAngle = new Vector2(60.0f, 60.0f);
+
+		[SerializeField]
+		private GameObject RootRotationalObject;
+
 		private Vector3 CurrentRotation;
 
 		void Start()
 		{
-			CurrentRotation = transform.eulerAngles;
+			CurrentRotation = transform.localEulerAngles;
 		}
 
 		void Update()
 		{
-			//TODO: Kinda slow
-			CurrentRotation = new Vector3(Mathf.Clamp(-Input.GetAxis("Mouse Y") * LookSpeed + CurrentRotation.x, -60.0f, 60.0f), Mathf.Clamp(Input.GetAxis("Mouse X") * LookSpeed + CurrentRotation.y, -60.0f, 60.0f), 0);
+			//Mathf.Clamp(Input.GetAxis("Mouse X") * LookSpeed + CurrentRotation.y, -MaxLookAngle.y, MaxLookAngle.y);
 
-			transform.eulerAngles = CurrentRotation;
+			//Additive rotation around the y-axis for the IK root.
+			float rotationalMovement = Input.GetAxis("Mouse X") * LookSpeed;
+
+			//TODO: Kinda slow
+			CurrentRotation = new Vector3(Mathf.Clamp(-Input.GetAxis("Mouse Y") * LookSpeed + CurrentRotation.x, -MaxLookAngle.x, MaxLookAngle.x), 0, 0);
+
+			transform.localEulerAngles = CurrentRotation;
+			RootRotationalObject.transform.Rotate(Vector3.up, rotationalMovement);
 		}
 	}
 }

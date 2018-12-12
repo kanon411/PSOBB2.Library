@@ -7,11 +7,13 @@ using Dissonance.Audio.Playback;
 using Dissonance.Config;
 using Dissonance.Networking;
 using Dissonance.VAD;
+using Guardians;
 using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace Dissonance
 {
+    //Should register this as IPlayerTrackingRegisterable and other dependency types.
     /// <summary>
     ///     The central Dissonance Voice Comms component.
     ///     Place one of these on a voice comm entity near the root of your scene.
@@ -24,7 +26,7 @@ namespace Dissonance
     // ReSharper disable once InheritdocConsiderUsage
     [HelpURL("https://placeholder-software.co.uk/dissonance/docs/Reference/Components/Dissonance-Comms/")]
     public sealed partial class DissonanceComms
-        : MonoBehaviour, IPriorityManager, IAccessTokenCollection, IChannelPriorityProvider, IVolumeProvider
+        : MonoBehaviour, IPriorityManager, IAccessTokenCollection, IChannelPriorityProvider, IVolumeProvider, IPlayerTrackingRegisterable
     {
         #region fields
         private static readonly Log Log = Logs.Create(LogCategory.Core, typeof(DissonanceComms).Name);
@@ -735,5 +737,17 @@ namespace Dissonance
             get { return _isDeafened ? 0 : RemoteVoiceVolume * _autoChannelDuck.TargetVolume; }
         }
         #endregion
+
+        /// <inheritdoc />
+        public void RegisterTracker(IDissonancePlayer player)
+        {
+            this.TrackPlayerPosition(player);
+        }
+
+        /// <inheritdoc />
+        public void RemoveTracker(IDissonancePlayer player)
+        {
+           this.StopTracking(player);
+        }
     }
 }

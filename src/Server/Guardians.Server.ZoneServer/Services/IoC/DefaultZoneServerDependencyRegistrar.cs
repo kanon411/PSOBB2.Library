@@ -177,6 +177,15 @@ namespace Guardians
 				.SingleInstance();
 
 			RegisterLockingPolicies(builder);
+
+			//Interest change queue
+			builder.RegisterType<QueuingEntityInterestGateway>()
+				.As<IInterestRadiusManager>();
+
+			builder.RegisterType<EntityInterestChangeQueue>()
+				.AsSelf()
+				.As<IDequeable<EntityInterestChangeContext>>()
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)
@@ -212,6 +221,7 @@ namespace Guardians
 				.As<IReadOnlyCollection<IEntityCollectionRemovable>>()
 				.AsSelf()
 				.SingleInstance();
+
 		}
 
 		private static void RegisterLockingPolicies(ContainerBuilder builder)
@@ -289,7 +299,6 @@ namespace Guardians
 		private static void RegisterGameTickable(ContainerBuilder builder)
 		{
 			builder.RegisterTickableType<DefaultInterestRadiusManager>()
-				.As<IInterestRadiusManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 

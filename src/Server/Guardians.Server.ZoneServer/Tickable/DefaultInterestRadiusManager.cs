@@ -8,20 +8,25 @@ using JetBrains.Annotations;
 
 namespace Guardians
 {
+	//Don't do a Skippable here, because we actually don't have a good design. It's possible without work there is still something to do.
 	[CollectionsLocking(LockType.Read)]
-	public sealed class DefaultInterestRadiusManager : IInterestRadiusManager, IGameTickable
+	public sealed class DefaultInterestRadiusManager : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }
 
 		private INetworkMessageSender<EntityVisibilityChangeContext> VisibilityMessageSender { get; }
 
+		private IDequeable<EntityInterestChangeContext> InterestChangeDequeable { get; }
+
 		/// <inheritdoc />
 		public DefaultInterestRadiusManager(
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
-			[NotNull] VisibilityChangeMessageSender visibilityMessageSender)
+			[NotNull] VisibilityChangeMessageSender visibilityMessageSender,
+			[NotNull] IDequeable<EntityInterestChangeContext> interestChangeDequeable)
 		{
 			ManagedInterestCollections = managedInterestCollections ?? throw new ArgumentNullException(nameof(managedInterestCollections));
 			VisibilityMessageSender = visibilityMessageSender ?? throw new ArgumentNullException(nameof(visibilityMessageSender));
+			InterestChangeDequeable = interestChangeDequeable ?? throw new ArgumentNullException(nameof(interestChangeDequeable));
 		}
 
 		/// <inheritdoc />
@@ -63,8 +68,12 @@ namespace Guardians
 		/// <inheritdoc />
 		public void Tick()
 		{
-			//TODO: This should probably run AFTER we broadcast movement data
-			
+			//TODO: We should probably refactor this, since it uses a new queue design
+			if(InterestChangeDequeable.isEmpty)
+				return;
+
+			ServiceIncomingChangeQueue();
+
 			//We need to iterate the entire interest dictionary
 			//That means we need to check the new incoming and outgoing entities
 			//We do this because we need to build update packets for the players
@@ -101,6 +110,27 @@ namespace Guardians
 					throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.LeavingDequeueable)}");
 			}
 #endif
+		}
+
+		private void ServiceIncomingChangeQueue()
+		{
+			//We should servive the entire queue
+			while(!InterestChangeDequeable.isEmpty)
+			{
+				EntityInterestChangeContext changeContext = InterestChangeDequeable.Dequeue();
+
+				ThrowIfNoEntityInterestManaged(changeContext.EnterableEntity, changeContext.EnteringEntity);
+
+				switch(changeContext.ChangingType)
+				{
+					case EntityInterestChangeContext.ChangeType.Enter:
+						ManagedInterestCollections[changeContext.EnterableEntity].Register(changeContext.EnteringEntity, changeContext.EnteringEntity);
+						break;
+					case EntityInterestChangeContext.ChangeType.Exit:
+						ManagedInterestCollections[changeContext.EnterableEntity].Unregister(changeContext.EnteringEntity);
+						break;
+				}
+			}
 		}
 	}
 }

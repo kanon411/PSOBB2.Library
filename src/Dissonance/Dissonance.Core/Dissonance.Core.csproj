@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
     <ProjectReference Include="..\Dissonance.Models\Dissonance.Models.csproj" />
   </ItemGroup>
 

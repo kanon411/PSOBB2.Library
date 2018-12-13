@@ -22,14 +22,21 @@ namespace Dissonance
 		[SerializeField]
 		private Transform AudioLocationTransform;
 
-		void Start()
+		private Lazy<string> ComputedName { get; }
+
+		public GladNetTestPlayer()
 		{
-			PlayerId = EntityGuid.RawGuidValue.ToString();
+			ComputedName = new Lazy<string>(() => ComputeName());
+		}
+
+		public string ComputeName()
+		{
+			return EntityGuid.RawGuidValue.ToString();
 		}
 
 		//To prevent GC waste we just initialize this once.
 		/// <inheritdoc />
-		public string PlayerId { get; private set; }
+		public string PlayerId => ComputedName.Value;
 
 		/// <inheritdoc />
 		public Vector3 Position => AudioLocationTransform.position;

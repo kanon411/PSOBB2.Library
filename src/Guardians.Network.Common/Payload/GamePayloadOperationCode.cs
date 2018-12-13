@@ -27,6 +27,8 @@ namespace Guardians
 		//Voice payloads
 		VoiceInitialization = 7,
 
-		VoiceData = 8
+		VoiceData = 8,
+
+		ModelChangeRequest = 9
 	}
 }

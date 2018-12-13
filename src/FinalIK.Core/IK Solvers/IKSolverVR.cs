@@ -43,7 +43,7 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public void GuessHandOrientations(IInverseKinematicReferenceable references, bool onlyIfZero) {
 			if (!references.isFilled) {
-				Debug.LogWarning("VRIK References are not filled in, can not guess hand orientations. Right-click on VRIK header and slect 'Guess Hand Orientations' when you have filled in the References.", references.root);
+				Debug.LogWarning("VRIK References are not filled in, can not guess hand orientations. Right-click on VRIK header and slect 'Guess Hand Orientations' when you have filled in the References.");
 				return;
 			}
 			

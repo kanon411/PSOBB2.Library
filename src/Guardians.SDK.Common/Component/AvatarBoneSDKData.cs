@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using FinalIK.Models.References;
 using Guardians.FinalIK;
+using FinalIK;
 
 namespace Guardians.SDK
 {

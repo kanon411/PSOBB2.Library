@@ -113,7 +113,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="IKSolver"/> has successfully initiated.
 		/// </summary>
-		public bool initiated { get; private set; }
+		public bool initiated { get; set; }
 
 		/// <summary>
 		/// Gets all the points used by the solver.

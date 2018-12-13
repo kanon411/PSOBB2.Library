@@ -34,7 +34,7 @@ namespace RootMotion {
 		private Animator animator;
 		private Animation legacy;
 		private bool updateFrame;
-		private bool componentInitiated;
+		protected bool componentInitiated;
 
 		void OnDisable() {
 			if (!Application.isPlaying) return;
@@ -70,7 +70,7 @@ namespace RootMotion {
 		}
 
 		// Finds the first Animator/Animation up the hierarchy
-		private void FindAnimatorRecursive(Transform t, bool findInChildren) {
+		protected void FindAnimatorRecursive(Transform t, bool findInChildren) {
 			if (isAnimated) return;
 
 			animator = t.GetComponent<Animator>();

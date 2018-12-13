@@ -13,6 +13,10 @@
     <ProjectReference Include="..\Client\Guardians.Client.ServerSelection\Guardians.Client.ServerSelection.csproj" />
     <ProjectReference Include="..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
     <ProjectReference Include="..\Dissonance\Dissonance.Editor\Dissonance.Editor.csproj" />
+    <ProjectReference Include="..\FinalIK.Core\FinalIK.Core.csproj" />
+    <ProjectReference Include="..\FinalIK.Custom\FinalIK.Custom.csproj" />
+    <ProjectReference Include="..\FinalIK.Editor\FinalIK.Editor.csproj" />
+    <ProjectReference Include="..\FinalIK.Models\FinalIK.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,6 +22,12 @@ namespace Guardians
 		/// </summary>
 		EntityCurrentHealth = 1,
 
-		EntityMaximumMana = 2
+		EntityMaximumMana = 2,
+
+		/// <summary>
+		/// The ID of the model of an entity.
+		/// (For both creatures and players)
+		/// </summary>
+		ModelId = 3
 	}
 }

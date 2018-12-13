@@ -99,6 +99,9 @@ namespace Guardians
 
 			builder.RegisterInstance(Mock.Of<ICommsNetworkState>())
 				.As<ICommsNetworkState>();
+
+			builder.RegisterInstance(Mock.Of<IPlayerTrackingRegisterable>())
+				.As<IPlayerTrackingRegisterable>();
 		}
 	}
 }

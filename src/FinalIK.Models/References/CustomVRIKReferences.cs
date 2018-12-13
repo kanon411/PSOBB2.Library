@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FinalIK;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Guardians.FinalIK
@@ -70,6 +71,12 @@ namespace Guardians.FinalIK
 
 		/// <inheritdoc />
 		public Transform RightForearm => rightForearm;
+
+		/// <inheritdoc />
+		public void SetRoot([NotNull] Transform newRoot)
+		{
+			root = newRoot ?? throw new ArgumentNullException(nameof(newRoot));
+		}
 
 		/// <summary>
 		/// Returns an array of all the Transforms in the definition.

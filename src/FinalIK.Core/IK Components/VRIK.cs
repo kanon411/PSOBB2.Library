@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using FinalIK;
+using JetBrains.Annotations;
 
 namespace RootMotion.FinalIK {
 	
@@ -129,6 +131,12 @@ namespace RootMotion.FinalIK {
 
 			/// <inheritdoc />
 			public Transform RightForearm => rightForearm;
+
+			/// <inheritdoc />
+			public void SetRoot([NotNull] Transform newRoot)
+			{
+				this.root = newRoot ?? throw new ArgumentNullException(nameof(newRoot));
+			}
 
 			/// <summary>
 			/// Returns true if none of the Transforms have been assigned.

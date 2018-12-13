@@ -26,5 +26,7 @@ namespace FinalIK
 		Transform RightHand { get; }
 
 		Transform RightForearm { get; }
+
+		void SetRoot(Transform root);
 	}
 }

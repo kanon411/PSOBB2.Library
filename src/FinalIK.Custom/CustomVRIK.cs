@@ -100,7 +100,11 @@ namespace RootMotion.FinalIK
 			if(referenceContainer == null)
 				AutoDetectReferences();
 			else
+			{
+				//Set the root as the object this is attached to
+				referenceContainer.references.SetRoot(this.transform);
 				solver.SetToReferences(referenceContainer.references);
+			}
 
 			base.InitiateSolver();
 			componentInitiated = true;

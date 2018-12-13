@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using FinalIK;
 using RootMotion;
 
 namespace RootMotion.FinalIK {
@@ -16,7 +17,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Sets this VRIK up to the specified bone references.
 		/// </summary>
-		public void SetToReferences(VRIK.References references) {
+		public void SetToReferences(IInverseKinematicReferenceable references) {
 			if (!references.isFilled) {
 				Debug.LogError("Invalid references, one or more Transforms are missing.");
 				return;
@@ -40,26 +41,26 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Guesses the hand bones orientations ('Wrist To Palm Axis' and "Palm To Thumb Axis" of the arms) based on the provided references. if onlyIfZero is true, will only guess an orientation axis if it is Vector3.zero.
 		/// </summary>
-		public void GuessHandOrientations(VRIK.References references, bool onlyIfZero) {
+		public void GuessHandOrientations(IInverseKinematicReferenceable references, bool onlyIfZero) {
 			if (!references.isFilled) {
 				Debug.LogWarning("VRIK References are not filled in, can not guess hand orientations. Right-click on VRIK header and slect 'Guess Hand Orientations' when you have filled in the References.", references.root);
 				return;
 			}
 			
 			if (leftArm.wristToPalmAxis == Vector3.zero || !onlyIfZero) {
-				leftArm.wristToPalmAxis = GuessWristToPalmAxis(references.leftHand, references.leftForearm);
+				leftArm.wristToPalmAxis = GuessWristToPalmAxis(references.LeftHand, references.LeftForearm);
 			}
 			
 			if (leftArm.palmToThumbAxis == Vector3.zero || !onlyIfZero) {
-				leftArm.palmToThumbAxis = GuessPalmToThumbAxis(references.leftHand, references.leftForearm);
+				leftArm.palmToThumbAxis = GuessPalmToThumbAxis(references.LeftHand, references.LeftForearm);
 			}
 			
 			if (rightArm.wristToPalmAxis == Vector3.zero || !onlyIfZero) {
-				rightArm.wristToPalmAxis = GuessWristToPalmAxis(references.rightHand, references.rightForearm);
+				rightArm.wristToPalmAxis = GuessWristToPalmAxis(references.RightHand, references.RightForearm);
 			}
 			
 			if (rightArm.palmToThumbAxis == Vector3.zero || !onlyIfZero) {
-				rightArm.palmToThumbAxis = GuessPalmToThumbAxis(references.rightHand, references.rightForearm);
+				rightArm.palmToThumbAxis = GuessPalmToThumbAxis(references.RightHand, references.RightForearm);
 			}
 		}
 

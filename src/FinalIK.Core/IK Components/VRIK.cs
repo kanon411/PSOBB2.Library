@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FinalIK;
 
 namespace RootMotion.FinalIK {
 	
@@ -15,58 +16,59 @@ namespace RootMotion.FinalIK {
 		/// VRIK-specific definition of a humanoid biped.
 		/// </summary>
 		[System.Serializable]
-		public class References {
-            public Transform root;			// 0
+		public class References : IInverseKinematicReferenceable
+		{
+			public Transform root;			// 0
 			public Transform pelvis;		// 1
 			public Transform spine;         // 2
 
-            [Tooltip("Optional")]
-            public Transform chest;         // 3 Optional
+			[Tooltip("Optional")]
+			public Transform chest;         // 3 Optional
 
-            [Tooltip("Optional")]
-            public Transform neck; 			// 4 Optional
+			[Tooltip("Optional")]
+			public Transform neck; 			// 4 Optional
 			public Transform head;          // 5
 
-            [Tooltip("Optional")]
-            public Transform leftShoulder;	// 6 Optional
+			[Tooltip("Optional")]
+			public Transform leftShoulder;	// 6 Optional
 			public Transform leftUpperArm;	// 7
 			public Transform leftForearm;	// 8
 			public Transform leftHand;      // 9
 
-            [Tooltip("Optional")]
-            public Transform rightShoulder;	// 10 Optional
+			[Tooltip("Optional")]
+			public Transform rightShoulder;	// 10 Optional
 			public Transform rightUpperArm;	// 11
 			public Transform rightForearm;	// 12
 			public Transform rightHand;     // 13
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform leftThigh;     // 14 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform leftThigh;     // 14 Optional
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform leftCalf;      // 15 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform leftCalf;      // 15 Optional
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform leftFoot;      // 16 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform leftFoot;      // 16 Optional
 
-            [Tooltip("Optional")]
+			[Tooltip("Optional")]
 			public Transform leftToes;      // 17 Optional
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform rightThigh;    // 18 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform rightThigh;    // 18 Optional
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform rightCalf;     // 19 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform rightCalf;     // 19 Optional
 
-            [Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
-            public Transform rightFoot;     // 20 Optional
+			[Tooltip("VRIK also supports legless characters.If you do not wish to use legs, leave all leg references empty.")]
+			public Transform rightFoot;     // 20 Optional
 
-            [Tooltip("Optional")]
-            public Transform rightToes;		// 21 Optional
+			[Tooltip("Optional")]
+			public Transform rightToes;		// 21 Optional
 
-            /// <summary>
-            /// Returns an array of all the Transforms in the definition.
-            /// </summary>
-            public Transform[] GetTransforms() {
+			/// <summary>
+			/// Returns an array of all the Transforms in the definition.
+			/// </summary>
+			public Transform[] GetTransforms() {
 				return new Transform[22] {
 					root, pelvis, spine, chest, neck, head, leftShoulder, leftUpperArm, leftForearm, leftHand, rightShoulder, rightUpperArm, rightForearm, rightHand, leftThigh, leftCalf, leftFoot, leftToes, rightThigh, rightCalf, rightFoot, rightToes
 				};
@@ -90,31 +92,43 @@ namespace RootMotion.FinalIK {
 						rightHand == null
 					) return false;
 
-                    // If all leg bones are null, it is valid
-                    bool noLegBones =
-                        leftThigh == null &&
-                        leftCalf == null &&
-                        leftFoot == null &&
-                        rightThigh == null &&
-                        rightCalf == null &&
-                        rightFoot == null;
+					// If all leg bones are null, it is valid
+					bool noLegBones =
+						leftThigh == null &&
+						leftCalf == null &&
+						leftFoot == null &&
+						rightThigh == null &&
+						rightCalf == null &&
+						rightFoot == null;
 
-                    if (noLegBones) return true;
+					if (noLegBones) return true;
 
-                    bool atLeastOneLegBoneMissing =
-                        leftThigh == null ||
-                        leftCalf == null ||
-                        leftFoot == null ||
-                        rightThigh == null ||
-                        rightCalf == null ||
-                        rightFoot == null;
+					bool atLeastOneLegBoneMissing =
+						leftThigh == null ||
+						leftCalf == null ||
+						leftFoot == null ||
+						rightThigh == null ||
+						rightCalf == null ||
+						rightFoot == null;
 
-                    if (atLeastOneLegBoneMissing) return false;
+					if (atLeastOneLegBoneMissing) return false;
 
-                    // Shoulder, toe and neck bones are optional
-                    return true;
+					// Shoulder, toe and neck bones are optional
+					return true;
 				}
 			}
+
+			/// <inheritdoc />
+			public Transform LeftHand => leftHand;
+
+			/// <inheritdoc />
+			public Transform LeftForearm => leftForearm;
+
+			/// <inheritdoc />
+			public Transform RightHand => rightHand;
+
+			/// <inheritdoc />
+			public Transform RightForearm => rightForearm;
 
 			/// <summary>
 			/// Returns true if none of the Transforms have been assigned.
@@ -209,10 +223,10 @@ namespace RootMotion.FinalIK {
 			Application.OpenURL("https://www.youtube.com/watch?v=6Pfx7lYQiIA&feature=youtu.be");
 		}
 
-        /// <summary>
-        /// Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.
-        /// </summary>
-        [ContextMenuItem("Auto-detect References", "AutoDetectReferences")]
+		/// <summary>
+		/// Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.
+		/// </summary>
+		[ContextMenuItem("Auto-detect References", "AutoDetectReferences")]
 		[Tooltip("Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.")]
 		public References references = new References();
 		

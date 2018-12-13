@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FinalIK;
 using Guardians.FinalIK;
 
 namespace RootMotion.FinalIK
@@ -78,6 +79,31 @@ namespace RootMotion.FinalIK
 			if(references.isFilled) solver.SetToReferences(references);
 
 			base.InitiateSolver();
+		}
+
+		/// <summary>
+		/// Reinitializes the IK and Solver.
+		/// </summary>
+		public void ReInitialize()
+		{
+			solver.initiated = false;
+			componentInitiated = false;
+			FindAnimatorRecursive(transform, true);
+			
+			//We only call the base solver because on reinit we will want to assume
+			//that the avatar has been replaced, and we'll need to find the data component that can be used to retreieve it.
+			IAvatarIKReferenceContainer<CustomVRIKReferences> referenceContainer = this.GetComponentInChildren<IAvatarIKReferenceContainer<CustomVRIKReferences>>();
+
+			//If we contain no reference data
+			//then we should just autodetect and wish for the best
+			//though this could cost performance issues on failure maybe?
+			if(referenceContainer == null)
+				AutoDetectReferences();
+			else
+				solver.SetToReferences(referenceContainer.references);
+
+			base.InitiateSolver();
+			componentInitiated = true;
 		}
 
 		protected override void UpdateSolver()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -26,6 +27,8 @@ namespace Guardians
 
 		private IPlayerTrackingRegisterable PlayerTracker { get; }
 
+		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainerMap { get; }
+
 		/// <inheritdoc />
 		public NetworkVisibilityChangeEventHandler(
 			ILog logger,
@@ -34,7 +37,8 @@ namespace Guardians
 			IReadonlyEntityGuidMappable<GameObject> knownEntites,
 			IReadonlyNetworkTimeService timeService, 
 			IVoiceGateway voiceGateway, 
-			[NotNull] IPlayerTrackingRegisterable playerTracker)
+			[NotNull] IPlayerTrackingRegisterable playerTracker,
+			[NotNull] IReadonlyEntityGuidMappable<IEntityDataFieldContainer> entityDataContainerMap)
 			: base(logger)
 		{
 			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -43,6 +47,7 @@ namespace Guardians
 			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
 			VoiceGateway = voiceGateway;
 			PlayerTracker = playerTracker ?? throw new ArgumentNullException(nameof(playerTracker));
+			EntityDataContainerMap = entityDataContainerMap ?? throw new ArgumentNullException(nameof(entityDataContainerMap));
 		}
 
 		/// <inheritdoc />
@@ -76,6 +81,8 @@ namespace Guardians
 						VoiceGateway.JoinVoiceSession(creationData.EntityGuid);
 						PlayerTracker.RegisterTracker(entityRootObject.GetComponent<IDissonancePlayer>());
 					}
+
+					SetInitialFieldValues(creationData);
 				}
 				catch(Exception e)
 				{
@@ -103,6 +110,19 @@ namespace Guardians
 
 			//We need to spawn newly encountered entites.
 			return Task.CompletedTask;
+		}
+
+		private void SetInitialFieldValues(EntityCreationData creationData)
+		{
+			//TODO: We need a better way to handle initial field values, this is a disaster.
+			IEntityDataFieldContainer entityDataContainer = EntityDataContainerMap[creationData.EntityGuid];
+
+			foreach(var entry in creationData.InitialFieldValues.FieldValueUpdateMask
+				.EnumerateSetBitsByIndex()
+				.Zip(creationData.InitialFieldValues.FieldValueUpdates, (setIndex, value) => new { setIndex, value }))
+			{
+				entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
+			}
 		}
 
 		private IMovementData GetInitialMovementData(EntityCreationData creationData)

@@ -86,6 +86,7 @@ namespace RootMotion.FinalIK
 		/// </summary>
 		public void ReInitialize()
 		{
+			Debug.Log($"Reinit CustomVRIK");
 			solver.initiated = false;
 			componentInitiated = false;
 			FindAnimatorRecursive(transform, true);
@@ -98,16 +99,35 @@ namespace RootMotion.FinalIK
 			//then we should just autodetect and wish for the best
 			//though this could cost performance issues on failure maybe?
 			if(referenceContainer == null)
+			{
+				Debug.LogWarning($"Failed to find IK reference container.");
 				AutoDetectReferences();
+			}
 			else
 			{
+				/*Debug.Log($"Found Container on: {(referenceContainer as MonoBehaviour).gameObject.name}");
+				//Debugging
+				foreach(var t in referenceContainer.references.GetTransforms())
+				{
+					Debug.Log($"Transform Found: {t.gameObject.name}");
+				}*/
+
+				//First let's set the trackers to the appropriate local rotation
+				//based on the incoming reference bones
+				//It makes the assumption that the avatar is in a tpose.
+				solver.spine.headTarget.rotation = referenceContainer.references.head.rotation;
+				solver.rightArm.target.rotation = referenceContainer.references.RightHand.rotation;
+				solver.leftArm.target.rotation = referenceContainer.references.leftHand.rotation;
+
 				//Set the root as the object this is attached to
 				referenceContainer.references.SetRoot(this.transform);
+				this.references = referenceContainer.references;
 				solver.SetToReferences(referenceContainer.references);
 			}
 
 			base.InitiateSolver();
 			componentInitiated = true;
+			solver.Reset();
 		}
 
 		protected override void UpdateSolver()

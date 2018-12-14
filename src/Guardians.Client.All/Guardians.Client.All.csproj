@@ -17,6 +17,7 @@
     <ProjectReference Include="..\FinalIK.Custom\FinalIK.Custom.csproj" />
     <ProjectReference Include="..\FinalIK.Editor\FinalIK.Editor.csproj" />
     <ProjectReference Include="..\FinalIK.Models\FinalIK.Models.csproj" />
+    <ProjectReference Include="..\Guardians.SDK.Common\Guardians.SDK.Common.csproj" />
   </ItemGroup>
 
 </Project>

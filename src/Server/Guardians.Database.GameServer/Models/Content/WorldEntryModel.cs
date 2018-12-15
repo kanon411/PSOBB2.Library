@@ -11,7 +11,7 @@ namespace Guardians
 	/// Database table model for the world entries.
 	/// </summary>
 	[Table("world_entry")]
-	public class WorldEntryModel
+	public class WorldEntryModel : IClientContentPersistable
 	{
 		/// <summary>
 		/// The primary unique 64bit integer key used for the

@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Guardians
 {
-	public sealed class WorldDatabaseContext : DbContext
+	public sealed class ContentDatabaseContext : DbContext
 	{
 		public DbSet<WorldEntryModel> Worlds { get; set; }
 
-		public WorldDatabaseContext(DbContextOptions<WorldDatabaseContext> options) 
+		public ContentDatabaseContext(DbContextOptions<ContentDatabaseContext> options) 
 			: base(options)
 		{
 
 		}
 
-		public WorldDatabaseContext()
+		public ContentDatabaseContext()
 		{
 
 		}

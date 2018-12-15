@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Guardians.Database.GameServer.Migrations.WorldDatabase
 {
-    [DbContext(typeof(WorldDatabaseContext))]
+    [DbContext(typeof(ContentDatabaseContext))]
     partial class WorldDatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

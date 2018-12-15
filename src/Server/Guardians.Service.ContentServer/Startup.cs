@@ -64,7 +64,7 @@ namespace Guardians.Service.ContentServer
 
 		private static void RegisterDatabaseServices(IServiceCollection services)
 		{
-			services.AddDbContext<WorldDatabaseContext>(o =>
+			services.AddDbContext<ContentDatabaseContext>(o =>
 			{
 				//On local builds we don't want to use config. We want to default to local
 #if !DEBUG_LOCAL && !RELEASE_LOCAL

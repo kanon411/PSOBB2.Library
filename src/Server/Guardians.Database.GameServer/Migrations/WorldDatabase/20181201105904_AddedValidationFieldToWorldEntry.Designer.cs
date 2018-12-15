@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Guardians.Database.GameServer.Migrations.WorldDatabase
 {
-    [DbContext(typeof(WorldDatabaseContext))]
+    [DbContext(typeof(ContentDatabaseContext))]
     [Migration("20181201105904_AddedValidationFieldToWorldEntry")]
     partial class AddedValidationFieldToWorldEntry
     {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Guardians.Database.GameServer.Migrations.WorldDatabase
 {
-    [DbContext(typeof(WorldDatabaseContext))]
+    [DbContext(typeof(ContentDatabaseContext))]
     [Migration("20181130171603_TransitioningToProjectVindictiveWorldSystemWorld")]
     partial class TransitioningToProjectVindictiveWorldSystemWorld
     {

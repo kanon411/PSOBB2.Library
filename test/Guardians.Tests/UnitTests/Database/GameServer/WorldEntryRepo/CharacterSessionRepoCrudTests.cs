@@ -10,7 +10,7 @@ namespace Guardians
 	/// Runs all the crud repo interface default tests against the zone repository.
 	/// </summary>
 	[TestFixture]
-	public class WorldEntryRepoCrudTests : GenericCrubRepositoryDefaultTests<WorldDatabaseContext, DatabaseBackedWorldEntryRepository, long, WorldEntryModel>
+	public class WorldEntryRepoCrudTests : GenericCrubRepositoryDefaultTests<ContentDatabaseContext, DatabaseBackedWorldEntryRepository, long, WorldEntryModel>
 	{
 		public override IEnumerable<long> TestCaseKeys => new long[] { 1, 2, 3, 5, 6, 7, 8, 9, 22, 6666, short.MaxValue, int.MaxValue };
 

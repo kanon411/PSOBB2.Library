@@ -9,10 +9,10 @@ namespace Guardians
 	{
 		private IGenericRepositoryCrudable<long, WorldEntryModel> DefaultRepository { get; }
 
-		private WorldDatabaseContext DatabaseContext { get; }
+		private ContentDatabaseContext DatabaseContext { get; }
 
 		/// <inheritdoc />
-		public DatabaseBackedWorldEntryRepository(WorldDatabaseContext databaseContext)
+		public DatabaseBackedWorldEntryRepository(ContentDatabaseContext databaseContext)
 		{
 			DatabaseContext = databaseContext ?? throw new ArgumentNullException(nameof(databaseContext));
 			DefaultRepository = new GeneralGenericCrudRepositoryProvider<long, WorldEntryModel>(databaseContext.Worlds, databaseContext);

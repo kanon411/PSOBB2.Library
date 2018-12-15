@@ -59,6 +59,7 @@ namespace Guardians.Service.ContentServer
 			//Adds and registers S3 service for URLBuilding and communication/credentials and etc
 			services.AddS3Service(Configuration);
 			services.AddTransient<IWorldEntryRepository, DatabaseBackedWorldEntryRepository>();
+			services.AddTransient<IAvatarEntryRepository, DatabaseBackedAvatarEntryRepository>();
 			services.AddTransient<IContentDownloadAuthroizationValidator, UnimplementedContentDownloadAuthorizationValidator>();
 		}
 

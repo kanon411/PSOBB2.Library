@@ -26,6 +26,12 @@ namespace Guardians.SDK
 		public void AutoDetectReferences()
 		{
 			CustomVRIKReferences.AutoDetectReferences(transform, out _references);
+
+			//TODO: This only works if the avatar is in TPOSE and is FACING FORWARD.
+			//Now with the references, we can compute some the stored pre-computed rotations
+			_references.LocalHeadRotation = _references.head.eulerAngles;
+			_references.LocalLeftHandRotation = _references.leftHand.eulerAngles;
+			_references.LocalRightHandRotation = _references.rightHand.eulerAngles;
 		}
 
 		/// <inheritdoc />

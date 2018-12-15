@@ -15,17 +15,8 @@ using UnityEngine.SceneManagement;
 
 namespace Guardians.SDK
 {
-	public sealed class ProjectVindictiveWorldUploadWindow : EditorWindow
+	public sealed class ProjectVindictiveWorldUploadWindow : AuthenticatableEditorWindow
 	{
-		[SerializeField]
-		private string AccountName;
-
-		[SerializeField]
-		private string Password;
-
-		[SerializeField]
-		private string AuthToken;
-
 		[SerializeField]
 		private UnityEngine.Object SceneObject;
 
@@ -38,17 +29,16 @@ namespace Guardians.SDK
 			EditorWindow.GetWindow(typeof(ProjectVindictiveWorldUploadWindow));
 		}
 
-		void OnGUI()
+		protected override void OnGUI()
 		{
-			AccountName = EditorGUILayout.TextField("Account", AccountName);
-			Password = EditorGUILayout.PasswordField("Password", Password);
+			base.OnGUI();
 
 			//TODO: Validate scene file
 			SceneObject = EditorGUILayout.ObjectField("Scene", SceneObject, typeof(SceneAsset), false);
 
 			if(GUILayout.Button("Build World AssetBundle"))
 			{
-				if(!Authenticate())
+				if(!TryAuthenticate())
 				{
 					Debug.LogError($"Failed to authenticate User: {AccountName}");
 					return;
@@ -83,7 +73,6 @@ namespace Guardians.SDK
 					try
 					{
 						Debug.Log("Requesting URL.");
-						//HttpWebRequest httpRequest = WebRequest.Create(ucmService.GetNewWorldUploadUrl(AuthToken).Result.UploadUrl) as HttpWebRequest;
 						HttpWebRequest httpRequest = WebRequest.Create((await ucmService.GetNewWorldUploadUrl(AuthToken)).UploadUrl) as HttpWebRequest;
 						Debug.Log("Built http request with URL");
 
@@ -109,34 +98,12 @@ namespace Guardians.SDK
 						Debug.LogError($"{e.Message}\n\n{e.StackTrace}");
 						throw;
 					}
+
+					Debug.Log($"Finished uploading content.");
 				}));
 
 				uploadThread.Start();
 			}
-		}
-
-		private bool Authenticate()
-		{
-			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
-			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-
-			//TODO: Service discovery
-			IAuthenticationService authService = Refit.RestService.For<IAuthenticationService>("http://localhost:5001/");
-
-			//Authentication using provided credentials
-			JWTModel result = authService.TryAuthenticate(new AuthenticationRequestModel(AccountName, Password)).Result;
-
-			Debug.Log($"Auth Result: {result.isTokenValid} Token: {result.AccessToken} Error: {result.Error} ErrorDescription: {result.ErrorDescription}.");
-
-			AuthToken = $"Bearer {result.AccessToken}";
-
-			return result.isTokenValid;
-		}
-
-		//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
-		private bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
-		{
-			return true;
 		}
 	}
 }

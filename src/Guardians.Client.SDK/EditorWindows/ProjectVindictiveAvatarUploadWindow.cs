@@ -37,11 +37,12 @@ namespace Guardians.SDK
 			//TODO: Validate scene file
 			AvatarPrefab = EditorGUILayout.ObjectField("Avatar Prefab", AvatarPrefab, typeof(GameObject), false) as GameObject;
 
-			if(PrefabUtility.GetPrefabAssetType(AvatarPrefab) == PrefabAssetType.NotAPrefab)
-			{
-				AvatarPrefab = null;
-				Debug.LogError($"Provided avatar prefab MUST be a prefab.");
-			}
+			if(AvatarPrefab != null)
+				if(PrefabUtility.GetPrefabAssetType(AvatarPrefab) == PrefabAssetType.NotAPrefab)
+				{
+					AvatarPrefab = null;
+					Debug.LogError($"Provided avatar prefab MUST be a prefab.");
+				}
 
 			if(GUILayout.Button("Build World AssetBundle"))
 			{

@@ -11,6 +11,8 @@ namespace Guardians
 	{
 		public DbSet<WorldEntryModel> Worlds { get; set; }
 
+		public DbSet<AvatarEntryModel> Avatars { get; set; }
+
 		public ContentDatabaseContext(DbContextOptions<ContentDatabaseContext> options) 
 			: base(options)
 		{

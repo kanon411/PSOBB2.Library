@@ -63,7 +63,7 @@ namespace Guardians
 				.ConfigureAwait(false);
 
 			//With the worldid we can get the download URL.
-			WorldDownloadURLResponse urlDownloadResponse = await ContentService.RequestWorldDownloadUrl(worldId, AuthTokenRepo.RetrieveWithType())
+			ContentDownloadURLResponse urlDownloadResponse = await ContentService.RequestWorldDownloadUrl(worldId, AuthTokenRepo.RetrieveWithType())
 				.ConfigureAwait(false);
 
 			//TODO: Handle failure

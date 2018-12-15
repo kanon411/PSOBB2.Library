@@ -11,11 +11,11 @@ namespace Guardians
 	/// Either contains the resource URL or will contain an error code.
 	/// </summary>
 	[JsonObject]
-	public sealed class WorldDownloadURLResponse : ISucceedable, IResponseModel<WorldDownloadURLResponseCode>
+	public sealed class ContentDownloadURLResponse : ISucceedable, IResponseModel<ContentDownloadURLResponseCode>
 	{
 		/// <inheritdoc />
 		[JsonIgnore]
-		public bool isSuccessful => ResultCode == WorldDownloadURLResponseCode.Success;
+		public bool isSuccessful => ResultCode == ContentDownloadURLResponseCode.Success;
 
 		/// <summary>
 		/// A valid URL to download a world resource from.
@@ -25,32 +25,32 @@ namespace Guardians
 
 		/// <inheritdoc />
 		[JsonProperty]
-		public WorldDownloadURLResponseCode ResultCode { get; private set; }
+		public ContentDownloadURLResponseCode ResultCode { get; private set; }
 
 		/// <inheritdoc />
-		public WorldDownloadURLResponse(WorldDownloadURLResponseCode resultCode)
+		public ContentDownloadURLResponse(ContentDownloadURLResponseCode resultCode)
 		{
-			if(!Enum.IsDefined(typeof(WorldDownloadURLResponseCode), resultCode)) throw new ArgumentOutOfRangeException(nameof(resultCode), "Value should be defined in the WorldDownloadURLResponseCode enum.");
+			if(!Enum.IsDefined(typeof(ContentDownloadURLResponseCode), resultCode)) throw new ArgumentOutOfRangeException(nameof(resultCode), "Value should be defined in the WorldDownloadURLResponseCode enum.");
 
-			if(resultCode == WorldDownloadURLResponseCode.Success)
+			if(resultCode == ContentDownloadURLResponseCode.Success)
 				throw new ArgumentException("Cannot provide Success to a failing response ctor.", nameof(resultCode));
 
 			ResultCode = resultCode;
 		}
 
 		/// <inheritdoc />
-		public WorldDownloadURLResponse(string downloadUrl)
+		public ContentDownloadURLResponse(string downloadUrl)
 		{
 			if(string.IsNullOrWhiteSpace(downloadUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(downloadUrl));
 
 			DownloadURL = downloadUrl;
-			ResultCode = WorldDownloadURLResponseCode.Success;
+			ResultCode = ContentDownloadURLResponseCode.Success;
 		}
 
 		/// <summary>
 		/// Serializer ctor. DO NOT CALL
 		/// </summary>
-		public WorldDownloadURLResponse()
+		public ContentDownloadURLResponse()
 		{
 
 		}

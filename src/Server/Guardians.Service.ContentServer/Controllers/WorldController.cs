@@ -28,7 +28,7 @@ namespace Guardians
 		/// POST request that requests an a download URL for a world.
 		/// The user must be authorized.
 		/// </summary>
-		/// <returns>A <see cref="WorldDownloadURLResponse"/> that either contains error information or the upload URL if it was successful.</returns>
+		/// <returns>A <see cref="ContentDownloadURLResponse"/> that either contains error information or the upload URL if it was successful.</returns>
 		[HttpPost("{id}/downloadurl")]
 		[AuthorizeJwt]
 		[NoResponseCache]
@@ -51,7 +51,7 @@ namespace Guardians
 			//It's possible a user is requesting a world that doesn't exist
 			//Could be malicious or it could have been deleted for whatever reason
 			if(!await worldEntryRepository.ContainsAsync(worldId).ConfigureAwait(false))
-				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.NoWorld));
+				return Json(new ContentDownloadURLResponse(ContentDownloadURLResponseCode.NoContentId));
 
 			//TODO: Refactor this into a validation dependency
 			//Now we need to do some validation to determine if they should even be downloading this world
@@ -59,7 +59,7 @@ namespace Guardians
 			int userId = ClaimsReader.GetUserIdInt(User);
 
 			if(!await downloadAuthorizer.CanUserAccessWorldContet(userId, worldId))
-				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.AuthorizationFailed));
+				return Json(new ContentDownloadURLResponse(ContentDownloadURLResponseCode.AuthorizationFailed));
 
 			//We can get the URL from the urlbuilder if we provide the world storage GUID
 			string downloadUrl = await urlBuilder.BuildRetrivalUrl(UserContentType.World, (await worldEntryRepository.RetrieveAsync(worldId)).StorageGuid);
@@ -70,13 +70,13 @@ namespace Guardians
 				if(Logger.IsEnabled(LogLevel.Error))
 					Logger.LogError($"Failed to create world upload URL for {ClaimsReader.GetUserName(User)}:{ClaimsReader.GetUserId(User)} with ID: {worldId}.");
 
-				return Json(new WorldDownloadURLResponse(WorldDownloadURLResponseCode.WorldDownloadServiceUnavailable));
+				return Json(new ContentDownloadURLResponse(ContentDownloadURLResponseCode.ContentDownloadServiceUnavailable));
 			}
 
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Success. Sending {ClaimsReader.GetUserName(User)} URL: {downloadUrl}");
 
-			return Json(new WorldDownloadURLResponse(downloadUrl));
+			return Json(new ContentDownloadURLResponse(downloadUrl));
 		}
 
 		[HttpPost("{id}/uploaded")]

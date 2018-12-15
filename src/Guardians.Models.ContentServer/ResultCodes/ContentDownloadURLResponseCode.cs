@@ -5,9 +5,9 @@ using System.Text;
 namespace Guardians
 {
 	/// <summary>
-	/// Enumeration of all response for a world download URL.
+	/// Enumeration of all response for a content download URL.
 	/// </summary>
-	public enum WorldDownloadURLResponseCode
+	public enum ContentDownloadURLResponseCode
 	{
 		/// <summary>
 		/// Indicates the request was successful.
@@ -15,17 +15,17 @@ namespace Guardians
 		Success = 1,
 
 		/// <summary>
-		/// Indicates that the world does not exist.
+		/// Indicates that the content does not exist.
 		/// </summary>
-		NoWorld = 2,
+		NoContentId = 2,
 
 		/// <summary>
-		/// Indicates that the service for downloading worlds is unavailable.
+		/// Indicates that the service for downloading content is unavailable.
 		/// </summary>
-		WorldDownloadServiceUnavailable = 3,
+		ContentDownloadServiceUnavailable = 3,
 
 		/// <summary>
-		/// Indicates that the world download is not authorize for the
+		/// Indicates that the content download is not authorize for the
 		/// requesting user.
 		/// </summary>
 		AuthorizationFailed = 4

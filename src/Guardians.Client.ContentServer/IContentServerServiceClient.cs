@@ -25,6 +25,7 @@ namespace Guardians
 
 		//TODO: Doc
 		[Post("/api/World/{id}/downloadurl")]
-		Task<WorldDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [AuthenticationToken] string authToken);
+		Task<ContentDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [AuthenticationToken] string authToken);
+
 	}
 }

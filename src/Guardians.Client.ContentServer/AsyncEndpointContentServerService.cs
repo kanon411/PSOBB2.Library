@@ -27,7 +27,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public async Task<WorldDownloadURLResponse> RequestWorldDownloadUrl(long worldId, string authToken)
+		public async Task<ContentDownloadURLResponse> RequestWorldDownloadUrl(long worldId, string authToken)
 		{
 			return await (await GetService().ConfigureAwait(false)).RequestWorldDownloadUrl(worldId, authToken).ConfigureAwait(false);
 		}

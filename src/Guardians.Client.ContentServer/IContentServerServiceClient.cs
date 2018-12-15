@@ -23,9 +23,22 @@ namespace Guardians
 		[Post("/api/World/create")]
 		Task<RequestedUrlResponseModel> GetNewWorldUploadUrl([AuthenticationToken] string authToken);
 
+		/// <summary>
+		/// Attempts to get a new URL that can be used to upload the avatar.
+		/// If successful the URl contained in the response will contain a valid upload
+		/// URL which can be used to upload avatar content.
+		/// </summary>
+		/// <param name="authToken">The user authentication token.</param>
+		/// <returns>A model representing the result of the avatar URL generation request.</returns>
+		[Post("/api/avatar/create")]
+		Task<RequestedUrlResponseModel> GetNewAvatarUploadUrl([AuthenticationToken] string authToken);
+
 		//TODO: Doc
 		[Post("/api/World/{id}/downloadurl")]
 		Task<ContentDownloadURLResponse> RequestWorldDownloadUrl([AliasAs("id")] long worldId, [AuthenticationToken] string authToken);
 
+		//TODO: Doc
+		[Post("/api/avatar/{id}/downloadurl")]
+		Task<ContentDownloadURLResponse> RequestAvatarDownloadUrl([AliasAs("id")] long avatarId, [AuthenticationToken] string authToken);
 	}
 }

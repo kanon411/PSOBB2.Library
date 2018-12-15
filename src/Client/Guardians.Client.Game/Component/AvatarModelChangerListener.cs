@@ -43,13 +43,14 @@ namespace Guardians
 		private void OnModelIdeChanged(NetworkEntityGuid entityGuid, EntityDataChangedArgs<int> changeData)
 		{
 			//TODO: Refactor this
-			if(Logger.IsErrorEnabled)
+			if(Logger != null && Logger.IsDebugEnabled)
 				Logger.Debug($"Encountered Model Change for Entity: {entityGuid} Changed to Id: {changeData.NewValue}");
 
 			//Replace the current avatar root gameobject with the new one.
-			GameObject newAvatarRoot = GameObject.Instantiate(DemoPrefabTest, CurrentRootAvatarGameObject.transform.position, Quaternion.Euler(Vector3.zero), CurrentRootAvatarGameObject.transform.parent);
+			GameObject newAvatarRoot = GameObject.Instantiate(DemoPrefabTest, CurrentRootAvatarGameObject.transform.parent);
 			newAvatarRoot.transform.localScale = CurrentRootAvatarGameObject.transform.localScale;
 			newAvatarRoot.transform.localPosition = Vector3.zero;
+			newAvatarRoot.transform.localRotation = Quaternion.identity;
 
 			//Now we can delete the existing avatar
 			//And set the new one
@@ -57,6 +58,12 @@ namespace Guardians
 			CurrentRootAvatarGameObject = newAvatarRoot;
 
 			OnAvatarModelChangedEvent?.Invoke();
+		}
+
+		[Button]
+		public void TestOnModelChanged()
+		{
+			OnModelIdeChanged(CurrentEntityGuid, new EntityDataChangedArgs<int>(1, 1));
 		}
 	}
 }

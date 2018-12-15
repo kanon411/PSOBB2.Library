@@ -60,6 +60,12 @@ namespace Guardians.FinalIK
 		[Tooltip("Optional")]
 		public Transform rightToes;     // 21 Optional
 
+		public Vector3 LocalHeadRotation;
+
+		public Vector3 LocalRightHandRotation;
+
+		public Vector3 LocalLeftHandRotation;
+
 		/// <inheritdoc />
 		public Transform LeftHand => leftHand;
 

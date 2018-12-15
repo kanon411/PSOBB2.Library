@@ -14,6 +14,19 @@ namespace RootMotion.FinalIK
 	[AddComponentMenu("Scripts/RootMotion.FinalIK/IK/VR IK")]
 	public class CustomVRIK : IK
 	{
+		/// <summary>
+		/// Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.
+		/// </summary>
+		[ContextMenuItem("Auto-detect References", "AutoDetectReferences")]
+		[Tooltip("Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.")]
+		public CustomVRIKReferences references = new CustomVRIKReferences();
+
+		/// <summary>
+		/// The solver.
+		/// </summary>
+		[Tooltip("The VRIK solver.")]
+		public IKSolverVR solver = new IKSolverVR();
+
 		// Open the User Manual URL
 		[ContextMenu("User Manual")]
 		protected override void OpenUserManual()
@@ -36,19 +49,6 @@ namespace RootMotion.FinalIK
 		{
 			Application.OpenURL("https://www.youtube.com/watch?v=6Pfx7lYQiIA&feature=youtu.be");
 		}
-
-		/// <summary>
-		/// Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.
-		/// </summary>
-		[ContextMenuItem("Auto-detect References", "AutoDetectReferences")]
-		[Tooltip("Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.")]
-		public CustomVRIKReferences references = new CustomVRIKReferences();
-
-		/// <summary>
-		/// The solver.
-		/// </summary>
-		[Tooltip("The VRIK solver.")]
-		public IKSolverVR solver = new IKSolverVR();
 
 		/// <summary>
 		/// Auto-detects bone references for this VRIK. Works with a Humanoid Animator on the gameobject only.
@@ -105,30 +105,35 @@ namespace RootMotion.FinalIK
 			}
 			else
 			{
-				/*Debug.Log($"Found Container on: {(referenceContainer as MonoBehaviour).gameObject.name}");
-				//Debugging
-				foreach(var t in referenceContainer.references.GetTransforms())
+				//Set the references in the IK controller
+				this.references = referenceContainer.references;
+
+				var oldSolver = solver;
+				solver = new IKSolverVR
 				{
-					Debug.Log($"Transform Found: {t.gameObject.name}");
-				}*/
+					spine = {headTarget = oldSolver.spine.headTarget},
+					leftArm = {target = oldSolver.leftArm.target},
+					rightArm = {target = oldSolver.rightArm.target}
+				};
 
 				//First let's set the trackers to the appropriate local rotation
-				//based on the incoming reference bones
-				//It makes the assumption that the avatar is in a tpose.
-				solver.spine.headTarget.rotation = referenceContainer.references.head.rotation;
-				solver.rightArm.target.rotation = referenceContainer.references.RightHand.rotation;
-				solver.leftArm.target.rotation = referenceContainer.references.leftHand.rotation;
+				//These compute from precomputed EULER angles from the SDK.
+				solver.leftArm.target.localEulerAngles = references.LocalLeftHandRotation;
+				solver.rightArm.target.localEulerAngles = references.LocalRightHandRotation;
+				solver.spine.headTarget.localEulerAngles = references.LocalHeadRotation;
 
-				//Set the root as the object this is attached to
-				referenceContainer.references.SetRoot(this.transform);
-				this.references = referenceContainer.references;
-				solver.SetToReferences(referenceContainer.references);
+				solver.SetToReferences(references);
 			}
 
 			base.InitiateSolver();
 			componentInitiated = true;
-			solver.Reset();
 		}
+
+		/// <inheritdoc />
+		/*protected override Transform ComputeRoot()
+		{
+			return references.root;
+		}*/
 
 		protected override void UpdateSolver()
 		{

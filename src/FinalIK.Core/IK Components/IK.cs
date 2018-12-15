@@ -33,7 +33,12 @@ namespace RootMotion.FinalIK {
 		protected override void InitiateSolver() {
 			if (GetIKSolver().initiated) return;
 			
-			GetIKSolver().Initiate(transform);
+			GetIKSolver().Initiate(ComputeRoot());
+		}
+
+		protected virtual Transform ComputeRoot()
+		{
+			return this.transform;
 		}
 
 		protected override void FixTransforms() {

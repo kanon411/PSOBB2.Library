@@ -21,11 +21,11 @@ namespace Guardians
 			ContainerBuilder builder = TestIoC.CreateDefaultContainer();
 
 			//Manually register SceneJect services
-			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<ILifetimeScope>(), new DefaultInjectionStrategy()))
 				.As<IGameObjectFactory>()
 				.SingleInstance();
 
-			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<ILifetimeScope>(), new DefaultInjectionStrategy()))
 				.As<IGameObjectComponentAttachmentFactory>()
 				.SingleInstance();
 

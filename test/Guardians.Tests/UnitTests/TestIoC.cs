@@ -72,11 +72,11 @@ namespace Guardians
 			}
 
 			//Manually register SceneJect services
-			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+			builder.Register(context => new DefaultGameObjectFactory(context.Resolve<ILifetimeScope>(), new DefaultInjectionStrategy()))
 				.As<IGameObjectFactory>()
 				.SingleInstance();
 
-			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<IComponentContext>(), new DefaultInjectionStrategy()))
+			builder.Register(context => new DefaultGameObjectComponentAttachmentFactory(context.Resolve<ILifetimeScope>(), new DefaultInjectionStrategy()))
 				.As<IGameObjectComponentAttachmentFactory>()
 				.SingleInstance();
 
@@ -102,6 +102,10 @@ namespace Guardians
 
 			builder.RegisterInstance(Mock.Of<IPlayerTrackingRegisterable>())
 				.As<IPlayerTrackingRegisterable>();
+
+			//Common thing used in temp registeration
+			builder.RegisterInstance(NetworkEntityGuid.Empty)
+				.AsSelf();
 		}
 	}
 }

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SceneJect.Editor" Version="3.0.30" />
+    <PackageReference Include="SceneJect.Editor" Version="3.0.31" />
   </ItemGroup>
 
   <ItemGroup>

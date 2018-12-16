@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Guardians
 {
 	//TODO: We should do some threading and safety stuff.
-	public sealed class DefaultLoadableContentResourceManager : ILoadableContentResourceManager
+	public sealed class DefaultLoadableContentResourceManager : ILoadableContentResourceManager, IDisposable
 	{
 		private IContentServerServiceClient ContentClient { get; }
 
 		private IReadonlyAuthTokenRepository AuthTokenRepo { get; }
+
+		private ILog Logger { get; }
 
 		//We should only tocuh this on the main thread, including cleanup and updating it.
 		private Dictionary<long, ReferenceCountedPrefabContentResourceHandle> ResourceHandleCache { get; }
@@ -21,10 +24,12 @@ namespace Guardians
 		/// <inheritdoc />
 		public DefaultLoadableContentResourceManager(
 			[NotNull] IContentServerServiceClient contentClient, 
-			[NotNull] IReadonlyAuthTokenRepository authTokenRepo)
+			[NotNull] IReadonlyAuthTokenRepository authTokenRepo,
+			[NotNull] ILog logger)
 		{
 			ContentClient = contentClient ?? throw new ArgumentNullException(nameof(contentClient));
 			AuthTokenRepo = authTokenRepo ?? throw new ArgumentNullException(nameof(authTokenRepo));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 			ResourceHandleCache = new Dictionary<long, ReferenceCountedPrefabContentResourceHandle>();
 		}
@@ -32,6 +37,8 @@ namespace Guardians
 		/// <inheritdoc />
 		public bool IsAvatarResourceAvailable(long avatarId)
 		{
+			ProjectVersionStage.AssertAlpha();
+
 			if(avatarId < 0) throw new ArgumentOutOfRangeException(nameof(avatarId));
 
 			return ResourceHandleCache.ContainsKey(avatarId);
@@ -85,6 +92,19 @@ namespace Guardians
 			handle.ClaimReference();
 
 			return handle;
+		}
+
+		//TODO: Dispose is never called, but it should be.
+		/// <inheritdoc />
+		public void Dispose()
+		{
+			if(Logger.IsInfoEnabled)
+				Logger.Info("Disposing of asset bundles.");
+
+			//We need to dispose of all
+			//assetbundle resources regardless of their refcount
+			foreach(var entry in ResourceHandleCache.Values)
+				entry.Bundle.Unload(true);
 		}
 	}
 }

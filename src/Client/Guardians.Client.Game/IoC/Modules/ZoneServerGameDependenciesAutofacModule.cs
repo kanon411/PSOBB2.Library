@@ -96,6 +96,7 @@ namespace Guardians
 
 			builder.RegisterType<DefaultLoadableContentResourceManager>()
 				.As<ILoadableContentResourceManager>()
+				.As<IDisposable>()
 				.AsSelf()
 				.SingleInstance();
 		}

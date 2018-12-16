@@ -31,6 +31,9 @@ namespace Guardians
 		[Inject]
 		private IReadonlyAuthTokenRepository AuthTokenRepo { get; set; }
 
+		[Inject]
+		private IEnumerable<IDisposable> Disposables { get; set; }
+
 		public void SwitchZoneInstances()
 		{
 			//Just load
@@ -65,6 +68,10 @@ namespace Guardians
 
 			//Join main unity thread
 			await new UnityYieldAwaitable();
+
+			//We should dispose any resources in the scene that are disposable before loading a new scene
+			foreach(var d in Disposables)
+				d.Dispose();
 
 			//We just load to the loading screen and we'll reload the into the current zone
 			SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;

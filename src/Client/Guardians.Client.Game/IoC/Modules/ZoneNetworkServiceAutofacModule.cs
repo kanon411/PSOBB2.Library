@@ -59,6 +59,20 @@ namespace Guardians
 				})
 				.As<IZoneServerService>()
 				.SingleInstance();
+
+			builder.Register(context =>
+				{
+					//The below is not true for right now, we have global service discovery point to the gameserver for testing.
+					//This registeration is abit complicated
+					//because we are skipping the game server selection
+					//to do this we must query the service discovery and THEN
+					//we query the the gameserver's service discovery.
+					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
+
+					return new AsyncEndpointContentServerService(QueryForRemoteServiceEndpoint(serviceDiscovery, "ContentServer"));
+				})
+				.As<IContentServerServiceClient>()
+				.SingleInstance();
 		}
 
 		//TODO: Put this in a base class or something

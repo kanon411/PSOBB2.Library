@@ -27,6 +27,9 @@ namespace Guardians
 			[NotNull] IReadonlyAuthTokenRepository authTokenRepo,
 			[NotNull] ILog logger)
 		{
+			//TODO: We haven't implemented the refcounted cleanup. We ref count, but don't yet dispose.
+			ProjectVersionStage.AssertAlpha();
+
 			ContentClient = contentClient ?? throw new ArgumentNullException(nameof(contentClient));
 			AuthTokenRepo = authTokenRepo ?? throw new ArgumentNullException(nameof(authTokenRepo));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -37,8 +40,6 @@ namespace Guardians
 		/// <inheritdoc />
 		public bool IsAvatarResourceAvailable(long avatarId)
 		{
-			ProjectVersionStage.AssertAlpha();
-
 			if(avatarId < 0) throw new ArgumentOutOfRangeException(nameof(avatarId));
 
 			return ResourceHandleCache.ContainsKey(avatarId);

@@ -105,7 +105,10 @@ namespace Guardians
 
 				//Join players into the voice gateway
 				if(destroyData.EntityType == EntityType.Player)
+				{
+					PlayerTracker.RemoveTracker(destroyData.RawGuidValue.ToString());
 					VoiceGateway.LeaveVoiceSession(destroyData);
+				}
 			}
 
 			//We need to spawn newly encountered entites.

@@ -10,5 +10,7 @@ namespace Guardians
 		void RegisterTracker(IDissonancePlayer player);
 
 		void RemoveTracker(IDissonancePlayer player);
+
+		void RemoveTracker(string playerId);
 	}
 }

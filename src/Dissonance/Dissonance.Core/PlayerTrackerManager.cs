@@ -77,24 +77,29 @@ namespace Dissonance
         }
 
         public void RemoveTracker([NotNull] IDissonancePlayer player)
-        {
-            if (player == null)
-                throw new ArgumentNullException("player", "Cannot stop tracking a null player");
+		{
+			if(player == null)
+				throw new ArgumentNullException("player", "Cannot stop tracking a null player");
 
-            //Try to remove the player from the list of untracked players, just in case we haven't linked it up yet
-            if (_unlinkedPlayerTrackers.Remove(player.PlayerId))
-                Log.Debug("Removed unlinked state tracker for '{0}' (because RemoveTracker called)", player.PlayerId);
-            else
-            {
-                //Disassociate the tracker from the player state
-                VoicePlayerState state;
-                if (_players.TryGet(player.PlayerId, out state))
-                {
-                    state.Tracker = null;
-                    Log.Debug("Disassociated position tracking for '{0}' (because RemoveTracker called)", player.PlayerId);
-                }
-            }
-        }
-        #endregion
-    }
+			TryRemovePlayer(player.PlayerId);
+		}
+
+		public void TryRemovePlayer(string playerId)
+		{
+			//Try to remove the player from the list of untracked players, just in case we haven't linked it up yet
+			if(_unlinkedPlayerTrackers.Remove(playerId))
+				Log.Debug("Removed unlinked state tracker for '{0}' (because RemoveTracker called)", playerId);
+			else
+			{
+				//Disassociate the tracker from the player state
+				VoicePlayerState state;
+				if(_players.TryGet(playerId, out state))
+				{
+					state.Tracker = null;
+					Log.Debug("Disassociated position tracking for '{0}' (because RemoveTracker called)", playerId);
+				}
+			}
+		}
+		#endregion
+	}
 }

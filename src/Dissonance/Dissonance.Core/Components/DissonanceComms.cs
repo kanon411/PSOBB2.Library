@@ -749,5 +749,11 @@ namespace Dissonance
         {
            this.StopTracking(player);
         }
-    }
+
+		/// <inheritdoc />
+		public void RemoveTracker(string playerId)
+		{
+			_playerTrackers.TryRemovePlayer(playerId);
+		}
+	}
 }

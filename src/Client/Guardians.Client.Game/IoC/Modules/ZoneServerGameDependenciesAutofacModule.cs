@@ -93,6 +93,11 @@ namespace Guardians
 			builder.RegisterType<AuthenticationTokenRepository>()
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			builder.RegisterType<DefaultLoadableContentResourceManager>()
+				.As<ILoadableContentResourceManager>()
+				.AsSelf()
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)

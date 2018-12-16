@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.30" />
   </ItemGroup>
 
   <ItemGroup>

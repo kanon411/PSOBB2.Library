@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="GladNet3.Handler.API" Version="3.0.46" />
-    <PackageReference Include="SceneJect.Common" Version="3.0.29" />
+    <PackageReference Include="SceneJect.Common" Version="3.0.30" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,9 +21,9 @@
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
     <PackageReference Include="PostSharp.Patterns.Caching" Version="5.0.52" />
     <PackageReference Include="Refit" Version="4.6.58" />
-    <PackageReference Include="SceneJect.Common" Version="3.0.29" />
-    <PackageReference Include="SceneJect.Editor" Version="3.0.29" />
-    <PackageReference Include="SceneJect.Metadata" Version="3.0.29" />
+    <PackageReference Include="SceneJect.Common" Version="3.0.30" />
+    <PackageReference Include="SceneJect.Editor" Version="3.0.30" />
+    <PackageReference Include="SceneJect.Metadata" Version="3.0.30" />
   </ItemGroup>
 
   <ItemGroup>

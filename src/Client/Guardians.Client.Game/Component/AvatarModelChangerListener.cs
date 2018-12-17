@@ -16,7 +16,7 @@ using Unitysync.Async;
 namespace Guardians
 {
 	[ExternalBehaviour]
-	public sealed class AvatarModelChangerListenerExternal : BaseExternalComponent
+	public sealed class AvatarModelChangerListenerExternal : BaseExternalComponent<GameObject>
 	{
 		private ILoadableContentResourceManager ContentResourceManager { get; }
 
@@ -33,8 +33,6 @@ namespace Guardians
 
 		public GameObject CurrentRootAvatarGameObject { get; private set; }
 
-		private bool isInitialized { get; set; } = false;
-
 		/// <inheritdoc />
 		public AvatarModelChangerListenerExternal(
 			NetworkEntityGuid currentEntityGuid, 
@@ -48,17 +46,15 @@ namespace Guardians
 			callbackRegister.RegisterCallback<int>(currentEntityGuid, EntityDataFieldType.ModelId, OnModelIdeChanged);
 		}
 
-		public void Initialize([NotNull] GameObject currentAvatarRoot)
+		protected override void OnInitialization([NotNull] GameObject currentAvatarRoot)
 		{
 			CurrentRootAvatarGameObject = currentAvatarRoot ?? throw new ArgumentNullException(nameof(currentAvatarRoot));
-			isInitialized = true;
 		}
 
 		private void OnModelIdeChanged(NetworkEntityGuid entityGuid, EntityDataChangedArgs<int> changeData)
 		{
 			//Don't check the actual CurrentRootAvatarGameObject as it could be null due to engine race condition
-			if(!isInitialized)
-				throw new InvalidOperationException($"{nameof(Initialize)} was never called. {nameof(CurrentRootAvatarGameObject)} is null. Existing avatar root must be initialized.");
+			ThrowIfNotInitialized();
 
 			//TODO: There are some race conditions here, it's possible that the entity has been removed from the client but the avatar download is still ongoing
 			//which could cause the avatar to spawn
@@ -105,13 +101,7 @@ namespace Guardians
 				return;
 			}
 
-			//This should be the avatar prefab
-			//and we should be on the main thread here so we can now do the spawning and such
-			//Replace the current avatar root gameobject with the new one.
-			GameObject newAvatarRoot = GameObject.Instantiate(prefab, CurrentRootAvatarGameObject.transform.parent);
-			newAvatarRoot.transform.localScale = CurrentRootAvatarGameObject.transform.localScale;
-			newAvatarRoot.transform.localPosition = Vector3.zero;
-			newAvatarRoot.transform.localRotation = Quaternion.identity;
+			GameObject newAvatarRoot = InstantiateNewFromPrefab(prefab);
 
 			//Now we can delete the existing avatar
 			//And set the new one
@@ -119,6 +109,18 @@ namespace Guardians
 			CurrentRootAvatarGameObject = newAvatarRoot;
 
 			OnAvatarModelChangedEvent?.Invoke();
+		}
+
+		private GameObject InstantiateNewFromPrefab(GameObject prefab)
+		{
+			//This should be the avatar prefab
+			//and we should be on the main thread here so we can now do the spawning and such
+			//Replace the current avatar root gameobject with the new one.
+			GameObject newAvatarRoot = GameObject.Instantiate(prefab, CurrentRootAvatarGameObject.transform.parent);
+			newAvatarRoot.transform.localScale = CurrentRootAvatarGameObject.transform.localScale;
+			newAvatarRoot.transform.localPosition = Vector3.zero;
+			newAvatarRoot.transform.localRotation = Quaternion.identity;
+			return newAvatarRoot;
 		}
 
 		public void OnDestroy()
@@ -132,6 +134,7 @@ namespace Guardians
 	{
 		public UnityEvent OnAvatarModelChangedEvent;
 
+		[UsedImplicitly]
 		[SerializeField]
 		private GameObject InitialAvatarRoot;
 

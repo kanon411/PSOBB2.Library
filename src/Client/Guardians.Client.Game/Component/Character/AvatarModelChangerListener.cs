@@ -149,7 +149,8 @@ namespace Guardians
 		private void CancelCurrentCancellationToken()
 		{
 			CurrentCancellationSource?.Cancel();
-			CurrentCancellationSource?.Dispose();
+			//Dispose just causes us issues, only LINKED tokens require disposal.
+			//see: https://stackoverflow.com/questions/6960520/when-to-dispose-cancellationtokensource
 		}
 
 		private void ModelChangeCancelLogging(NetworkEntityGuid entityGuid, EntityDataChangedArgs<int> changeData)

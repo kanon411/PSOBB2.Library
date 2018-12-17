@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using Common.Logging;
 using Dissonance.Networking;
 using Fasterflect;
 using Moq;
@@ -106,6 +107,12 @@ namespace Guardians
 			//Common thing used in temp registeration
 			builder.RegisterInstance(NetworkEntityGuid.Empty)
 				.AsSelf();
+
+			//We do this to override the UnityLogger which calls ECall Sec errors.
+			builder.RegisterType<ConsoleLogger>()
+				.AsSelf()
+				.As<ILog>()
+				.SingleInstance();
 		}
 	}
 }

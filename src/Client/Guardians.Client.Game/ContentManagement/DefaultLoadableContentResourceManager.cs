@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -31,7 +32,7 @@ namespace Guardians
 
 		/// <inheritdoc />
 		public DefaultLoadableContentResourceManager(
-			[NotNull] IContentServerServiceClient contentClient, 
+			[NotNull] IContentServerServiceClient contentClient,
 			[NotNull] IReadonlyAuthTokenRepository authTokenRepo,
 			[NotNull] ILog logger)
 		{
@@ -43,6 +44,8 @@ namespace Guardians
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 			ResourceHandleCache = new Dictionary<long, ReferenceCountedPrefabContentResourceHandle>();
+
+			ReleaseUnmanagedResources();
 		}
 
 		/// <inheritdoc />
@@ -134,8 +137,19 @@ namespace Guardians
 				Logger.Info("Disposing of asset bundles.");
 
 			lock(SyncObj)
-				foreach(var entry in ResourceHandleCache.Values)
-					entry.Bundle.Unload(true);
+				//this isn't really needed, but for VS unit testing it HATES that
+				//That the bundle.Unload is an INTERNAL native call
+				//for an assembly not packaged with UnityEngine.dll
+				//So to avoid issues in VS editor we do this, and it won't try to load it thanks
+				//to lazy JIT.
+				if(ResourceHandleCache.Count != 0)
+					UnloadAllBundles();
+		}
+
+		private void UnloadAllBundles()
+		{
+			foreach(var entry in ResourceHandleCache.Values)
+				entry.Bundle.Unload(true);
 		}
 
 		/// <inheritdoc />
@@ -146,10 +160,10 @@ namespace Guardians
 			isDisposed = true;
 		}
 
-		/// <inheritdoc />
 		~DefaultLoadableContentResourceManager()
 		{
-			ReleaseUnmanagedResources();
+			if(!isDisposed)
+				ReleaseUnmanagedResources();
 		}
 	}
 }

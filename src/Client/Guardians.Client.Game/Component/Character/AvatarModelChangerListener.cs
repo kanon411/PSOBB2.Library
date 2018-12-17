@@ -94,7 +94,7 @@ namespace Guardians
 
 			//Since this could happen many frames after initial request it's possible that
 			//the avatar or entity isn't even in the world anymore, so we must check that.
-			if(CurrentRootAvatarGameObject == null || CurrentRootAvatarGameObject.Equals(null))
+			if(!CurrentRootAvatarGameObject.IsGameObjectValid())
 			{
 				if(Logger.IsWarnEnabled)
 					Logger.Warn($"Encountered case despawned while loading new avatar.");

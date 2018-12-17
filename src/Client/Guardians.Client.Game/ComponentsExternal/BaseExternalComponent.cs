@@ -27,6 +27,7 @@ namespace Guardians
 		{
 			//TODO: Should we allow multiple calls??
 			isInitialized = true;
+			OnInitialization(context);
 		}
 
 		/// <summary>

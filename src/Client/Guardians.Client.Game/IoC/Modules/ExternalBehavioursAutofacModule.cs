@@ -19,7 +19,7 @@ namespace Guardians
 		protected override void Load(ContainerBuilder builder)
 		{
 			foreach(var e in GetType().Assembly.GetExportedTypes()
-				.Where(t => t.HasAttribute<ExternalBehaviourAttribute>()))
+				.Where(t => t.HasAttribute<ExternalBehaviourAttribute>() && !t.IsAbstract))
 			{
 				//All external behaviours are registered as themselves and multiple instances of them
 				//should be created per request.

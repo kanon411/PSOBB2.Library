@@ -15,7 +15,7 @@ namespace Guardians
 	{
 		private static IEnumerable<Type> ExternalBehaviourTypes => typeof(ILocalPlayerDetails)
 			.Assembly.GetExportedTypes()
-			.Where(t => t.HasAttribute<ExternalBehaviourAttribute>());
+			.Where(t => t.HasAttribute<ExternalBehaviourAttribute>() && !t.IsAbstract);
 
 		[Test]
 		[TestCaseSource(nameof(ExternalBehaviourTypes))]

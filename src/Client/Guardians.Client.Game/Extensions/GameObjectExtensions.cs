@@ -22,7 +22,7 @@ namespace Guardians
 		{
 			if(gameobject == null) throw new ArgumentNullException(nameof(gameobject), $"{nameof(IsGameObjectValid)} checks if a {nameof(GameObject)} is valid but throws if {nameof(GameObject)} reference was never initialized.");
 
-			return gameobject.Equals(null);
+			return !gameobject.Equals(null);
 		}
 	}
 }

@@ -26,6 +26,8 @@ namespace Guardians
 		/// Mutable resource handle that represents the current avatar model
 		/// resource.
 		/// </summary>
+		[ReadOnly]
+		[ShowInInspector]
 		private IPrefabContentResourceHandle CurrentPrefabHandle { get; set; }
 
 		/// <summary>
@@ -33,6 +35,8 @@ namespace Guardians
 		/// </summary>
 		public event Action OnAvatarModelChangedEvent;
 
+		[ReadOnly]
+		[ShowInInspector]
 		public GameObject CurrentRootAvatarGameObject { get; private set; }
 
 		/// <summary>
@@ -115,6 +119,8 @@ namespace Guardians
 					return;
 				}
 
+				//We're on the main thread at this point, so it's safe to initialize this.
+				CurrentPrefabHandle = handle;
 				//This SHOULD be the main thread
 				OnPrefabResourceAvailable(gameObject);
 			});

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Guardians
 {
+	[Serializable]
 	public sealed class ReferenceCountedPrefabContentResourceHandle : IPrefabContentResourceHandle
 	{
 		private int _currentUseCount = 0;
@@ -19,6 +21,14 @@ namespace Guardians
 		/// Indicates if the handle is not referenced/claimed by anyone.
 		/// </summary>
 		public bool isResourceFreeable => _currentUseCount == 0;
+
+		/// <summary>
+		/// The name of the asset bundle.
+		/// </summary>
+		[ReadOnly]
+		[ShowInInspector]
+		[PropertyTooltip("The name of the asset bundle's content.")]
+		public string BundleName => Bundle.name;
 
 		public AssetBundle Bundle { get; }
 

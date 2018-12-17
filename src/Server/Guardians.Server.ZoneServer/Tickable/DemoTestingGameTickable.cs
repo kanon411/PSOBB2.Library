@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 namespace Guardians
 {
 	//To put some demo/testing code into
+	[GameInitializableOrdering(1)]
 	[CollectionsLocking(LockType.Read)]
 	public sealed class DemoTestingGameTickable : IGameTickable
 	{

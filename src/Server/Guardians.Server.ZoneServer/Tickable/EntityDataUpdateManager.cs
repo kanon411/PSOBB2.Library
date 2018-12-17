@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 namespace Guardians
 {
 	//TODO: Refactor, this is just for testing
+	[GameInitializableOrdering(1)]
 	[CollectionsLocking(LockType.Read)]
 	public sealed class EntityDataUpdateManager : IGameTickable
 	{
@@ -41,7 +42,7 @@ namespace Guardians
 			//For every player we need to do some processing so that we can entity data update values
 			foreach(var guid in PlayerGuids)
 			{
-				InterestCollection interest = GuidToInterestCollectionMappable[guid];
+				InterestCollection interest = GetEntityInterestCollection(guid);
 
 				//Even if we only know ourselves we should do this anyway
 				//so that the client can receieve entity data changes about itself
@@ -52,7 +53,7 @@ namespace Guardians
 				foreach(var interestingEntityGuid in interest.ContainedEntities)
 				{
 					//Don't build an update for entities that don't have any changes
-					if(!ChangeTrackingCollections[interestingEntityGuid].HasPendingChanges)
+					if(!ChangeTrackerHasChangesForEntity(interestingEntityGuid))
 						continue;
 
 					//TODO: We should cache this update value so we don't need to recompute it for ALL players who are interested
@@ -65,11 +66,47 @@ namespace Guardians
 
 				//It's possible no entity had updates, so we should not send a packet update
 				if(updates.Count != 0)
-					SessionMappable[guid].SendMessageImmediately(new FieldValueUpdateEvent(updates.ToArray()));
+					SendUpdate(guid, updates);
 			}
 
 			foreach(var dataEntityCollection in ChangeTrackingCollections.Values)
 				dataEntityCollection.ClearTrackedChanges();
+		}
+
+		private void SendUpdate(NetworkEntityGuid guid, List<EntityAssociatedData<FieldValueUpdate>> updates)
+		{
+			try
+			{
+				SessionMappable[guid].SendMessageImmediately(new FieldValueUpdateEvent(updates.ToArray()));
+			}
+			catch(Exception e)
+			{
+				throw new InvalidOperationException($"Failed to send update to session with Guid: {guid}. Exception: {e.Message}", e);
+			}
+		}
+
+		private bool ChangeTrackerHasChangesForEntity(NetworkEntityGuid interestingEntityGuid)
+		{
+			try
+			{
+				return ChangeTrackingCollections[interestingEntityGuid].HasPendingChanges;
+			}
+			catch(Exception e)
+			{
+				throw new InvalidOperationException($"Attempted to load Entity: {interestingEntityGuid}'s interst collection From: {ChangeTrackingCollections.GetType().Name} but failed. No entry matched the key. Exception: {e.Message}", e);
+			}
+		}
+
+		private InterestCollection GetEntityInterestCollection(NetworkEntityGuid guid)
+		{
+			try
+			{
+				return GuidToInterestCollectionMappable[guid];
+			}
+			catch(Exception e)
+			{
+				throw new InvalidOperationException($"Attempted to load Entity: {guid}'s interst collection From: {GuidToInterestCollectionMappable.GetType().Name} but failed. No interest collection matched the key. Exception: {e.Message}", e);
+			}
 		}
 	}
 }

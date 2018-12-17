@@ -12,13 +12,17 @@ namespace Guardians
 
 		private IConnectionEntityCollection ConnectionToEntityMap { get; }
 
+		private ISessionCollection SessionCollection { get; }
+
 		/// <inheritdoc />
 		public PlayerSessionDestructor(
 			[NotNull] IObjectDestructorable<PlayerEntityDestructionContext> playerEntityDestructor,
-			[NotNull] IConnectionEntityCollection connectionToEntityMap)
+			[NotNull] IConnectionEntityCollection connectionToEntityMap,
+			[NotNull] ISessionCollection sessionCollection)
 		{
 			PlayerEntityDestructor = playerEntityDestructor ?? throw new ArgumentNullException(nameof(playerEntityDestructor));
 			ConnectionToEntityMap = connectionToEntityMap ?? throw new ArgumentNullException(nameof(connectionToEntityMap));
+			SessionCollection = sessionCollection ?? throw new ArgumentNullException(nameof(sessionCollection));
 		}
 
 		/// <inheritdoc />
@@ -35,7 +39,10 @@ namespace Guardians
 			//An entity exists, so we just pass it along but we also must remove it from the map afterwards.
 			bool result = PlayerEntityDestructor.Destroy(new PlayerEntityDestructionContext(entityGuid));
 
+			//We need to unregister BOTH of these collections, session collection orginally was cleanedup
+			//immediately on disconnect. Now it is not and must be done here.
 			ConnectionToEntityMap.Remove(obj.ConnectionId);
+			SessionCollection.Unregister(obj.ConnectionId);
 
 			return result;
 		}

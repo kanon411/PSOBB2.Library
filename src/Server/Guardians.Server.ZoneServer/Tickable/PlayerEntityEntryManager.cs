@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Guardians
 {
 	//TODO: Refactor clean this mess up
+	[GameInitializableOrdering(2)]
 	[CollectionsLocking(LockType.Write)]
 	public sealed class PlayerEntityEntryManager : IGameTickable, ITickableSkippable
 	{

@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 
 namespace Guardians
 {
+	[GameInitializableOrdering(1)]
 	[CollectionsLocking(LockType.Read)]
 	public sealed class PlayerEntityMovementDataUpdateManager : IGameTickable
 	{

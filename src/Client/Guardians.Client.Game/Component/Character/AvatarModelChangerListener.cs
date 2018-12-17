@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
 using Nito.AsyncEx;
@@ -33,6 +34,11 @@ namespace Guardians
 
 		public GameObject CurrentRootAvatarGameObject { get; private set; }
 
+		/// <summary>
+		/// Mutable cancellation state.
+		/// </summary>
+		private CancellationTokenSource CurrentCancellationSource { get; set; }
+
 		/// <inheritdoc />
 		public AvatarModelChangerListenerExternal(
 			NetworkEntityGuid currentEntityGuid, 
@@ -56,9 +62,10 @@ namespace Guardians
 			//Don't check the actual CurrentRootAvatarGameObject as it could be null due to engine race condition
 			ThrowIfNotInitialized();
 
-			//TODO: There are some race conditions here, it's possible that the entity has been removed from the client but the avatar download is still ongoing
-			//which could cause the avatar to spawn
-			ProjectVersionStage.AssertAlpha();
+			//We NEVER want to directly reference the cancel token in an async context due to race conditions
+			//we should only ref it from this local ref.
+			//Local ref to the cancellation token source
+			CancellationTokenSource cancelToken = CreateNewAvatarCancelToken();
 
 			if(CurrentPrefabHandle != null)
 			{
@@ -76,22 +83,93 @@ namespace Guardians
 
 			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
 			{
+				//This guards and prevents unwanted and wasted resources into
+				//loading an avatar that has had its token canceled.
+				if(IsModelChangeCanceled(cancelToken))
+				{
+					ModelChangeCancelLogging(entityGuid, changeData);
+					return;
+				}
+
 				//We need to await the resource but capture the context, because we'll need to be on the main thread.
 				IPrefabContentResourceHandle handle = await avatarPrefabAsync
 					.ConfigureAwait(true);
 
+				//This guards and prevents unwanted and wasted resources into
+				//loading an avatar that has had its token canceled.
+				if(IsModelChangeCanceled(cancelToken))
+				{
+					ModelChangeCancelLogging(entityGuid, changeData);
+					return;
+				}
+
 				GameObject gameObject = await handle.LoadPrefabAsync()
 					.ConfigureAwait(true);
+
+				//This guards and prevents unwanted and wasted resources into
+				//loading an avatar that has had its token canceled.
+				if(IsModelChangeCanceled(cancelToken))
+				{
+					ModelChangeCancelLogging(entityGuid, changeData);
+					return;
+				}
 
 				//This SHOULD be the main thread
 				OnPrefabResourceAvailable(gameObject);
 			});
 		}
 
+		/// <summary>
+		/// Cancels the current cancel token for avatar
+		/// model changing and initializes a new one.
+		/// </summary>
+		/// <returns>The cancel token source.</returns>
+		private CancellationTokenSource CreateNewAvatarCancelToken()
+		{
+			CancellationTokenSource cancelToken;
+			lock(SyncObj)
+			{
+				//Cancel the current token
+				CancelCurrentCancellationToken();
+
+				//It is possible that DURING an async model change event being
+				//serviced that the remote player could change their avatar
+				//before the local client is done downloading the avatar
+				//loading the prefab and spawning it
+				//because of this we must maintain a cancellation token
+				//which will be used to signal to the handler that we don't wish to continue and to abort.
+				cancelToken = new CancellationTokenSource();
+				CurrentCancellationSource = cancelToken;
+			}
+
+			return cancelToken;
+		}
+
+		private void CancelCurrentCancellationToken()
+		{
+			CurrentCancellationSource?.Cancel();
+			CurrentCancellationSource?.Dispose();
+		}
+
+		private void ModelChangeCancelLogging(NetworkEntityGuid entityGuid, EntityDataChangedArgs<int> changeData)
+		{
+			if(Logger.IsInfoEnabled)
+				Logger.Info($"Encountered canceled request for Entity: {entityGuid} to change to ModelId: {changeData.NewValue}");
+		}
+
+		private static bool IsModelChangeCanceled(CancellationTokenSource cancelToken)
+		{
+			return cancelToken.Token.IsCancellationRequested;
+		}
+
 		private void OnPrefabResourceAvailable([NotNull] GameObject prefab)
 		{
 			if(prefab == null) throw new ArgumentNullException(nameof(prefab));
 
+			//At this point, we're on the main thread again BUT we can't touch the cancellation token
+			//because it could be used for another
+
+			//This shouldn't happen really anymore, due to canceltokens used now.
 			//Since this could happen many frames after initial request it's possible that
 			//the avatar or entity isn't even in the world anymore, so we must check that.
 			if(!CurrentRootAvatarGameObject.IsGameObjectValid())
@@ -125,7 +203,12 @@ namespace Guardians
 
 		public void OnDestroy()
 		{
-			CurrentPrefabHandle?.Release();
+			lock(SyncObj)
+			{
+				CurrentPrefabHandle?.Release();
+				OnAvatarModelChangedEvent = null;
+				CancelCurrentCancellationToken();
+			}
 		}
 	}
 

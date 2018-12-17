@@ -17,6 +17,11 @@ namespace Guardians
 		/// </summary>
 		protected bool isInitialized { get; private set; }
 
+		/// <summary>
+		/// Interanl component locking object.
+		/// </summary>
+		protected readonly object SyncObj = new object();
+
 		/// <inheritdoc />
 		protected BaseExternalComponent([NotNull] ILog logger)
 		{

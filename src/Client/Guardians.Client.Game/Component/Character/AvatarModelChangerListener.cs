@@ -16,6 +16,7 @@ using Unitysync.Async;
 
 namespace Guardians
 {
+	[Serializable]
 	[ExternalBehaviour]
 	public sealed class AvatarModelChangerListenerExternal : BaseExternalComponent<GameObject>
 	{

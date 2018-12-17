@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using Sirenix.OdinInspector;
 
 namespace Guardians
 {
+	[Serializable]
 	public abstract class BaseExternalComponent<TInitializationContext>
 	{
 		/// <summary>
@@ -15,6 +17,8 @@ namespace Guardians
 		/// <summary>
 		/// True if <see cref="Initialize"/> has been called.
 		/// </summary>
+		[ReadOnly]
+		[ShowInInspector]
 		protected bool isInitialized { get; private set; }
 
 		/// <summary>

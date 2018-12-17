@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using SceneJect.Common;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Guardians
@@ -20,6 +21,8 @@ namespace Guardians
 		/// <summary>
 		/// The external engine dependency that the MonoBehaviour interacts with.
 		/// </summary>
+		[ReadOnly]
+		[ShowInInspector]
 		[Inject]
 		protected TDependencyType ExternalDependency { get; private set; }
 	}

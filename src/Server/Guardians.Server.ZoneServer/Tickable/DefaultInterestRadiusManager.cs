@@ -30,40 +30,10 @@ namespace Guardians
 			InterestChangeDequeable = interestChangeDequeable ?? throw new ArgumentNullException(nameof(interestChangeDequeable));
 		}
 
-		/// <inheritdoc />
-		public bool TryEntityEnter([NotNull] NetworkEntityGuid entryContext, [NotNull] NetworkEntityGuid entityGuid)
-		{
-			if(entryContext == null) throw new ArgumentNullException(nameof(entryContext));
-			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
-
-			ThrowIfNoEntityInterestManaged(entryContext, entityGuid);
-
-			//If it's already known then we should ignore it.
-			if(ManagedInterestCollections[entryContext].Contains(entityGuid))
-				return false;
-
-			ManagedInterestCollections[entryContext].Register(entityGuid, entityGuid);
-
-			return true;
-		}
-
 		private void ThrowIfNoEntityInterestManaged(NetworkEntityGuid entryContext, NetworkEntityGuid entityGuid)
 		{
 			if(!ManagedInterestCollections.ContainsKey(entryContext))
 				throw new InvalidOperationException($"Guid: {entityGuid} tried to enter Entity: {entryContext} interest. But Entity does not maintain interest. Does not exist in interest collection.");
-		}
-
-		/// <inheritdoc />
-		public bool TryEntityLeave([NotNull] NetworkEntityGuid entryContext, [NotNull] NetworkEntityGuid entityGuid)
-		{
-			if(entryContext == null) throw new ArgumentNullException(nameof(entryContext));
-			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
-
-			ThrowIfNoEntityInterestManaged(entryContext, entityGuid);
-
-			//TODO: Handle case where it's not known and we want to unknow it somehow
-
-			return ManagedInterestCollections[entryContext].Unregister(entityGuid);
 		}
 
 		/// <inheritdoc />

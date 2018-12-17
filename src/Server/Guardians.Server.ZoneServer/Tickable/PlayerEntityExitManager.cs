@@ -6,6 +6,7 @@ using Nito.AsyncEx;
 
 namespace Guardians
 {
+	[GameInitializableOrdering(Int32.MaxValue)] //this should ALWAYS be last, just incase anything else is in queue.
 	[CollectionsLocking(LockType.Write)]
 	public sealed class PlayerEntityExitManager : IGameTickable, ITickableSkippable
 	{

@@ -7,6 +7,8 @@ namespace Guardians
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class GameInitializableOrderingAttribute : Attribute
 	{
+		public static int DefaultOrderValue { get; } = 0;
+
 		/// <summary>
 		/// The ordering of the initializable..
 		/// </summary>

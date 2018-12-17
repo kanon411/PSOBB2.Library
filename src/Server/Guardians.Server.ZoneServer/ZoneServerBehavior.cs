@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
@@ -69,6 +70,15 @@ namespace Guardians
 
 			GameTickables = container.ServiceContainer
 				.Resolve<IEnumerable<IGameTickable>>()
+				.OrderBy(tickable =>
+				{
+					if(tickable.GetType().GetCustomAttribute<GameInitializableOrderingAttribute>() is GameInitializableOrderingAttribute attri)
+					{
+						return attri.Order;
+					}
+					else
+						return GameInitializableOrderingAttribute.DefaultOrderValue;
+				}) //ordering was added because sometimes we want certain tickables to run before others.
 				.ToArray();
 
 			//TODO: We need a better way to set all this stuff up

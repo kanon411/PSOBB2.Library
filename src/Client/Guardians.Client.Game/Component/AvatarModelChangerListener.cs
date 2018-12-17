@@ -33,6 +33,8 @@ namespace Guardians
 
 		public GameObject CurrentRootAvatarGameObject { get; private set; }
 
+		private bool isInitialized { get; set; } = false;
+
 		/// <inheritdoc />
 		public AvatarModelChangerListenerExternal(
 			NetworkEntityGuid currentEntityGuid, 
@@ -49,11 +51,13 @@ namespace Guardians
 		public void Initialize([NotNull] GameObject currentAvatarRoot)
 		{
 			CurrentRootAvatarGameObject = currentAvatarRoot ?? throw new ArgumentNullException(nameof(currentAvatarRoot));
+			isInitialized = true;
 		}
 
 		private void OnModelIdeChanged(NetworkEntityGuid entityGuid, EntityDataChangedArgs<int> changeData)
 		{
-			if(CurrentRootAvatarGameObject == null)
+			//Don't check the actual CurrentRootAvatarGameObject as it could be null due to engine race condition
+			if(!isInitialized)
 				throw new InvalidOperationException($"{nameof(Initialize)} was never called. {nameof(CurrentRootAvatarGameObject)} is null. Existing avatar root must be initialized.");
 
 			//TODO: There are some race conditions here, it's possible that the entity has been removed from the client but the avatar download is still ongoing

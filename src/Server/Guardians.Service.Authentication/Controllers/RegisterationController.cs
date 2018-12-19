@@ -39,13 +39,16 @@ namespace Guardians
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Register Request: {username} {HttpContext.Connection.RemoteIpAddress}:{HttpContext.Connection.RemotePort}");
 
-			await UserManager.CreateAsync(new GuardiansApplicationUser()
+			IdentityResult identityResult = await UserManager.CreateAsync(new GuardiansApplicationUser()
 			{
 				UserName = username,
 				Email = "dev@dev.com"
 			}, password);
 
-			return Ok();
+			if(identityResult.Succeeded)
+				return Ok();
+			else
+				return BadRequest(identityResult.Errors.Aggregate("", (s, error) => $"{s} {error.Code}:{error.Description}"));
 		}
 	}
 }

@@ -120,6 +120,16 @@ namespace Guardians
 					throw new InvalidOperationException($"Failed to load cert at Path: {authOptions.Value.JwtSigningX509Certificate2Path} with Root: {Directory.GetCurrentDirectory()}. Error: {e.Message} \n\n Stack: {e.StackTrace}", e);
 				}
 			});
+
+#warning This is just for the test build, we don't actually want to do this
+			services.Configure<IdentityOptions>(options =>
+			{
+				options.Password.RequireDigit = false;
+				options.Password.RequiredLength = 1;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = false;
+				options.Password.RequireNonAlphanumeric = false;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

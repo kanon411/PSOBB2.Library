@@ -50,7 +50,7 @@ namespace Guardians
 		public Task OnGameInitialized()
 		{
 			//When login button is pressed we should temporarily disable the interactivity of the login button.
-			UIElements.LoginButton.AddOnClickListener(() => UIElements.LoginButton.IsInteractable = false);
+			UIElements.LoginButton.AddOnClickListener(() => UIElements.DisableInteractionOnAllButtons());
 
 			//On start we have to actually register the login button callback
 			//which is async, since it must send an auth request.
@@ -82,7 +82,7 @@ namespace Guardians
 
 			if(!jwtModel.isTokenValid)
 			{
-				UIElements.LoginButton.IsInteractable = true;
+				UIElements.EnableInteractionOnAllButtons();
 			}
 			else
 			{

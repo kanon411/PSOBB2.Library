@@ -32,5 +32,14 @@ namespace Guardians
 			PasswordText = passwordText ?? throw new ArgumentNullException(nameof(passwordText));
 			LoginButton = loginButton ?? throw new ArgumentNullException(nameof(loginButton));
 		}
+		public void DisableInteractionOnAllButtons()
+		{
+			LoginButton.IsInteractable = false;
+		}
+
+		public void EnableInteractionOnAllButtons()
+		{
+			LoginButton.IsInteractable = true;
+		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using Refit;
 using UnityEngine.SceneManagement;
 
 namespace Guardians
@@ -59,9 +60,20 @@ namespace Guardians
 
 		public async Task OnLoginButtonClicked()
 		{
+			JWTModel jwtModel = null;
+
 			//TODO: Validate username and password
-			JWTModel jwtModel = await AuthService.TryAuthenticate(BuildAuthRequestModel())
-				.ConfigureAwait(false);
+			//We can't do error code supression with refit anymore, so we have to do this crap.
+			try
+			{
+				jwtModel = await AuthService.TryAuthenticate(BuildAuthRequestModel())
+					.ConfigureAwait(false);
+			}
+			catch(ApiException e)
+			{
+				jwtModel = e.GetContentAs<JWTModel>();
+			}
+			
 
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Auth Response for User: {UIElements.UsernameText.Text} Result: {jwtModel.isTokenValid} OptionalError: {jwtModel.Error} OptionalErrorDescription: {jwtModel.ErrorDescription}");

@@ -20,6 +20,8 @@ namespace Guardians
 
 		Login = 4,
 
-		PlayerHealthBar = 5,
+		PlayerHealthBar = 6,
+
+		Registeration = 7
 	}
 }

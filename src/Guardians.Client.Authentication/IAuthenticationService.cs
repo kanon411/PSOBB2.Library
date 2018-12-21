@@ -27,7 +27,7 @@ namespace Guardians
 		Task<JWTModel> TryAuthenticate([UrlEncodedBody] AuthenticationRequestModel request);
 
 		[Obsolete("This is for DEV only.")]
-		[Post("api/registeration?username={username}&password={password}")]
+		[Post("/api/registeration?username={username}&password={password}")]
 		Task<string> TryRegister(string username, string password);
 	}
 }

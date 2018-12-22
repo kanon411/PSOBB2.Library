@@ -32,6 +32,8 @@ namespace Guardians
 
 			//Set the sync context
 			UnityExtended.InitializeSyncContext();
+
+			Application.targetFrameRate = 20;
 		}
 
 		private async Task Start()

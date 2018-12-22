@@ -9,6 +9,10 @@
     <DefineConstants>TRACE;DEBUG_LOCAL;NETCOREAPP2_0;LOCAL</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>

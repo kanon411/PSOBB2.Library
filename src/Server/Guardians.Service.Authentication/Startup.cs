@@ -66,7 +66,7 @@ namespace Guardians
 #if !DEBUG_LOCAL && !RELEASE_LOCAL
 				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 #else
-				options.UseMySql("Server=localhost;Database=guardians.auth;Uid=root;Pwd=test;");
+				options.UseMySql("Server=72.190.177.214;Database=guardians.auth;Uid=root;Pwd=test;");
 #endif
 				options.UseOpenIddict<int>();
 			});

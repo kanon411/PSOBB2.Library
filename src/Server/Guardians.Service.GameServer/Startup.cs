@@ -73,7 +73,7 @@ namespace Guardians
 				throw new NotSupportedException("AWS/Remote database not supported yet.");
 				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 #else
-				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
+				o.UseMySql("Server=72.190.177.214;Database=guardians.gameserver;Uid=root;Pwd=test;");
 #endif
 			});
 
@@ -89,7 +89,7 @@ namespace Guardians
 				throw new NotSupportedException("AWS/Remote database not supported yet.");
 				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 #else
-				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
+				o.UseMySql("Server=72.190.177.214;Database=guardians.gameserver;Uid=root;Pwd=test;");
 #endif
 			});
 
@@ -103,7 +103,7 @@ namespace Guardians
 				throw new NotSupportedException("AWS/Remote database not supported yet.");
 				//o.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 #else
-				o.UseMySql("Server=localhost;Database=guardians.gameserver;Uid=root;Pwd=test;");
+				o.UseMySql("Server=72.190.177.214;Database=guardians.gameserver;Uid=root;Pwd=test;");
 #endif
 			});
 

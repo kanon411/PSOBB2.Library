@@ -20,6 +20,11 @@ namespace Guardians
 
 		void Start()
 		{
+			//This is kinda a hack, to sidestep some
+			//issues encountered with Unity2018 prefab reference serialization
+			if(CameraTransform == null)
+				CameraTransform = Camera.main.transform;
+
 			LastCameraRotation = CameraTransform.rotation;
 			LastPosition = transform.position;
 			LastDirection = Vector2.zero;

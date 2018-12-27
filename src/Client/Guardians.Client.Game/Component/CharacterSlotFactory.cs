@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Guardians
@@ -21,6 +22,9 @@ namespace Guardians
 		[SerializeField]
 		private ToggleGroup Group;
 
+		[SerializeField]
+		private UnityEvent OnCharacterSlotToggled;
+
 		/// <inheritdoc />
 		public CharacterSlotUIElements Create(EmptyFactoryContext context)
 		{
@@ -34,7 +38,10 @@ namespace Guardians
 
 			//We need to get the Toggle to add it to the toggle group
 			//so Unity can manage the annoying parts of Toggles
-			model.GetComponent<Toggle>().group = Group;
+			Toggle toggle = model.GetComponent<Toggle>();
+			toggle.group = Group;
+
+			toggle.onValueChanged.AddListener(arg0 => OnCharacterSlotToggled?.Invoke());
 
 			//TODO: Verify that this has the component
 			//Now we just pull the CharacterSlotUIElements off the slot

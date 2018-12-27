@@ -18,6 +18,9 @@ namespace Guardians
 		[SerializeField]
 		private Transform CameraTransform;
 
+		[Inject]
+		private IReadonlyNetworkTimeService TimeService { get; set; }
+
 		void Start()
 		{
 			//This is kinda a hack, to sidestep some
@@ -40,7 +43,7 @@ namespace Guardians
 
 			//TODO: Send timestamp
 			//This is just demo code to network the position for the demo.
-			this.SendService.SendMessage(new ClientMovementDataUpdateRequest(new PositionChangeMovementDataWithLook(0, this.transform.position, direction, CameraTransform.localEulerAngles, transform.eulerAngles.y)));
+			this.SendService.SendMessage(new ClientMovementDataUpdateRequest(new PositionChangeMovementDataWithLook(TimeService.CurrentRemoteTime, this.transform.position, direction, CameraTransform.localEulerAngles, transform.eulerAngles.y)));
 
 			LastPosition = transform.position;
 			LastDirection = direction;

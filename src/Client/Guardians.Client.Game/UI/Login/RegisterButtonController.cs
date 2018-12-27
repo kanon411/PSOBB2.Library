@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Refit;
 
 namespace Guardians
 {
@@ -46,10 +47,25 @@ namespace Guardians
 
 		private async Task OnRegisterationButtonClicked()
 		{
-			//AuthService
-			string optionalResultMessage = await AuthService.TryRegister(UIElements.UsernameText.Text, UIElements.PasswordText.Text)
-				.ConfigureAwait(false);
+			string optionalResultMessage = null;
+			try
+			{
+				//AuthService
+				optionalResultMessage = await AuthService.TryRegister(UIElements.UsernameText.Text, UIElements.PasswordText.Text)
+					.ConfigureAwait(false);
+			}
+			catch(ApiException e)
+			{
+				//Possible to get an ApiException here
+				//Because 400 BadRequest is standard with OAuth
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to Register; Account likely already exists: {optionalResultMessage}");
 
+				//Just set this so later error handling works.
+				if(optionalResultMessage == null)
+					optionalResultMessage = "Error";
+			}
+			
 			await new UnityYieldAwaitable();
 
 			//We always renable on registeration

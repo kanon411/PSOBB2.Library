@@ -73,7 +73,6 @@ namespace Guardians
 			{
 				jwtModel = e.GetContentAs<JWTModel>();
 			}
-			
 
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Auth Response for User: {UIElements.UsernameText.Text} Result: {jwtModel.isTokenValid} OptionalError: {jwtModel.Error} OptionalErrorDescription: {jwtModel.ErrorDescription}");
@@ -82,6 +81,9 @@ namespace Guardians
 
 			if(!jwtModel.isTokenValid)
 			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to Authenticate: {jwtModel.ErrorDescription}");
+
 				UIElements.EnableInteractionOnAllButtons();
 			}
 			else

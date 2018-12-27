@@ -33,7 +33,8 @@ namespace Guardians
 			//Set the sync context
 			UnityExtended.InitializeSyncContext();
 
-			Application.targetFrameRate = 20;
+			//TODO: We need to not have such a high rate of Update and need to add prediction.
+			Application.targetFrameRate = 60;
 		}
 
 		private async Task Start()
@@ -90,52 +91,8 @@ namespace Guardians
 
 			try
 			{
-				//TODO: Fix this mess
-				for(ZoneServerRegisterationResponse response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
-					.ConfigureAwait(false);; response = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
-					.ConfigureAwait(false))
-				{
-					if(response.isSuccessful)
-					{
-						worldId = response.WorldId;
-						break;
-					}
-					else
-						await Task.Delay(1500);
-				}
-
-				//This was demo NPC code
-				/*var response = await zoneGameServerClient.GetNPCEntriesByMapId(MapId)
-					.ConfigureAwait(false);
-
-				//TODO: We're assuming it was successful, which is ok for now but we'll need to handle it failing eventually.
-				foreach(var entry in response.Entries)
-					Logger.Debug($"NPC Entry Guid: {entry.Guid}");
-
-				//TODO: Eventually we'll need some NPC specific construction, so we won't be able to use the default.
-				var entityFactory = container.ServiceContainer
-					.Resolve<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>();
-
-				//Join main thread
-				await new UnityYieldAwaitable();
-
-				try
-				{
-					//TODO: Timestamp
-					foreach(var entry in response.Entries)
-					{
-						//TODO: This is test data
-						EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
-
-						entityFactory.Create(new DefaultEntityCreationContext(entry.Guid, await CreateNpcMovementData(entry, zoneGameServerClient), EntityPrefab.NetworkNpc, testData));
-					}
-				}
-				catch(Exception e)
-				{
-					if(Logger.IsErrorEnabled)
-						Logger.Error($"Exception: {e.Message}\n\nStack: {e.StackTrace}");
-					throw;
-				}*/
+				await RegisterZoneServer(port, zoneGameServerClient)
+					.ConfigureAwait(true);
 			}
 			catch(Exception e)
 			{
@@ -148,6 +105,26 @@ namespace Guardians
 
 			if(container.ApplicationBase.Logger.IsWarnEnabled)
 				container.ApplicationBase.Logger.Warn($"Server is shutting down.");
+		}
+
+		private async Task RegisterZoneServer(int port, IZoneServerToGameServerClient zoneGameServerClient)
+		{
+			//TODO: Fix this mess
+			ZoneServerRegisterationResponse registerationResponse = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
+				.ConfigureAwait(true);
+
+			while(!registerationResponse.isSuccessful)
+			{
+				Logger.Debug($"Failed to register gameserver: {registerationResponse.ResultCode}");
+
+				await Task.Delay(1000)
+					.ConfigureAwait(true);
+
+				registerationResponse = await zoneGameServerClient.RegisterZoneServer(new ZoneServerRegisterationRequest(new ResolvedEndpoint("192.168.0.3", port)))
+					.ConfigureAwait(true);
+			}
+			
+			Logger.Debug($"Registered Instance with WorldId: {registerationResponse.WorldId}");
 		}
 
 		private async Task<IMovementData> CreateNpcMovementData(ZoneServerNpcEntryModel entry, IZoneServerToGameServerClient zoneGameServerClient)

@@ -15,10 +15,10 @@ namespace Guardians
 			var x = Input.GetAxis("Horizontal");
 			var z = Input.GetAxis("Vertical");
 
-			Vector3 movementDirection = (transform.right * x + transform.forward * z).normalized;
+			Vector3 movementDirection = (transform.right * x + transform.forward * z);
 			
 			//Remove any potential Y value for safety
-			movementDirection = new Vector3(movementDirection.x, 0, movementDirection.z);
+			movementDirection = new Vector3(movementDirection.x, 0, movementDirection.z).normalized;
 
 			this.transform.position += movementDirection * Time.deltaTime * Speed;
 		}

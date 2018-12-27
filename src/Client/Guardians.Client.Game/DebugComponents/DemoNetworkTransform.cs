@@ -38,7 +38,7 @@ namespace Guardians
 			Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
 			//If we aren't moving don't send
-			if(LastPosition == transform.position && LastDirection == direction && CameraTransform.rotation == LastCameraRotation)
+			if(LastDirection == direction && CameraTransform.rotation == LastCameraRotation)
 				return;
 
 			//TODO: Send timestamp

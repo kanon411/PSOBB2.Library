@@ -65,8 +65,9 @@ namespace Guardians
 		{
 			long diff = currentTime - MovementData.TimeStamp;
 
-			if(diff < 0)
-				Debug.LogError($"Diff Less Than Zero: {diff}");
+			//This will actually happen right now on intial position, due to spoofed time from the server
+			//if(diff < 0)
+			//	Debug.LogError($"Diff Less Than Zero: {diff}");
 
 			//Must use ticks per second as time.deltaTime is in seconds
 			return (float)(diff < 0 ? 0 : diff) / (float)TimeSpan.TicksPerSecond;

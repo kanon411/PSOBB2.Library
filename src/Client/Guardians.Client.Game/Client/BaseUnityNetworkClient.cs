@@ -84,7 +84,7 @@ namespace Guardians
 					//	Logger.Debug("Reading message.");
 
 					NetworkIncomingMessage<TIncomingPayloadType> message = await Client.ReadMessageAsync(CancelTokenSource.Token)
-						.ConfigureAwait(true);
+						.ConfigureAwait(false);
 
 					//Supress and continue reading
 					try
@@ -92,7 +92,7 @@ namespace Guardians
 						//We don't do anything with the result. We should hope someone registered
 						//a default handler to deal with this situation
 						bool result = await Handlers.TryHandleMessage(MessageContextFactory.Create(Client, Client, RequestService), message)
-							.ConfigureAwait(true);
+							.ConfigureAwait(false);
 					}
 					catch(Exception e)
 					{
@@ -153,8 +153,8 @@ namespace Guardians
 		protected void CreateDispatchTask()
 		{
 			//Don't await because we want start to end.
-			Task.Factory.StartNew(StartDispatchingAsync, CancelTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.FromCurrentSynchronizationContext())
-				.ConfigureAwait(true);
+			Task.Factory.StartNew(StartDispatchingAsync, CancelTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+				.ConfigureAwait(false);
 		}
 	}
 }

@@ -51,8 +51,12 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
+		public override async Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
 		{
+			//TODO: We don't want to have to do this, we should queue this up for handling on the main thread.
+			//Must happen from the main thread
+			await new UnityYieldAwaitable();
+
 			foreach(var entity in payload.EntitiesToCreate)
 			{
 				if(Logger.IsDebugEnabled)
@@ -110,9 +114,6 @@ namespace Guardians
 					VoiceGateway.LeaveVoiceSession(destroyData);
 				}
 			}
-
-			//We need to spawn newly encountered entites.
-			return Task.CompletedTask;
 		}
 
 		private void SetInitialFieldValues(EntityCreationData creationData)

@@ -39,12 +39,15 @@ namespace Guardians
 				//TODO: Handle position data better, we need to actually move the entities.
 				MovementDataMap[guid] = payload.MovementData;
 
-				//TODO: Make it so that this is simplier to use.
+				//TODO: Nothing is actually upading the movement, we need ZoneServer movement generators.
+				ProjectVersionStage.AssertInternalTesting();
+
+				/*//TODO: Make it so that this is simplier to use.
 				//We must run this next part on the main thread because it sets a transform.
 				await new UnityYieldAwaitable();
 
 				//TODO: This is kinda demo code, directly setting the position of the root object.
-				WorldEntities[guid].transform.position = payload.MovementData.InitialPosition;
+				WorldEntities[guid].transform.position = payload.MovementData.InitialPosition;*/
 			}
 			catch(Exception e)
 			{

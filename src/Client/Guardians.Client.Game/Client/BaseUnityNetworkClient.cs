@@ -80,8 +80,8 @@ namespace Guardians
 
 				while(Client.isConnected && !isClientExported) //if we exported we should reading messages
 				{
-					if(Logger.IsDebugEnabled)
-						Logger.Debug("Reading message.");
+					//if(Logger.IsDebugEnabled)
+					//	Logger.Debug("Reading message.");
 
 					NetworkIncomingMessage<TIncomingPayloadType> message = await Client.ReadMessageAsync(CancelTokenSource.Token)
 						.ConfigureAwait(true);

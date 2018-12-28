@@ -37,9 +37,6 @@ namespace Guardians
 		/// <inheritdoc />
 		public override Task OnNetworkMessageRecieved(NetworkIncomingMessage<GameClientPacketPayload> message)
 		{
-			if(Logger.IsDebugEnabled)
-				Logger.Debug("Dispatching incoming network message to handlers.");
-
 			return MessageHandlers.TryHandleMessage(new DefaultSessionMessageContext<GameServerPacketPayload>(this.Connection, this.SendService, MockedInterceptorService, Details), message);
 		}
 	}

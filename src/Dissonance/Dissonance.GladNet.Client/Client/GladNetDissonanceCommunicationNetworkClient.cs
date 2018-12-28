@@ -135,14 +135,16 @@ namespace Dissonance.GladNet
 				return;
 			}
 
-			//TODO: We need to do better senderId rewritting to support more than 255 characters. This won't work for long. Won't even work for alpha.
+			//TODO: We need to do better senderId rewritting to support more than 65,000 characters.
 			ProjectVersionStage.AssertInternalTesting();
 
 			//We need to rewrite the voice packet data-
 			//It contains the wrong source/sender id. Well, technically it could contain the right ID
 			//but we should assume the remote clients are LYING and so we should use the provided entity guid.
 			//We don't do this on the server because it's a waste of previous resources
-			voiceData.Array[voiceData.Offset + 8] = (byte)entity.EntityId;
+			//This is BIG endian, strangely enough. So we need to write the most significant bits first
+			voiceData.Array[voiceData.Offset + 8] = (byte)(0xFF & entity.EntityId); //LSB
+			voiceData.Array[voiceData.Offset + 7] = (byte)(entity.EntityId >> 8); //MSB
 
 			ushort? id = NetworkReceivedPacket(voiceData);
 

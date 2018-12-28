@@ -34,9 +34,6 @@ namespace Guardians
 		{
 			MovementDataMap[entityGuid] = data;
 			MovementGenerator[entityGuid] = new ClientPositionChangeWithLookMovementGenerator(data);
-
-			//TODO: We may not be on the main thread, so we might not be able to do this.
-			MovementGenerator[entityGuid].Update(GameObjectMap[entityGuid], TimeService.CurrentRemoteTime);
 		}
 	}
 }

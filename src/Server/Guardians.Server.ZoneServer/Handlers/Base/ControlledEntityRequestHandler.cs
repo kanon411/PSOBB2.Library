@@ -60,6 +60,9 @@ namespace Guardians
 
 		public override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, TSpecificPayloadType payload)
 		{
+			if(!ValidateConnectionOwnsEntity(context.Details.ConnectionId))
+				return;
+
 			//TODO: What do we do in cases where the entity 
 			ProjectVersionStage.AssertBeta();
 			//TODO: We may want a timeout to prevent production deadlocks
@@ -71,20 +74,27 @@ namespace Guardians
 			using(var lockObj = await LockingPolicy.ReaderLockAsync(GenerateLockContext(context, payload), CancellationToken.None)
 				.ConfigureAwait(false))
 			{
-				//We need to check this, if we recieve a message that requires a controlled entity then we should not handle this message
-				//and log this. It's possible it was spoofed or something. Or there is an error somewhere in logic.
-				if(!ConnectionIdToEntityMap.ContainsKey(context.Details.ConnectionId))
-				{
-					if(Logger.IsErrorEnabled)
-						Logger.Error($"Recieved: {payload.GetType().Name} from Connection: {context.Details.ConnectionId} but no entity guid associated.");
-
+				//We have to double check lock, could have been removed since the last check.
+				if(!ValidateConnectionOwnsEntity(context.Details.ConnectionId))
 					return;
-				}
 
 				//We just dispatch to child handler, who will use the payload, context and guid.
 				await HandleMessage(context, payload, ExtractEntityGuidFromContext(context))
 					.ConfigureAwait(false);
 			}
+		}
+
+		private bool ValidateConnectionOwnsEntity(int connectionId)
+		{
+			if(!ConnectionIdToEntityMap.ContainsKey(connectionId))
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Recieved: {typeof(TSpecificPayloadType).Name} from Connection: {connectionId} but no entity guid associated.");
+
+				return false;
+			}
+
+			return true;
 		}
 
 		/// <summary>

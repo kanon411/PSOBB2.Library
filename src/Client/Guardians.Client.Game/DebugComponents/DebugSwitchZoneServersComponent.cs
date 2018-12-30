@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GladNet;
 using Nito.AsyncEx;
 using SceneJect.Common;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,6 +18,10 @@ namespace Guardians
 	{
 		[SerializeField]
 		private InputField Input;
+
+		[ShowInInspector]
+		[ReadOnly]
+		private bool wasFired = false;
 
 		[Inject]
 		private IConnectionService ConnectionService { get; set; }
@@ -36,6 +41,12 @@ namespace Guardians
 
 		public void SwitchZoneInstances()
 		{
+			//Make it so that we can only fire 1 instance change
+			if(wasFired)
+				return;
+
+			wasFired = true;
+
 			//Just load
 			int zoneId = Int32.Parse(Input.text);
 

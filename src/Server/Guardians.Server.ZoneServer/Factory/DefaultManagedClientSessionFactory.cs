@@ -69,7 +69,6 @@ namespace Guardians
 						if(!SessionDestructor.OwnsEntityToDestruct(source.Details.ConnectionId))
 						{
 							Logger.Debug($"Connection: {source.Details.ConnectionId} disconnecting does not own an entity.");
-							return;
 						}
 						else
 						{

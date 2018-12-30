@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Common.Logging;
 using Nito.AsyncEx;
 
 namespace Guardians
@@ -27,6 +28,8 @@ namespace Guardians
 
 		private IConnectionEntityCollection ConnectionToEntityMap { get; }
 
+		private ILog Logger { get; }
+
 		//If it's empty, we can just skip.
 		/// <inheritdoc />
 		public bool IsTickableSkippable => SessionCleanupQueue.isEmpty;
@@ -36,12 +39,14 @@ namespace Guardians
 			[NotNull] IDequeable<PlayerSessionDeconstructionContext> sessionCleanupQueue,
 			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor,
 			[NotNull] IZoneServerToGameServerClient zoneClientGameService,
-			[NotNull] IConnectionEntityCollection connectionToEntityMap)
+			[NotNull] IConnectionEntityCollection connectionToEntityMap,
+			[NotNull] ILog logger)
 		{
 			SessionCleanupQueue = sessionCleanupQueue ?? throw new ArgumentNullException(nameof(sessionCleanupQueue));
 			SessionDestructor = sessionDestructor ?? throw new ArgumentNullException(nameof(sessionDestructor));
 			ZoneClientGameService = zoneClientGameService ?? throw new ArgumentNullException(nameof(zoneClientGameService));
 			ConnectionToEntityMap = connectionToEntityMap ?? throw new ArgumentNullException(nameof(connectionToEntityMap));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -55,6 +60,22 @@ namespace Guardians
 			//as well as collection modification needs to happen, and the main thread is where the majority if collection
 			//iteration should be taking place.
 			PlayerSessionDeconstructionContext context = SessionCleanupQueue.Dequeue();
+
+			//it's possible that we're attempting to clean up an entity for a connection
+			//that doesn't have one. This can happen if they disconnect during claim or before claim.
+			if(!ConnectionToEntityMap.ContainsKey(context.ConnectionId))
+			{
+				if(Logger.IsInfoEnabled)
+					Logger.Info($"ConnectionId: {context.ConnectionId} had entity exit cleanup but contained no entity. This is not an error.");
+
+				//We may be in this method, handling cleanup for an entity that has a claim going on
+				//in the claim handler, but is still awaiting a response for character data from the gameserver. MEANING we could end up with hanging entites.
+				//This is not mitgated here, but inside the player entery factory
+				//which SHOULD make a check for the connection still being valid AFTER creation
+				//Not before because we still want to create, and then deconstruct. Reasoning being that gameserver session
+				//will still be claimed unless we go through th cleanup process.
+				return;
+			}
 
 			NetworkEntityGuid entityGuid = ConnectionToEntityMap[context.ConnectionId];
 

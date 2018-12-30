@@ -23,6 +23,10 @@ namespace Guardians
 
 		private IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> EntityDataUpdateFactory { get; }
 
+		private ISessionCollection SessionCollection { get; }
+
+		private PlayerSessionDeconstructionQueue SessionCleanupQueue { get; }
+
 		//If it's empty, this can be skipped.
 		/// <inheritdoc />
 		public bool IsTickableSkippable => PlayerEntitySessionDequeable.isEmpty;
@@ -33,13 +37,17 @@ namespace Guardians
 			[NotNull] IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory,
 			[NotNull] INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender,
 			[NotNull] ILog logger,
-			[NotNull] IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> entityDataUpdateFactory)
+			[NotNull] IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> entityDataUpdateFactory,
+			[NotNull] ISessionCollection sessionCollection,
+			[NotNull] PlayerSessionDeconstructionQueue sessionCleanupQueue)
 		{
 			PlayerEntitySessionDequeable = playerEntitySessionDequeable ?? throw new ArgumentNullException(nameof(playerEntitySessionDequeable));
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			SpawnPayloadSender = spawnPayloadSender ?? throw new ArgumentNullException(nameof(spawnPayloadSender));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			EntityDataUpdateFactory = entityDataUpdateFactory ?? throw new ArgumentNullException(nameof(entityDataUpdateFactory));
+			SessionCollection = sessionCollection ?? throw new ArgumentNullException(nameof(sessionCollection));
+			SessionCleanupQueue = sessionCleanupQueue ?? throw new ArgumentNullException(nameof(sessionCleanupQueue));
 		}
 
 		/// <inheritdoc />
@@ -72,8 +80,15 @@ namespace Guardians
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Sending player spawn payload Id: {dequeuedPlayerSession.Key.EntityId}");
 
-				//Once added we then need to send to the client a packet indicating its creation
-				SpawnPayloadSender.Send(BuildSpawnEventPayload(dequeuedPlayerSession, testData));
+				//This should always contain it.
+				//The reason we check if we're still connected is we want to send the spawn event to the player
+				//if they are connected. If the connection has ended, then we want to enqueue an entity deconstruction request.
+				if(SessionCollection.Retrieve(dequeuedPlayerSession.Value.SessionContext.ConnectionId).Connection.isConnected)
+					//Once added we then need to send to the client a packet indicating its creation
+					SpawnPayloadSender.Send(BuildSpawnEventPayload(dequeuedPlayerSession, testData));
+				else
+					//Warning: This can end up with duplicate enqueued deconstruction requests. But ConnectionId is never shared or reused. So it's ok, it'll just be ingnored in those cases.
+					SessionCleanupQueue.Enqueue(new PlayerSessionDeconstructionContext(dequeuedPlayerSession.Value.SessionContext.ConnectionId));
 
 				//TODO: If we want to do anything post-creation with the provide gameobject we could. But we really don't want to at the moment.
 			}

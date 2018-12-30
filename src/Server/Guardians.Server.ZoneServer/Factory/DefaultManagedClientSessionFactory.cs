@@ -69,6 +69,10 @@ namespace Guardians
 						if(!SessionDestructor.OwnsEntityToDestruct(source.Details.ConnectionId))
 						{
 							Logger.Debug($"Connection: {source.Details.ConnectionId} disconnecting does not own an entity.");
+
+							//Do NOT return from here, we still want to queue up a removal.
+							//The reason being that it's possible they could be disconnecting in the middle of an entity session claim request
+							//therefore the main thread cleanup, that runs after spawn, needs to run for this connection id.
 						}
 						else
 						{

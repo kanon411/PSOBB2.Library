@@ -49,6 +49,9 @@ namespace Guardians
 
 			//This provides JwtBearer support for Authorize attribute/header
 			services.AddJwtAuthorization(cert);
+			services.AddResponseCaching();
+
+			services.AddSignalR();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +67,11 @@ namespace Guardians
 			loggerFactory.AddDebug();
 
 			app.UseMvcWithDefaultRoute();
+
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<TestHub>("/test");
+			});
 		}
 	}
 }

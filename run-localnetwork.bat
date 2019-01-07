@@ -21,3 +21,7 @@ cd ..
 cd contentserv
 start "contentserv" cmd /c dotnet Guardians.Service.ContentServer.dll --url=http://192.168.0.3:5005
 cd ..
+
+cd social
+start "social" cmd /c dotnet Guardians.Service.Social.dll --url=http://192.168.0.3:5008
+cd ..

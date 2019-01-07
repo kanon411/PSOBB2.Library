@@ -63,7 +63,7 @@ namespace Guardians.SDK
 				//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 				ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
-				IContentServerServiceClient ucmService = Refit.RestService.For<IContentServerServiceClient>("http://sd.vrguardians.net:5005/");
+				IContentServerServiceClient ucmService = Refit.RestService.For<IContentServerServiceClient>("http://localhost:5005/");
 
 				//Done out here, must be called on the main thread
 				string projectPath = Application.dataPath.ToLower().TrimEnd(@"assets".ToCharArray());

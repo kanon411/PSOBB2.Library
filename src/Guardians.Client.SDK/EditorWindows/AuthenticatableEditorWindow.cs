@@ -45,7 +45,7 @@ namespace Guardians.SDK
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
 			//TODO: Service discovery
-			IAuthenticationService authService = Refit.RestService.For<IAuthenticationService>("http://sd.vrguardians.net:5001/");
+			IAuthenticationService authService = Refit.RestService.For<IAuthenticationService>("http://localhost:5001/");
 
 			//Authentication using provided credentials
 			JWTModel result = authService.TryAuthenticate(new AuthenticationRequestModel(AccountName, Password)).Result;

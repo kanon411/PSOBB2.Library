@@ -62,6 +62,11 @@ namespace Guardians
 
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Recieved SessionData: Id: {characterSessionDataResponse.CharacterId} ZoneId: {characterSessionDataResponse.ZoneId}");
+
+			//TODO: We should have group name builders. Not hardcoded
+			//Join the zoneserver's chat channel group
+			await this.Groups.AddToGroupAsync(this.Context.ConnectionId, $"zone:{characterSessionDataResponse.ZoneId}", this.Context.ConnectionAborted)
+				.ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

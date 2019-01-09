@@ -11,9 +11,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
   </ItemGroup>
 

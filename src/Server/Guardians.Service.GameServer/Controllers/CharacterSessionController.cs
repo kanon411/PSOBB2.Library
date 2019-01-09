@@ -164,7 +164,20 @@ namespace Guardians
 			//This is unlikely to be exploitably but it is dangerous
 			ProjectVersionStage.AssertBeta();
 
-			return Ok(await CharacterSessionRepository.RetrieveClaimedSessionByAccountId(accountId));
+			try
+			{
+				ClaimedSessionsModel claimedSessionsModel = await CharacterSessionRepository.RetrieveClaimedSessionByAccountId(accountId)
+					.ConfigureAwait(false);
+
+				return Ok(new CharacterSessionDataResponse(claimedSessionsModel.Session.ZoneId, claimedSessionsModel.CharacterId));
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"Failed to query for character session data for active character session on AccountId: {accountId}");
+
+				return Ok(new CharacterSessionDataResponse(CharacterSessionDataResponseCode.GeneralServerError));
+			}
 		}
 
 

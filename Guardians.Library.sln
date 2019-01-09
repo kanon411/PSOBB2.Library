@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Social.ManualTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Social.Common", "src\Guardians.Social.Common\Guardians.Social.Common.csproj", "{FEA15159-99D2-43C2-89BC-85C3ABFA9756}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guardians.Service.Common", "src\Server\Guardians.Service.Common\Guardians.Service.Common.csproj", "{8066613B-2495-484B-988D-F99E665D2D5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
@@ -588,6 +590,16 @@ Global
 		{FEA15159-99D2-43C2-89BC-85C3ABFA9756}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
 		{FEA15159-99D2-43C2-89BC-85C3ABFA9756}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA15159-99D2-43C2-89BC-85C3ABFA9756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8066613B-2495-484B-988D-F99E665D2D5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -649,6 +661,7 @@ Global
 		{9BBCA5FA-F24A-421D-8ED0-0B9CBC44509F} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 		{377F9985-85F8-4997-AB78-367EE1B9BB7E} = {FCFAE99C-C28A-44B7-A7BE-F9D5481C35B9}
 		{FEA15159-99D2-43C2-89BC-85C3ABFA9756} = {D0FA9394-9069-405B-9E01-274A489B84A2}
+		{8066613B-2495-484B-988D-F99E665D2D5D} = {98B85CCA-E727-485B-AD3C-68AC2A2B0364}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

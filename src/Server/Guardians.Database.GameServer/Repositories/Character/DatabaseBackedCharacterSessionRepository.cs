@@ -127,7 +127,10 @@ namespace Guardians
 		public Task<ClaimedSessionsModel> RetrieveClaimedSessionByAccountId(int accountId)
 		{
 			//Just assume we have one, they should check before calling.
-			return Context.ClaimedSession.FirstAsync(s => s.Session.CharacterEntry.AccountId == accountId);
+			return Context.ClaimedSession
+				.Include(s => s.Session)
+				.ThenInclude(s => s.CharacterEntry)
+				.FirstAsync(s => s.Session.CharacterEntry.AccountId == accountId);
 		}
 
 		/// <inheritdoc />

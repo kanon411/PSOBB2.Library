@@ -174,7 +174,7 @@ namespace Guardians
 			catch(Exception e)
 			{
 				if(Logger.IsEnabled(LogLevel.Error))
-					Logger.LogError($"Failed to query for character session data for active character session on AccountId: {accountId}");
+					Logger.LogError($"Failed to query for character session data for active character session on AccountId: {accountId} Exception: {e.GetType().Name} - {e.Message}");
 
 				return Ok(new CharacterSessionDataResponse(CharacterSessionDataResponseCode.GeneralServerError));
 			}

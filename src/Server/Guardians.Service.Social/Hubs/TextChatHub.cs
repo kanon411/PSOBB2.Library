@@ -50,6 +50,16 @@ namespace Guardians
 				return;
 			}
 
+			//This is ABSOLUTELY CRITICAL we need to validate that the character header they sent actually
+			//is the character they have a session as
+			//NOT CHECKING THIS IS EQUIVALENT TO LETTING USERS PRETEND THEY ARE ANYONE!
+			if(this.Context.UserIdentifier != characterSessionDataResponse.CharacterId.ToString())
+			{
+				//We can log account name and id here, because they were successfully authed.
+				if(Logger.IsEnabled(LogLevel.Warning))
+					Logger.LogWarning($"User with AccountId: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} attempted to spoof as CharacterId: {Context.UserIdentifier} but had session for CharacterID: {characterSessionDataResponse.CharacterId}.");
+			}
+
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Recieved SessionData: Id: {characterSessionDataResponse.CharacterId} ZoneId: {characterSessionDataResponse.ZoneId}");
 		}

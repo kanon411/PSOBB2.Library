@@ -12,16 +12,25 @@ namespace Guardians
 	{
 		private ISocialServiceToGameServiceClient SocialToGameClient { get; }
 
+		//I am not happy about this, but we need to maintain some state so that we know what zone a connection is in.
+		private IConnectionToZoneMappable ZoneLookupService { get; }
+
 		/// <inheritdoc />
-		public TextChatHub(IClaimsPrincipalReader claimsReader, ILogger<AuthorizationReadySignalRHub> logger, [JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient) 
+		public TextChatHub(IClaimsPrincipalReader claimsReader, 
+			ILogger<AuthorizationReadySignalRHub> logger, 
+			[JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient,
+			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService) 
 			: base(claimsReader, logger)
 		{
 			SocialToGameClient = socialToGameClient ?? throw new ArgumentNullException(nameof(socialToGameClient));
+			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
 		}
 
 		public void Test(string message)
 		{
-			this.Clients.All.SendCoreAsync("Test", new object[1] { $"{this.Context.ConnectionId}: {message}"});
+			//Send only to same zone
+			//TODO: Have a group name builder, don't hardcore
+			this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.UserIdentifier)}").SendCoreAsync("Test", new object[1] { $"{this.Context.ConnectionId}:{this.Context.UserIdentifier}: {message}"});
 		}
 
 		/// <inheritdoc />
@@ -46,14 +55,14 @@ namespace Guardians
 				if(Logger.IsEnabled(LogLevel.Warning))
 					Logger.LogWarning($"Failed to Query SessionData for AccountId: {ClaimsReader.GetUserId(Context.User)} Reason: {characterSessionDataResponse.ResultCode}");
 
-				this.Context.Abort();
+				Context.Abort();
 				return;
 			}
 
 			//This is ABSOLUTELY CRITICAL we need to validate that the character header they sent actually
 			//is the character they have a session as
 			//NOT CHECKING THIS IS EQUIVALENT TO LETTING USERS PRETEND THEY ARE ANYONE!
-			if(this.Context.UserIdentifier != characterSessionDataResponse.CharacterId.ToString())
+			if(Context.UserIdentifier != characterSessionDataResponse.CharacterId.ToString())
 			{
 				//We can log account name and id here, because they were successfully authed.
 				if(Logger.IsEnabled(LogLevel.Warning))
@@ -65,13 +74,19 @@ namespace Guardians
 
 			//TODO: We should have group name builders. Not hardcoded
 			//Join the zoneserver's chat channel group
-			await this.Groups.AddToGroupAsync(this.Context.ConnectionId, $"zone:{characterSessionDataResponse.ZoneId}", this.Context.ConnectionAborted)
+			await Groups.AddToGroupAsync(Context.ConnectionId, $"zone:{characterSessionDataResponse.ZoneId}", Context.ConnectionAborted)
 				.ConfigureAwait(false);
+
+			//Registers for lookup so that we can tell where a connection is zone-wise.
+			ZoneLookupService.Register(Context.ConnectionId, characterSessionDataResponse.ZoneId);
 		}
 
 		/// <inheritdoc />
 		public override Task OnDisconnectedAsync(Exception exception)
 		{
+			if(ZoneLookupService.Contains(Context.ConnectionId))
+				ZoneLookupService.Unregister(Context.ConnectionId);
+
 			return base.OnDisconnectedAsync(exception);
 		}
 	}

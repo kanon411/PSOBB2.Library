@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Refit;
 
 namespace Guardians
 {
@@ -52,6 +53,47 @@ namespace Guardians
 			services.AddResponseCaching();
 
 			services.AddSignalR(options => { }).AddJsonProtocol();
+
+			//Registers service discovery client.
+			services.AddSingleton<IServiceDiscoveryService>(provider =>
+			{
+				return Refit.RestService.For<IServiceDiscoveryService>("http://sd.vrguardians.net:5000");
+			});
+
+			services.AddSingleton<IAuthenticationService, AsyncEndpointAuthenticationService>(provider =>
+			{
+				return new AsyncEndpointAuthenticationService(QueryForRemoteServiceEndpoint(provider.GetService<IServiceDiscoveryService>(), "Authentication"));
+			});
+
+			services.AddSingleton<ISocialServiceToGameServiceClient, AsyncEndpointISocialServiceToGameServiceClient>(provider =>
+			{
+				return new AsyncEndpointISocialServiceToGameServiceClient(QueryForRemoteServiceEndpoint(provider.GetService<IServiceDiscoveryService>(), "GameServer"),
+					new RefitSettings() {AuthorizationHeaderValueGetter = () => GetSocialServiceAuthorizationToken(provider.GetService<IAuthenticationService>())});
+			});
+		}
+
+		private async Task<string> GetSocialServiceAuthorizationToken([JetBrains.Annotations.NotNull] IAuthenticationService authService)
+		{
+			if(authService == null) throw new ArgumentNullException(nameof(authService));
+
+			//TODO: Don't hardcode the authentication details
+			ProjectVersionStage.AssertBeta();
+			//TODO: Handle errors
+			return (await authService.TryAuthenticate(new AuthenticationRequestModel("SocialService", "Test69!"))).AccessToken;
+		}
+
+		private async Task<string> QueryForRemoteServiceEndpoint(IServiceDiscoveryService serviceDiscovery, string serviceType)
+		{
+			ResolveServiceEndpointResponse endpointResponse = await serviceDiscovery.DiscoverService(new ResolveServiceEndpointRequest(ClientRegionLocale.US, serviceType));
+
+			if(!endpointResponse.isSuccessful)
+				throw new InvalidOperationException($"Failed to query for Service: {serviceType} Result: {endpointResponse.ResultCode}");
+
+			//TODO: Logging
+			//Debug.Log($"Recieved service discovery response: {endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort} for Type: {serviceType}");
+
+			//TODO: Do we need extra slash?
+			return $"{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/";
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CSharpx;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -124,9 +125,14 @@ namespace Guardians
 
 			//TODO: Do we want to expose this to non-controlers?
 			//First we should validate that the account that is authorized owns the character it is requesting session data from
+			return await RetrieveSessionDataIfAvailable(characterId, accountId)
+				.ConfigureAwait(false);
+		}
 
+		private async Task<CharacterSessionDataResponse> RetrieveSessionDataIfAvailable(int characterId, int accountId)
+		{
 			if(!(await CharacterRepository.CharacterIdsForAccountId(accountId).ConfigureAwait(false))
-				.Contains(characterId))
+							.Contains(characterId))
 			{
 				//Requesting session data about an unowned character.
 				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.Unauthorized);
@@ -141,6 +147,26 @@ namespace Guardians
 			else
 				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.NoSessionAvailable);
 		}
+
+		[ProducesJson]
+		[AuthorizeJwt(GuardianApplicationRole.SocialService)]
+		[HttpGet("account/{id}/data")]
+		[NoResponseCache]
+		public async Task<IActionResult> GetCharacterSessionDataByAccount([FromRoute(Name = "id")] int accountId)
+		{
+			if(!await CharacterSessionRepository.AccountHasActiveSession(accountId)
+				.ConfigureAwait(false))
+			{
+				return Ok(new CharacterSessionDataResponse(CharacterSessionDataResponseCode.NoSessionAvailable));
+			}
+
+			//TODO: There is a dangerous race condition where the zoneserver can release a session inbetween the last databse call and the characte rsessin data call
+			//This is unlikely to be exploitably but it is dangerous
+			ProjectVersionStage.AssertBeta();
+
+			return Ok(await CharacterSessionRepository.RetrieveClaimedSessionByAccountId(accountId));
+		}
+
 
 		/// <summary>
 		/// Should be called by zone servers to release the active session on a character.

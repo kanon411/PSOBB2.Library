@@ -40,5 +40,12 @@ namespace Guardians
 		/// <param name="characterId">The character id to delete the claimed session for.</param>
 		/// <returns>True if the claimed session was removed.</returns>
 		Task<bool> TryDeleteClaimedSession(int characterId);
+
+		/// <summary>
+		/// TODO: Doc
+		/// </summary>
+		/// <param name="accountId"></param>
+		/// <returns></returns>
+		Task<ClaimedSessionsModel> RetrieveClaimedSessionByAccountId(int accountId);
 	}
 }

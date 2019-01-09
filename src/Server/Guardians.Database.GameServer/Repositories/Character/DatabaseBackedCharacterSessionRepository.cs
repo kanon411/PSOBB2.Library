@@ -124,6 +124,13 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
+		public Task<ClaimedSessionsModel> RetrieveClaimedSessionByAccountId(int accountId)
+		{
+			//Just assume we have one, they should check before calling.
+			return Context.ClaimedSession.FirstAsync(s => s.Session.CharacterEntry.AccountId == accountId);
+		}
+
+		/// <inheritdoc />
 		public Task UpdateAsync(int key, CharacterSessionModel model)
 		{
 			GeneralGenericCrudRepositoryProvider<int, CharacterSessionModel> crudProvider = new GeneralGenericCrudRepositoryProvider<int, CharacterSessionModel>(Context.CharacterSessions, Context);

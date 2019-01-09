@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -53,6 +54,8 @@ namespace Guardians
 			services.AddResponseCaching();
 
 			services.AddSignalR(options => { }).AddJsonProtocol();
+
+			services.AddSingleton<IUserIdProvider, SignalRPlayerCharacterUserIdProvider>();
 
 			//Registers service discovery client.
 			services.AddSingleton<IServiceDiscoveryService>(provider =>

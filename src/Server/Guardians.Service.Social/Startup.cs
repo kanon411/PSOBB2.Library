@@ -56,6 +56,7 @@ namespace Guardians
 			services.AddSignalR(options => { }).AddJsonProtocol();
 
 			services.AddSingleton<IUserIdProvider, SignalRPlayerCharacterUserIdProvider>();
+			services.AddSingleton<IConnectionToZoneMappable, DefaultConnectionToZoneMappable>();
 
 			//Registers service discovery client.
 			services.AddSingleton<IServiceDiscoveryService>(provider =>

@@ -142,7 +142,7 @@ namespace Guardians
 			if(await CharacterSessionRepository.ContainsAsync(characterId).ConfigureAwait(false))
 			{
 				//If there is a session, we should just send the zone. Maybe in the future we want to send more data but we only need the zone at the moment.
-				return new CharacterSessionDataResponse((await CharacterSessionRepository.RetrieveAsync(characterId).ConfigureAwait(false)).ZoneId);
+				return new CharacterSessionDataResponse((await CharacterSessionRepository.RetrieveAsync(characterId).ConfigureAwait(false)).ZoneId, characterId);
 			}
 			else
 				return new CharacterSessionDataResponse(CharacterSessionDataResponseCode.NoSessionAvailable);

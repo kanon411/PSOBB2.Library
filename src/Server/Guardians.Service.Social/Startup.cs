@@ -112,7 +112,7 @@ namespace Guardians
 
 			app.UseSignalR(routes =>
 			{
-				routes.MapHub<TestHub>("/test");
+				routes.MapHub<TextChatHub>("/realtime/textchat");
 			});
 		}
 	}

@@ -26,4 +26,24 @@ namespace Guardians
 			Logger = logger;
 		}
 	}
+
+	/// <summary>
+	/// The base controller Type for guardians SignalR <see cref="Hub"/>
+	/// </summary>
+	public abstract class BaseSignalRHub<T> : Hub<T> 
+		where T : class
+	{
+		/// <summary>
+		/// The logging service for the Hub.
+		/// </summary>
+		protected ILogger<BaseSignalRHub<T>> Logger { get; }
+
+		/// <inheritdoc />
+		protected BaseSignalRHub([FromServices] ILogger<BaseSignalRHub<T>> logger)
+		{
+			if(logger == null) throw new ArgumentNullException(nameof(logger));
+
+			Logger = logger;
+		}
+	}
 }

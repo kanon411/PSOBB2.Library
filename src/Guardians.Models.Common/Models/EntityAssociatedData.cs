@@ -7,6 +7,7 @@ using ProtoBuf;
 
 namespace Guardians
 {
+	//TODO: Not checked/validated with serialization tests
 	/// <summary>
 	/// Generic base-type for any model that is coupled/associated with an Entity.
 	/// Specificially with the <see cref="NetworkEntityGuid"/>

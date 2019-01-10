@@ -16,6 +16,7 @@ namespace Guardians
 		/// <summary>
 		/// The channel to attempt to send the <see cref="Message"/> on.
 		/// </summary>
+		[JsonProperty]
 		public ChatChannels TargetChannel { get; private set; }
 
 		/// <summary>

@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace Guardians
+{
+	/// <summary>
+	/// Data model for a message <see cref="Message"/> to be sent to
+	/// a target channel <see cref="TargetChannel"/>
+	/// </summary>
+	[JsonObject]
+	public class TargetlessChannelChatMessageRequestModel : ITextMessageContainable
+	{
+		/// <summary>
+		/// The channel to attempt to send the <see cref="Message"/> on.
+		/// </summary>
+		public ChatChannels TargetChannel { get; private set; }
+
+		/// <summary>
+		/// The chat message intended to be sent.
+		/// </summary>
+		[JsonProperty]
+		public string Message { get; private set; }
+
+		/// <inheritdoc />
+		public TargetlessChannelChatMessageRequestModel(string message, ChatChannels targetChannel)
+		{
+			if(string.IsNullOrEmpty(message)) throw new ArgumentException("Value cannot be null or empty.", nameof(message));
+			if(!Enum.IsDefined(typeof(ChatChannels), targetChannel)) throw new InvalidEnumArgumentException(nameof(targetChannel), (int)targetChannel, typeof(ChatChannels));
+
+			Message = message;
+			TargetChannel = targetChannel;
+		}
+
+		/// <summary>
+		/// Serializer ctor.
+		/// </summary>
+		protected TargetlessChannelChatMessageRequestModel()
+		{
+			
+		}
+	}
+}

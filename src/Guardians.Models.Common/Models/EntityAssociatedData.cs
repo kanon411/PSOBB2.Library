@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using ProtoBuf;
 
 namespace Guardians
@@ -11,15 +12,18 @@ namespace Guardians
 	/// Specificially with the <see cref="NetworkEntityGuid"/>
 	/// </summary>
 	/// <typeparam name="TDataType"></typeparam>
+	[JsonObject]
 	[ProtoContract]
 	public class EntityAssociatedData<TDataType> : IEntityGuidContainer
 	{
 		/// <summary>
 		/// The GUID of the entity.
 		/// </summary>
+		[JsonProperty]
 		[ProtoMember(1, IsRequired = true)]
 		public NetworkEntityGuid EntityGuid { get; private set; }
 
+		[JsonProperty]
 		[ProtoMember(2)]
 		public TDataType Data { get; private set; }
 

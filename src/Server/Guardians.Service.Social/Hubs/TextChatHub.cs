@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Guardians
 {
 	[AuthorizeJwt]
-	public sealed class TextChatHub : AuthorizationReadySignalRHub
+	public sealed class TextChatHub : AuthorizationReadySignalRHub<IRemoteSocialTextChatHubClient>, IRemoteSocialTextChatHubServer
 	{
 		private ISocialServiceToGameServiceClient SocialToGameClient { get; }
 
@@ -17,7 +18,7 @@ namespace Guardians
 
 		/// <inheritdoc />
 		public TextChatHub(IClaimsPrincipalReader claimsReader, 
-			ILogger<AuthorizationReadySignalRHub> logger, 
+			ILogger<TextChatHub> logger, 
 			[JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient,
 			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService) 
 			: base(claimsReader, logger)
@@ -26,11 +27,39 @@ namespace Guardians
 			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
 		}
 
-		public void Test(string message)
+		/// <inheritdoc />
+		public async Task SendZoneChannelTextChatMessageAsync(ZoneChatMessageRequestModel message)
 		{
+			//TODO: We may want to do validation for the message sent more than this
+			if(message.TargetChannel != ChatChannels.ZoneChannel)
+				return;
+
+			if(String.IsNullOrWhiteSpace(message.Message))
+				return;
+
 			//Send only to same zone
 			//TODO: Have a group name builder, don't hardcore
-			this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.ConnectionId)}").SendCoreAsync("Test", new object[1] { $"{this.Context.ConnectionId}:{this.Context.UserIdentifier}: {message}"});
+			await GetCallerZoneGroup().RecieveZoneChannelTextChatMessageAsync(new ZoneChatMessageEventModel(BuildForwardableTargetlessChannelChatMessage(message)));
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private EntityAssociatedData<TargetlessChannelChatMessageRequestModel> BuildForwardableTargetlessChannelChatMessage(TargetlessChannelChatMessageRequestModel message) => BuildForwardableAssociatedData(message);
+
+		private EntityAssociatedData<T> BuildForwardableAssociatedData<T>([JetBrains.Annotations.NotNull] T envolpeContents)
+		{
+			if(envolpeContents == null) throw new ArgumentNullException(nameof(envolpeContents));
+
+			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
+				.WithId(int.Parse(Context.UserIdentifier))
+				.WithType(EntityType.Player)
+				.Build();
+
+			return new EntityAssociatedData<T>(guid, envolpeContents);
+		}
+
+		private IRemoteSocialTextChatHubClient GetCallerZoneGroup()
+		{
+			return this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.ConnectionId)}");
 		}
 
 		/// <inheritdoc />

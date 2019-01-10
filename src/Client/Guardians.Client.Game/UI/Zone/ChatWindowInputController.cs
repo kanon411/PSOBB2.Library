@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
+using Common.Logging;
+using UnityEngine;
 
 namespace Guardians
 {
@@ -15,15 +17,19 @@ namespace Guardians
 
 		private IRemoteSocialTextChatHubServer ChatService { get; }
 
+		private ILog Logger { get; }
+
 		/// <inheritdoc />
 		public ChatWindowInputController(
 			[KeyFilter(UnityUIRegisterationKey.ChatBox)] [NotNull] IUIButton chatInputButton,
 			[KeyFilter(UnityUIRegisterationKey.ChatBox)] [NotNull] IUIText chatInputText,
-			[NotNull] IRemoteSocialTextChatHubServer chatService)
+			[NotNull] IRemoteSocialTextChatHubServer chatService,
+			[NotNull] ILog logger)
 		{
 			ChatInputButton = chatInputButton ?? throw new ArgumentNullException(nameof(chatInputButton));
 			ChatInputText = chatInputText ?? throw new ArgumentNullException(nameof(chatInputText));
 			ChatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -37,11 +43,23 @@ namespace Guardians
 			//This ALWAYS runs after the sync so it's safe to renable here after it's done
 			ChatInputButton.AddOnClickListenerAsync(async () =>
 			{
-				await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
-					.ConfigureAwait(true);
+				try
+				{
+					await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
+						.ConfigureAwait(true);
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Failed to send ChatMessage. Exception: {e.Message}\n\nStack: {e.StackTrace}");
 
-				//Do we need to rejoin the unity thread??
-				await new UnityYieldAwaitable();
+					//Don't throw, we need to just renable and HOPE
+				}
+				finally
+				{
+					//TODO: Do we need to rejoin the unity thread??
+					await new UnityYieldAwaitable();
+				}
 
 				//Clear and renable chat.
 				ChatInputText.Text = "";

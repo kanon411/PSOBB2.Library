@@ -17,13 +17,13 @@ namespace Guardians
 		/// The channel to attempt to send the <see cref="Message"/> on.
 		/// </summary>
 		[JsonProperty]
-		public ChatChannels TargetChannel { get; private set; }
+		public ChatChannels TargetChannel { get; protected set; } //has to be protected so reflection CanWrite is true for child types
 
 		/// <summary>
 		/// The chat message intended to be sent.
 		/// </summary>
 		[JsonProperty]
-		public string Message { get; private set; }
+		public string Message { get; protected set; } //has to be protected so reflection CanWrite is true for child types
 
 		/// <inheritdoc />
 		public TargetlessChannelChatMessageRequestModel(string message, ChatChannels targetChannel)

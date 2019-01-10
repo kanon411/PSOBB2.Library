@@ -67,6 +67,9 @@ namespace Guardians
 				//We can log account name and id here, because they were successfully authed.
 				if(Logger.IsEnabled(LogLevel.Warning))
 					Logger.LogWarning($"User with AccountId: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} attempted to spoof as CharacterId: {Context.UserIdentifier} but had session for CharacterID: {characterSessionDataResponse.CharacterId}.");
+
+				this.Context.Abort();
+				return;
 			}
 
 			if(Logger.IsEnabled(LogLevel.Information))

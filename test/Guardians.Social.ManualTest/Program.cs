@@ -36,21 +36,27 @@ namespace Guardians.Social.ManualTest
 			await connection.StartAsync()
 				.ConfigureAwait(false);
 
-			connection.On("Test", new Type[1] {typeof(string)}, objects =>
-			{
-				string response = objects[0] as string;
+			connection.RegisterClientInterface<IRemoteSocialTextChatHubClient>(new TestClientHandler());
 
-				Console.WriteLine($"Response: {response}");
-
-				return Task.CompletedTask;
-			});
+			SignalRForwardedIRemoteSocialTextChatHubClient client = new SignalRForwardedIRemoteSocialTextChatHubClient(connection);
 
 			while(true)
 			{
 				string input = Console.ReadLine();
 
-				await connection.InvokeAsync("Test", input);
+				await client.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(input))
+					.ConfigureAwait(false);
 			}
+		}
+	}
+
+	public class TestClientHandler : IRemoteSocialTextChatHubClient
+	{
+		public Task RecieveZoneChannelTextChatMessageAsync(ZoneChatMessageEventModel message)
+		{
+			Console.WriteLine($"[{message.ChannelMessage.Data.TargetChannel}] User {message.ChannelMessage.EntityGuid}: {message.ChannelMessage.Data.Message}");
+
+			return Task.CompletedTask;
 		}
 	}
 }

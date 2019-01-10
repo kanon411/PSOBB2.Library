@@ -8,11 +8,11 @@ namespace Guardians
 	public interface IRemoteSocialTextChatHubClient
 	{
 		/// <summary>
-		/// Async method that handles recieveing a <see cref="TargetlessChannelChatMessageEventModel"/>
+		/// Async method that handles recieveing a <see cref="ZoneChatMessageEventModel"/>
 		/// (a zone text chat message) with information about the sender.
 		/// </summary>
 		/// <param name="message">The message to send.</param>
 		/// <returns>Awaitable.</returns>
-		Task RecieveZoneChannelTextChatMessageAsync(TargetlessChannelChatMessageEventModel message);
+		Task RecieveZoneChannelTextChatMessageAsync(ZoneChatMessageEventModel message);
 	}
 }

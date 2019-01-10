@@ -54,8 +54,19 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client">
       <Version>1.1.0</Version>
     </PackageReference>
+    <PackageReference Include="Refit">
+      <Version>4.6.58</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj">
+      <Project>{6F43D196-DB82-4429-8BD8-8D759B153B88}</Project>
+      <Name>Guardians.Client.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj">
+      <Project>{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}</Project>
+      <Name>Guardians.Models.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Guardians.Social.Common\Guardians.Social.Common.csproj">
       <Project>{FEA15159-99D2-43C2-89BC-85C3ABFA9756}</Project>
       <Name>Guardians.Social.Common</Name>

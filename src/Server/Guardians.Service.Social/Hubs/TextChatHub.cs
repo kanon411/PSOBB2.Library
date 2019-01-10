@@ -30,7 +30,7 @@ namespace Guardians
 		{
 			//Send only to same zone
 			//TODO: Have a group name builder, don't hardcore
-			this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.UserIdentifier)}").SendCoreAsync("Test", new object[1] { $"{this.Context.ConnectionId}:{this.Context.UserIdentifier}: {message}"});
+			this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.ConnectionId)}").SendCoreAsync("Test", new object[1] { $"{this.Context.ConnectionId}:{this.Context.UserIdentifier}: {message}"});
 		}
 
 		/// <inheritdoc />

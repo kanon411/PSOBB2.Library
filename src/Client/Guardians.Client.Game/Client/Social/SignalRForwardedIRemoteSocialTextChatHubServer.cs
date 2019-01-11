@@ -26,10 +26,13 @@ namespace Guardians
 
 		private INameQueryService NameQueryable { get; }
 
+		private IChatMessageBoxReciever MessageReciever { get; }
+
 		/// <inheritdoc />
-		public SignalRForwardedIRemoteSocialTextChatHubServer([NotNull] INameQueryService nameQueryable)
+		public SignalRForwardedIRemoteSocialTextChatHubServer([NotNull] INameQueryService nameQueryable, [NotNull] IChatMessageBoxReciever messageReciever)
 		{
 			NameQueryable = nameQueryable ?? throw new ArgumentNullException(nameof(nameQueryable));
+			MessageReciever = messageReciever ?? throw new ArgumentNullException(nameof(messageReciever));
 		}
 
 		public async Task RecieveZoneChannelTextChatMessageAsync(ZoneChatMessageEventModel message)
@@ -39,6 +42,13 @@ namespace Guardians
 
 			//TODO: Would performance be better if the server did this?
 			string renderableMessage = $"[1. Zone] {entityName}: {message.ChannelMessage.Data.Message}";
+
+			//TODO: This is a hack. We don't want to dispatch directly in here.
+			ProjectVersionStage.AssertInternalTesting();
+
+			await new UnityYieldAwaitable();
+
+			MessageReciever.ReceiveChatMessage(0, renderableMessage);
 		}
 	}
 }

@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Microsoft.AspNetCore.SignalR.Client;
 using Refit;
 using UnityEngine;
 
@@ -72,6 +73,11 @@ namespace Guardians
 					return new AsyncEndpointContentServerService(QueryForRemoteServiceEndpoint(serviceDiscovery, "ContentServer"));
 				})
 				.As<IContentServerServiceClient>()
+				.SingleInstance();
+
+			//Social service
+			builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubClient>()
+				.AsImplementedInterfaces()
 				.SingleInstance();
 		}
 

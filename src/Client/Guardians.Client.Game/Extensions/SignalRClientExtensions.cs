@@ -18,6 +18,9 @@ namespace Guardians
 
 			foreach(MethodInfo mi in typeof(TInterfaceType).GetMethods())
 			{
+				if(mi.IsConstructor)
+					return;
+
 				if(mi.ReturnType != typeof(Task))
 					throw new InvalidOperationException($"Encountered Method on {typeof(TInterfaceType).Name} with non-{nameof(Task)} return type.");
 

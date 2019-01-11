@@ -17,7 +17,7 @@ namespace Guardians
 		/// The <see cref="NetworkEntityGuid"/> represents the original sender of the message.
 		/// </summary>
 		[JsonProperty]
-		public EntityAssociatedData<TargetlessChannelChatMessageRequestModel> ChannelMessage { get; private set; }
+		public EntityAssociatedData<TargetlessChannelChatMessageRequestModel> ChannelMessage { get; protected set; } //for Unity3D purposes this must not be private
 
 		/// <inheritdoc />
 		public TargetlessChannelChatMessageEventModel([JetBrains.Annotations.NotNull] EntityAssociatedData<TargetlessChannelChatMessageRequestModel> channelMessage)

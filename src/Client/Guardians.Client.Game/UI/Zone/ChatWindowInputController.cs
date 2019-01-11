@@ -46,28 +46,33 @@ namespace Guardians
 			//This ALWAYS runs after the sync so it's safe to renable here after it's done
 			ChatInputButton.AddOnClickListenerAsync(async () =>
 			{
-				try
-				{
-					await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
-						.ConfigureAwait(true);
-				}
-				catch(Exception e)
-				{
-					if(Logger.IsErrorEnabled)
-						Logger.Error($"Failed to send ChatMessage. Exception: {e.Message}\n\nStack: {e.StackTrace}");
-
-					//Don't throw, we need to just renable and HOPE
-				}
-				finally
-				{
-					//TODO: Do we need to rejoin the unity thread??
-					await new UnityYieldAwaitable();
-				}
-
-				//Clear and renable chat.
-				ChatInputText.Text = "";
-				ChatInputButton.IsInteractable = true;
+				await OnChatButtonClicked();
 			});
+		}
+
+		private async Task OnChatButtonClicked()
+		{
+			try
+			{
+				await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
+					.ConfigureAwait(true);
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsErrorEnabled)
+					Logger.Error($"Failed to send ChatMessage. Exception: {e.Message}\n\nStack: {e.StackTrace}");
+
+				//Don't throw, we need to just renable and HOPE
+			}
+			finally
+			{
+				//TODO: Do we need to rejoin the unity thread??
+				await new UnityYieldAwaitable();
+			}
+
+			//Clear and renable chat.
+			ChatInputText.Text = "";
+			ChatInputButton.IsInteractable = true;
 		}
 	}
 }

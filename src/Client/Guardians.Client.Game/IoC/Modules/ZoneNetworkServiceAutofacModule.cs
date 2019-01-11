@@ -79,6 +79,10 @@ namespace Guardians
 			builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubClient>()
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubServer>()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 
 		//TODO: Put this in a base class or something

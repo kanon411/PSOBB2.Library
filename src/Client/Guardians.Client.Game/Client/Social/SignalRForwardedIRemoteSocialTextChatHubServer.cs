@@ -19,7 +19,7 @@ namespace Guardians
 			{
 				//TODO: What is this is being nulled out??
 				//This part is pretty important, we want this to be the reciever of the callbacks.
-				value.RegisterClientInterface(this);
+				value.RegisterClientInterface<IRemoteSocialTextChatHubClient>(this);
 				_connection = value;
 			}
 		}
@@ -48,7 +48,7 @@ namespace Guardians
 
 			await new UnityYieldAwaitable();
 
-			MessageReciever.ReceiveChatMessage(0, renderableMessage);
+			MessageReciever.ReceiveChatMessage(1, renderableMessage);
 		}
 	}
 }

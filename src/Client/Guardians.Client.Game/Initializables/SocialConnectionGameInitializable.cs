@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,17 +20,21 @@ namespace Guardians
 
 		private IReadonlyAuthTokenRepository AuthTokenProvider { get; }
 
+		private ILog Logger { get; }
+
 		/// <inheritdoc />
 		public SocialConnectionGameInitializable(
 			[NotNull] IEnumerable<ISignalRConnectionHubInitializable> initializableSocialServices,
 			[NotNull] IServiceDiscoveryService serviceDiscoveryService,
 			[NotNull] ILocalPlayerDetails playerDetails,
-			[NotNull] IReadonlyAuthTokenRepository authTokenProvider)
+			[NotNull] IReadonlyAuthTokenRepository authTokenProvider,
+			[NotNull] ILog logger)
 		{
 			InitializableSocialServices = initializableSocialServices ?? throw new ArgumentNullException(nameof(initializableSocialServices));
 			ServiceDiscoveryService = serviceDiscoveryService ?? throw new ArgumentNullException(nameof(serviceDiscoveryService));
 			PlayerDetails = playerDetails ?? throw new ArgumentNullException(nameof(playerDetails));
 			AuthTokenProvider = authTokenProvider ?? throw new ArgumentNullException(nameof(authTokenProvider));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -42,9 +47,14 @@ namespace Guardians
 			if(!endpointResponse.isSuccessful)
 				throw new InvalidOperationException($"Failed to query for SocialService. Reason: {endpointResponse.ResultCode}");
 
+			string hubConnectionString = $@"{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/realtime/textchat";
+
+			if(Logger.IsInfoEnabled)
+				Logger.Info($"Social HubConnection String: {hubConnectionString}");
+
 			//TODO: Handle failed service disc query
 			HubConnection connection = new HubConnectionBuilder()
-				.WithUrl($@"http://{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/realtime/textchat", options =>
+				.WithUrl(hubConnectionString, options =>
 					{
 						options.Headers.Add(SocialNetworkConstants.CharacterIdRequestHeaderName, PlayerDetails.LocalPlayerGuid.EntityId.ToString());
 						options.AccessTokenProvider = () => Task.FromResult(AuthTokenProvider.Retrieve());

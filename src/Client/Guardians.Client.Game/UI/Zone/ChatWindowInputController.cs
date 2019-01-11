@@ -33,8 +33,11 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task OnGameInitialized()
+		public async Task OnGameInitialized()
 		{
+			//Must be on the mainthread
+			await new UnityYieldAwaitable();
+
 			//Allow the user to chat
 			ChatInputButton.IsInteractable = true;
 
@@ -65,8 +68,6 @@ namespace Guardians
 				ChatInputText.Text = "";
 				ChatInputButton.IsInteractable = true;
 			});
-
-			return Task.CompletedTask;
 		}
 	}
 }

@@ -16,6 +16,10 @@
     "ContentServer": {
       "endpointAddress": "http://192.168.0.3",
       "endpointPort": 5005
+    },
+    "SocialService": {
+      "endpointAddress": "http://192.168.0.3",
+      "endpointPort": 5008
     }
   }
 }

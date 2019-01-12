@@ -20,6 +20,11 @@ namespace Guardians
 
 		public DbSet<ClaimedSessionsModel> ClaimedSession { get; set; }
 
+		/// <summary>
+		/// The database for friendships between characters.
+		/// </summary>
+		public DbSet<FriendRelationshipModel> CharacterFriends { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{

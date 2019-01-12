@@ -103,6 +103,11 @@ namespace Guardians
 			//Text chat factory
 			builder.RegisterType<DefaultTextChatEventFactory>()
 				.As<ITextChatEventFactory>();
+
+			//Text queue
+			builder.RegisterType<Queue<TextChatEventData>>()
+				.AsSelf()
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)

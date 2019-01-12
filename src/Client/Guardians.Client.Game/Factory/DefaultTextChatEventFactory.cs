@@ -15,9 +15,9 @@ namespace Guardians
 
 			ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.Data.TargetChannel);
 
-			string renderableMessage = $"{ComputeChannelText(messageType)} {associatedEntityName}: {incomingChatMessageEventData.Data.Message}";
+			string renderableMessage = $"<color=#{ComputeColorFromChatType(messageType)}>{ComputeChannelText(messageType)} {associatedEntityName}: {incomingChatMessageEventData.Data.Message}</color>";
 
-			return new TextChatEventData(WrapMessageInColorBlock(messageType, renderableMessage), incomingChatMessageEventData.EntityGuid, messageType);
+			return new TextChatEventData(renderableMessage, incomingChatMessageEventData.EntityGuid, messageType);
 		}
 
 		/// <inheritdoc />
@@ -28,14 +28,9 @@ namespace Guardians
 
 			ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.TargetChannel);
 
-			string renderableMessage = $"{ComputeChannelText(messageType)}: {incomingChatMessageEventData.Message}";
+			string renderableMessage = $"<color=#{ComputeColorFromChatType(messageType)}>{ComputeChannelText(messageType)}: {incomingChatMessageEventData.Message}</color>";
 
-			return new TextChatEventData(WrapMessageInColorBlock(messageType, renderableMessage), messageType);
-		}
-
-		private string WrapMessageInColorBlock(ChatMessageType messageType, string message)
-		{
-			return $"<color=#{ComputeColorFromChatType(messageType)}>{message}</color>";
+			return new TextChatEventData(renderableMessage, messageType);
 		}
 
 		private string ComputeColorFromChatType(ChatMessageType messageType)

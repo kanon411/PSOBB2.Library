@@ -54,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Factory\" />
     <Folder Include="UI\Attributes\" />
     <Folder Include="UI\WorldLoad\" />
   </ItemGroup>

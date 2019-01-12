@@ -45,6 +45,8 @@ namespace Guardians
 				.ConfigureAwait(false);
 
 			TextChatEventData chatData = TextChatEventDataFactory.CreateChatData(message.ChannelMessage, entityName);
+
+			ChatEventQueue.Enqueue(chatData);
 		}
 	}
 }

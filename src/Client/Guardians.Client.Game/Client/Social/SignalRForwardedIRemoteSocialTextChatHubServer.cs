@@ -26,13 +26,17 @@ namespace Guardians
 
 		private INameQueryService NameQueryable { get; }
 
-		private IChatMessageBoxReciever MessageReciever { get; }
+		private ITextChatEventFactory TextChatEventDataFactory { get; }
+
+		//TODO: We don't want to directly expose a queue
+		private Queue<TextChatEventData> ChatEventQueue { get; }
 
 		/// <inheritdoc />
-		public SignalRForwardedIRemoteSocialTextChatHubServer([NotNull] INameQueryService nameQueryable, [NotNull] IChatMessageBoxReciever messageReciever)
+		public SignalRForwardedIRemoteSocialTextChatHubServer([NotNull] INameQueryService nameQueryable, [NotNull] ITextChatEventFactory textChatEventDataFactory, [NotNull] Queue<TextChatEventData> chatEventQueue)
 		{
 			NameQueryable = nameQueryable ?? throw new ArgumentNullException(nameof(nameQueryable));
-			MessageReciever = messageReciever ?? throw new ArgumentNullException(nameof(messageReciever));
+			TextChatEventDataFactory = textChatEventDataFactory ?? throw new ArgumentNullException(nameof(textChatEventDataFactory));
+			ChatEventQueue = chatEventQueue ?? throw new ArgumentNullException(nameof(chatEventQueue));
 		}
 
 		public async Task RecieveZoneChannelTextChatMessageAsync(ZoneChatMessageEventModel message)
@@ -40,15 +44,7 @@ namespace Guardians
 			string entityName = await NameQueryable.RetrieveAsync(message.ChannelMessage.EntityGuid.EntityId)
 				.ConfigureAwait(false);
 
-			//TODO: Would performance be better if the server did this?
-			string renderableMessage = $"[1. Zone] {entityName}: {message.ChannelMessage.Data.Message}";
-
-			//TODO: This is a hack. We don't want to dispatch directly in here.
-			ProjectVersionStage.AssertInternalTesting();
-
-			await new UnityYieldAwaitable();
-
-			MessageReciever.ReceiveChatMessage(1, renderableMessage);
+			TextChatEventData chatData = TextChatEventDataFactory.CreateChatData(message.ChannelMessage, entityName);
 		}
 	}
 }

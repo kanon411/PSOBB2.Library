@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Guardians
 {
 	[Table("character_friends")]
-	public class FriendRelationshipModel
+	public class CharacterFriendRelationshipModel
 	{
 		/// <summary>
 		/// The primary key
@@ -47,7 +47,7 @@ namespace Guardians
 		public DateTime CreationDate { get; private set; }
 
 		/// <inheritdoc />
-		public FriendRelationshipModel(int characterOneId, int characterTwoId)
+		public CharacterFriendRelationshipModel(int characterOneId, int characterTwoId)
 		{
 			if(characterOneId <= 0) throw new ArgumentOutOfRangeException(nameof(characterOneId));
 			if(characterTwoId <= 0) throw new ArgumentOutOfRangeException(nameof(characterTwoId));
@@ -56,7 +56,7 @@ namespace Guardians
 			CharacterTwoId = characterTwoId;
 		}
 
-		private FriendRelationshipModel()
+		private CharacterFriendRelationshipModel()
 		{
 			
 		}

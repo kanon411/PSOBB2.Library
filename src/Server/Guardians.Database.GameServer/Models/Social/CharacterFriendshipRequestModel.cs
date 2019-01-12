@@ -16,29 +16,29 @@ namespace Guardians
 		/// The primary key
 		/// </summary>
 		[Key]
-		public int FriendshipId { get; private set; }
+		public int FriendshipRequestId { get; private set; }
 
 		/// <summary>
-		/// The ID of the first character in the relationship.
+		/// The ID of the character requesting the friend request.
 		/// </summary>
-		[ForeignKey(nameof(CharacterOne))]
-		public int CharacterOneId { get; private set; }
-
-		/// <summary>
-		/// Navigation property to the character table.
-		/// </summary>
-		public virtual CharacterEntryModel CharacterOne { get; private set; }
-
-		/// <summary>
-		/// The ID of the second character in the relationship.
-		/// </summary>
-		[ForeignKey(nameof(CharacterTwo))]
-		public int CharacterTwoId { get; private set; }
+		[ForeignKey(nameof(RequestingCharacter))]
+		public int RequestingCharacterId { get; private set; }
 
 		/// <summary>
 		/// Navigation property to the character table.
 		/// </summary>
-		public virtual CharacterEntryModel CharacterTwo { get; private set; }
+		public virtual CharacterEntryModel RequestingCharacter { get; private set; }
+
+		/// <summary>
+		/// The ID of the target for the friend request.
+		/// </summary>
+		[ForeignKey(nameof(TargetRequestCharacter))]
+		public int TargetRequestCharacterId { get; private set; }
+
+		/// <summary>
+		/// Navigation property to the character table.
+		/// </summary>
+		public virtual CharacterEntryModel TargetRequestCharacter { get; private set; }
 
 		/// <summary>
 		/// The creation time of the friendship.
@@ -49,13 +49,13 @@ namespace Guardians
 		public DateTime CreationDate { get; private set; }
 
 		/// <inheritdoc />
-		public CharacterFriendshipRequestModel(int characterOneId, int characterTwoId)
+		public CharacterFriendshipRequestModel(int requestingCharacterId, int targetRequestCharacterId)
 		{
-			if(characterOneId <= 0) throw new ArgumentOutOfRangeException(nameof(characterOneId));
-			if(characterTwoId <= 0) throw new ArgumentOutOfRangeException(nameof(characterTwoId));
+			if(requestingCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(requestingCharacterId));
+			if(targetRequestCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(targetRequestCharacterId));
 
-			CharacterOneId = characterOneId;
-			CharacterTwoId = characterTwoId;
+			RequestingCharacterId = requestingCharacterId;
+			TargetRequestCharacterId = targetRequestCharacterId;
 		}
 
 	}

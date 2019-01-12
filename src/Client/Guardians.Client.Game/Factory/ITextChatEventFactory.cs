@@ -6,10 +6,10 @@ namespace Guardians
 {
 	public interface ITextChatEventFactory
 	{
-		TextChatEventData CreateChatData<TMessageType>(EntityAssociatedData<TMessageType> incomingChatMessageEventData)
-			where TMessageType : ITextMessageContainable;
+		TextChatEventData CreateChatData<TMessageType>(EntityAssociatedData<TMessageType> incomingChatMessageEventData, string associatedEntityName)
+			where TMessageType : ITextMessageContainable, IChatChannelAssociatable;
 
 		TextChatEventData CreateChatData<TMessageType>(TMessageType incomingChatMessageEventData)
-			where TMessageType : ITextMessageContainable;
+			where TMessageType : ITextMessageContainable, IChatChannelAssociatable;
 	}
 }

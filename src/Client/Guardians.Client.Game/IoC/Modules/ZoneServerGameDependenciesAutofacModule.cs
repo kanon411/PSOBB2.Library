@@ -68,6 +68,11 @@ namespace Guardians
 				.AsSelf()
 				.SingleInstance();
 
+			builder.RegisterType<ChatMessageHandlerTickable>()
+				.As<IGameTickable>()
+				.AsSelf()
+				.SingleInstance();
+
 			//This service is required by the entity data change system/tickable
 			builder.RegisterType<EntityDataChangeCallbackManager>()
 				.AsImplementedInterfaces()

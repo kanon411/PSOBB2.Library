@@ -99,6 +99,10 @@ namespace Guardians
 				.As<IDisposable>()
 				.AsSelf()
 				.SingleInstance();
+
+			//Text chat factory
+			builder.RegisterType<DefaultTextChatEventFactory>()
+				.As<ITextChatEventFactory>();
 		}
 
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)

@@ -45,7 +45,7 @@ namespace Guardians
 				case ChatMessageType.System:
 					return "ff0000ff";
 				case ChatMessageType.Zone:
-					return "AA9E92";
+					return "AA9E92ff";
 			}
 
 			throw new NotImplementedException($"Cannot handle Chat Type: {messageType}:{(int)messageType}");

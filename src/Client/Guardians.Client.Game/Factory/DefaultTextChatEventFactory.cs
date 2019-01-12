@@ -17,7 +17,7 @@ namespace Guardians
 
 			string renderableMessage = $"{ComputeChannelText(messageType)} {associatedEntityName}: {incomingChatMessageEventData.Data.Message}";
 
-			return new TextChatEventData(renderableMessage, incomingChatMessageEventData.EntityGuid, messageType);
+			return new TextChatEventData(WrapMessageInColorBlock(messageType, renderableMessage), incomingChatMessageEventData.EntityGuid, messageType);
 		}
 
 		/// <inheritdoc />

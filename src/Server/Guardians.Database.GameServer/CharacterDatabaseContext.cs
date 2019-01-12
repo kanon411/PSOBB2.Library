@@ -25,6 +25,11 @@ namespace Guardians
 		/// </summary>
 		public DbSet<CharacterFriendRelationshipModel> CharacterFriends { get; set; }
 
+		/// <summary>
+		/// The character friend requests.
+		/// </summary>
+		public DbSet<CharacterFriendshipRequestModel> CharacterFriendRequests { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{

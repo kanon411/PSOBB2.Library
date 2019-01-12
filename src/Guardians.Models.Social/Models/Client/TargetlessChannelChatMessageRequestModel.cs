@@ -11,7 +11,7 @@ namespace Guardians
 	/// a target channel <see cref="TargetChannel"/>
 	/// </summary>
 	[JsonObject]
-	public class TargetlessChannelChatMessageRequestModel : ITextMessageContainable
+	public class TargetlessChannelChatMessageRequestModel : ITextMessageContainable, IChatChannelAssociatable
 	{
 		/// <summary>
 		/// The channel to attempt to send the <see cref="Message"/> on.

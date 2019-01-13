@@ -21,11 +21,6 @@ namespace Guardians
 		public DbSet<ClaimedSessionsModel> ClaimedSession { get; set; }
 
 		/// <summary>
-		/// The database for friendships between characters.
-		/// </summary>
-		public DbSet<CharacterFriendRelationshipModel> CharacterFriends { get; set; }
-
-		/// <summary>
 		/// The character friend requests.
 		/// </summary>
 		public DbSet<CharacterFriendshipRequestModel> CharacterFriendRequests { get; set; }

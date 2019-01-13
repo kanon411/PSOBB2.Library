@@ -113,6 +113,11 @@ namespace Guardians
 				.AsSelf()
 				.As<ILog>()
 				.SingleInstance();
+
+			builder.RegisterInstance(Mock.Of<IChatMessageBoxReciever>())
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 	}
 }

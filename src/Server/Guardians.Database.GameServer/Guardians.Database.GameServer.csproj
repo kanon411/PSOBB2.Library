@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181130171540_TransitioningToProjectVindictiveWorldSystemCharacter.cs" />
     <Compile Remove="Migrations\20190112224612_CharacterFriendRequestsTableMigration.cs" />
+    <Compile Remove="Migrations\20190112225507_CharacterFriendRequestsTableMigration.cs" />
+    <Compile Remove="Migrations\20190112230932_ChangingCharacterRequestTableColumnNamesMigration.cs" />
+    <Compile Remove="Migrations\20190112234340_CharacterRequestUniquePairMigration.cs" />
+    <Compile Remove="Migrations\20190112235605_CharacterFriendRequestsssMigration.cs" />
   </ItemGroup>
 
   <ItemGroup>

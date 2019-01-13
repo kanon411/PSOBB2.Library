@@ -101,6 +101,14 @@ namespace Guardians
 			//This makes it so only one public IP/Port can be in the database by making the data pair unique
 			zoneEntity
 				.HasAlternateKey(model => new {model.ZoneServerAddress, model.ZoneServerPort});
+
+			EntityTypeBuilder<CharacterFriendshipRequestModel> requestEntity = modelBuilder.Entity<CharacterFriendshipRequestModel>();
+
+			requestEntity
+				.HasAlternateKey(model => new {model.RequestingCharacterId, model.TargetRequestCharacterId});
+
+			requestEntity
+				.HasAlternateKey(model => new {model.TargetRequestCharacterId, model.RequestingCharacterId});
 		}
 #endif
 	}

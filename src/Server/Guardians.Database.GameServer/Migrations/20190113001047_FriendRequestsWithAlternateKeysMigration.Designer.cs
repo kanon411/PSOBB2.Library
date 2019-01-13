@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20190112225507_CharacterFriendRequestsTableMigration")]
-    partial class CharacterFriendRequestsTableMigration
+    [Migration("20190113001047_FriendRequestsWithAlternateKeysMigration")]
+    partial class FriendRequestsWithAlternateKeysMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,22 +67,22 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.CharacterFriendshipRequestModel", b =>
                 {
-                    b.Property<int>("FriendshipId")
+                    b.Property<int>("FriendshipRequestId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CharacterOneId");
-
-                    b.Property<int>("CharacterTwoId");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP(6)");
 
-                    b.HasKey("FriendshipId");
+                    b.Property<int>("RequestingCharacterId");
 
-                    b.HasIndex("CharacterOneId");
+                    b.Property<int>("TargetRequestCharacterId");
 
-                    b.HasIndex("CharacterTwoId");
+                    b.HasKey("FriendshipRequestId");
+
+                    b.HasAlternateKey("RequestingCharacterId", "TargetRequestCharacterId");
+
+                    b.HasAlternateKey("TargetRequestCharacterId", "RequestingCharacterId");
 
                     b.ToTable("character_friendrequests");
                 });
@@ -206,14 +206,14 @@ namespace Guardians.Database.GameServer.Migrations
 
             modelBuilder.Entity("Guardians.CharacterFriendshipRequestModel", b =>
                 {
-                    b.HasOne("Guardians.CharacterEntryModel", "CharacterOne")
+                    b.HasOne("Guardians.CharacterEntryModel", "RequestingCharacter")
                         .WithMany()
-                        .HasForeignKey("CharacterOneId")
+                        .HasForeignKey("RequestingCharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Guardians.CharacterEntryModel", "CharacterTwo")
+                    b.HasOne("Guardians.CharacterEntryModel", "TargetRequestCharacter")
                         .WithMany()
-                        .HasForeignKey("CharacterTwoId")
+                        .HasForeignKey("TargetRequestCharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

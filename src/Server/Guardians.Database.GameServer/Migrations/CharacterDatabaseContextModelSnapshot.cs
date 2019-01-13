@@ -78,9 +78,9 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasKey("FriendshipRequestId");
 
-                    b.HasIndex("RequestingCharacterId");
+                    b.HasAlternateKey("RequestingCharacterId", "TargetRequestCharacterId");
 
-                    b.HasIndex("TargetRequestCharacterId");
+                    b.HasAlternateKey("TargetRequestCharacterId", "RequestingCharacterId");
 
                     b.ToTable("character_friendrequests");
                 });

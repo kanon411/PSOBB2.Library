@@ -10,7 +10,7 @@ namespace Guardians
 	/// Database table model for friend requests.
 	/// </summary>
 	[Table("character_friendrelationship")]
-	public class CharacterFriendshipRequestModel
+	public class CharacterFriendRelationshipModel
 	{
 		/// <summary>
 		/// The primary key
@@ -56,7 +56,7 @@ namespace Guardians
 		internal long DirectionalUniqueness { get; set; }
 
 		/// <inheritdoc />
-		public CharacterFriendshipRequestModel(int requestingCharacterId, int targetRequestCharacterId)
+		public CharacterFriendRelationshipModel(int requestingCharacterId, int targetRequestCharacterId)
 		{
 			if(requestingCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(requestingCharacterId));
 			if(targetRequestCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(targetRequestCharacterId));

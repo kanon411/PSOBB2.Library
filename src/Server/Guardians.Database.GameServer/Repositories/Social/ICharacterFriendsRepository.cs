@@ -18,12 +18,12 @@ namespace Guardians
 		Task<bool> HasFriendRelationship(int characterIdOne, int characterIdTwo);
 
 		/// <summary>
-		/// Gets an array of characterIds with pending friend requests
+		/// Gets an array of relationship models with pending status
 		/// for the character with id <see cref="characterId"/>.
 		/// </summary>
 		/// <param name="characterId"></param>
 		/// <returns></returns>
-		Task<int[]> GetCharactersPendingFriendRequests(int characterId);
+		Task<CharacterFriendRelationshipModel[]> GetCharactersPendingFriendRequests(int characterId);
 
 		/// <summary>
 		/// Gets an array of characterIds that represent

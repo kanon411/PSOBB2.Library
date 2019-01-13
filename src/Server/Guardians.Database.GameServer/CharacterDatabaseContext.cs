@@ -23,7 +23,7 @@ namespace Guardians
 		/// <summary>
 		/// The character friend requests.
 		/// </summary>
-		public DbSet<CharacterFriendshipRequestModel> CharacterFriendRequests { get; set; }
+		public DbSet<CharacterFriendRelationshipModel> CharacterFriendRequests { get; set; }
 
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
@@ -97,7 +97,7 @@ namespace Guardians
 			zoneEntity
 				.HasAlternateKey(model => new {model.ZoneServerAddress, model.ZoneServerPort});
 
-			EntityTypeBuilder<CharacterFriendshipRequestModel> requestEntity = modelBuilder.Entity<CharacterFriendshipRequestModel>();
+			EntityTypeBuilder<CharacterFriendRelationshipModel> requestEntity = modelBuilder.Entity<CharacterFriendRelationshipModel>();
 
 			requestEntity
 				.HasAlternateKey(model => new {model.RequestingCharacterId, model.TargetRequestCharacterId});

@@ -9,14 +9,14 @@ namespace Guardians
 	/// <summary>
 	/// Database table model for friend requests.
 	/// </summary>
-	[Table("character_friendrequests")]
+	[Table("character_friendrelationship")]
 	public class CharacterFriendshipRequestModel
 	{
 		/// <summary>
 		/// The primary key
 		/// </summary>
 		[Key]
-		public int FriendshipRequestId { get; private set; }
+		public int FriendshipRelationshipId { get; private set; }
 
 		/// <summary>
 		/// The ID of the character requesting the friend request.

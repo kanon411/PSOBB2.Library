@@ -48,15 +48,32 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime CreationDate { get; private set; }
 
+		/// <summary>
+		/// This column exists ONLY for uniqueness enforcement
+		/// so that a request cannot be sent from N to M
+		/// and from M to N. Only 1 request between two entities can exist.
+		/// </summary>
+		internal long DirectionalUniqueness { get; set; }
+
 		/// <inheritdoc />
 		public CharacterFriendshipRequestModel(int requestingCharacterId, int targetRequestCharacterId)
 		{
 			if(requestingCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(requestingCharacterId));
 			if(targetRequestCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(targetRequestCharacterId));
 
+			if(requestingCharacterId == targetRequestCharacterId)
+				throw new ArgumentException($"Provided arguments: {nameof(requestingCharacterId)} and {nameof(targetRequestCharacterId)} must be unique.");
+
 			RequestingCharacterId = requestingCharacterId;
 			TargetRequestCharacterId = targetRequestCharacterId;
+
+			//Directional uniqueness MUST be computed only after sorting to ensure unique column given integers N and M
+			DirectionalUniqueness = ComputeDirectionalUniquenessIndex(requestingCharacterId, targetRequestCharacterId);
 		}
 
+		private static long ComputeDirectionalUniquenessIndex(int requestingCharacterId, int targetRequestCharacterId)
+		{
+			return (long)Math.Min(requestingCharacterId, targetRequestCharacterId) + ((long)Math.Max(requestingCharacterId, targetRequestCharacterId) << 32);
+		}
 	}
 }

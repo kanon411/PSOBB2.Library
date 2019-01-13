@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Guardians.Database.GameServer.Migrations
 {
     [DbContext(typeof(CharacterDatabaseContext))]
-    [Migration("20190113001047_FriendRequestsWithAlternateKeysMigration")]
-    partial class FriendRequestsWithAlternateKeysMigration
+    [Migration("20190113003947_NewCharacterFriendsRequestMigration")]
+    partial class NewCharacterFriendsRequestMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,6 +74,8 @@ namespace Guardians.Database.GameServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP(6)");
 
+                    b.Property<long>("DirectionalUniqueness");
+
                     b.Property<int>("RequestingCharacterId");
 
                     b.Property<int>("TargetRequestCharacterId");
@@ -82,7 +84,10 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasAlternateKey("RequestingCharacterId", "TargetRequestCharacterId");
 
-                    b.HasAlternateKey("TargetRequestCharacterId", "RequestingCharacterId");
+                    b.HasIndex("DirectionalUniqueness")
+                        .IsUnique();
+
+                    b.HasIndex("TargetRequestCharacterId");
 
                     b.ToTable("character_friendrequests");
                 });

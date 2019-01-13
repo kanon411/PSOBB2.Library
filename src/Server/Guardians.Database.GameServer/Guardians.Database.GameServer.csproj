@@ -12,6 +12,9 @@
     <Compile Remove="Migrations\20190112230932_ChangingCharacterRequestTableColumnNamesMigration.cs" />
     <Compile Remove="Migrations\20190112234340_CharacterRequestUniquePairMigration.cs" />
     <Compile Remove="Migrations\20190112235605_CharacterFriendRequestsssMigration.cs" />
+    <Compile Remove="Migrations\20190113001047_FriendRequestsWithAlternateKeysMigration.cs" />
+    <Compile Remove="Migrations\20190113003102_AddUniqueDirectionalConstraintToFriendRequestsMigration.cs" />
+    <Compile Remove="Migrations\20190113003227_AddUniqueDirectionalConstraintToFriendRequestsMigration.cs" />
   </ItemGroup>
 
   <ItemGroup>

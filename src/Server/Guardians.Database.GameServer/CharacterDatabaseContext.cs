@@ -108,7 +108,8 @@ namespace Guardians
 				.HasAlternateKey(model => new {model.RequestingCharacterId, model.TargetRequestCharacterId});
 
 			requestEntity
-				.HasAlternateKey(model => new {model.TargetRequestCharacterId, model.RequestingCharacterId});
+				.HasIndex(model => model.DirectionalUniqueness)
+				.IsUnique();
 		}
 #endif
 	}

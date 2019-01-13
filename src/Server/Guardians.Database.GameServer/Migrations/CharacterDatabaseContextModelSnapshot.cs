@@ -72,6 +72,8 @@ namespace Guardians.Database.GameServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP(6)");
 
+                    b.Property<long>("DirectionalUniqueness");
+
                     b.Property<int>("RequestingCharacterId");
 
                     b.Property<int>("TargetRequestCharacterId");
@@ -80,7 +82,10 @@ namespace Guardians.Database.GameServer.Migrations
 
                     b.HasAlternateKey("RequestingCharacterId", "TargetRequestCharacterId");
 
-                    b.HasAlternateKey("TargetRequestCharacterId", "RequestingCharacterId");
+                    b.HasIndex("DirectionalUniqueness")
+                        .IsUnique();
+
+                    b.HasIndex("TargetRequestCharacterId");
 
                     b.ToTable("character_friendrequests");
                 });

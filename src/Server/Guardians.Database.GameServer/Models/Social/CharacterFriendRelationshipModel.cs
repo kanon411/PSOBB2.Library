@@ -88,7 +88,18 @@ namespace Guardians
 			RelationState = relationState;
 		}
 
-		private static long ComputeDirectionalUniquenessIndex(int requestingCharacterId, int targetRequestCharacterId)
+		/// <summary>
+		/// Computes the 8 byte identifier for the two entity's
+		/// entering a relationship <see cref="RequestingCharacterId"/> and
+		/// <see cref="TargetRequestCharacterId"/>. This will produce a unique
+		/// value for the relationship that will be the same regardless of which id is either.
+		/// This ID can be searched for to check if a request or relationship already exists eithout checking both orders.
+		/// It will also help prevent race conditions of multiple requests sent by throwing if one exists.
+		/// </summary>
+		/// <param name="requestingCharacterId"></param>
+		/// <param name="targetRequestCharacterId"></param>
+		/// <returns></returns>
+		public static long ComputeDirectionalUniquenessIndex(int requestingCharacterId, int targetRequestCharacterId)
 		{
 			return (long)Math.Min(requestingCharacterId, targetRequestCharacterId) + ((long)Math.Max(requestingCharacterId, targetRequestCharacterId) << 32);
 		}

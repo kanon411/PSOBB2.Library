@@ -28,6 +28,8 @@ namespace Guardians
 		//TODO: This is getting ridiculous, we can't have everything in this database.
 		public DbSet<GuildEntryModel> Guilds { get; set; }
 
+		public DbSet<CharacterGuildMemberRelationshipModel> GuildMembers { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{
@@ -118,6 +120,10 @@ namespace Guardians
 			guildsEntryEntity
 				.HasIndex(model => model.GuildName)
 				.IsUnique();
+
+			//CharacterGuildMemberRelationshipModel
+			//EntityTypeBuilder<CharacterGuildMemberRelationshipModel> guildMemberEntityEntity = modelBuilder.Entity<CharacterGuildMemberRelationshipModel>();
+			//guildMemberEntityEntity.
 		}
 #endif
 	}

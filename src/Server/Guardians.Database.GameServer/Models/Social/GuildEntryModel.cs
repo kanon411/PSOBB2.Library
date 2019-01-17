@@ -42,6 +42,26 @@ namespace Guardians
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime CreationDate { get; private set; }
 
+		/// <inheritdoc />
+		public GuildEntryModel([JetBrains.Annotations.NotNull] string guildName, int guildMasterCharacterId)
+		{
+			if(string.IsNullOrEmpty(guildName)) throw new ArgumentException("Value cannot be null or empty.", nameof(guildName));
+			if(guildMasterCharacterId <= 0) throw new ArgumentOutOfRangeException(nameof(guildMasterCharacterId));
+
+			GuildName = guildName;
+			GuildMasterCharacterId = guildMasterCharacterId;
+		}
+
+		/// <inheritdoc />
+		public GuildEntryModel([JetBrains.Annotations.NotNull] string guildName, [JetBrains.Annotations.NotNull] CharacterEntryModel guildMaster)
+		{
+			if(guildMaster == null) throw new ArgumentNullException(nameof(guildMaster));
+			if(string.IsNullOrWhiteSpace(guildName)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(guildName));
+
+			GuildName = guildName;
+			GuildMasterCharacterId = guildMaster.CharacterId;
+		}
+
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>

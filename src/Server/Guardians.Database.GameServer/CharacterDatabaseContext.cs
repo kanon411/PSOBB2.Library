@@ -25,6 +25,9 @@ namespace Guardians
 		/// </summary>
 		public DbSet<CharacterFriendRelationshipModel> CharacterFriendRequests { get; set; }
 
+		//TODO: This is getting ridiculous, we can't have everything in this database.
+		public DbSet<GuildEntryModel> Guilds { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{
@@ -95,15 +98,25 @@ namespace Guardians
 
 			//This makes it so only one public IP/Port can be in the database by making the data pair unique
 			zoneEntity
-				.HasAlternateKey(model => new {model.ZoneServerAddress, model.ZoneServerPort});
+				.HasAlternateKey(model => new { model.ZoneServerAddress, model.ZoneServerPort });
 
 			EntityTypeBuilder<CharacterFriendRelationshipModel> requestEntity = modelBuilder.Entity<CharacterFriendRelationshipModel>();
 
 			requestEntity
-				.HasAlternateKey(model => new {model.RequestingCharacterId, model.TargetRequestCharacterId});
+				.HasAlternateKey(model => new { model.RequestingCharacterId, model.TargetRequestCharacterId });
 
 			requestEntity
 				.HasIndex(model => model.DirectionalUniqueness)
+				.IsUnique();
+
+			EntityTypeBuilder<GuildEntryModel> guildsEntryEntity = modelBuilder.Entity<GuildEntryModel>();
+
+			guildsEntryEntity
+				.HasAlternateKey(model => model.GuildMasterCharacterId);
+
+			//This doesn't need to be a key since we likely won't do lookups for it.
+			guildsEntryEntity
+				.HasIndex(model => model.GuildName)
 				.IsUnique();
 		}
 #endif

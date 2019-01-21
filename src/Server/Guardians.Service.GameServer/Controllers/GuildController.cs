@@ -18,6 +18,8 @@ namespace Guardians
 
 		}
 
+		//This endpoint allows for anon access because anyone should be able to see the guild status of a player.
+		//Including armory/website and ingame players.
 		[ProducesJson]
 		[AllowAnonymous]
 		[HttpGet("character/{id}")]

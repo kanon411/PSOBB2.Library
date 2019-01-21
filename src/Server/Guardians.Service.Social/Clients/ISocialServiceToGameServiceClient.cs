@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace Guardians
 {
+	//TODO: We should unify these clients into a single GameServer client.
 	/// <summary>
 	/// Proxy interface for ServerSelection (List) Server RPCs.
 	/// </summary>
@@ -15,5 +17,9 @@ namespace Guardians
 		[Headers("Authorization: Bearer")] //see Refits example for tokenless auto-injection to the header.
 		[Get("/api/CharacterSession/account/{id}/data")]
 		Task<CharacterSessionDataResponse> GetCharacterSessionDataByAccount([AliasAs("id")] int accountId);
+
+		//No auth needed
+		[HttpGet("/api/guild/character/{id}")]
+		Task<CharacterGuildMembershipStatusResponse> GetCharacterMembershipGuildStatus([AliasAs("id")] int characterId);
 	}
 }

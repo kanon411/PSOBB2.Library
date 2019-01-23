@@ -16,15 +16,19 @@ namespace Guardians
 		//I am not happy about this, but we need to maintain some state so that we know what zone a connection is in.
 		private IConnectionToZoneMappable ZoneLookupService { get; }
 
+		private IEnumerable<IOnHubConnectionEventListener> OnConnectionHubListeners { get; }
+
 		/// <inheritdoc />
 		public TextChatHub(IClaimsPrincipalReader claimsReader, 
 			ILogger<TextChatHub> logger, 
 			[JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient,
-			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService) 
+			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService,
+			[JetBrains.Annotations.NotNull] IEnumerable<IOnHubConnectionEventListener> onConnectionHubListeners) 
 			: base(claimsReader, logger)
 		{
 			SocialToGameClient = socialToGameClient ?? throw new ArgumentNullException(nameof(socialToGameClient));
 			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
+			OnConnectionHubListeners = onConnectionHubListeners ?? throw new ArgumentNullException(nameof(onConnectionHubListeners));
 		}
 
 		/// <inheritdoc />
@@ -49,6 +53,7 @@ namespace Guardians
 		{
 			if(envolpeContents == null) throw new ArgumentNullException(nameof(envolpeContents));
 
+			//TODO: We should cache somehow the identifier's int value, parsing it each time I think can be costly.
 			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
 				.WithId(int.Parse(Context.UserIdentifier))
 				.WithType(EntityType.Player)
@@ -71,46 +76,28 @@ namespace Guardians
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Account Connected: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)}");
 
-			//We should never be here unless auth worked
-			//so we can assume that and just try to request character session data
-			//for the account.
-			CharacterSessionDataResponse characterSessionDataResponse = await SocialToGameClient.GetCharacterSessionDataByAccount(ClaimsReader.GetUserIdInt(this.Context.User))
-				.ConfigureAwait(false);
-
-			//If the session data request fails we should just abort
-			//and disconnect, the user shouldn't be connecting
-			if(!characterSessionDataResponse.isSuccessful)
+			try
 			{
-				if(Logger.IsEnabled(LogLevel.Warning))
-					Logger.LogWarning($"Failed to Query SessionData for AccountId: {ClaimsReader.GetUserId(Context.User)} Reason: {characterSessionDataResponse.ResultCode}");
+				foreach(var listener in OnConnectionHubListeners)
+				{
+					HubOnConnectionState connectionState = await listener.OnConnected(this).ConfigureAwait(false);
+
+					//if the listener indicated we need to abort for whatever reason we
+					//should believe it and just abort.
+					if(connectionState == HubOnConnectionState.Abort)
+					{
+						Context.Abort();
+						break;
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogInformation($"Account: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} failed to properly connect to hub. Error: {e.Message}\n\nStack: {e.StackTrace}");
 
 				Context.Abort();
-				return;
 			}
-
-			//This is ABSOLUTELY CRITICAL we need to validate that the character header they sent actually
-			//is the character they have a session as
-			//NOT CHECKING THIS IS EQUIVALENT TO LETTING USERS PRETEND THEY ARE ANYONE!
-			if(Context.UserIdentifier != characterSessionDataResponse.CharacterId.ToString())
-			{
-				//We can log account name and id here, because they were successfully authed.
-				if(Logger.IsEnabled(LogLevel.Warning))
-					Logger.LogWarning($"User with AccountId: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} attempted to spoof as CharacterId: {Context.UserIdentifier} but had session for CharacterID: {characterSessionDataResponse.CharacterId}.");
-
-				this.Context.Abort();
-				return;
-			}
-
-			if(Logger.IsEnabled(LogLevel.Information))
-				Logger.LogInformation($"Recieved SessionData: Id: {characterSessionDataResponse.CharacterId} ZoneId: {characterSessionDataResponse.ZoneId}");
-
-			//TODO: We should have group name builders. Not hardcoded
-			//Join the zoneserver's chat channel group
-			await Groups.AddToGroupAsync(Context.ConnectionId, $"zone:{characterSessionDataResponse.ZoneId}", Context.ConnectionAborted)
-				.ConfigureAwait(false);
-
-			//Registers for lookup so that we can tell where a connection is zone-wise.
-			ZoneLookupService.Register(Context.ConnectionId, characterSessionDataResponse.ZoneId);
 		}
 
 		/// <inheritdoc />

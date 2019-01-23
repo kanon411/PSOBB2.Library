@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Guardians
 {
-	public interface IHubConnectionMessageContext<TRemoteClientHubInterfaceType>
+	public interface IHubConnectionMessageContext<TRemoteClientHubInterfaceType> : IHubConnectionMessageContext
+	{
+		IHubCallerClients<TRemoteClientHubInterfaceType> Clients { get; }
+	}
+
+	public interface IHubConnectionMessageContext
 	{
 		IGroupManager Groups { get; }
-
-		IHubCallerClients<TRemoteClientHubInterfaceType> Clients { get; }
 
 		HubCallerContext HubConntext { get; }
 

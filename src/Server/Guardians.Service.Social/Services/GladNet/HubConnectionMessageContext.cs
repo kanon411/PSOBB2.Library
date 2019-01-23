@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Guardians
 {
-	public sealed class HubConnectionMessageContext<TRemoteClientHubType> : IPeerMessageContext<object>
+	public sealed class HubConnectionMessageContext<TRemoteClientHubType> : IPeerMessageContext<object>, IHubConnectionMessageContext<TRemoteClientHubType>
 	{
 		/// <inheritdoc />
 		public IConnectionService ConnectionService { get; }

@@ -119,20 +119,19 @@ namespace Guardians
 		public bool isConnected => !Context.ConnectionAborted.IsCancellationRequested;
 
 		/// <inheritdoc />
-		public Task<SendResult> SendMessage<TPayloadType>(TPayloadType payload, DeliveryMethod method = DeliveryMethod.ReliableOrdered) 
-			where TPayloadType : class
+		Task<SendResult> IPeerPayloadSendService<object>.SendMessage<TPayloadType>(TPayloadType payload, DeliveryMethod method)
 		{
 			throw new NotSupportedException($"This does not make sense for SignalR.");
 		}
 
 		/// <inheritdoc />
-		public Task<SendResult> SendMessageImmediately<TPayloadType>(TPayloadType payload, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPayloadType : class
+		Task<SendResult> IPeerPayloadSendService<object>.SendMessageImmediately<TPayloadType>(TPayloadType payload, DeliveryMethod method)
 		{
 			throw new NotSupportedException($"This does not make sense for SignalR.");
 		}
 
 		/// <inheritdoc />
-		public Task<TResponseType> SendRequestAsync<TResponseType>(object request, DeliveryMethod method = DeliveryMethod.ReliableOrdered, CancellationToken cancellationToken = new CancellationToken())
+		Task<TResponseType> IPeerRequestSendService<object>.SendRequestAsync<TResponseType>(object request, DeliveryMethod method, CancellationToken cancellationToken)
 		{
 			throw new NotSupportedException($"This does not make sense for SignalR.");
 		}

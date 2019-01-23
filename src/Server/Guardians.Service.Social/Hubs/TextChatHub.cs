@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
+using GladNet;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Guardians
 {
 	[AuthorizeJwt]
-	public sealed class TextChatHub : AuthorizationReadySignalRHub<IRemoteSocialTextChatHubClient>, IRemoteSocialTextChatHubServer
+	public sealed class TextChatHub : AuthorizationReadySignalRHub<IRemoteSocialTextChatHubClient>, 
+		IRemoteSocialTextChatHubServer, 
+		IConnectionService, 
+		IPeerPayloadSendService<object>, 
+		IPeerRequestSendService<object>
 	{
 		private ISocialServiceToGameServiceClient SocialToGameClient { get; }
 
@@ -18,53 +25,39 @@ namespace Guardians
 
 		private IEnumerable<IOnHubConnectionEventListener> OnConnectionHubListeners { get; }
 
+		/// <summary>
+		/// This is the dependency injection service creator.
+		/// It should ONLY be used to create handlers for messages.
+		/// </summary>
+		private IServiceProvider ServiceProvider { get; }
+
 		/// <inheritdoc />
 		public TextChatHub(IClaimsPrincipalReader claimsReader, 
 			ILogger<TextChatHub> logger, 
 			[JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient,
 			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService,
-			[JetBrains.Annotations.NotNull] IEnumerable<IOnHubConnectionEventListener> onConnectionHubListeners) 
+			[JetBrains.Annotations.NotNull] IEnumerable<IOnHubConnectionEventListener> onConnectionHubListeners,
+			[JetBrains.Annotations.NotNull] IServiceProvider serviceProvider) 
 			: base(claimsReader, logger)
 		{
 			SocialToGameClient = socialToGameClient ?? throw new ArgumentNullException(nameof(socialToGameClient));
 			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
 			OnConnectionHubListeners = onConnectionHubListeners ?? throw new ArgumentNullException(nameof(onConnectionHubListeners));
+			ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 		}
 
 		/// <inheritdoc />
 		public async Task SendZoneChannelTextChatMessageAsync(ZoneChatMessageRequestModel message)
 		{
-			//TODO: We may want to do validation for the message sent more than this
-			if(message.TargetChannel != ChatChannels.ZoneChannel)
-				return;
+			ZoneMessageBroadcastMessageHandler handler = ServiceProvider.GetService<ZoneMessageBroadcastMessageHandler>();
 
-			if(String.IsNullOrWhiteSpace(message.Message))
-				return;
-
-			//Send only to same zone
-			//TODO: Have a group name builder, don't hardcore
-			await GetCallerZoneGroup().RecieveZoneChannelTextChatMessageAsync(new ZoneChatMessageEventModel(BuildForwardableTargetlessChannelChatMessage(message)));
+			await handler.HandleMessage(CreateHubContext(), message)
+				.ConfigureAwait(false);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private EntityAssociatedData<TargetlessChannelChatMessageRequestModel> BuildForwardableTargetlessChannelChatMessage(TargetlessChannelChatMessageRequestModel message) => BuildForwardableAssociatedData(message);
-
-		private EntityAssociatedData<T> BuildForwardableAssociatedData<T>([JetBrains.Annotations.NotNull] T envolpeContents)
+		private HubConnectionMessageContext<IRemoteSocialTextChatHubClient> CreateHubContext()
 		{
-			if(envolpeContents == null) throw new ArgumentNullException(nameof(envolpeContents));
-
-			//TODO: We should cache somehow the identifier's int value, parsing it each time I think can be costly.
-			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
-				.WithId(int.Parse(Context.UserIdentifier))
-				.WithType(EntityType.Player)
-				.Build();
-
-			return new EntityAssociatedData<T>(guid, envolpeContents);
-		}
-
-		private IRemoteSocialTextChatHubClient GetCallerZoneGroup()
-		{
-			return this.Clients.Group($"zone:{ZoneLookupService.Retrieve(Context.ConnectionId)}");
+			return new HubConnectionMessageContext<IRemoteSocialTextChatHubClient>(this, this, this, Groups, Clients, Context);
 		}
 
 		/// <inheritdoc />
@@ -107,6 +100,41 @@ namespace Guardians
 				ZoneLookupService.Unregister(Context.ConnectionId);
 
 			return base.OnDisconnectedAsync(exception);
+		}
+
+		/// <inheritdoc />
+		public Task DisconnectAsync(int delay)
+		{
+			Context.Abort();
+			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
+		public Task<bool> ConnectAsync(string ip, int port)
+		{
+			throw new NotSupportedException($"This does not make sense for SignalR.");
+		}
+
+		/// <inheritdoc />
+		public bool isConnected => !Context.ConnectionAborted.IsCancellationRequested;
+
+		/// <inheritdoc />
+		public Task<SendResult> SendMessage<TPayloadType>(TPayloadType payload, DeliveryMethod method = DeliveryMethod.ReliableOrdered) 
+			where TPayloadType : class
+		{
+			throw new NotSupportedException($"This does not make sense for SignalR.");
+		}
+
+		/// <inheritdoc />
+		public Task<SendResult> SendMessageImmediately<TPayloadType>(TPayloadType payload, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPayloadType : class
+		{
+			throw new NotSupportedException($"This does not make sense for SignalR.");
+		}
+
+		/// <inheritdoc />
+		public Task<TResponseType> SendRequestAsync<TResponseType>(object request, DeliveryMethod method = DeliveryMethod.ReliableOrdered, CancellationToken cancellationToken = new CancellationToken())
+		{
+			throw new NotSupportedException($"This does not make sense for SignalR.");
 		}
 	}
 }

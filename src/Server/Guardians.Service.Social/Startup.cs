@@ -77,6 +77,7 @@ namespace Guardians
 
 			//This is for Hub connection event listeners
 			services.AddSingleton<IOnHubConnectionEventListener, CharacterZoneOnHubConnectionEventListener>();
+			services.AddSingleton<ZoneMessageBroadcastMessageHandler, ZoneMessageBroadcastMessageHandler>();
 		}
 
 		private async Task<string> GetSocialServiceAuthorizationToken([JetBrains.Annotations.NotNull] IAuthenticationService authService)

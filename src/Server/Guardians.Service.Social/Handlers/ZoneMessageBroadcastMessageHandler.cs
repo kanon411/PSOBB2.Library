@@ -7,52 +7,29 @@ using GladNet;
 
 namespace Guardians
 {
-	public sealed class ZoneMessageBroadcastMessageHandler : BaseTextChatHubSignalRMessageHandler<ZoneChatMessageRequestModel>
+	public sealed class ZoneMessageBroadcastMessageHandler : BaseTextChatGroupBroadcastSignalRMessageHandler<ZoneChatMessageRequestModel, ZoneChatMessageEventModel>
 	{
 		//I am not happy about this, but we need to maintain some state so that we know what zone a connection is in.
 		private IConnectionToZoneMappable ZoneLookupService { get; }
 
 		/// <inheritdoc />
-		public ZoneMessageBroadcastMessageHandler([JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService)
+		public ZoneMessageBroadcastMessageHandler([JetBrains.Annotations.NotNull] IFactoryCreatable<ZoneChatMessageEventModel, GenericChatMessageContext<ZoneChatMessageRequestModel>> outgoingMessageFactory, [JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService) 
+			: base(ChatChannels.ZoneChannel, outgoingMessageFactory)
 		{
 			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
 		}
 
 		/// <inheritdoc />
-		protected override async Task OnMessageRecieved(IHubConnectionMessageContext<IRemoteSocialTextChatHubClient> context, ZoneChatMessageRequestModel message)
+		protected override async Task SendOutgoingMessage(IRemoteSocialTextChatHubClient remote, ZoneChatMessageEventModel outgoingMessage)
 		{
-			//TODO: We may want to do validation for the message sent more than this
-			if(message.TargetChannel != ChatChannels.ZoneChannel)
-				return;
-
-			if(String.IsNullOrWhiteSpace(message.Message))
-				return;
-
-			//Send only to same zone
-			//TODO: Have a group name builder, don't hardcore
-			await GetCallerZoneGroup(context).RecieveZoneChannelTextChatMessageAsync(new ZoneChatMessageEventModel(BuildForwardableTargetlessChannelChatMessage(context, message)));
+			await remote.RecieveZoneChannelTextChatMessageAsync(outgoingMessage)
+				.ConfigureAwait(false);
 		}
 
-		private IRemoteSocialTextChatHubClient GetCallerZoneGroup(IHubConnectionMessageContext<IRemoteSocialTextChatHubClient> context)
+		/// <inheritdoc />
+		protected override IRemoteSocialTextChatHubClient GetBroadcastGroup(IHubConnectionMessageContext<IRemoteSocialTextChatHubClient> context)
 		{
 			return context.Clients.Group($"zone:{ZoneLookupService.Retrieve(context.HubConntext.ConnectionId)}");
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private EntityAssociatedData<TargetlessChannelChatMessageRequestModel> BuildForwardableTargetlessChannelChatMessage(IHubConnectionMessageContext context, TargetlessChannelChatMessageRequestModel message) => BuildForwardableAssociatedData(context, message);
-
-		private EntityAssociatedData<T> BuildForwardableAssociatedData<T>([JetBrains.Annotations.NotNull] IHubConnectionMessageContext context, [JetBrains.Annotations.NotNull] T envolpeContents)
-		{
-			if(context == null) throw new ArgumentNullException(nameof(context));
-			if(envolpeContents == null) throw new ArgumentNullException(nameof(envolpeContents));
-
-			//TODO: We should cache somehow the identifier's int value, parsing it each time I think can be costly.
-			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
-				.WithId(int.Parse(context.HubConntext.UserIdentifier))
-				.WithType(EntityType.Player)
-				.Build();
-
-			return new EntityAssociatedData<T>(guid, envolpeContents);
 		}
 	}
 }

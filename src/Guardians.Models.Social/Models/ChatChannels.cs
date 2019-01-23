@@ -18,5 +18,10 @@ namespace Guardians
 		/// The chat channel for zone chat.
 		/// </summary>
 		ZoneChannel = 1,
+
+		/// <summary>
+		/// The chat channel for guild chat.
+		/// </summary>
+		GuildChannel = 2,
 	}
 }

@@ -20,5 +20,10 @@ namespace Guardians
 
 		//This is from GladNet3
 		IConnectionService ConnectionService { get; }
+
+		/// <summary>
+		/// The entity guid of the caller.
+		/// </summary>
+		NetworkEntityGuid CallerGuid { get; }
 	}
 }

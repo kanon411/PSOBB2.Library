@@ -12,6 +12,13 @@ namespace Guardians
 		/// <inheritdoc />
 		public IConnectionService ConnectionService { get; }
 
+		//TODO: Initialize from creation or get from cache somehow
+		/// <inheritdoc />
+		public NetworkEntityGuid CallerGuid => new NetworkEntityGuidBuilder()
+			.WithId(int.Parse(HubConntext.UserIdentifier))
+			.WithType(EntityType.Player)
+			.Build();
+
 		/// <inheritdoc />
 		public IPeerPayloadSendService<object> PayloadSendService { get; }
 

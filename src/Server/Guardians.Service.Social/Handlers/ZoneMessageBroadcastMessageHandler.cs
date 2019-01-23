@@ -7,7 +7,7 @@ using GladNet;
 
 namespace Guardians
 {
-	public sealed class ZoneMessageBroadcastMessageHandler : IPeerPayloadSpecificMessageHandler<ZoneChatMessageRequestModel, object, HubConnectionMessageContext<IRemoteSocialTextChatHubClient>>
+	public sealed class ZoneMessageBroadcastMessageHandler : BaseTextChatHubSignalRMessageHandler<ZoneChatMessageRequestModel>
 	{
 		//I am not happy about this, but we need to maintain some state so that we know what zone a connection is in.
 		private IConnectionToZoneMappable ZoneLookupService { get; }
@@ -19,7 +19,7 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public async Task HandleMessage(HubConnectionMessageContext<IRemoteSocialTextChatHubClient> context, ZoneChatMessageRequestModel message)
+		protected override async Task OnMessageRecieved(IHubConnectionMessageContext<IRemoteSocialTextChatHubClient> context, ZoneChatMessageRequestModel message)
 		{
 			//TODO: We may want to do validation for the message sent more than this
 			if(message.TargetChannel != ChatChannels.ZoneChannel)
@@ -33,15 +33,15 @@ namespace Guardians
 			await GetCallerZoneGroup(context).RecieveZoneChannelTextChatMessageAsync(new ZoneChatMessageEventModel(BuildForwardableTargetlessChannelChatMessage(context, message)));
 		}
 
-		private IRemoteSocialTextChatHubClient GetCallerZoneGroup(HubConnectionMessageContext<IRemoteSocialTextChatHubClient> context)
+		private IRemoteSocialTextChatHubClient GetCallerZoneGroup(IHubConnectionMessageContext<IRemoteSocialTextChatHubClient> context)
 		{
 			return context.Clients.Group($"zone:{ZoneLookupService.Retrieve(context.HubConntext.ConnectionId)}");
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private EntityAssociatedData<TargetlessChannelChatMessageRequestModel> BuildForwardableTargetlessChannelChatMessage(HubConnectionMessageContext<IRemoteSocialTextChatHubClient> context, TargetlessChannelChatMessageRequestModel message) => BuildForwardableAssociatedData(context, message);
+		private EntityAssociatedData<TargetlessChannelChatMessageRequestModel> BuildForwardableTargetlessChannelChatMessage(IHubConnectionMessageContext context, TargetlessChannelChatMessageRequestModel message) => BuildForwardableAssociatedData(context, message);
 
-		private EntityAssociatedData<T> BuildForwardableAssociatedData<T>([JetBrains.Annotations.NotNull] HubConnectionMessageContext<IRemoteSocialTextChatHubClient> context, [JetBrains.Annotations.NotNull] T envolpeContents)
+		private EntityAssociatedData<T> BuildForwardableAssociatedData<T>([JetBrains.Annotations.NotNull] IHubConnectionMessageContext context, [JetBrains.Annotations.NotNull] T envolpeContents)
 		{
 			if(context == null) throw new ArgumentNullException(nameof(context));
 			if(envolpeContents == null) throw new ArgumentNullException(nameof(envolpeContents));

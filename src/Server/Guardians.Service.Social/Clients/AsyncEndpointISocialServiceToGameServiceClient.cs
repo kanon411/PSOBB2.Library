@@ -27,5 +27,11 @@ namespace Guardians
 		{
 			return await ((await GetService().ConfigureAwait(false)).GetCharacterSessionDataByAccount(accountId).ConfigureAwait(false));
 		}
+
+		/// <inheritdoc />
+		public async Task<CharacterGuildMembershipStatusResponse> GetCharacterMembershipGuildStatus(int characterId)
+		{
+			return await ((await GetService().ConfigureAwait(false)).GetCharacterMembershipGuildStatus(characterId).ConfigureAwait(false));
+		}
 	}
 }

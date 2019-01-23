@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Guardians
 {
-	public sealed class HubConnectionMessageContext : IPeerMessageContext<object>
+	public sealed class HubConnectionMessageContext<TRemoteClientHubType> : IPeerMessageContext<object>
 	{
 		/// <inheritdoc />
 		public IConnectionService ConnectionService { get; }
@@ -20,17 +20,25 @@ namespace Guardians
 
 		public IGroupManager Groups { get; }
 
+		public IHubCallerClients<TRemoteClientHubType> Clients { get; }
+
+		public HubCallerContext HubConntext { get; }
+
 		/// <inheritdoc />
 		public HubConnectionMessageContext(
 			[JetBrains.Annotations.NotNull] IConnectionService connectionService,
 			[JetBrains.Annotations.NotNull] IPeerPayloadSendService<object> payloadSendService,
 			[JetBrains.Annotations.NotNull] IPeerRequestSendService<object> requestSendService,
-			[JetBrains.Annotations.NotNull] IGroupManager groups)
+			[JetBrains.Annotations.NotNull] IGroupManager groups,
+			[JetBrains.Annotations.NotNull] IHubCallerClients<TRemoteClientHubType> clients,
+			[JetBrains.Annotations.NotNull] HubCallerContext hubConntext)
 		{
 			ConnectionService = connectionService ?? throw new ArgumentNullException(nameof(connectionService));
 			PayloadSendService = payloadSendService ?? throw new ArgumentNullException(nameof(payloadSendService));
 			RequestSendService = requestSendService ?? throw new ArgumentNullException(nameof(requestSendService));
 			Groups = groups ?? throw new ArgumentNullException(nameof(groups));
+			Clients = clients ?? throw new ArgumentNullException(nameof(clients));
+			HubConntext = hubConntext ?? throw new ArgumentNullException(nameof(hubConntext));
 		}
 	}
 }

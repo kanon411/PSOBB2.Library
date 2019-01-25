@@ -44,8 +44,14 @@ namespace Guardians.Social.ManualTest
 			{
 				string input = Console.ReadLine();
 
-				await client.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(input))
-					.ConfigureAwait(false);
+				if(input.Contains("/guild"))
+				{
+					await client.SendGuildChannelTextChatMessageAsync(new GuildChatMessageRequestModel(input))
+						.ConfigureAwait(false);
+				}
+				else
+					await client.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(input))
+						.ConfigureAwait(false);
 			}
 		}
 	}

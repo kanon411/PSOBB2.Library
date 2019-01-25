@@ -31,19 +31,27 @@ namespace Guardians
 		/// </summary>
 		private IServiceProvider ServiceProvider { get; }
 
+		private IEntityDataLockingService EntityLockService { get; }
+
+		private IEnumerable<IEntityCollectionRemovable> EntityRemovable { get; }
+
 		/// <inheritdoc />
 		public TextChatHub(IClaimsPrincipalReader claimsReader, 
 			ILogger<TextChatHub> logger, 
 			[JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient,
 			[JetBrains.Annotations.NotNull] IConnectionToZoneMappable zoneLookupService,
 			[JetBrains.Annotations.NotNull] IEnumerable<IOnHubConnectionEventListener> onConnectionHubListeners,
-			[JetBrains.Annotations.NotNull] IServiceProvider serviceProvider) 
+			[JetBrains.Annotations.NotNull] IServiceProvider serviceProvider,
+			[JetBrains.Annotations.NotNull] IEntityDataLockingService entityLockService,
+			[JetBrains.Annotations.NotNull] IEnumerable<IEntityCollectionRemovable> entityRemovable) 
 			: base(claimsReader, logger)
 		{
 			SocialToGameClient = socialToGameClient ?? throw new ArgumentNullException(nameof(socialToGameClient));
 			ZoneLookupService = zoneLookupService ?? throw new ArgumentNullException(nameof(zoneLookupService));
 			OnConnectionHubListeners = onConnectionHubListeners ?? throw new ArgumentNullException(nameof(onConnectionHubListeners));
 			ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+			EntityLockService = entityLockService ?? throw new ArgumentNullException(nameof(entityLockService));
+			EntityRemovable = entityRemovable ?? throw new ArgumentNullException(nameof(entityRemovable));
 		}
 
 		/// <inheritdoc />
@@ -85,37 +93,84 @@ namespace Guardians
 			if(Logger.IsEnabled(LogLevel.Information))
 				Logger.LogInformation($"Account Connected: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)}");
 
-			try
-			{
-				foreach(var listener in OnConnectionHubListeners)
-				{
-					HubOnConnectionState connectionState = await listener.OnConnected(this).ConfigureAwait(false);
+			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
+				.WithId(int.Parse(Context.UserIdentifier))
+				.WithType(EntityType.Player)
+				.Build();
 
-					//if the listener indicated we need to abort for whatever reason we
-					//should believe it and just abort.
-					if(connectionState == HubOnConnectionState.Abort)
+			//Register interest and then lock
+			//We need to lock on the entity so only 1 connection for the entity can go through this process at a time.
+			await EntityLockService.RegisterEntityInterestAsync(guid)
+				.ConfigureAwait(false);
+			using(await EntityLockService.AquireEntityLockAsync(guid).ConfigureAwait(false))
+			{
+				try
+				{
+					foreach(var listener in OnConnectionHubListeners)
 					{
-						Context.Abort();
-						break;
+						HubOnConnectionState connectionState = await listener.OnConnected(this).ConfigureAwait(false);
+
+						//if the listener indicated we need to abort for whatever reason we
+						//should believe it and just abort.
+						if(connectionState == HubOnConnectionState.Abort)
+						{
+							Context.Abort();
+							break;
+						}
 					}
 				}
-			}
-			catch(Exception e)
-			{
-				if(Logger.IsEnabled(LogLevel.Error))
-					Logger.LogInformation($"Account: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} failed to properly connect to hub. Error: {e.Message}\n\nStack: {e.StackTrace}");
+				catch(Exception e)
+				{
+					if(Logger.IsEnabled(LogLevel.Error))
+						Logger.LogInformation($"Account: {ClaimsReader.GetUserName(Context.User)}:{ClaimsReader.GetUserId(Context.User)} failed to properly connect to hub. Error: {e.Message}\n\nStack: {e.StackTrace}");
 
-				Context.Abort();
+					Context.Abort();
+				}
 			}
 		}
 
 		/// <inheritdoc />
-		public override Task OnDisconnectedAsync(Exception exception)
+		public override async Task OnDisconnectedAsync(Exception exception)
 		{
+			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
+				.WithId(int.Parse(Context.UserIdentifier))
+				.WithType(EntityType.Player)
+				.Build();
+
+			//Right now this doesn't depend on entity, so we just do it.
 			if(ZoneLookupService.Contains(Context.ConnectionId))
 				ZoneLookupService.Unregister(Context.ConnectionId);
 
-			return base.OnDisconnectedAsync(exception);
+			if(Logger.IsEnabled(LogLevel.Information))
+				Logger.LogInformation($"About to attempt final cleanup for Entity: {guid}");
+
+			//If the entity is no longer contained we should clear up
+			FinalEntityLockResult entityLockResult = await EntityLockService.TryAquireFinalEntityLockAsync(guid);
+			if(entityLockResult.Result)
+			{
+				if(Logger.IsEnabled(LogLevel.Information))
+					Logger.LogInformation($"Clearing Entity data for Entity: {guid}. Last connection related to the Entity.");
+
+				using(entityLockResult.LockObject)
+				{
+					foreach(var c in EntityRemovable)
+					{
+						c.RemoveEntityEntry(guid);
+					}
+				}
+			}
+			else
+			{
+				if(Logger.IsEnabled(LogLevel.Information))
+					Logger.LogInformation($"Entity: {guid} still has active connections/sessions claiming interest. Won't cleanup entity data.");
+
+				//We still need to release interest
+				//so that the ref count goes down, otherwise it'll never be cleaned up.
+				await this.EntityLockService.ReleaseEntityInterestAsync(guid)
+					.ConfigureAwait(false);
+			}
+
+			await base.OnDisconnectedAsync(exception);
 		}
 
 		/// <inheritdoc />

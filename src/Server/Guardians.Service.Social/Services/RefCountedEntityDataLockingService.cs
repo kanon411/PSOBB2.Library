@@ -80,14 +80,29 @@ namespace Guardians
 			//basically, root lock so nobody can change the entity state until we're done.
 			//We lock read globally and then write for the entity
 
-			//TODO: It's POSSIBLE, but unlikely that the entity was removed. Or that they didn't check?
-			IDisposable root = await InternalGlobalLock.ReaderLockAsync().ConfigureAwait(false);
+			IDisposable root = null;
+			IDisposable child = null;
 
-			if(!EntityRefCountingMap.ContainsKey(guid.RawGuidValue))
-				throw new InvalidOperationException($"Entity: {guid} does not exist in the locking service.");
+			try
+			{
+				//TODO: It's POSSIBLE, but unlikely that the entity was removed. Or that they didn't check?
+				root = await InternalGlobalLock.ReaderLockAsync().ConfigureAwait(false);
 
-			//TODO: Should we do a write lock?
-			IDisposable child = await EntityLockingObjectMap[guid.RawGuidValue].WriterLockAsync().ConfigureAwait(false);
+				if(!EntityRefCountingMap.ContainsKey(guid.RawGuidValue))
+					throw new InvalidOperationException($"Entity: {guid} does not exist in the locking service.");
+
+				//TODO: Should we do a write lock?
+				child = await EntityLockingObjectMap[guid.RawGuidValue].WriterLockAsync().ConfigureAwait(false);
+			}
+			catch(Exception)
+			{
+				throw;
+			}
+			finally
+			{
+				child?.Dispose();
+				root?.Dispose();
+			}
 
 			//MUST dispose this to dispose the locks.
 			return new AggregateDisposableLock(root, child);
@@ -96,21 +111,36 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task<FinalEntityLockResult> TryAquireFinalEntityLockAsync(NetworkEntityGuid guid)
 		{
-			IDisposable root = await InternalGlobalLock.WriterLockAsync().ConfigureAwait(false);
+			IDisposable root = null;
+			IDisposable childLock = null;
 
-			if(!EntityRefCountingMap.ContainsKey(guid.RawGuidValue))
-				return new FinalEntityLockResult();
-
-			if(EntityRefCountingMap[guid.RawGuidValue] == 1)
+			try
 			{
-				IDisposable childLock = await EntityLockingObjectMap[guid.RawGuidValue].WriterLockAsync().ConfigureAwait(false);
+				root = await InternalGlobalLock.WriterLockAsync().ConfigureAwait(false);
 
-				//On the disposable of the lock we should clear up the entity entry.
-				return new FinalEntityLockResult(new DisposableEventDispatcherDecorator(new AggregateDisposableLock(root, childLock), () =>
+				if(!EntityRefCountingMap.ContainsKey(guid.RawGuidValue))
+					return new FinalEntityLockResult();
+
+				if(EntityRefCountingMap[guid.RawGuidValue] == 1)
 				{
-					EntityRefCountingMap.Remove(guid.RawGuidValue, out var val1);
-					EntityLockingObjectMap.Remove(guid.RawGuidValue, out var val2);
-				}));
+					childLock = await EntityLockingObjectMap[guid.RawGuidValue].WriterLockAsync().ConfigureAwait(false);
+
+					//On the disposable of the lock we should clear up the entity entry.
+					return new FinalEntityLockResult(new DisposableEventDispatcherDecorator(new AggregateDisposableLock(root, childLock), () =>
+					{
+						EntityRefCountingMap.Remove(guid.RawGuidValue, out var val1);
+						EntityLockingObjectMap.Remove(guid.RawGuidValue, out var val2);
+					}));
+				}
+			}
+			catch(Exception e)
+			{
+				throw;
+			}
+			finally
+			{
+				childLock?.Dispose();
+				root?.Dispose();
 			}
 			
 			return new FinalEntityLockResult();

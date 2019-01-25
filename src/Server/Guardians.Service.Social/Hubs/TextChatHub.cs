@@ -54,7 +54,7 @@ namespace Guardians
 		}
 
 		//This is fun!
-		public async Task HandleIncomingHubRequest<TRequestType, TMessageHandlerType>(TRequestType message)
+		private async Task HandleIncomingHubRequest<TRequestType, TMessageHandlerType>(TRequestType message)
 			where TMessageHandlerType : IPeerPayloadSpecificMessageHandler<TRequestType, object, HubConnectionMessageContext<IRemoteSocialTextChatHubClient>> 
 			where TRequestType : class
 		{
@@ -119,14 +119,14 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task DisconnectAsync(int delay)
+		Task IDisconnectable.DisconnectAsync(int delay)
 		{
 			Context.Abort();
 			return Task.CompletedTask;
 		}
 
 		/// <inheritdoc />
-		public Task<bool> ConnectAsync(string ip, int port)
+		Task<bool> IConnectable.ConnectAsync(string ip, int port)
 		{
 			throw new NotSupportedException($"This does not make sense for SignalR.");
 		}

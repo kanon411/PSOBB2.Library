@@ -78,7 +78,10 @@ namespace Guardians
 
 			//This is for Hub connection event listeners
 			services.AddSingleton<IOnHubConnectionEventListener, CharacterZoneOnHubConnectionEventListener>();
+			services.AddSingleton<IOnHubConnectionEventListener, CharacterGuildOnHubConnectionEventListener>();
+
 			services.AddSingleton<ZoneMessageBroadcastMessageHandler, ZoneMessageBroadcastMessageHandler>();
+			services.AddSingleton<GuildMessageBroadcastMessageHandler, GuildMessageBroadcastMessageHandler>();
 
 			services.AddSingleton<IFactoryCreatable<GuildChatMessageEventModel, GenericChatMessageContext<GuildChatMessageRequestModel>>, GuildChatMessageEnvelopeFactory>();
 			services.AddSingleton<IFactoryCreatable<ZoneChatMessageEventModel, GenericChatMessageContext<ZoneChatMessageRequestModel>>, ZoneChatMessageEnvelopeFactory>();

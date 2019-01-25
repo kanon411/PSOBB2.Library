@@ -42,7 +42,9 @@ namespace Guardians
 			}
 			catch(Exception e)
 			{
-				//TODO: Log.
+				if(Logger.IsEnabled(LogLevel.Error))
+					Logger.LogError($"Failed to get guild status of Connection: {hubConnectedTo.Context.UserIdentifier}. Exception: {e.Message}\n\nStack:{e.StackTrace}");
+
 				return HubOnConnectionState.Abort;
 			}
 

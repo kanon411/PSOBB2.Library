@@ -49,9 +49,25 @@ namespace Guardians
 		/// <inheritdoc />
 		public async Task SendZoneChannelTextChatMessageAsync(ZoneChatMessageRequestModel message)
 		{
-			ZoneMessageBroadcastMessageHandler handler = ServiceProvider.GetService<ZoneMessageBroadcastMessageHandler>();
+			await HandleIncomingHubRequest<ZoneChatMessageRequestModel, ZoneMessageBroadcastMessageHandler>(message)
+				.ConfigureAwait(false);
+		}
+
+		//This is fun!
+		public async Task HandleIncomingHubRequest<TRequestType, TMessageHandlerType>(TRequestType message)
+			where TMessageHandlerType : IPeerPayloadSpecificMessageHandler<TRequestType, object, HubConnectionMessageContext<IRemoteSocialTextChatHubClient>> 
+			where TRequestType : class
+		{
+			TMessageHandlerType handler = ServiceProvider.GetService<TMessageHandlerType>();
 
 			await handler.HandleMessage(CreateHubContext(), message)
+				.ConfigureAwait(false);
+		}
+
+		/// <inheritdoc />
+		public async Task SendGuildChannelTextChatMessageAsync(GuildChatMessageRequestModel message)
+		{
+			await HandleIncomingHubRequest<GuildChatMessageRequestModel, GuildMessageBroadcastMessageHandler>(message)
 				.ConfigureAwait(false);
 		}
 

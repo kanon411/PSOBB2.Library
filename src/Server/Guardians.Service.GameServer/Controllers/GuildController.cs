@@ -29,7 +29,7 @@ namespace Guardians
 			if(guildCharacterMembershipRepository == null) throw new ArgumentNullException(nameof(guildCharacterMembershipRepository));
 
 			//If guild membership repo doesn't have the character id as an entry then it means there is no guild associated with them.
-			if(await guildCharacterMembershipRepository.ContainsAsync(characterId).ConfigureAwait(false))
+			if(!(await guildCharacterMembershipRepository.ContainsAsync(characterId).ConfigureAwait(false)))
 			{
 				return Json(new CharacterGuildMembershipStatusResponse(CharacterGuildMembershipStatusResponseCode.NoGuild));
 			}

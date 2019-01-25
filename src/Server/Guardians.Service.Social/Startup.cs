@@ -85,6 +85,8 @@ namespace Guardians
 
 			services.AddSingleton<IFactoryCreatable<GuildChatMessageEventModel, GenericChatMessageContext<GuildChatMessageRequestModel>>, GuildChatMessageEnvelopeFactory>();
 			services.AddSingleton<IFactoryCreatable<ZoneChatMessageEventModel, GenericChatMessageContext<ZoneChatMessageRequestModel>>, ZoneChatMessageEnvelopeFactory>();
+
+			services.AddSingleton<IEntityDataLockingService, RefCountedEntityDataLockingService>();
 		}
 
 		private async Task<string> GetSocialServiceAuthorizationToken([JetBrains.Annotations.NotNull] IAuthenticationService authService)

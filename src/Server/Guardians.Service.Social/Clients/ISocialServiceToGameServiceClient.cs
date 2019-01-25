@@ -19,7 +19,7 @@ namespace Guardians
 		Task<CharacterSessionDataResponse> GetCharacterSessionDataByAccount([AliasAs("id")] int accountId);
 
 		//No auth needed
-		[HttpGet("/api/guild/character/{id}")]
+		[Get("/api/guild/character/{id}")]
 		Task<CharacterGuildMembershipStatusResponse> GetCharacterMembershipGuildStatus([AliasAs("id")] int characterId);
 	}
 }

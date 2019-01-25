@@ -38,5 +38,37 @@ namespace Guardians
 		/// <param name="guid">The Entity to lock for.</param>
 		/// <returns>An awaitable and dispoable async lock object.</returns>
 		Task<IDisposable> AquireEntityLockAsync(NetworkEntityGuid guid);
+
+		/// <summary>
+		/// Attempts to aquire the final lock for the entity <see cref="guid"/>.
+		/// What this means, is it will lock on the entity IF and ONLY IF there remains
+		/// one final interest unit for the entity. Additionally on disposal of the lock it will clear up the remaining and last lock for the entity
+		/// itself.
+		/// </summary>
+		/// <param name="guid"></param>
+		/// <returns></returns>
+		Task<FinalEntityLockResult> TryAquireFinalEntityLockAsync(NetworkEntityGuid guid);
+	}
+
+	//TODO: Move somewhere
+	public sealed class FinalEntityLockResult
+	{
+		public bool Result => LockObject != null;
+
+		public IDisposable LockObject { get; }
+
+		/// <inheritdoc />
+		public FinalEntityLockResult(IDisposable lockObject)
+		{
+			LockObject = lockObject;
+		}
+
+		/// <summary>
+		/// Failed lock result.
+		/// </summary>
+		public FinalEntityLockResult()
+		{
+			
+		}
 	}
 }

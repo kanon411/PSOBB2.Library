@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -105,6 +106,36 @@ namespace Guardians
 
 			//TODO: Do we need extra slash?
 			return $"{endpointResponse.Endpoint.EndpointAddress}:{endpointResponse.Endpoint.EndpointPort}/";
+		}
+
+		//AutoFac DI/IoC registeration method.
+		//See: https://autofaccn.readthedocs.io/en/latest/integration/aspnetcore.html
+		public void ConfigureContainer(ContainerBuilder builder)
+		{
+			//This enables registeration of IEntityGuidMappables.
+
+			//TODO: Not really thread safe.
+			//TODO: Refactor this in shared module, done on client and server for Game library.
+			//The below is kinda a hack to register the non-generic types in the
+			//removabale collection
+			List<IEntityCollectionRemovable> removableComponentsList = new List<IEntityCollectionRemovable>(10);
+
+			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
+				.AsSelf()
+				.As(typeof(IReadonlyEntityGuidMappable<>))
+				.As(typeof(IEntityGuidMappable<>))
+				.OnActivated(args =>
+				{
+					if(args.Instance is IEntityCollectionRemovable removable)
+						removableComponentsList.Add(removable);
+				})
+				.SingleInstance();
+
+			//This will allow everyone to register the removable collection collection.
+			builder.RegisterInstance(removableComponentsList)
+				.AsImplementedInterfaces()
+				.AsSelf()
+				.SingleInstance();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

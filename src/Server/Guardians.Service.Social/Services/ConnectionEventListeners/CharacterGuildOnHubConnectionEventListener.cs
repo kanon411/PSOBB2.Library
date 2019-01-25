@@ -15,12 +15,16 @@ namespace Guardians
 
 		private IClaimsPrincipalReader ClaimsReader { get; }
 
+		//TODO: We don't want to directly expose the response
+		private IEntityGuidMappable<CharacterGuildMembershipStatusResponse> GuildStatusMappable { get; }
+
 		/// <inheritdoc />
-		public CharacterGuildOnHubConnectionEventListener([JetBrains.Annotations.NotNull] ILogger<CharacterGuildOnHubConnectionEventListener> logger, [JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient, [JetBrains.Annotations.NotNull] IClaimsPrincipalReader claimsReader)
+		public CharacterGuildOnHubConnectionEventListener([JetBrains.Annotations.NotNull] ILogger<CharacterGuildOnHubConnectionEventListener> logger, [JetBrains.Annotations.NotNull] ISocialServiceToGameServiceClient socialToGameClient, [JetBrains.Annotations.NotNull] IClaimsPrincipalReader claimsReader, IEntityGuidMappable<CharacterGuildMembershipStatusResponse> guildStatusMappable)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			SocialToGameClient = socialToGameClient ?? throw new ArgumentNullException(nameof(socialToGameClient));
 			ClaimsReader = claimsReader ?? throw new ArgumentNullException(nameof(claimsReader));
+			GuildStatusMappable = guildStatusMappable;
 		}
 
 		/// <inheritdoc />
@@ -42,8 +46,17 @@ namespace Guardians
 				return HubOnConnectionState.Abort;
 			}
 
+			NetworkEntityGuid guid = new NetworkEntityGuidBuilder()
+				.WithId(int.Parse(hubConnectedTo.Context.UserIdentifier))
+				.WithType(EntityType.Player)
+				.Build();
+
+			//TODO: We don't really want to directly expose this
+			GuildStatusMappable.Add(guid, response);
+
 			if(response.isSuccessful)
 			{
+
 				//TODO: don't hardcode
 				await hubConnectedTo.Groups.AddToGroupAsync(hubConnectedTo.Context.ConnectionId, $"guild:{response.GuildId}")
 					.ConfigureAwait(false);

@@ -115,6 +115,7 @@ namespace Guardians
 				.SingleInstance();
 		}
 
+		//TODO: Refactor into module.
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)
 		{
 			//throw new NotImplementedException("Fix the movement collection and other faults with IEntityRemovalable crap.");

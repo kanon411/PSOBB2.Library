@@ -48,5 +48,11 @@ namespace Guardians
 
 			ChatEventQueue.Enqueue(chatData);
 		}
+
+		/// <inheritdoc />
+		public Task RecieveGuildChannelTextChatMessageAsync(GuildChatMessageEventModel message)
+		{
+			throw new NotImplementedException(nameof(RecieveGuildChannelTextChatMessageAsync));
+		}
 	}
 }

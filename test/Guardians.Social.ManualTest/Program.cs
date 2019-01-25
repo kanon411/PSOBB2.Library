@@ -58,5 +58,13 @@ namespace Guardians.Social.ManualTest
 
 			return Task.CompletedTask;
 		}
+
+		/// <inheritdoc />
+		public Task RecieveGuildChannelTextChatMessageAsync(GuildChatMessageEventModel message)
+		{
+			Console.WriteLine($"[{message.ChannelMessage.Data.TargetChannel}] User {message.ChannelMessage.EntityGuid}: {message.ChannelMessage.Data.Message}");
+
+			return Task.CompletedTask;
+		}
 	}
 }

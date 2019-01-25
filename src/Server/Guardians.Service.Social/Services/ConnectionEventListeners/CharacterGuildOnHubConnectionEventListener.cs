@@ -37,7 +37,7 @@ namespace Guardians
 
 			try
 			{
-				response = await SocialToGameClient.GetCharacterMembershipGuildStatus(ClaimsReader.GetUserIdInt(hubConnectedTo.Context.User))
+				response = await SocialToGameClient.GetCharacterMembershipGuildStatus(int.Parse(hubConnectedTo.Context.UserIdentifier))
 					.ConfigureAwait(false);
 			}
 			catch(Exception e)
@@ -58,7 +58,6 @@ namespace Guardians
 
 			if(response.isSuccessful)
 			{
-
 				//TODO: don't hardcode
 				await hubConnectedTo.Groups.AddToGroupAsync(hubConnectedTo.Context.ConnectionId, $"guild:{response.GuildId}")
 					.ConfigureAwait(false);

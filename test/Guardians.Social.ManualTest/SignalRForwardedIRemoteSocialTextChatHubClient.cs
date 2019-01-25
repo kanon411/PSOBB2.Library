@@ -22,5 +22,11 @@ namespace Guardians
 		{
 			return Connection.SendAsync(nameof(SendZoneChannelTextChatMessageAsync), message);
 		}
+
+		/// <inheritdoc />
+		public Task SendGuildChannelTextChatMessageAsync(GuildChatMessageRequestModel message)
+		{
+			return Connection.SendAsync(nameof(SendGuildChannelTextChatMessageAsync), message);
+		}
 	}
 }

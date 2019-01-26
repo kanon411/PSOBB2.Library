@@ -41,6 +41,8 @@ namespace Guardians
 					return "ff0000ff";
 				case ChatMessageType.Zone:
 					return "AA9E92ff";
+				case ChatMessageType.Guild:
+					return "42f442ff";
 			}
 
 			throw new NotImplementedException($"Cannot handle Chat Type: {messageType}:{(int)messageType}");
@@ -54,6 +56,8 @@ namespace Guardians
 					return "[System]";
 				case ChatMessageType.Zone:
 					return "[1. Zone]";
+				case ChatMessageType.Guild:
+					return "[Guild]";
 			}
 
 			throw new NotImplementedException($"Cannot handle Chat Type: {messageType}:{(int)messageType}");
@@ -67,6 +71,8 @@ namespace Guardians
 					return ChatMessageType.System;
 				case ChatChannels.ZoneChannel:
 					return ChatMessageType.Zone;
+				case ChatChannels.GuildChannel:
+					return ChatMessageType.Guild;
 			}
 
 			throw new NotImplementedException($"Cannot handle Chat Channel: {channel}:{(int)channel}");

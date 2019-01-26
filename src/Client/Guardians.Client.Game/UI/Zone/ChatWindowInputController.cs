@@ -54,8 +54,17 @@ namespace Guardians
 		{
 			try
 			{
-				await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
-					.ConfigureAwait(true);
+				//TODO: This is kinda a hack, just for testing purposes.
+				if(ChatInputText.Text.Contains("/guild "))
+				{
+					string strippedChat = ChatInputText.Text.Replace("/guild ", "");
+
+					await ChatService.SendGuildChannelTextChatMessageAsync(new GuildChatMessageRequestModel(strippedChat))
+						.ConfigureAwait(true);
+				}
+				else
+					await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
+						.ConfigureAwait(true);
 			}
 			catch(Exception e)
 			{

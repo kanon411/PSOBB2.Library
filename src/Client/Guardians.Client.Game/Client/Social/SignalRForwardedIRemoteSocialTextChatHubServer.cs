@@ -50,9 +50,14 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public Task RecieveGuildChannelTextChatMessageAsync(GuildChatMessageEventModel message)
+		public async Task RecieveGuildChannelTextChatMessageAsync(GuildChatMessageEventModel message)
 		{
-			throw new NotImplementedException(nameof(RecieveGuildChannelTextChatMessageAsync));
+			string entityName = await NameQueryable.RetrieveAsync(message.ChannelMessage.EntityGuid.EntityId)
+				.ConfigureAwait(false);
+
+			TextChatEventData chatData = TextChatEventDataFactory.CreateChatData(message.ChannelMessage, entityName);
+
+			ChatEventQueue.Enqueue(chatData);
 		}
 	}
 }

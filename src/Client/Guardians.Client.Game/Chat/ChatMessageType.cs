@@ -9,5 +9,7 @@ namespace Guardians
 		System = 0,
 
 		Zone = 1,
+
+		Guild = 2
 	}
 }

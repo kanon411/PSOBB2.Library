@@ -34,6 +34,11 @@ namespace Guardians
 
 		public DbSet<CharacterGroupMembershipModel> GroupMembers { get; set; }
 
+		/// <summary>
+		/// Set/Table for invites to <see cref="Groups"/>.
+		/// </summary>
+		public DbSet<CharacterGroupInviteEntryModel> GroupInvites { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{

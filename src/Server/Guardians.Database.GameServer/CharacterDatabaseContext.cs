@@ -30,6 +30,8 @@ namespace Guardians
 
 		public DbSet<CharacterGuildMemberRelationshipModel> GuildMembers { get; set; }
 
+		public DbSet<CharacterGroupEntryModel> Groups { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{
@@ -124,6 +126,11 @@ namespace Guardians
 			//CharacterGuildMemberRelationshipModel
 			//EntityTypeBuilder<CharacterGuildMemberRelationshipModel> guildMemberEntityEntity = modelBuilder.Entity<CharacterGuildMemberRelationshipModel>();
 			//guildMemberEntityEntity.
+
+			//It's important that the leader id is unique and an alternative key
+			EntityTypeBuilder<CharacterGroupEntryModel> groupsEntries = modelBuilder.Entity<CharacterGroupEntryModel>();
+			groupsEntries
+				.HasAlternateKey(model => model.LeaderCharacterId);
 		}
 #endif
 	}

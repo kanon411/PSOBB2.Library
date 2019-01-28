@@ -32,6 +32,8 @@ namespace Guardians
 
 		public DbSet<CharacterGroupEntryModel> Groups { get; set; }
 
+		public DbSet<CharacterGroupMembershipModel> GroupMembers { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{

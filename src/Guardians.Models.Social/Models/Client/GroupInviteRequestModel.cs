@@ -11,8 +11,11 @@ namespace Guardians
 	[JsonObject]
 	public sealed class GroupInviteRequestModel
 	{
+		/// <summary>
+		/// Indicates if the invite request is valid.
+		/// </summary>
 		[JsonIgnore]
-		public bool isValidIniviteRequest => EntityToInvite != null && EntityToInvite != NetworkEntityGuid.Empty; 
+		public bool isValidInviteRequest => EntityToInvite != null && EntityToInvite != NetworkEntityGuid.Empty; 
 
 		/// <summary>
 		/// The GUID of the entity to invite.

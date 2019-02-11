@@ -14,7 +14,7 @@ namespace Guardians.Database.GameServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Guardians.CharacterEntryModel", b =>
@@ -39,6 +39,99 @@ namespace Guardians.Database.GameServer.Migrations
                         .IsUnique();
 
                     b.ToTable("characters");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterFriendRelationshipModel", b =>
+                {
+                    b.Property<int>("FriendshipRelationshipId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)");
+
+                    b.Property<long>("DirectionalUniqueness");
+
+                    b.Property<int>("RelationState");
+
+                    b.Property<int>("RequestingCharacterId");
+
+                    b.Property<int>("TargetRequestCharacterId");
+
+                    b.HasKey("FriendshipRelationshipId");
+
+                    b.HasAlternateKey("RequestingCharacterId", "TargetRequestCharacterId");
+
+                    b.HasIndex("DirectionalUniqueness")
+                        .IsUnique();
+
+                    b.HasIndex("TargetRequestCharacterId");
+
+                    b.ToTable("character_friendrelationship");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupEntryModel", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("JoinDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)");
+
+                    b.Property<int>("LeaderCharacterId");
+
+                    b.HasKey("GroupId");
+
+                    b.HasAlternateKey("LeaderCharacterId");
+
+                    b.ToTable("group_entry");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupInviteEntryModel", b =>
+                {
+                    b.Property<int>("CharacterId");
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<DateTime>("InviteExpirationTime")
+                        .HasColumnType("TIMESTAMP(6)");
+
+                    b.HasKey("CharacterId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("group_invites");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupMembershipModel", b =>
+                {
+                    b.Property<int>("CharacterId");
+
+                    b.Property<int>("GroupId");
+
+                    b.HasKey("CharacterId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("group_members");
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGuildMemberRelationshipModel", b =>
+                {
+                    b.Property<int>("CharacterId");
+
+                    b.Property<int>("GuildId");
+
+                    b.Property<DateTime>("JoinDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)");
+
+                    b.HasKey("CharacterId");
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("guild_charactermember");
                 });
 
             modelBuilder.Entity("Guardians.CharacterLocationModel", b =>
@@ -101,6 +194,30 @@ namespace Guardians.Database.GameServer.Migrations
                     b.ToTable("claimed_sessions");
                 });
 
+            modelBuilder.Entity("Guardians.GuildEntryModel", b =>
+                {
+                    b.Property<int>("GuildId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP(6)");
+
+                    b.Property<int>("GuildMasterCharacterId");
+
+                    b.Property<string>("GuildName")
+                        .HasMaxLength(32);
+
+                    b.HasKey("GuildId");
+
+                    b.HasAlternateKey("GuildMasterCharacterId");
+
+                    b.HasIndex("GuildName")
+                        .IsUnique();
+
+                    b.ToTable("guild_entry");
+                });
+
             modelBuilder.Entity("Guardians.WorldEntryModel", b =>
                 {
                     b.Property<long>("WorldId")
@@ -145,11 +262,71 @@ namespace Guardians.Database.GameServer.Migrations
                     b.ToTable("zone_endpoints");
                 });
 
+            modelBuilder.Entity("Guardians.CharacterFriendRelationshipModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "RequestingCharacter")
+                        .WithMany()
+                        .HasForeignKey("RequestingCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Guardians.CharacterEntryModel", "TargetRequestCharacter")
+                        .WithMany()
+                        .HasForeignKey("TargetRequestCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupEntryModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "LeaderCharacter")
+                        .WithMany()
+                        .HasForeignKey("LeaderCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupInviteEntryModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Guardians.GuildEntryModel", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGroupMembershipModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Guardians.GuildEntryModel", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.CharacterGuildMemberRelationshipModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Guardians.GuildEntryModel", "Guild")
+                        .WithMany()
+                        .HasForeignKey("GuildId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Guardians.CharacterLocationModel", b =>
                 {
                     b.HasOne("Guardians.CharacterEntryModel", "Character")
-                        .WithOne()
-                        .HasForeignKey("Guardians.CharacterLocationModel", "CharacterId")
+                        .WithMany()
+                        .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Guardians.WorldEntryModel", "WorldEntry")
@@ -176,6 +353,14 @@ namespace Guardians.Database.GameServer.Migrations
                     b.HasOne("Guardians.CharacterSessionModel", "Session")
                         .WithOne()
                         .HasForeignKey("Guardians.ClaimedSessionsModel", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Guardians.GuildEntryModel", b =>
+                {
+                    b.HasOne("Guardians.CharacterEntryModel", "GuildMaster")
+                        .WithMany()
+                        .HasForeignKey("GuildMasterCharacterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

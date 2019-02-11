@@ -10,11 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
+    <PackageReference Include="GladNet3.Handler.API" Version="3.0.46" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client\Guardians.Client.ServiceDiscovery\Guardians.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\Guardians.Client.Authentication\Guardians.Client.Authentication.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.GameServer\Guardians.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
+    <ProjectReference Include="..\..\Guardians.Social.Common\Guardians.Social.Common.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
+    <ProjectReference Include="..\Guardians.Service.Common\Guardians.Service.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,20 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;Debug-Local;DEBUG_LOCAL;Database_Migration</Configurations>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AWS.Logger.AspNetCore" Version="1.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="CommandLineParser" Version="2.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <RuntimeIdentifiers>win</RuntimeIdentifiers>
   </PropertyGroup>
 
 </Project>

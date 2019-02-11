@@ -10,5 +10,7 @@ namespace Guardians
 	public enum GuardianApplicationRole
 	{
 		ZoneServer = 1,
+
+		SocialService = 2
 	}
 }

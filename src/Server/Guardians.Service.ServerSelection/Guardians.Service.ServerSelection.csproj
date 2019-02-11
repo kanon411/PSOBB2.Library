@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
     <ProjectReference Include="..\Guardians.Server.Common\Guardians.Server.Common.csproj" />
+    <ProjectReference Include="..\Guardians.Service.Common\Guardians.Service.Common.csproj" />
   </ItemGroup>
 
 </Project>

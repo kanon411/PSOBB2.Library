@@ -8,7 +8,7 @@
     <PackageReference Include="Castle.Core" Version="4.1.0" />
     <PackageReference Include="Generic.Math" Version="1.0.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Moq" Version="4.7.63" />
     <PackageReference Include="NUnit" Version="3.10.1" />
@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\src\Guardians.Models.Authentication\Guardians.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ContentServer\Guardians.Models.ContentServer.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Models.ServerSelection\Guardians.Models.ServerSelection.csproj" />
+    <ProjectReference Include="..\..\src\Guardians.Models.Social\Guardians.Models.Social.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Network.Common\Guardians.Network.Common.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Payloads.Voice\Guardians.Payloads.Voice.csproj" />
     <ProjectReference Include="..\..\src\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />

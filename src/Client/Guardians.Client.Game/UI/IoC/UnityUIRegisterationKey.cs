@@ -22,6 +22,8 @@ namespace Guardians
 
 		PlayerHealthBar = 6,
 
-		Registeration = 7
+		Registeration = 7,
+
+		ChatBox = 8
 	}
 }

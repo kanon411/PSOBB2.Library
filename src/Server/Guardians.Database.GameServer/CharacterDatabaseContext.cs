@@ -20,6 +20,25 @@ namespace Guardians
 
 		public DbSet<ClaimedSessionsModel> ClaimedSession { get; set; }
 
+		/// <summary>
+		/// The character friend requests.
+		/// </summary>
+		public DbSet<CharacterFriendRelationshipModel> CharacterFriendRequests { get; set; }
+
+		//TODO: This is getting ridiculous, we can't have everything in this database.
+		public DbSet<GuildEntryModel> Guilds { get; set; }
+
+		public DbSet<CharacterGuildMemberRelationshipModel> GuildMembers { get; set; }
+
+		public DbSet<CharacterGroupEntryModel> Groups { get; set; }
+
+		public DbSet<CharacterGroupMembershipModel> GroupMembers { get; set; }
+
+		/// <summary>
+		/// Set/Table for invites to <see cref="Groups"/>.
+		/// </summary>
+		public DbSet<CharacterGroupInviteEntryModel> GroupInvites { get; set; }
+
 		public CharacterDatabaseContext(DbContextOptions<CharacterDatabaseContext> options) 
 			: base(options)
 		{
@@ -90,7 +109,35 @@ namespace Guardians
 
 			//This makes it so only one public IP/Port can be in the database by making the data pair unique
 			zoneEntity
-				.HasAlternateKey(model => new {model.ZoneServerAddress, model.ZoneServerPort});
+				.HasAlternateKey(model => new { model.ZoneServerAddress, model.ZoneServerPort });
+
+			EntityTypeBuilder<CharacterFriendRelationshipModel> requestEntity = modelBuilder.Entity<CharacterFriendRelationshipModel>();
+
+			requestEntity
+				.HasAlternateKey(model => new { model.RequestingCharacterId, model.TargetRequestCharacterId });
+
+			requestEntity
+				.HasIndex(model => model.DirectionalUniqueness)
+				.IsUnique();
+
+			EntityTypeBuilder<GuildEntryModel> guildsEntryEntity = modelBuilder.Entity<GuildEntryModel>();
+
+			guildsEntryEntity
+				.HasAlternateKey(model => model.GuildMasterCharacterId);
+
+			//This doesn't need to be a key since we likely won't do lookups for it.
+			guildsEntryEntity
+				.HasIndex(model => model.GuildName)
+				.IsUnique();
+
+			//CharacterGuildMemberRelationshipModel
+			//EntityTypeBuilder<CharacterGuildMemberRelationshipModel> guildMemberEntityEntity = modelBuilder.Entity<CharacterGuildMemberRelationshipModel>();
+			//guildMemberEntityEntity.
+
+			//It's important that the leader id is unique and an alternative key
+			EntityTypeBuilder<CharacterGroupEntryModel> groupsEntries = modelBuilder.Entity<CharacterGroupEntryModel>();
+			groupsEntries
+				.HasAlternateKey(model => model.LeaderCharacterId);
 		}
 #endif
 	}

@@ -25,11 +25,20 @@ namespace Guardians
 		[JsonProperty]
 		public int ZoneId { get; private set; }
 
+		/// <summary>
+		/// The ID of the character this session data is for.
+		/// </summary>
+		[JsonProperty]
+		public int CharacterId { get; private set; }
+
 		/// <inheritdoc />
-		public CharacterSessionDataResponse(int zoneId)
+		public CharacterSessionDataResponse(int zoneId, int characterId)
 		{
 			if(zoneId <= 0) throw new ArgumentOutOfRangeException(nameof(zoneId));
+			if(characterId <= 0) throw new ArgumentOutOfRangeException(nameof(characterId));
+
 			ZoneId = zoneId;
+			CharacterId = characterId;
 			ResultCode = CharacterSessionDataResponseCode.Success;
 		}
 

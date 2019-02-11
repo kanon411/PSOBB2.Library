@@ -32,7 +32,7 @@ namespace Guardians
 			//We must load it additively so it combines with the asset bundle loaded scene.
 			//SceneController.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene, LoadSceneMode.Additive);
 			//We can't use the scene service dependency since this must survive between scenes.
-			SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene, LoadSceneMode.Additive).allowSceneActivation = true;
+			SceneManager.LoadSceneAsync((int)GameSceneType.ZoneGameScene, LoadSceneMode.Additive).allowSceneActivation = true;
 			Destroy(this);
 		}
 	}

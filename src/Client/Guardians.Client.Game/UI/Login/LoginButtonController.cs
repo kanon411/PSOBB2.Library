@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.TitleScreen)]
+	[SceneTypeCreate(GameSceneType.TitleScreen)]
 	public sealed class LoginButtonController : IGameInitializable
 	{
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Guardians
 				AuthenticationTokenRepository.Update(jwtModel.AccessToken);
 
 				//TODO: We should load to the next level.
-				SceneService.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.CharacterSelection, LoadSceneMode.Single);
+				SceneService.LoadLevel((int)GameSceneType.CharacterSelection, LoadSceneMode.Single);
 			}
 		}
 

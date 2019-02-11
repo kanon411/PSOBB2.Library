@@ -85,7 +85,7 @@ namespace Guardians
 				d.Dispose();
 
 			//We just load to the loading screen and we'll reload the into the current zone
-			SceneManager.LoadSceneAsync((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;
+			SceneManager.LoadSceneAsync((int)GameSceneType.WorldDownloadingScreen, LoadSceneMode.Single).allowSceneActivation = true;
 		}
 	}
 }

@@ -26,15 +26,15 @@ namespace Guardians
 			//arrange
 
 			//act
-			bool hasAttribute = t.HasAttribute<GameInitializableSceneSpecificationAttribute>();
+			bool hasAttribute = t.HasAttribute<SceneTypeCreateAttribute>();
 
 			//assert
-			Assert.True(hasAttribute, $"Type: {t.Name} does not have {nameof(GameInitializableSceneSpecificationAttribute)}. All {nameof(IGameInitializable)} must have this attribute.");
+			Assert.True(hasAttribute, $"Type: {t.Name} does not have {nameof(SceneTypeCreateAttribute)}. All {nameof(IGameInitializable)} must have this attribute.");
 		}
 
 		[Test]
-		[TestCase(GameInitializableSceneSpecificationAttribute.SceneType.TitleScreen)]
-		public void Test_Only_Finds_Initializables_Specified(GameInitializableSceneSpecificationAttribute.SceneType sceneType)
+		[TestCase(GameSceneType.TitleScreen)]
+		public void Test_Only_Finds_Initializables_Specified(GameSceneType sceneType)
 		{
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
@@ -46,11 +46,11 @@ namespace Guardians
 			foreach(var init in initiablizes)
 			{
 				//If we have an intiiablizable that doesn't have the scene then this will throw.
-				Assert.True(init.GetType().GetAttributes<GameInitializableSceneSpecificationAttribute>().Any(a => a.Scene == sceneType));
+				Assert.True(init.GetType().GetAttributes<SceneTypeCreateAttribute>().Any(a => a.SceneType == sceneType));
 			}
 		}
 
-		[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
+		[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 		public class TestGameSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />
@@ -60,7 +60,7 @@ namespace Guardians
 			}
 		}
 
-		[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.TitleScreen)]
+		[SceneTypeCreate(GameSceneType.TitleScreen)]
 		public class TestTitleSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />
@@ -70,8 +70,8 @@ namespace Guardians
 			}
 		}
 
-		[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
-		[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.TitleScreen)]
+		[SceneTypeCreate(GameSceneType.ZoneGameScene)]
+		[SceneTypeCreate(GameSceneType.TitleScreen)]
 		public class TestBothSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />

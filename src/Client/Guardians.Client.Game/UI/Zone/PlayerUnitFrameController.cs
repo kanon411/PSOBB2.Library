@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
+	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class PlayerUnitFrameController : IGameInitializable
 	{
 		private IUIText PlayerNameTextField { get; }

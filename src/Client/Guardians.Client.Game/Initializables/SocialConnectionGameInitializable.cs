@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Guardians
 {
 
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
+	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class SocialConnectionGameInitializable : IGameInitializable
 	{
 		private IEnumerable<ISignalRConnectionHubInitializable> InitializableSocialServices { get; }

@@ -18,7 +18,7 @@ namespace Guardians
 		/// </summary>
 		[Tooltip("Should indicate the scene type to gather IGameInitializables for.")]
 		[SerializeField]
-		private GameInitializableSceneSpecificationAttribute.SceneType Scene = GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene;
+		private GameSceneType Scene = GameSceneType.ZoneGameScene;
 
 		/// <inheritdoc />
 		protected override GameInitializableRegisterationAutofacModule CreateModule()

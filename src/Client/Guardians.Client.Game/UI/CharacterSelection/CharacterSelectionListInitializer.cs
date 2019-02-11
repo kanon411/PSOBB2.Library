@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Guardians
 {
 	//TODO: Refactor this, it's ABSOLUTELY HUGE and messy.
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.CharacterSelection)]
+	[SceneTypeCreate(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionListInitializer : IGameInitializable
 	{
 		private ICharacterService CharacterQueryable { get; }

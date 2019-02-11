@@ -7,7 +7,7 @@ using Refit;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.TitleScreen)]
+	[SceneTypeCreate(GameSceneType.TitleScreen)]
 	public sealed class RegisterButtonController : IGameInitializable
 	{
 		/// <summary>

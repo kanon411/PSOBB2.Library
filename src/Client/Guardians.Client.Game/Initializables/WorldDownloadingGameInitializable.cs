@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen)]
+	[SceneTypeCreate(GameSceneType.WorldDownloadingScreen)]
 	public sealed class WorldDownloadingGameInitializable : IGameInitializable
 	{
 		//TODO: Refactor this behind its own object to provide download URL for character.

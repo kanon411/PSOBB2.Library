@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
+	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class PlayerUnitFameResourceController : IGameInitializable
 	{
 		/// <summary>

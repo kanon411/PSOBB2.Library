@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.CharacterSelection)]
+	[SceneTypeCreate(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionPlayButtonController : IGameInitializable
 	{
 		private IUIButton PlayButton { get; }
@@ -57,7 +57,7 @@ namespace Guardians
 				//Prevent multiple play interactions.
 				PlayButton.IsInteractable = false;
 				//Should go to the world downloading screen
-				SceneManagementService.LoadLevel((int)GameInitializableSceneSpecificationAttribute.SceneType.WorldDownloadingScreen, LoadSceneMode.Single);
+				SceneManagementService.LoadLevel((int)GameSceneType.WorldDownloadingScreen, LoadSceneMode.Single);
 
 			});
 		}

@@ -18,7 +18,7 @@ namespace Guardians
 		/// <summary>
 		/// The scene to load initializables for.
 		/// </summary>
-		private GameInitializableSceneSpecificationAttribute.SceneType Scene { get; }
+		private GameSceneType Scene { get; }
 
 		/// <summary>
 		/// Default autofac ctor.
@@ -29,16 +29,16 @@ namespace Guardians
 		}
 
 		/// <inheritdoc />
-		public GameInitializableRegisterationAutofacModule(GameInitializableSceneSpecificationAttribute.SceneType scene)
+		public GameInitializableRegisterationAutofacModule(GameSceneType scene)
 		{
-			if(!Enum.IsDefined(typeof(GameInitializableSceneSpecificationAttribute.SceneType), scene)) throw new InvalidEnumArgumentException(nameof(scene), (int)scene, typeof(GameInitializableSceneSpecificationAttribute.SceneType));
+			if(!Enum.IsDefined(typeof(GameSceneType), scene)) throw new InvalidEnumArgumentException(nameof(scene), (int)scene, typeof(GameSceneType));
 			Scene = scene;
 		}
 
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			if(!Enum.IsDefined(typeof(GameInitializableSceneSpecificationAttribute.SceneType), Scene)) throw new InvalidEnumArgumentException(nameof(Scene), (int)Scene, typeof(GameInitializableSceneSpecificationAttribute.SceneType));
+			if(!Enum.IsDefined(typeof(GameSceneType), Scene)) throw new InvalidEnumArgumentException(nameof(Scene), (int)Scene, typeof(GameSceneType));
 
 			Load(builder, GetType().Assembly);
 		}
@@ -47,7 +47,7 @@ namespace Guardians
 		{
 			foreach(var gameInit in assemblyContainsInitializableTypes.GetExportedTypes()
 				.Where(t => t.Implements(typeof(IGameInitializable)))
-				.Where(t => t.Attributes<GameInitializableSceneSpecificationAttribute>().Any(a => a.Scene == Scene)))
+				.Where(t => t.Attributes<SceneTypeCreateAttribute>().Any(a => a.SceneType == Scene)))
 			{
 				builder.RegisterType(gameInit)
 					.As<IGameInitializable>()

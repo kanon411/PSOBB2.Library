@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Guardians
 {
-	[GameInitializableSceneSpecification(GameInitializableSceneSpecificationAttribute.SceneType.ZoneGameScene)]
+	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class ChatWindowInputController : IGameInitializable
 	{
 		private IUIButton ChatInputButton { get; }

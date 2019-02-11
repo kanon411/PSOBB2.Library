@@ -66,7 +66,7 @@ namespace Guardians
 			builder.RegisterModule(new MockedUIDependenciesAutofacModule());
 
 			//Register every GameInit module
-			foreach(GameInitializableSceneSpecificationAttribute.SceneType sceneType in Enum.GetValues(typeof(GameInitializableSceneSpecificationAttribute.SceneType)))
+			foreach(GameSceneType sceneType in Enum.GetValues(typeof(GameSceneType)))
 			{
 				builder.RegisterModule(new GameInitializableRegisterationAutofacModule(sceneType));
 			}

@@ -21,15 +21,19 @@ namespace Guardians
 			//Debug.Log($"Found Handlers: {handlerTypes.Count()}");
 
 			//Registers each type.
-			foreach(Type t in handlerTypes)
+			foreach(Type handlerType in handlerTypes)
 			{
-				builder.RegisterType(t)
+				var handlerRegisterationBuilder = builder.RegisterType(handlerType)
 					.AsSelf()
 					.SingleInstance();
 
-				//Debug.Log($"Registered Handler Type: {t.Name}");
+				//Now we need to register it as the additional specified types
+				foreach(var additionalServiceTypeAttri in handlerType.GetCustomAttributes<AdditionalRegisterationAsAttribute>(true))
+				{
+					handlerRegisterationBuilder = handlerRegisterationBuilder
+						.As(additionalServiceTypeAttri.ServiceType);
+				}
 			}
-				
 
 			foreach(Type t in handlerTypes)
 			{

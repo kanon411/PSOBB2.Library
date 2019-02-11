@@ -118,7 +118,6 @@ namespace Guardians
 		//TODO: Refactor into module.
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)
 		{
-			//throw new NotImplementedException("Fix the movement collection and other faults with IEntityRemovalable crap.");
 			//The below is kinda a hack to register the non-generic types in the
 			//removabale collection
 			List<IEntityCollectionRemovable> removableComponentsList = new List<IEntityCollectionRemovable>(10);

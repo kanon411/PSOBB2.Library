@@ -33,7 +33,6 @@
     <ProjectReference Include="..\..\Guardians.Models.Server.ZoneServer\Guardians.Models.Server.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Models.ServiceDiscovery\Guardians.Models.ServiceDiscovery.csproj" />
     <ProjectReference Include="..\..\Guardians.Network.Common\Guardians.Network.Common.csproj" />
-    <ProjectReference Include="..\..\Guardians.Payloads.Voice\Guardians.Payloads.Voice.csproj" />
     <ProjectReference Include="..\..\Guardians.Payloads.ZoneServer\Guardians.Payloads.ZoneServer.csproj" />
     <ProjectReference Include="..\..\Guardians.Unity.Common\Guardians.Unity.Common.csproj" />
     <ProjectReference Include="..\..\Guardians.ZoneServer.Common\Guardians.ZoneServer.Common.csproj" />

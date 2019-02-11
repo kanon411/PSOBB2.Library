@@ -20,7 +20,6 @@ namespace Guardians
 			payloadRegister.RegisterDefaults();
 
 			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
-			payloadRegister.Register(VoicePayloadMetadataMarker.ClientPayloadTypesByOpcode, VoicePayloadMetadataMarker.ServerPayloadTypesByOpcode);
 
 			var client = new DotNetTcpClientNetworkClient()
 				.AddHeaderlessNetworkMessageReading(serializer)

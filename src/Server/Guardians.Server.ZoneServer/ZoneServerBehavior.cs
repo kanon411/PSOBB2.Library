@@ -28,7 +28,6 @@ namespace Guardians
 			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
 			payloadRegister.RegisterDefaults();
 			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
-			payloadRegister.Register(VoicePayloadMetadataMarker.ClientPayloadTypesByOpcode, VoicePayloadMetadataMarker.ServerPayloadTypesByOpcode);
 
 			//Set the sync context
 			UnityExtended.InitializeSyncContext();

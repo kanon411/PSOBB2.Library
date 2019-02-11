@@ -33,7 +33,7 @@ namespace Guardians
 		protected override void HandleMovement(NetworkEntityGuid entityGuid, PositionChangeMovementData data)
 		{
 			MovementDataMap[entityGuid] = data;
-			MovementGenerator[entityGuid] = new PositionChangeMovementGenerator(data);
+			MovementGenerator[entityGuid] = new ClientPositionChangeMovementGenerator(data);
 		}
 	}
 }

@@ -50,13 +50,6 @@ namespace Guardians
 				.As<IMovementBlockHandler>()
 				.AsSelf();
 
-			builder.RegisterType<PositionChangeMovementWithLookBlockHandler>()
-				.As<IMovementBlockHandler>()
-				.AsSelf();
-
-			builder.RegisterType<PositionChangeMovementDataDefaultVRBlockHandler>()
-				.As<IMovementBlockHandler>()
-				.AsSelf();
 
 			builder.RegisterType<MovementSimulationTickable>()
 				.As<IGameTickable>()

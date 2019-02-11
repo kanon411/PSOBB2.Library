@@ -43,7 +43,7 @@ namespace Guardians
 
 			//TODO: Send timestamp
 			//This is just demo code to network the position for the demo.
-			this.SendService.SendMessage(new ClientMovementDataUpdateRequest(new PositionChangeMovementDataWithLook(TimeService.CurrentRemoteTime, this.transform.position, direction, CameraTransform.localEulerAngles, transform.eulerAngles.y)));
+			this.SendService.SendMessage(new ClientMovementDataUpdateRequest(new PositionChangeMovementData(TimeService.CurrentRemoteTime, this.transform.position, direction)));
 
 			LastPosition = transform.position;
 			LastDirection = direction;

@@ -6,14 +6,14 @@ using UnityEngine.AI;
 
 namespace Guardians
 {
-	public sealed class ClientPositionChangeWithLookMovementGenerator : BaseMovementGenerator<PositionChangeMovementDataWithLook>
+	public sealed class ClientPositionChangeMovementGenerator : BaseMovementGenerator<PositionChangeMovementData>
 	{
 		private Vector3 ComputedNormalizedMovementDirection;
 
 		private float lastHitHeight;
 
 		/// <inheritdoc />
-		public ClientPositionChangeWithLookMovementGenerator(PositionChangeMovementDataWithLook movementData) 
+		public ClientPositionChangeMovementGenerator(PositionChangeMovementData movementData) 
 			: base(movementData)
 		{
 			
@@ -25,11 +25,8 @@ namespace Guardians
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 			//We don't need to deal with time when a position change occurs.
 
-			entity.transform.SetPositionAndRotation(MovementData.InitialPosition, Quaternion.Euler(Vector3.up * MovementData.YAxisRotation));
-
-			//We also have the camera look. So we need to set that somehow, we don't have a good way to set the hierarchy of bones/trackers yet
-			//TODO: This is hacky, we need a clean efficient way to set this replicated data.
-			entity.GetComponent<DemoSettableTrackers>().CameraTrackerTransform.localEulerAngles = MovementData.CameraLookDirection;
+			//TODO: Reimplement entity rotation direction
+			//entity.transform.SetPositionAndRotation(MovementData.InitialPosition, Quaternion.Euler(Vector3.up * MovementData.YAxisRotation));
 
 			ComputedNormalizedMovementDirection = (entity.transform.right * MovementData.Direction.x + entity.transform.forward * MovementData.Direction.y);
 

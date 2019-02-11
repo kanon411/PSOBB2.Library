@@ -50,7 +50,6 @@ namespace Guardians
 				.As<IMovementBlockHandler>()
 				.AsSelf();
 
-
 			builder.RegisterType<MovementSimulationTickable>()
 				.As<IGameTickable>()
 				.AsSelf()

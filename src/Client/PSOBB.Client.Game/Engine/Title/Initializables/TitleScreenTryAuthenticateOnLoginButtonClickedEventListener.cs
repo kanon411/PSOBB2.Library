@@ -10,8 +10,9 @@ using UnityEngine.SceneManagement;
 
 namespace PSOBB
 {
+	[AdditionalRegisterationAs(typeof(IAuthenticationResultRecievedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.TitleScreen)]
-	public sealed class TitleScreenTryAuthenticateOnLoginButtonClickedEventListener : BaseSingleEventListenerInitializable<ILoginButtonClickedEventSubscribable>
+	public sealed class TitleScreenTryAuthenticateOnLoginButtonClickedEventListener : BaseSingleEventListenerInitializable<ILoginButtonClickedEventSubscribable>, IAuthenticationResultRecievedEventSubscribable
 	{
 		/// <summary>
 		/// The authentication service.
@@ -34,18 +35,21 @@ namespace PSOBB
 		public IUIText PasswordText { get; }
 
 		/// <inheritdoc />
+		public event EventHandler<AuthenticationResultEventArgs> OnAuthenticationResultRecieved;
+
+		/// <inheritdoc />
 		public TitleScreenTryAuthenticateOnLoginButtonClickedEventListener(
-			ILoginButtonClickedEventSubscribable subscriptionService, 
-			IAuthenticationService authService, 
-			ILog logger,
+			[NotNull] ILoginButtonClickedEventSubscribable subscriptionService,
+			[NotNull] IAuthenticationService authService,
+			[NotNull] ILog logger,
 			[NotNull] [KeyFilter(UnityUIRegisterationKey.UsernameTextBox)] IUIText usernameText,
 			[NotNull] [KeyFilter(UnityUIRegisterationKey.PasswordTextBox)] IUIText passwordText)
 			: base(subscriptionService)
 		{
-			AuthService = authService;
-			Logger = logger;
-			UsernameText = usernameText;
-			PasswordText = passwordText;
+			AuthService = authService ?? throw new ArgumentNullException(nameof(authService));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			UsernameText = usernameText ?? throw new ArgumentNullException(nameof(usernameText));
+			PasswordText = passwordText ?? throw new ArgumentNullException(nameof(passwordText));
 		}
 
 		private AuthenticationRequestModel BuildAuthRequestModel()
@@ -73,9 +77,14 @@ namespace PSOBB
 				{
 					jwtModel = e.GetContentAs<JWTModel>();
 				}
+				finally
+				{
+					if(Logger.IsDebugEnabled)
+						Logger.Debug($"Auth Response for User: {UsernameText.Text} Result: {jwtModel?.isTokenValid} OptionalError: {jwtModel?.Error} OptionalErrorDescription: {jwtModel?.ErrorDescription}");
 
-				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Auth Response for User: {UsernameText.Text} Result: {jwtModel.isTokenValid} OptionalError: {jwtModel.Error} OptionalErrorDescription: {jwtModel.ErrorDescription}");
+					//Even if it's null, we should broadcast the event.
+					OnAuthenticationResultRecieved?.Invoke(this, new AuthenticationResultEventArgs(jwtModel));
+				}
 			});
 		}
 	}

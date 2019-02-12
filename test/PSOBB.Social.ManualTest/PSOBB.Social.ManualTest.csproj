@@ -61,27 +61,27 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Guardians.Client.Authentication\PSOBB.Client.Authentication.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Client.Authentication\PSOBB.Client.Authentication.csproj">
       <Project>{6F43D196-DB82-4429-8BD8-8D759B153B88}</Project>
       <Name>PSOBB.Client.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Guardians.Common\PSOBB.Common.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Common\PSOBB.Common.csproj">
       <Project>{73252dfc-de22-464b-8e30-c53c4b0348b4}</Project>
       <Name>PSOBB.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Guardians.Models.Authentication\PSOBB.Models.Authentication.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Models.Authentication\PSOBB.Models.Authentication.csproj">
       <Project>{04FD917B-A6D1-419F-B51E-0D5BD0EDECDD}</Project>
       <Name>PSOBB.Models.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Guardians.Models.Common\PSOBB.Models.Common.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Models.Common\PSOBB.Models.Common.csproj">
       <Project>{4E15BFBA-E442-453F-BD29-0C9F4E0711B6}</Project>
       <Name>PSOBB.Models.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Guardians.Models.Social\PSOBB.Models.Social.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Models.Social\PSOBB.Models.Social.csproj">
       <Project>{931CCFE7-5B28-41C7-AFCE-31C77467DA8E}</Project>
       <Name>PSOBB.Models.Social</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Guardians.Social.Common\PSOBB.Social.Common.csproj">
+    <ProjectReference Include="..\..\src\PSOBB.Social.Common\PSOBB.Social.Common.csproj">
       <Project>{FEA15159-99D2-43C2-89BC-85C3ABFA9756}</Project>
       <Name>PSOBB.Social.Common</Name>
     </ProjectReference>

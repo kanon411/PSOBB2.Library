@@ -16,7 +16,7 @@ namespace PSOBB
 	/// <summary>
 	/// Module responsible for registering the dependencies associated with the game client.
 	/// </summary>
-	public sealed class ZoneServerNetworkClientDependencyContainer : AutofacBasedDependencyRegister<ZoneServerNetworkClientAutofacModule>
+	public sealed class GameServerNetworkClientDependencyContainer : AutofacBasedDependencyRegister<GameServerNetworkClientAutofacModule>
 	{
 
 	}

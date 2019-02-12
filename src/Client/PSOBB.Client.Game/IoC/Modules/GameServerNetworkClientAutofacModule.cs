@@ -8,7 +8,7 @@ using ProtoBuf;
 
 namespace PSOBB
 {
-	public sealed class ZoneServerNetworkClientAutofacModule : Module
+	public sealed class GameServerNetworkClientAutofacModule : Module
 	{
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)

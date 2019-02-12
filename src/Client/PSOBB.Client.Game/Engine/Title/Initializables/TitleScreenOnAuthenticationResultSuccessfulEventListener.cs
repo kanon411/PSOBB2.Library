@@ -38,6 +38,9 @@ namespace PSOBB
 				//TODO: Use the scene manager service.
 				AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync(1);
 
+				//We do a wait so the screen is mostly black before we attempt to async load the scene
+				await Task.Delay(2000);
+
 				try
 				{
 					loadSceneAsync.allowSceneActivation = false;

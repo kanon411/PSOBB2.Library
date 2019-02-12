@@ -10,7 +10,8 @@ namespace Guardians
 	{
 		public static SynchronizationContext UnityMainThreadContext { get; private set; }
 
-		public static MonoBehaviour UnityUIAsyncContinuationBehaviour { get; internal set; }
+		//TODO: Make internal set
+		public static MonoBehaviour UnityUIAsyncContinuationBehaviour { get; set; }
 
 		/// <summary>
 		/// Sets the <see cref="UnityMainThreadContext"/> with the current

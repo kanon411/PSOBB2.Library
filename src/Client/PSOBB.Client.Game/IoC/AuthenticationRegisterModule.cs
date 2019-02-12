@@ -19,8 +19,20 @@ namespace Guardians
 		/// <inheritdoc />
 		protected override AuthenticationDependencyAutofacModule CreateModule()
 		{
+			UnityExtended.UnityUIAsyncContinuationBehaviour = this.gameObject.AddComponent<UnityUIAsyncContinuationBehaviour>();
+
+			UnityExtended.UnityUIAsyncContinuationBehaviour.name = nameof(UnityExtended.UnityUIAsyncContinuationBehaviour);
+
 			//We need to provide the Service Disc URL to the auth module so we have to override
 			return new AuthenticationDependencyAutofacModule(ServiceDiscoveryUrl);
+
+			
 		}
+	}
+
+	//TODO: Move this somewhere else
+	internal class UnityUIAsyncContinuationBehaviour : MonoBehaviour
+	{
+
 	}
 }

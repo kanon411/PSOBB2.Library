@@ -39,9 +39,6 @@ namespace Guardians
 		/// <inheritdoc />
 		public Task OnGameInitialized()
 		{
-			UIElements.DevRegisterationButton.AddOnClickListener(() => UIElements.DisableInteractionOnAllButtons());
-
-			UIElements.DevRegisterationButton.AddOnClickListenerAsync(OnRegisterationButtonClicked);
 			return Task.CompletedTask;
 		}
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Table("group_entry")]
 	public class CharacterGroupEntryModel

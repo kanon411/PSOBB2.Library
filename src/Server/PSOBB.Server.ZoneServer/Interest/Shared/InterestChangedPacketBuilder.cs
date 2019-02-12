@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class InterestChangedPacketBuilder
 	{

@@ -8,7 +8,7 @@ using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class ProtobufModelTests : GenericModelTests<ProtoMemberAttribute, ProtoIgnoreAttribute, ProtoContractAttribute>

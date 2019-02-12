@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Consolidate the location data into its own Model to share with the Request.
 	[JsonObject]

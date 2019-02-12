@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionPlayButtonController : IGameInitializable

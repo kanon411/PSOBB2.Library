@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface ISceneManager
 	{

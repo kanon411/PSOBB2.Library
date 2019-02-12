@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 using Common.Logging;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Refactor this, it's ABSOLUTELY HUGE and messy.
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]

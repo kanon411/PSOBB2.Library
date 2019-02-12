@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Provider the ability for ordered collections of element Type <typeparamref name="TAdaptedToType"/>

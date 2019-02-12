@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Contract for types that provide destruction logic for specific

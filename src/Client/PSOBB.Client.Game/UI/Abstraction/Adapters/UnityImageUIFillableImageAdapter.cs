@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	//Used for revalidation
 	[ExecuteInEditMode]

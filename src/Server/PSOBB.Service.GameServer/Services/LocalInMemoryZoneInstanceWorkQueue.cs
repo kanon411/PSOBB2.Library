@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	//We're gonna use AWS SQS most liely but this works for a local test queue
 	public sealed class LocalInMemoryZoneInstanceWorkQueue : IZoneInstanceWorkQueue

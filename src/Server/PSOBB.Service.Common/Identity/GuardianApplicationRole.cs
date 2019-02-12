@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// TODO: Is this the best way to deal with this?

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class AsyncEndpointCharacterService : BaseAsyncEndpointService<ICharacterService>, ICharacterService
 	{

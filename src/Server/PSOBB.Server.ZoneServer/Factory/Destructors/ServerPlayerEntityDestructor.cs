@@ -6,7 +6,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ServerPlayerEntityDestructor : IObjectDestructorable<PlayerEntityDestructionContext>
 	{

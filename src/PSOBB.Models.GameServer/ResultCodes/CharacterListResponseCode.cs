@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of all potential character list response results.

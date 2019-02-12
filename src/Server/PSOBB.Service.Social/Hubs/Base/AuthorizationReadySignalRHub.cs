@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base <see cref="Hub"/> for SignalR hubs that have claims authorization support.

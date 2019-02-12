@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// This is the default handler that is invoked when an unknown payload is encountered.

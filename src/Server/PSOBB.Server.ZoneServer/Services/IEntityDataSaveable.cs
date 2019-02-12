@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Contract for a service that can save entity data.

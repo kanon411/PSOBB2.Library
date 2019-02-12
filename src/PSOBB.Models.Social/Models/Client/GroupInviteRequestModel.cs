@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Data model for group invitation requests.

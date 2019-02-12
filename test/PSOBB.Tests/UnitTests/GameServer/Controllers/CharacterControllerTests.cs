@@ -12,9 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Moq;
 using NUnit.Framework;
-using static Guardians.ControllerTestsHelpers;
+using static PSOBB.ControllerTestsHelpers;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public class CharacterControllerTests

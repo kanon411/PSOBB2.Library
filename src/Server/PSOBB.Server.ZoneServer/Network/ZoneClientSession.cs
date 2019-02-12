@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// The zone client session.

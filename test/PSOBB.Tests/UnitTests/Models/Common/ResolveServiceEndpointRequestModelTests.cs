@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public static class ResolveServiceEndpointRequestTests

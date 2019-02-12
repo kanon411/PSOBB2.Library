@@ -8,7 +8,7 @@ using Fasterflect;
 using GladNet;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public class ExternalBehavioursTests

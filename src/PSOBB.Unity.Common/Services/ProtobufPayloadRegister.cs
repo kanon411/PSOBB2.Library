@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf.Meta;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Unity3D version of <see cref="ProtobufPayloadRegister"/>.

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class IMvcBuilderExtensions
 	{

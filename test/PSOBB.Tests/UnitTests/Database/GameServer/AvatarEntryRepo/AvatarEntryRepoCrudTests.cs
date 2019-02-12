@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the avatar entry repo.

@@ -5,7 +5,7 @@ using System.Threading;
 using Common.Logging;
 using Nito.AsyncEx;
 
-namespace Guardians
+namespace PSOBB
 {
 	[GameInitializableOrdering(Int32.MaxValue)] //this should ALWAYS be last, just incase anything else is in queue.
 	[CollectionsLocking(LockType.Write)]

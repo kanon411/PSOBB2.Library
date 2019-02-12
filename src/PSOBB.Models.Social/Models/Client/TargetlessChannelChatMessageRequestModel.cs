@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Data model for a message <see cref="Message"/> to be sent to

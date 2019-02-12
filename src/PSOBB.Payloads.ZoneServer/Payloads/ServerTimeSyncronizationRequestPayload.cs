@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Request sent by the client to syncronize

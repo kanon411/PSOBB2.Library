@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 
 	//From an old OpenIddict OAuth sample and a slightly modified version that I personally use

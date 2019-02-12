@@ -5,7 +5,7 @@ using Autofac;
 using Common.Logging;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class LoadingScreenDefaultAutofacModule : NetworkServiceDiscoveryableAutofaceModule
 	{

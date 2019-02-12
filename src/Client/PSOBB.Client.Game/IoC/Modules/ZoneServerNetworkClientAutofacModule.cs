@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneServerNetworkClientAutofacModule : Module
 	{

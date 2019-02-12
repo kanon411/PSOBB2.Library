@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// More <see cref="System.Linq"/> extensions for the Guardians project.

@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Response model for character list requests.

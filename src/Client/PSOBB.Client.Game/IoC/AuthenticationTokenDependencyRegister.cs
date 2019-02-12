@@ -4,7 +4,7 @@ using System.Text;
 using Autofac;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class AuthenticationTokenDependencyRegister : AutofacBasedDependencyRegister<AuthenticationTokenAutofacModule>
 	{

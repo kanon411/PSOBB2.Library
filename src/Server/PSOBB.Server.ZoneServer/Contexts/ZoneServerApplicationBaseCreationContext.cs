@@ -3,7 +3,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneServerApplicationBaseCreationContext
 	{

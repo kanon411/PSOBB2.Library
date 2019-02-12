@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Implement of <see cref="IUserIdProvider"/> which checks

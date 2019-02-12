@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Class that offers high-level metadata about the payload assembly.

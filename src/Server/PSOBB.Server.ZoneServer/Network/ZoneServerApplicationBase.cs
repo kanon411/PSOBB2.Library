@@ -9,7 +9,7 @@ using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneServerApplicationBase : TcpServerServerApplicationBase<GameServerPacketPayload, GameClientPacketPayload>
 	{

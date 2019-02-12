@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Route("api/[controller]")]
 	public class ZoneServerController : AuthorizationReadyController

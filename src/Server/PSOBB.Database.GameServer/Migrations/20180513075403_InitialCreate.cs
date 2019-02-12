@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace Guardians.Database.GameServer.Migrations
+namespace PSOBB.Database.GameServer.Migrations
 {
     public partial class InitialCreate : Migration
     {

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.WorldDownloadingScreen)]
 	public sealed class WorldDownloadingGameInitializable : IGameInitializable

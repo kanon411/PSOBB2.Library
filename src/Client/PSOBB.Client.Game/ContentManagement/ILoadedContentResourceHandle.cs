@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Sirenix.OdinInspector;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface ILoadedContentResourceHandle
 	{

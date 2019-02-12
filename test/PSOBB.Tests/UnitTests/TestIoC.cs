@@ -9,7 +9,7 @@ using Moq;
 using SceneJect;
 using SceneJect.Common;
 
-namespace Guardians
+namespace PSOBB
 {
 	internal static class TestIoC
 	{

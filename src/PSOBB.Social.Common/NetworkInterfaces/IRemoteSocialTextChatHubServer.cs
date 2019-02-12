@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Contract for remote interface for Server Hub.

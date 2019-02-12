@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface IPlayerEntityGuidEnumerable : IEnumerable<NetworkEntityGuid>
 	{

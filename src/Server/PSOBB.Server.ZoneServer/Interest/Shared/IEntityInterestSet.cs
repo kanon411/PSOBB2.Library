@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	/// <summary>
 	/// Add/Remove interface for an interest set.

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unitysync.Async;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class BaseUnityUIAdapterImplementation
 	{

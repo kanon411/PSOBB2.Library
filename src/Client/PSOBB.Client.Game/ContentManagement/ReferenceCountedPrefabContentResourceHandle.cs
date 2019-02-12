@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Serializable]
 	public sealed class ReferenceCountedPrefabContentResourceHandle : IPrefabContentResourceHandle

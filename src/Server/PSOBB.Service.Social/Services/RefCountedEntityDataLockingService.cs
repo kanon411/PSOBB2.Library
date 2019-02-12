@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: We need to exame deadlock potential here.
 	public class RefCountedEntityDataLockingService : IEntityDataLockingService

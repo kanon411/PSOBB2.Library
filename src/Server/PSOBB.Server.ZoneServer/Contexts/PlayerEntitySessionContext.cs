@@ -4,7 +4,7 @@ using System.Text;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class PlayerEntitySessionContext
 	{

@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class MovementUpdateMessageHandler : BaseZoneClientGameMessageHandler<MovementDataUpdateEventPayload>
 	{

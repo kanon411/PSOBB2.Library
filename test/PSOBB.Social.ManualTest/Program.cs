@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Guardians.Social.ManualTest
+namespace PSOBB.Social.ManualTest
 {
 	class Program
 	{

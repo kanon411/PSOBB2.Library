@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ManagedSessionCreationContext
 	{

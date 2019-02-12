@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class DatabaseBackedCharacterRepository : ICharacterRepository, IGenericRepositoryCrudable<string, CharacterEntryModel>
 	{

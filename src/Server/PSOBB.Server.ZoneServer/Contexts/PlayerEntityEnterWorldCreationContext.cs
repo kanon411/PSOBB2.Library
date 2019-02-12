@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class PlayerEntityEnterWorldCreationContext
 	{

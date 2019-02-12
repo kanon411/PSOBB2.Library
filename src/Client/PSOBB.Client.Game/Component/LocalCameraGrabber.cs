@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Component that grabs the main camera in the scene

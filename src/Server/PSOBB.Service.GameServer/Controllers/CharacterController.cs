@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Route("api/characters")]
 	public class CharacterController : AuthorizationReadyController

@@ -6,7 +6,7 @@ using GladNet;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: This is just demo code, we won't want to handle starting the game like this.
 	//TODO: This can't be a game initializable because those are invoked when the session is claimed

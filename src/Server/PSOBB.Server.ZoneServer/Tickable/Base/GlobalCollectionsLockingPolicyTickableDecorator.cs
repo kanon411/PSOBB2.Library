@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Decorated for the <see cref="CollectionsLockingAttribute"/> around

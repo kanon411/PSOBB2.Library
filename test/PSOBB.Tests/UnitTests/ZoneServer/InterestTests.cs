@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public class InterestTests

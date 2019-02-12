@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class CharacterGuildOnHubConnectionEventListener : IOnHubConnectionEventListener
 	{

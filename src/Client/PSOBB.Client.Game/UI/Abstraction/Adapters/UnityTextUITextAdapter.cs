@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Guardians;
+using PSOBB;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Adapters for the Unity3D UI Type: <see cref="Text"/> adapted to

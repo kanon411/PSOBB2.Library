@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.AttributeFilters;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class LoginScreenUIElements
 	{

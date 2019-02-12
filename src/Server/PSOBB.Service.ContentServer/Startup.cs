@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Guardians.Service.ContentServer
+namespace PSOBB
 {
 	public class Startup
 	{

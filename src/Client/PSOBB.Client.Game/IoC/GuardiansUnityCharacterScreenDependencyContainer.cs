@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Extract this into an Autofac module
 	public sealed class GuardiansUnityCharacterScreenDependencyContainer : AutofacBasedDependencyRegister<CharacterScreenDependencyAutofacModule>

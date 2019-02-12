@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Extensions for the <see cref="GameServerStatusFlags"/> Type.

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Not checked/validated with serialization tests
 	/// <summary>

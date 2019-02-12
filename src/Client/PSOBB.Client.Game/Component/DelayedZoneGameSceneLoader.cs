@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: If we fail to download the world we probably don't want to actually additively load, so we need a good way to destroy this
 	public sealed class DelayedZoneGameSceneLoader : MonoBehaviour

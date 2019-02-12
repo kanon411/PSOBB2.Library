@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Table("guild_entry")]
 	public class GuildEntryModel

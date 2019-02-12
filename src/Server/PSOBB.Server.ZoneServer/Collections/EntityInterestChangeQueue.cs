@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class EntityInterestChangeQueue : ConcurrentQueue<EntityInterestChangeContext>, IDequeable<EntityInterestChangeContext>
 	{

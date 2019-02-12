@@ -5,7 +5,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	[JsonObject]
 	public sealed class ZoneServerNPCEntryCollectionResponse : IResponseModel<NpcEntryCollectionResponseCode>

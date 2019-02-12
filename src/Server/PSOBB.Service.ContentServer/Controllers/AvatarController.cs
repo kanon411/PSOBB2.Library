@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: This is mostly a copy-paste from Worlds, we need to significantly extend and refactor this for public avatars and private avatars support.
 	[Route("api/[controller]")]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: We need some handling for callback cleanup, especially when an entity disappears.
 	public sealed class EntityDataChangeCallbackManager : IEntityDataChangeCallbackRegisterable, IEntityDataChangeCallbackService

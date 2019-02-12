@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// HaloLive OpenIddict app role.

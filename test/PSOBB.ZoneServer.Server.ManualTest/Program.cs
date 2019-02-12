@@ -8,7 +8,7 @@ using Common.Logging;
 using Common.Logging.Simple;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	class Program
 	{

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Table("character_sessions")]
 	public class CharacterSessionModel

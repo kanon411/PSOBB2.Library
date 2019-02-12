@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class AbstractMetadataMarker<TTypeToScanAssemblyFrom>
 		where TTypeToScanAssemblyFrom : class

@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: We should find a way to compress/reduce the data of this chunk.
 	/// <summary>

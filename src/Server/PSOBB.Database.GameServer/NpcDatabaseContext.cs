@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Non-server specific data should go in a seperate database. Not the world/gameserver database.
 	public sealed class NpcDatabaseContext : DbContext

@@ -9,7 +9,7 @@ using Fasterflect;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Convert to AutoFac Module
 	public class AutoCreatedRegisteration : NonBehaviourDependency

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class DatabaseContextBasedRegionBasedNameEndpointResolutionRepository : IRegionbasedNameEndpointResolutionRepository
 	{

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Guardians.Database.GameServer.Migrations
+namespace PSOBB.Database.GameServer.Migrations
 {
     public partial class FriendRequestsToRelationshipMigration : Migration
     {

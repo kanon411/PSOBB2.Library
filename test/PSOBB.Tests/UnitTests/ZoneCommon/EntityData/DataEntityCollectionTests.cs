@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace Guardians.Tests.Collections
+namespace PSOBB.Tests.Collections
 {
 	[TestFixture]
 	public class DataEntityCollectionTests

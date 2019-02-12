@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[ProtoContract]
 	[ProtoInclude(1, typeof(PositionChangeMovementData))]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Marker internet for game packet payloads.

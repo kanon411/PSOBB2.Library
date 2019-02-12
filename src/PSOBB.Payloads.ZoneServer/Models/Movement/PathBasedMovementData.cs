@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using ProtoBuf;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Movement data block used for path based movement.

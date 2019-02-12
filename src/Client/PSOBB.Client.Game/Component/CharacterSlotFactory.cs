@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	//To simplify the implenmentation of this feature we will have this be a scene component
 	//While this is rare, and avoidence to this is required by design of this project, there are

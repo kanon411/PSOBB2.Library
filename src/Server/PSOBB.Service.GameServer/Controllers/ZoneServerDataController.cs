@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Route("api/[controller]")]
 	public class ZoneServerDataController : Controller

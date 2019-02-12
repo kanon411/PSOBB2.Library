@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
-using Guardians;
+using PSOBB;
 using SceneJect.Common;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// The component that manages the game network client.

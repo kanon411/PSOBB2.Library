@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class AuthenticationTokenRepository : IReadonlyAuthTokenRepository, IAuthTokenRepository
 	{

@@ -4,7 +4,7 @@ using System.Text;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class AvatarLerper : MonoBehaviour
 	{

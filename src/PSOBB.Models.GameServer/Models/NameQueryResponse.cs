@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Response model to a character namequery request.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class BaseTargetlessChannelMessageEnvelopeFactory<TIncomingMessageType, TOutgoingMessageType> : IFactoryCreatable<TOutgoingMessageType, GenericChatMessageContext<TIncomingMessageType>> 
 		where TIncomingMessageType : class

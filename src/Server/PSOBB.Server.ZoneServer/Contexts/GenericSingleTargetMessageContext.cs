@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Generic message context for sending a <see cref="PayloadToSend"/> to the connection

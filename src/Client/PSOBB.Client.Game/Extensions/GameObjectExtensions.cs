@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class GameObjectExtensions
 	{

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[JsonObject]
 	public sealed class ZoneServerNpcEntryModel

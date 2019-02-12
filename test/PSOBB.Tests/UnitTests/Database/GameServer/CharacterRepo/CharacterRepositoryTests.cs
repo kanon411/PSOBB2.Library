@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class CharacterRepositoryTests

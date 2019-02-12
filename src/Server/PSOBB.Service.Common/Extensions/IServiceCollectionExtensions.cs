@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Extensions for the <see cref="IServiceCollection"/> Type.

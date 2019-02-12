@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Response model used to respond to URL download requests for worlds.

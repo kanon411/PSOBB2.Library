@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class ConfigurationExtensions
 	{

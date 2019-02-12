@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians.Database
+namespace PSOBB.Database
 {
 	[Owned]
 	public sealed class Vector3<T>

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class JsonModelTests : GenericModelTests<JsonPropertyAttribute, JsonIgnoreAttribute, JsonObjectAttribute>

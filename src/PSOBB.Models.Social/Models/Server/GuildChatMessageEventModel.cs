@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Data model for <see cref="TargetlessChannelChatMessageEventModel"/>

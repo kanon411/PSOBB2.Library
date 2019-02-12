@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Injectee]
 	public sealed class DebugChangeLocalPlayerModel : NetworkRequestSender

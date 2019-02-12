@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of potential results of a name query.

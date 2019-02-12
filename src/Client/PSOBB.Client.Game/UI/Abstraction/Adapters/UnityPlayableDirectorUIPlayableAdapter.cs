@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians;
+using PSOBB;
 using UnityEngine.Playables;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class UnityPlayableDirectorUIPlayableAdapter : BaseUnityUIAdapter<PlayableDirector, IUIPlayable>, IUIPlayable
 	{

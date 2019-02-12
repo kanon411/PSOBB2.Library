@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ClientPositionChangeMovementGenerator : BaseMovementGenerator<PositionChangeMovementData>
 	{

@@ -7,7 +7,7 @@ using CommandLine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class IWebBuilderExtensions
 	{

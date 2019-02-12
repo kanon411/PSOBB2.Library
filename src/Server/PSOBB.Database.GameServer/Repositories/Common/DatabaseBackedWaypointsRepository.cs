@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class DatabaseBackedWaypointsRepository : IWaypointsRepository
 	{

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Guardians;
+using PSOBB;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Format for the endpoint map storage.

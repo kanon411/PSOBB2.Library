@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class MovementUpdateMessageSender : INetworkMessageSender<EntityMovementMessageContext>
 	{

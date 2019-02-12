@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Guardians;
+using PSOBB;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Response to <see cref="ResolveServiceEndpointRequest"/> containing the endpoint of the requested service.

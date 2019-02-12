@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Attribute marks a data-model that can/will be associated with an entity

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class UnityExtended
 	{

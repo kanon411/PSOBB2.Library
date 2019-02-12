@@ -5,7 +5,7 @@ using Autofac;
 using Autofac.Core;
 using SceneJect.Common;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base asbtract type for easily registering Sceneject dependency collections

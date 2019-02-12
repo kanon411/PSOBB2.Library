@@ -7,7 +7,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class FieldValueUpdateEventHandler : BaseZoneClientGameMessageHandler<FieldValueUpdateEvent>
 	{

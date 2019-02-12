@@ -8,7 +8,7 @@ using GladNet;
 using UnityEngine;
 using Module = Autofac.Module;
 
-namespace Guardians
+namespace PSOBB
 {
 	//based on the server IoC module
 	public sealed class ZoneClientHandlerRegisterationAutofacModule : Module

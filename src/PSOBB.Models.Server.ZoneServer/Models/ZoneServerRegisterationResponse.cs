@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	[JsonObject]
 	public sealed class ZoneServerRegisterationResponse : IResponseModel<ZoneServerRegisterationResponseCode>, ISucceedable

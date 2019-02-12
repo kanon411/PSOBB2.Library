@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class EntityInterestChangeContext
 	{

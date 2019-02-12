@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Adapter for <see cref="InputField"/> to <see cref="IUIText"/>

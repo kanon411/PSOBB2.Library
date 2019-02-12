@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Contract for REST service that provides

@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 using Common.Logging;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class LoginScreenDependenciesAutofacModule : Module
 	{

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GladNet;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class HubConnectionMessageContext<TRemoteClientHubType> : IPeerMessageContext<object>, IHubConnectionMessageContext<TRemoteClientHubType>
 	{

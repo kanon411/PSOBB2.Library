@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public static class JWTModelTests

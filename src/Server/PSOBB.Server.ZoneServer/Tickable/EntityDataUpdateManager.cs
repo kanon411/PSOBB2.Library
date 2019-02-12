@@ -4,7 +4,7 @@ using System.Text;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Refactor, this is just for testing
 	[GameInitializableOrdering(1)]

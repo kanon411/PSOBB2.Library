@@ -7,7 +7,7 @@ using Common.Logging;
 using Refit;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.TitleScreen)]
 	public sealed class LoginButtonController : IGameInitializable

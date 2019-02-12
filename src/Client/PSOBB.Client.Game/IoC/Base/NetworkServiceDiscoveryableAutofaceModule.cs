@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Autofac;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class NetworkServiceDiscoveryableAutofaceModule : Module
 	{

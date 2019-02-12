@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of scene types for a game initializable.

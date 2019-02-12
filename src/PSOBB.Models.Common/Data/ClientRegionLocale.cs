@@ -4,7 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of all client locales.

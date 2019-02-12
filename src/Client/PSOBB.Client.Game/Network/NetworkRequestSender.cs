@@ -5,7 +5,7 @@ using GladNet;
 using SceneJect.Common;
 using Sirenix.OdinInspector;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base for network request senders.

@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class BaseServerRequestHandler<TSpecificPayloadType> : IPeerPayloadSpecificMessageHandler<TSpecificPayloadType, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>
 		where TSpecificPayloadType : GameClientPacketPayload

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class NetworkedEntityDataSaveable : IEntityDataSaveable
 	{

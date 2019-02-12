@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Guardians.Database;
+using PSOBB.Database;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the character repository.

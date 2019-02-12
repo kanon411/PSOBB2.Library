@@ -6,7 +6,7 @@ using Common.Logging;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Guardians
+namespace PSOBB
 {
 
 	[SceneTypeCreate(GameSceneType.ZoneGameScene)]

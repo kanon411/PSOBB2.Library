@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: We shouldn't combine all the zoneserver query stuff in a single interface
 	//TODO: We need to do authorization headers for zoneserver stuff

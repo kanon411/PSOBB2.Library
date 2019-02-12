@@ -8,7 +8,7 @@ using GladNet;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Simplfied version of <see cref="ControlledEntityRequestHandler{TSpecificPayloadType, TLockingPolicyType, TLockingContextType}"/> that

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public class Startup
 	{

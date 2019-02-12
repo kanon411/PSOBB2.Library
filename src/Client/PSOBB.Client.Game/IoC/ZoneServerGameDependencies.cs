@@ -5,7 +5,7 @@ using Autofac;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneServerGameDependencies : AutofacBasedDependencyRegister<ZoneServerGameDependenciesAutofacModule>
 	{

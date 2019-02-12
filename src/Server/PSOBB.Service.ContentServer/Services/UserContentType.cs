@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of the valid user type.

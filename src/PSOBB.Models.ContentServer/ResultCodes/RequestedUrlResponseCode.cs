@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	public enum RequestedUrlResponseCode
 	{

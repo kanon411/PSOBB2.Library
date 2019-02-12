@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	//PlayerModelChangeRequestPayload
 	public sealed class PlayerModelChangeRequestHandler : ControlledEntityRequestHandler<PlayerModelChangeRequestPayload>

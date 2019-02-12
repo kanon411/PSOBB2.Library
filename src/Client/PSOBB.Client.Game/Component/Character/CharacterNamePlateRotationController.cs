@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class CharacterNamePlateRotationController : MonoBehaviour
 	{

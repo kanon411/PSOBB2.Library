@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface INpcEntryRepository : IGenericRepositoryCrudable<int, NPCEntryModel>
 	{

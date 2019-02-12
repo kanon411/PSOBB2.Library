@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Guardians.Database.GameServer.Migrations.CommonGameDatabase
+namespace PSOBB.Database.GameServer.Migrations.CommonGameDatabase
 {
     public partial class PathWaypointsMigration : Migration
     {

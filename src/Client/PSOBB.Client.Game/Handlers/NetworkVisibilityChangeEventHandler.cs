@@ -8,7 +8,7 @@ using Dissonance;
 using GladNet;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class NetworkVisibilityChangeEventHandler : BaseZoneClientGameMessageHandler<NetworkObjectVisibilityChangeEventPayload>
 	{

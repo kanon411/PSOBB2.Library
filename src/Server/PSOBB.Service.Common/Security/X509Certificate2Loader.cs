@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	public class X509Certificate2Loader
 	{

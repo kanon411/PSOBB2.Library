@@ -7,7 +7,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ClientSessionClaimRequestHandler : IPeerPayloadSpecificMessageHandler<ClientSessionClaimRequestPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>
 	{

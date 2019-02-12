@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Unit test, when I'm not lazy.
 	public sealed class UtcNowNetworkTimeService : INetworkTimeService

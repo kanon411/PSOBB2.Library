@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class LoadingScreenDependencyRegisterationModule : AutofacBasedDependencyRegister<LoadingScreenDefaultAutofacModule>
 	{

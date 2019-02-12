@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace Guardians.Service.Authentication.Migrations
+namespace PSOBB.Service.Authentication.Migrations
 {
     public partial class InitialASPCore2Migration : Migration
     {

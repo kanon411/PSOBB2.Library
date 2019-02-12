@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Guardians.Database.GameServer.Migrations.NpcDatabase
+namespace PSOBB.Database.GameServer.Migrations.NpcDatabase
 {
     public partial class InitialNPC : Migration
     {

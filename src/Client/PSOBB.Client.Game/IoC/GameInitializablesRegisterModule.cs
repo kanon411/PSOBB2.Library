@@ -6,7 +6,7 @@ using GladNet;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Simplified creatable type for <see cref="GameInitializableRegisterationAutofacModule"/>

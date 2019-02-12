@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unitysync.Async;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Injectee]
 	public sealed class DebugSwitchZoneServersComponent : MonoBehaviour

@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class MovementBlockhandlerTests

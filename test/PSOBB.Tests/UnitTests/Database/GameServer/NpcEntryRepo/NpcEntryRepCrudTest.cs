@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Guardians.Database;
+using PSOBB.Database;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Reinterpret.Net;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the NPC Entry Repository.

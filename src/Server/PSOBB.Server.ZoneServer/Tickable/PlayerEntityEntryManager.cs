@@ -6,7 +6,7 @@ using Common.Logging;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Refactor clean this mess up
 	[GameInitializableOrdering(2)]

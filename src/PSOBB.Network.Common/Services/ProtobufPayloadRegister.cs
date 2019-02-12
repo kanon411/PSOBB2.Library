@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ProtoBuf.Meta;
 
-namespace Guardians
+namespace PSOBB
 {
 	public class ProtobufPayloadRegister
 	{

@@ -5,7 +5,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Decorator for <see cref="IFactoryCreatable{TCreateType,TContextType}"/>'s that create

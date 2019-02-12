@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians;
+using PSOBB;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// The implementation of adaptation between <see cref="Button"/> and <see cref="IUIButton"/>.

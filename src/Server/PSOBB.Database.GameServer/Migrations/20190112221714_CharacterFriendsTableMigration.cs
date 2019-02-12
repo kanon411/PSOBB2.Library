@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Guardians.Database.GameServer.Migrations
+namespace PSOBB.Database.GameServer.Migrations
 {
     public partial class CharacterFriendsTableMigration : Migration
     {

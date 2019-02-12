@@ -7,7 +7,7 @@ using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public static class GameTickableTests

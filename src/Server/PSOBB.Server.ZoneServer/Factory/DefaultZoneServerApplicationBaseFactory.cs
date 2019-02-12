@@ -5,7 +5,7 @@ using System.Text;
 using Autofac;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class DefaultZoneServerApplicationBaseFactory : IFactoryCreatable<ApplicationBaseContainerPair, ZoneServerApplicationBaseCreationContext>
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Guardians
+namespace PSOBB
 {
 	//From ProjectVindictive: https://github.com/HelloKitty/ProjectVindictive.Library/blob/master/src/ProjectVindictive.Models.UserContentManagement/RequestedUrlResponseModel.cs
 	/// <summary>

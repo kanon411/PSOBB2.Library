@@ -8,7 +8,7 @@ using PostSharp.Patterns.Caching;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Component that acts as a gateway for interest tiles.

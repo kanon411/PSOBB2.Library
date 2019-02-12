@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace Guardians.Tests.Collections
+namespace PSOBB.Tests.Collections
 {
 	//We inherit from the data entity collection tests because you SHOULD be able to the same
 	//operations and expect the same results too.

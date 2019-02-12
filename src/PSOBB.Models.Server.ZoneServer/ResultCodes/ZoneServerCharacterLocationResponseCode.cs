@@ -1,4 +1,4 @@
-﻿namespace Guardians
+﻿namespace PSOBB
 {
 	/// <summary>
 	/// Enumeration of response codes for <see cref="ZoneServerCharacterLocationResponse"/>.

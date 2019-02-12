@@ -2,7 +2,7 @@
 using GladNet;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: PR to Protobuf-Net doc fix for EnumPassthru
 	/// <summary>

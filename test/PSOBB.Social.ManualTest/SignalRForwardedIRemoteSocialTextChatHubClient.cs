@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class SignalRForwardedIRemoteSocialTextChatHubClient : IRemoteSocialTextChatHubServer
 	{

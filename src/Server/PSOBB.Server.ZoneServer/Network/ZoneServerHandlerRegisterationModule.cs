@@ -7,7 +7,7 @@ using Autofac;
 using GladNet;
 using Module = Autofac.Module;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Make a generic generalized version
 	public sealed class ZoneServerHandlerRegisterationModule : Module

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	[GameInitializableOrdering(1)]
 	[CollectionsLocking(LockType.Read)]

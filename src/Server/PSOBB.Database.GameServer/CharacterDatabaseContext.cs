@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class CharacterDatabaseContext : DbContext
 	{

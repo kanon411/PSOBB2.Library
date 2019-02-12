@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface IInterestTileManager : IEntityGateway<int>, IRegisterable<int, object> //TODO: Have register details
 	{

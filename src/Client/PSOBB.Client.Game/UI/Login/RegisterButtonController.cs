@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.TitleScreen)]
 	public sealed class RegisterButtonController : IGameInitializable

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class GuildMessageBroadcastMessageHandler : BaseTextChatGroupBroadcastSignalRMessageHandler<GuildChatMessageRequestModel, GuildChatMessageEventModel>
 	{

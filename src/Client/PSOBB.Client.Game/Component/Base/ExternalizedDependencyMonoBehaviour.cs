@@ -5,7 +5,7 @@ using SceneJect.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base-type for <see cref="MonoBehaviour"/>'s

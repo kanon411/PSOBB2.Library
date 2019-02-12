@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class NamedEndpointDbContext : DbContext
 	{

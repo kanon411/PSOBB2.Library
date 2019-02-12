@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	//While it might seem silly to have this right now, the context may be expanded on in the future.
 	public sealed class PlayerEntityDestructionContext : IEntityGuidContainer

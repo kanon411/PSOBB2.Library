@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	//
 	public sealed class AsyncEndpointAuthenticationService : BaseAsyncEndpointService<IAuthenticationService>, IAuthenticationService

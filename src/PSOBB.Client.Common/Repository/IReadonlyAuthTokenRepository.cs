@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Guardians
+namespace PSOBB
 {
 	public interface IReadonlyAuthTokenRepository
 	{

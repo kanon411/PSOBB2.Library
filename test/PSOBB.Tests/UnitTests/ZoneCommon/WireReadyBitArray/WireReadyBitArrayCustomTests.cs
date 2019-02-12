@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace Guardians.Tests.Collections
+namespace PSOBB.Tests.Collections
 {
 	[TestFixture]
 	public sealed class WireReadyBitArrayCustomTests

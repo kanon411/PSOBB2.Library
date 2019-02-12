@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using Nito.AsyncEx;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Contract for resource locking.

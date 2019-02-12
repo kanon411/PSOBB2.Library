@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians;
+using PSOBB;
 using UnityEngine.UI;
 using Unitysync.Async;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class UnityButtonUIButtonAdapter : BaseUnityUIAdapter<Button, IUIButton>, IUIButton
 	{

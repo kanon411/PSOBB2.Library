@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class PlayerUnitFameResourceController : IGameInitializable

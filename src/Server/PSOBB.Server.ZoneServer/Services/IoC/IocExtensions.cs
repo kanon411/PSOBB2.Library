@@ -6,7 +6,7 @@ using Autofac;
 using Autofac.Builder;
 using Fasterflect;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class IocExtensions
 	{

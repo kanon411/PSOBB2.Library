@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class PlayerUnitFrameController : IGameInitializable

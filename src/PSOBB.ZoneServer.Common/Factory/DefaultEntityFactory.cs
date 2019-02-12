@@ -7,7 +7,7 @@ using UnityEngine;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
 
-namespace Guardians
+namespace PSOBB
 {
 	//TODO: Refactor this, it's becoming quie bloated and depends on nearly everything.
 	public class DefaultEntityFactory<TCreationContext> : IFactoryCreatable<GameObject, TCreationContext>

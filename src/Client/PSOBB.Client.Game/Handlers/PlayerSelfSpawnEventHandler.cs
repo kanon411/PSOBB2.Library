@@ -8,7 +8,7 @@ using Dissonance;
 using GladNet;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// The handler for the player spawn event

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Response payload sent in response to a <see cref="ClientSessionClaimRequestPayload"/>.

@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians;
+using PSOBB;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Unitysync.Async;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class BaseUnityUIAdapter<TAdaptedUnityEngineType, TAdaptedToType> : BaseUnityUI<TAdaptedToType>
 	{

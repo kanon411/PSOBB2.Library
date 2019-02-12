@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Guardians;
+using PSOBB;
 using UnityEngine.UI;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class UnityTextUITextAdapterImplementation : IUIText
 	{

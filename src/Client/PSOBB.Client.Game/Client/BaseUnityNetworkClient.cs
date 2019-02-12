@@ -11,7 +11,7 @@ using SceneJect.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Abstract base network client for Unity3D.

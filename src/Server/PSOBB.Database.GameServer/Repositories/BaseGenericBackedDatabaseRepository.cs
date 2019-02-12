@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base class type for all repositories that want to

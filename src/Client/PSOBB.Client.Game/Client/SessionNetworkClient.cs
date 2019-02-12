@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GladNet;
-using Guardians;
+using PSOBB;
 using SceneJect.Common;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Session network client that continues a <see cref="IManagedNetworkClient{TPayloadWriteType,TPayloadReadType}"/>'s session.

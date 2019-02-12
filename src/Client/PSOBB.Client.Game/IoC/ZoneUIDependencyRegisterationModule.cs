@@ -7,7 +7,7 @@ using SceneJect.Common;
 using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneUIDependencyRegisterationModule : NonBehaviourDependency
 	{

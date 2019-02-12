@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class PlayerEntityCreationContext : IEntityGuidContainer, IEntityCreationContext
 	{

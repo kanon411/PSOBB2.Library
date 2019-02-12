@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Route("api/npcdata")]
 	public class NpcDataController : AuthorizationReadyController

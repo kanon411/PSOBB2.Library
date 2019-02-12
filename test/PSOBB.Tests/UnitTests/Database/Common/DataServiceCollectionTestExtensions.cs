@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class DataServiceCollectionTestExtensions
 	{

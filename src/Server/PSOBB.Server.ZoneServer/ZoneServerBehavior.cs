@@ -11,7 +11,7 @@ using GladNet;
 using ProtoBuf.Meta;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class ZoneServerBehavior : MonoBehaviour
 	{

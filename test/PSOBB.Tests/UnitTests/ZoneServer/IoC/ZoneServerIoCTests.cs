@@ -8,7 +8,7 @@ using Common.Logging.Simple;
 using GladNet;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class ZoneServerIoCTests

@@ -4,7 +4,7 @@ using System.Text;
 using Autofac;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class GameClientMessageHandlerAutofacModule : Module
 	{

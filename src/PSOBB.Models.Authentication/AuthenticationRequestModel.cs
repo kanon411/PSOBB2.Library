@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// The authentication request model.

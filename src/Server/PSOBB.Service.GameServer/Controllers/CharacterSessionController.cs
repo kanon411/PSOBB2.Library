@@ -7,7 +7,7 @@ using CSharpx;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Route("api/[controller]")]
 	public sealed class CharacterSessionController : AuthorizationReadyController

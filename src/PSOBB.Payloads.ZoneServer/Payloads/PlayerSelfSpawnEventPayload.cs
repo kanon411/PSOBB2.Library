@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	//This payload could probably be apart of the NetworkObjectVisibilityChangeEventPayload BUT it is much
 	//simplier to seperate it into this one-time style packet.

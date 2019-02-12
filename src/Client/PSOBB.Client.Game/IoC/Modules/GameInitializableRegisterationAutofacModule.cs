@@ -11,7 +11,7 @@ using GladNet;
 using UnityEngine;
 using Module = Autofac.Module;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class GameInitializableRegisterationAutofacModule : Module
 	{

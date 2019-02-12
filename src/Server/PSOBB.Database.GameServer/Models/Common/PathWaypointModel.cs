@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using Guardians.Database;
+using PSOBB.Database;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// EF table model for waypoint paths.

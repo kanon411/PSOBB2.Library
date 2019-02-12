@@ -6,7 +6,7 @@ using NUnit.Framework;
 using ProtoBuf;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class PayloadSerializationTests

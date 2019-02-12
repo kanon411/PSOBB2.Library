@@ -6,7 +6,7 @@ using System.Text;
 using NUnit.Framework;
 using Reinterpret.Net;
 
-namespace Guardians.Tests.Collections
+namespace PSOBB.Tests.Collections
 {
 	[TestFixture]
 	public sealed class WireReadyBitArrayCtorTests

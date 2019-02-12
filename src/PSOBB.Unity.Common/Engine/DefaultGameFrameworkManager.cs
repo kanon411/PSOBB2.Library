@@ -6,7 +6,7 @@ using Common.Logging;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians.Unity
+namespace PSOBB.Unity
 {
 	/// <summary>
 	/// Default game framework manager that calls init

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Refit;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Stub/Mock for old TypeSafe.Http.Net to help return to it

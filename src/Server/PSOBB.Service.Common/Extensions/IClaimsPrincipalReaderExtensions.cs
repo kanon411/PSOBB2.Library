@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
-using Guardians;
+using PSOBB;
 
-namespace Guardians
+namespace PSOBB
 {
 	public static class IClaimsPrincipalReaderExtensions
 	{

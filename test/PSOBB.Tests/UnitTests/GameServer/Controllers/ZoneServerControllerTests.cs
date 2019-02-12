@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using static Guardians.ControllerTestsHelpers;
+using static PSOBB.ControllerTestsHelpers;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public class ZoneServerControllerTests

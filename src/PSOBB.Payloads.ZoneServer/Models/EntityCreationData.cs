@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	[ProtoContract]
 	public sealed class EntityCreationData : IEntityGuidContainer

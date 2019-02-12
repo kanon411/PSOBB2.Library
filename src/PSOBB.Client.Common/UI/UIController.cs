@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	[Injectee]
 	public abstract class UIController<TViewType> : MonoBehaviour

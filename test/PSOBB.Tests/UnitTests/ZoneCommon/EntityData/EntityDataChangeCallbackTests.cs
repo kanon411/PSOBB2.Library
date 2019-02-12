@@ -5,7 +5,7 @@ using System.Text;
 using Moq;
 using NUnit.Framework;
 
-namespace Guardians
+namespace PSOBB
 {
 	[TestFixture]
 	public sealed class EntityDataChangeCallbackTests

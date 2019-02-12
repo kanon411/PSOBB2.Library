@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace Guardians
+namespace PSOBB
 {
 	public abstract class BaseSignalRMessageHandler<TMessageType, TRemoteClientHubInterfaceType> : IPeerPayloadSpecificMessageHandler<TMessageType, object, HubConnectionMessageContext<TRemoteClientHubInterfaceType>> 
 		where TMessageType : class

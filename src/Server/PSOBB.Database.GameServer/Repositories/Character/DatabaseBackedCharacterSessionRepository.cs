@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 
-namespace Guardians
+namespace PSOBB
 {
 	
 	public sealed class DatabaseBackedCharacterSessionRepository : ICharacterSessionRepository

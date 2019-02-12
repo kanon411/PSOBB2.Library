@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Guardians
+namespace PSOBB
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class GameInitializableOrderingAttribute : Attribute

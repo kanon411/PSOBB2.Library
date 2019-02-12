@@ -7,7 +7,7 @@ using GladNet;
 using Refit;
 using UnityEngine;
 
-namespace Guardians
+namespace PSOBB
 {
 	public sealed class AuthenticationDependencyAutofacModule : Module
 	{

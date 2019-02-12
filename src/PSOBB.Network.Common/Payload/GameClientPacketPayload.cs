@@ -2,7 +2,7 @@
 using GladNet;
 using ProtoBuf;
 
-namespace Guardians
+namespace PSOBB
 {
 	/// <summary>
 	/// Base type for the game packets that clients send.

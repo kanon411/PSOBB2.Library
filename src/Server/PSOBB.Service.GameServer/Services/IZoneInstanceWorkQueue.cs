@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Guardians
+namespace PSOBB
 {
 	//The concept here is we'll have a populated, or potentially empty, work queue
 	//for bringing up zone/instances for end users. This could be locally just a queue

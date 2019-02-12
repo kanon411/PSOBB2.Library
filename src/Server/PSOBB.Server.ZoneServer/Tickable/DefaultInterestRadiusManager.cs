@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace Guardians
+namespace PSOBB
 {
 	//Don't do a Skippable here, because we actually don't have a good design. It's possible without work there is still something to do.
 	[GameInitializableOrdering(0)] //this should run first

@@ -36,7 +36,5 @@ namespace PSOBB
 
 			return Task.CompletedTask;
 		}
-
-
 	}
 }

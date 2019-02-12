@@ -24,6 +24,8 @@ namespace PSOBB
 
 		Registeration = 7,
 
-		ChatBox = 8
+		ChatBox = 8,
+
+		CharacterSelection = 9
 	}
 }

@@ -27,6 +27,7 @@ namespace PSOBB
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
+		//TODO: Race condition here because it's possible the subsciber hasn't subscribed just yet.
 		/// <inheritdoc />
 		public async Task OnGameInitialized()
 		{

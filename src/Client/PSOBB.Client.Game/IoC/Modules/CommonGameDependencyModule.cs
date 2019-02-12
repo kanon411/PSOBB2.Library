@@ -50,7 +50,7 @@ namespace PSOBB.Client
 			
 			//Handlers aren't needed for all scenes, but for most.
 			//TODO: We should expose SceneTypeCreatable or whatever on handlers
-			builder.RegisterModule<GameClientMessageHandlerAutofacModule>();
+			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene));
 			builder.RegisterModule(new UIDependencyRegisterationModule());

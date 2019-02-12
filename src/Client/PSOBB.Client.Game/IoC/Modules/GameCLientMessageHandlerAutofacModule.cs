@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Autofac;
 using GladNet;
@@ -8,7 +9,17 @@ namespace PSOBB
 {
 	public sealed class GameClientMessageHandlerAutofacModule : Module
 	{
-		public GameClientMessageHandlerAutofacModule()
+		private GameSceneType SceneType { get; }
+
+		/// <inheritdoc />
+		public GameClientMessageHandlerAutofacModule(GameSceneType sceneType)
+		{
+			if(!Enum.IsDefined(typeof(GameSceneType), sceneType)) throw new InvalidEnumArgumentException(nameof(sceneType), (int)sceneType, typeof(GameSceneType));
+
+			SceneType = sceneType;
+		}
+
+		private GameClientMessageHandlerAutofacModule()
 		{
 			
 		}
@@ -25,7 +36,7 @@ namespace PSOBB
 				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));
 
-			builder.RegisterModule<ZoneClientHandlerRegisterationAutofacModule>();
+			builder.RegisterModule(new ZoneClientHandlerRegisterationAutofacModule(SceneType));
 		}
 	}
 }

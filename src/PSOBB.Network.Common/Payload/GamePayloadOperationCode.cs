@@ -29,6 +29,12 @@ namespace PSOBB
 
 		VoiceData = 8,
 
-		ModelChangeRequest = 9
+		ModelChangeRequest = 9,
+
+		/// <summary>
+		/// Opcode used for telling the client
+		/// to load a new scene.
+		/// </summary>
+		LoadNewScene = 7
 	}
 }

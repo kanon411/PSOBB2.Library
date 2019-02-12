@@ -11,6 +11,9 @@
 		
 		CharacterSelection = 2,
 
-		WorldDownloadingScreen = 3
+		//TODO: Remove this at some point.
+		WorldDownloadingScreen = 3,
+
+		PreZoneBurstingScreen = 4,
 	}
 }

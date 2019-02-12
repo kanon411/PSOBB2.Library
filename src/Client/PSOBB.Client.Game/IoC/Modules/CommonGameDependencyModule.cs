@@ -33,6 +33,9 @@ namespace PSOBB.Client
 		{
 			base.Load(builder);
 
+			//Set the sync context
+			UnityExtended.InitializeSyncContext();
+
 			//Token module is needed in most scenes.
 			builder.RegisterModule<AuthenticationTokenAutofacModule>();
 			

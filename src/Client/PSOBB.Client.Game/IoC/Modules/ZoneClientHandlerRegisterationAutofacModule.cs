@@ -34,28 +34,6 @@ namespace PSOBB
 						.As(additionalServiceTypeAttri.ServiceType);
 				}
 			}
-
-			foreach(Type t in handlerTypes)
-			{
-				Type concretePayloadType = t.GetTypeInfo()
-					.ImplementedInterfaces
-					.First(i => i.GetTypeInfo().IsGenericType && i.GetTypeInfo().GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,>))
-					.GetGenericArguments()
-					.First();
-
-				Type tryHandlerType = typeof(TrySemanticsBasedOnTypePeerMessageHandler<,,>)
-					.MakeGenericType(typeof(GameServerPacketPayload), typeof(GameClientPacketPayload), concretePayloadType);
-
-				builder.Register(context =>
-					{
-						object handler = context.Resolve(t);
-
-						return Activator.CreateInstance(tryHandlerType, handler);
-					})
-					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>()
-					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload, IPeerMessageContext<GameClientPacketPayload>>>()
-					.SingleInstance();
-			}
 		}
 
 		private IReadOnlyCollection<Type> LoadHandlerTypes()

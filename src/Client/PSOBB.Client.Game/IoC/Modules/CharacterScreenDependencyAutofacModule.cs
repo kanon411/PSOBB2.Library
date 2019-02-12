@@ -34,15 +34,8 @@ namespace PSOBB
 
 			ContainerBuilder register = builder;
 
-			//Set the sync context
-			UnityExtended.InitializeSyncContext();
-
 			//Postsharp requires we setup some backend stuff
 			//CachingServices.DefaultBackend = new MemoryCachingBackend();
-
-			register.RegisterInstance(new UnityLogger(LogLevel.All))
-				.As<ILog>()
-				.SingleInstance();
 
 			register.RegisterType<AuthenticationTokenRepository>()
 				.As<IReadonlyAuthTokenRepository>()

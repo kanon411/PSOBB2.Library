@@ -42,11 +42,12 @@ namespace PSOBB
 			{
 				//We must actually create a session
 				//before the character can login.
-
-				CharacterSessionEnterResponse enterResponse = await CharacterService.TryEnterSession(CharacterData.CharacterId, AuthTokenRepo.RetrieveWithType())
+				CharacterSessionEnterResponse enterResponse = await CharacterService.TryEnterSession(args.CharacterGuid.EntityId, AuthTokenRepo.RetrieveWithType())
 					.ConfigureAwait(true);
 
+
 				//TODO: handle character session failure
+				CharacterData.UpdateCharacterId(args.CharacterGuid.EntityId);
 
 				if(Logger.IsInfoEnabled)
 					Logger.Info($"Recieved character session entry response: {enterResponse.isSuccessful} Result: {enterResponse.ResultCode} for ZoneId: {enterResponse.ZoneId}");

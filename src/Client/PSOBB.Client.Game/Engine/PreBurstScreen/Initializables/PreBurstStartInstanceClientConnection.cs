@@ -29,7 +29,7 @@ namespace PSOBB
 		private INetworkClientManager NetworkClientManager { get; }
 
 		/// <inheritdoc />
-		public PreBurstStartInstanceClientConnection([NotNull] IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload> client, [NotNull] ICharacterService characterDataService, [NotNull] IReadonlyAuthTokenRepository authTokenRepo, [NotNull] ICharacterDataRepository characterDataRepo, [NotNull] IZoneServerService zoneService, [NotNull] ILog logger)
+		public PreBurstStartInstanceClientConnection([NotNull] IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload> client, [NotNull] ICharacterService characterDataService, [NotNull] IReadonlyAuthTokenRepository authTokenRepo, [NotNull] ICharacterDataRepository characterDataRepo, [NotNull] IZoneServerService zoneService, [NotNull] ILog logger, [NotNull] INetworkClientManager networkClientManager)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 			CharacterDataService = characterDataService ?? throw new ArgumentNullException(nameof(characterDataService));
@@ -37,6 +37,7 @@ namespace PSOBB
 			CharacterDataRepo = characterDataRepo ?? throw new ArgumentNullException(nameof(characterDataRepo));
 			ZoneService = zoneService ?? throw new ArgumentNullException(nameof(zoneService));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			NetworkClientManager = networkClientManager ?? throw new ArgumentNullException(nameof(networkClientManager));
 		}
 
 		//TODO: We need to handle failure cases, maybe with a window popup and bringing back to the titlescreen.

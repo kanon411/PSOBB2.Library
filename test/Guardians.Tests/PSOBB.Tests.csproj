@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.1.0" />
+    <PackageReference Include="Generic.Math" Version="1.0.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Moq" Version="4.7.63" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rtm-1060" />
+    <PackageReference Include="protobuf-net" Version="2.3.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Client\PSOBB.Client.Game\PSOBB.Client.Game.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Models.Authentication\PSOBB.Models.Authentication.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Models.ContentServer\PSOBB.Models.ContentServer.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Models.ServerSelection\PSOBB.Models.ServerSelection.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Models.Social\PSOBB.Models.Social.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Network.Common\PSOBB.Network.Common.csproj" />
+    <ProjectReference Include="..\..\src\PSOBB.Payloads.ZoneServer\PSOBB.Payloads.ZoneServer.csproj" />
+    <ProjectReference Include="..\..\src\Server\PSOBB.Database.Common\PSOBB.Database.Common.csproj" />
+    <ProjectReference Include="..\..\src\Server\PSOBB.Database.GameServer\PSOBB.Database.GameServer.csproj" />
+    <ProjectReference Include="..\..\src\Server\PSOBB.Server.ZoneServer\PSOBB.Server.ZoneServer.csproj" />
+    <ProjectReference Include="..\..\src\Server\PSOBB.Service.GameServer\PSOBB.Service.GameServer.csproj" />
+    <ProjectReference Include="..\..\src\Server\PSOBB.Service.ServiceDiscovery\PSOBB.Service.ServiceDiscovery.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Sirenix.OdinInspector.Attributes">
+      <HintPath>..\..\lib\Nido\Sirenix.OdinInspector.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\..\lib\Nido\Sirenix.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization.Config">
+      <HintPath>..\..\lib\Nido\Sirenix.Serialization.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\lib\Unity\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

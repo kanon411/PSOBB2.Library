@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
+    <PackageReference Include="GladNet3.Handler.API" Version="3.0.46" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Refit" Version="4.6.58" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Client\PSOBB.Client.ServiceDiscovery\PSOBB.Client.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Client.Authentication\PSOBB.Client.Authentication.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Models.GameServer\PSOBB.Models.GameServer.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Models.ServiceDiscovery\PSOBB.Models.ServiceDiscovery.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Network.Common\PSOBB.Network.Common.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Social.Common\PSOBB.Social.Common.csproj" />
+    <ProjectReference Include="..\PSOBB.Server.Common\PSOBB.Server.Common.csproj" />
+    <ProjectReference Include="..\PSOBB.Service.Common\PSOBB.Service.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Certs\TestCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certs\TLSCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

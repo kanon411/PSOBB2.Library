@@ -18,72 +18,61 @@ namespace PSOBB
 	/// </summary>
 	/// <typeparam name="TIncomingPayloadType"></typeparam>
 	/// <typeparam name="TOutgoingPayloadType"></typeparam>
-	[Injectee]
-	public abstract class BaseUnityNetworkClient<TIncomingPayloadType, TOutgoingPayloadType> : SerializedMonoBehaviour
+	public class BaseUnityNetworkClient<TIncomingPayloadType, TOutgoingPayloadType> : INetworkClientManager<TIncomingPayloadType, TOutgoingPayloadType>
 		where TOutgoingPayloadType : class 
 		where TIncomingPayloadType : class
 	{
 		/// <summary>
-		/// The managed network client that the Unity3D client is implemented on-top of.
-		/// </summary>
-		[Inject]
-		protected IManagedNetworkClient<TOutgoingPayloadType, TIncomingPayloadType> Client { get; private set; }
-
-		/// <summary>
 		/// The message handler service.
 		/// </summary>
-		[Inject]
 		protected MessageHandlerService<TIncomingPayloadType, TOutgoingPayloadType> Handlers { get; set; }
 
 		/// <summary>
 		/// The logger for the client.
 		/// </summary>
-		[Inject]
 		public ILog Logger { get; private set; }
 
 		/// <summary>
 		/// The message context factory that builds the contexts
 		/// for the handlers.
 		/// </summary>
-		[Inject]
 		protected IPeerMessageContextFactory MessageContextFactory { get; private set; }
-
-		[Inject]
-		private IGameObjectComponentAttachmentFactory AttachmentFactory { get; set; }
-
-		//TODO: Move to IoC
-		private IPeerRequestSendService<TOutgoingPayloadType> RequestService { get; set; }
-
-		/// <summary>
-		/// Indicates if the managed client has been exported from this container.
-		/// </summary>
-		private bool isClientExported = false;
 
 		/// <summary>
 		/// The token source for canceling the read message await.
 		/// </summary>
 		protected CancellationTokenSource CancelTokenSource { get; } = new CancellationTokenSource();
 
+		/// <inheritdoc />
+		protected BaseUnityNetworkClient(
+			MessageHandlerService<TIncomingPayloadType, TOutgoingPayloadType> handlers, 
+			ILog logger, 
+			IPeerMessageContextFactory messageContextFactory)
+		{
+			Handlers = handlers;
+			Logger = logger;
+			MessageContextFactory = messageContextFactory;
+		}
+
 		/// <summary>
 		/// Starts dispatching the messages and won't yield until
 		/// the client has stopped or has disconnected.
 		/// </summary>
 		/// <returns></returns>
-		protected async Task StartDispatchingAsync()
+		protected async Task StartDispatchingAsync([NotNull] IManagedNetworkClient<TOutgoingPayloadType, TIncomingPayloadType> client)
 		{
+			if(client == null) throw new ArgumentNullException(nameof(client));
+
 			try
 			{
-				RequestService = new PayloadInterceptMessageSendService<TOutgoingPayloadType>(Client, Client);
+				IPeerRequestSendService<TOutgoingPayloadType> requestService = new PayloadInterceptMessageSendService<TOutgoingPayloadType>(client, client);
 
-				if(!Client.isConnected && Logger.IsWarnEnabled)
-					Logger.Warn($"The client {name} was not connected before dispatching started.");
+				if(!client.isConnected && Logger.IsWarnEnabled)
+					Logger.Warn($"The client was not connected before dispatching started.");
 
-				while(Client.isConnected && !isClientExported) //if we exported we should reading messages
+				while(client.isConnected && !CancelTokenSource.IsCancellationRequested) //if we exported we should reading messages
 				{
-					//if(Logger.IsDebugEnabled)
-					//	Logger.Debug("Reading message.");
-
-					NetworkIncomingMessage<TIncomingPayloadType> message = await Client.ReadMessageAsync(CancelTokenSource.Token)
+					NetworkIncomingMessage<TIncomingPayloadType> message = await client.ReadMessageAsync(CancelTokenSource.Token)
 						.ConfigureAwait(false);
 
 					//Supress and continue reading
@@ -91,7 +80,7 @@ namespace PSOBB
 					{
 						//We don't do anything with the result. We should hope someone registered
 						//a default handler to deal with this situation
-						bool result = await Handlers.TryHandleMessage(MessageContextFactory.Create(Client, Client, RequestService), message)
+						bool result = await Handlers.TryHandleMessage(MessageContextFactory.Create(client, client, requestService), message)
 							.ConfigureAwait(false);
 					}
 					catch(Exception e)
@@ -114,47 +103,24 @@ namespace PSOBB
 				Logger.Debug("Network client stopped reading.");
 		}
 
-		//TODO: Deal with PSOBB client export
-		/// <summary>
-		/// Exports a <see cref="NonBehaviourDependency"/> for the network client.
-		/// Enabling it for scene persistence.
-		/// </summary>
-		/*public void ExportmanagedClient()
-		{
-			GameObject exportClientObject = new GameObject(@"[ExportedNetClient]");
-
-			AttachmentFactory
-				.AddTo<ExportedClientDependencyRegisterModule>(exportClientObject);
-
-			//We don't want this client to be destroyed
-			DontDestroyOnLoad(exportClientObject);
-			isClientExported = true;
-		}*/
-
-		protected virtual void OnApplicationQuit()
-		{
-			if(!CancelTokenSource.IsCancellationRequested)
-				CancelTokenSource.Cancel();
-
-			if(!isClientExported)
-				Client?.Disconnect();
-				
-		}
-
-		protected virtual void OnDestroy()
-		{
-			if(!CancelTokenSource.IsCancellationRequested)
-				CancelTokenSource.Cancel();
-
-			if(!isClientExported)
-				Client?.Disconnect();
-		}
-
-		protected void CreateDispatchTask()
+		/// <inheritdoc />
+		public Task StartHandlingNetworkClient(IManagedNetworkClient<TOutgoingPayloadType, TIncomingPayloadType> client)
 		{
 			//Don't await because we want start to end.
-			Task.Factory.StartNew(StartDispatchingAsync, CancelTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default)
+			Task.Factory.StartNew(async () => await StartDispatchingAsync(client).ConfigureAwait(false), CancelTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default)
 				.ConfigureAwait(false);
+
+			//We don't want to await it, it needs to run at the same time
+			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
+		public Task StopHandlingNetworkClient()
+		{
+			CancelTokenSource.Cancel();
+			//TODO: Should we await for the dispatch thread to actually end??
+
+			return Task.CompletedTask;
 		}
 	}
 }

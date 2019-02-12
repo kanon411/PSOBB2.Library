@@ -15,12 +15,15 @@ namespace PSOBB
 		//TODO: Don't expose Unity directors directly.
 		private IUIPlayable SceneEndPlayable { get; }
 
+		private IAuthTokenRepository TokenRepository { get; }
+
 		/// <inheritdoc />
 		public TitleScreenOnAuthenticationResultSuccessfulEventListener(IAuthenticationResultRecievedEventSubscribable subscriptionService,
-			[KeyFilter(UnityUIRegisterationKey.Login)] [NotNull] IUIPlayable sceneEndPlayable) 
+			[KeyFilter(UnityUIRegisterationKey.Login)] [NotNull] IUIPlayable sceneEndPlayable, [NotNull] IAuthTokenRepository tokenRepository) 
 			: base(subscriptionService)
 		{
 			SceneEndPlayable = sceneEndPlayable ?? throw new ArgumentNullException(nameof(sceneEndPlayable));
+			TokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
 		}
 
 		/// <inheritdoc />
@@ -34,6 +37,10 @@ namespace PSOBB
 			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
 			{
 				SceneEndPlayable.Play();
+
+				//Init the token repo, otherwise we can't do authorized
+				//requests later at all
+				TokenRepository.Update(args.TokenResult.AccessToken);
 
 				//TODO: Use the scene manager service.
 				AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync(1);

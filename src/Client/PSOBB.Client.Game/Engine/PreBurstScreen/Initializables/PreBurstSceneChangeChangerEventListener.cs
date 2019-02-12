@@ -9,8 +9,10 @@ namespace PSOBB
 	public class PreBurstSceneChangeChangerEventListener : BaseSingleEventListenerInitializable<IServerRequestedSceneChangeEventSubscribable, ServerRequestedSceneChangeEventArgs>
 	{
 		/// <inheritdoc />
-		public PreBurstSceneChangeChangerEventListener(IServerRequestedSceneChangeEventSubscribable subscriptionService) : base(subscriptionService)
+		public PreBurstSceneChangeChangerEventListener(IServerRequestedSceneChangeEventSubscribable subscriptionService) 
+			: base(subscriptionService)
 		{
+			
 		}
 
 		/// <inheritdoc />
@@ -19,7 +21,6 @@ namespace PSOBB
 			//TODO: Is there a better way to abstract this?
 			//We are not likely on the main thread at this point.
 			//So we need to queue up a scene change on the main thread
-
 			UnityExtended.UnityMainThreadContext.Send(state =>
 			{
 				//TODO: We should handle REAL scene changes here.

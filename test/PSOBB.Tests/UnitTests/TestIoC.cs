@@ -97,9 +97,6 @@ namespace Guardians
 			builder.RegisterInstance(Mock.Of<ISceneManager>())
 				.As<ISceneManager>();
 
-			builder.RegisterInstance(Mock.Of<IPlayerTrackingRegisterable>())
-				.As<IPlayerTrackingRegisterable>();
-
 			//Common thing used in temp registeration
 			builder.RegisterInstance(NetworkEntityGuid.Empty)
 				.AsSelf();

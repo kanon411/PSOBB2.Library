@@ -20,12 +20,6 @@ namespace Guardians
 
 		private IReadonlyNetworkTimeService TimeService { get; }
 
-		/// <summary>
-		/// The voice gateway for player entities to enter.
-		/// </summary>
-		private IVoiceGateway VoiceGateway { get; }
-
-		private IPlayerTrackingRegisterable PlayerTracker { get; }
 
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainerMap { get; }
 
@@ -35,9 +29,7 @@ namespace Guardians
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory,
 			IObjectDestructorable<NetworkEntityGuid> entityDestructor,
 			IReadonlyEntityGuidMappable<GameObject> knownEntites,
-			IReadonlyNetworkTimeService timeService, 
-			IVoiceGateway voiceGateway, 
-			[NotNull] IPlayerTrackingRegisterable playerTracker,
+			IReadonlyNetworkTimeService timeService,
 			[NotNull] IReadonlyEntityGuidMappable<IEntityDataFieldContainer> entityDataContainerMap)
 			: base(logger)
 		{
@@ -45,8 +37,6 @@ namespace Guardians
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
-			VoiceGateway = voiceGateway;
-			PlayerTracker = playerTracker ?? throw new ArgumentNullException(nameof(playerTracker));
 			EntityDataContainerMap = entityDataContainerMap ?? throw new ArgumentNullException(nameof(entityDataContainerMap));
 		}
 
@@ -79,13 +69,6 @@ namespace Guardians
 				{
 					GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, GetInitialMovementData(creationData), ComputePrefabTypeFromGuid(creationData.EntityGuid), testData));
 
-					//Join players into the voice gateway
-					if(creationData.EntityGuid.EntityType == EntityType.Player)
-					{
-						VoiceGateway.JoinVoiceSession(creationData.EntityGuid);
-						PlayerTracker.RegisterTracker(entityRootObject.GetComponent<IDissonancePlayer>());
-					}
-
 					SetInitialFieldValues(creationData);
 				}
 				catch(Exception e)
@@ -106,13 +89,6 @@ namespace Guardians
 					continue;
 
 				EntityDestructor.Destroy(destroyData);
-
-				//Join players into the voice gateway
-				if(destroyData.EntityType == EntityType.Player)
-				{
-					PlayerTracker.RemoveTracker(destroyData.RawGuidValue.ToString());
-					VoiceGateway.LeaveVoiceSession(destroyData);
-				}
 			}
 		}
 

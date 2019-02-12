@@ -22,21 +22,17 @@ namespace Guardians
 
 		private ILocalPlayerDetails LocalPlayerDetails { get; }
 
-		private IPlayerTrackingRegisterable PlayerTracker { get; }
-
 		/// <inheritdoc />
 		public PlayerSelfSpawnEventHandler(
 			ILog logger, 
 			IFactoryCreatable<GameObject, DefaultEntityCreationContext> playerFactory,
 			IReadOnlyCollection<IGameInitializable> initializables,
-			ILocalPlayerDetails localPlayerDetails,
-			[NotNull] IPlayerTrackingRegisterable playerTracker)
+			ILocalPlayerDetails localPlayerDetails)
 			: base(logger)
 		{
 			PlayerFactory = playerFactory ?? throw new ArgumentNullException(nameof(playerFactory));
 			Initializables = initializables ?? throw new ArgumentNullException(nameof(initializables));
 			LocalPlayerDetails = localPlayerDetails ?? throw new ArgumentNullException(nameof(localPlayerDetails));
-			PlayerTracker = playerTracker ?? throw new ArgumentNullException(nameof(playerTracker));
 		}
 
 		/// <inheritdoc />
@@ -57,9 +53,6 @@ namespace Guardians
 
 			//Set local player entity guid, lots of dependencies need this set to work.
 			LocalPlayerDetails.LocalPlayerGuid = payload.CreationData.EntityGuid;
-
-			//TODO: Assuming that the root has the player tracking data
-			PlayerTracker.RegisterTracker(playerGameObject.GetComponent<IDissonancePlayer>());
 
 			//Call all OnGameInitializables
 			foreach(var init in Initializables)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Autofac;
+using Common.Logging;
 
 namespace PSOBB.Client
 {
@@ -35,6 +36,14 @@ namespace PSOBB.Client
 
 			//Set the sync context
 			UnityExtended.InitializeSyncContext();
+
+			builder.Register(context => LogLevel.All)
+				.As<LogLevel>()
+				.SingleInstance();
+
+			builder.RegisterType<UnityLogger>()
+				.As<ILog>()
+				.SingleInstance();
 
 			//Token module is needed in most scenes.
 			builder.RegisterModule<AuthenticationTokenAutofacModule>();

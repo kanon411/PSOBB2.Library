@@ -6,6 +6,7 @@ using Autofac;
 using Common.Logging;
 using Fasterflect;
 using Moq;
+using PSOBB.Client;
 using SceneJect;
 using SceneJect.Common;
 
@@ -59,7 +60,7 @@ namespace PSOBB
 				.GetExportedTypes()
 				.Where(t => t.Inherits(typeof(Autofac.Module)))
 				.Where(t => !t.IsAbstract) //we can't deal with base abstract autofac modules
-				.Where(t => t != typeof(GameInitializableRegisterationAutofacModule))) //TODO: Make this so we can override the modules better
+				.Where(t => t != typeof(EngineInterfaceRegisterationModule))) //TODO: Make this so we can override the modules better
 			{
 				builder.RegisterModule(Activator.CreateInstance(module) as Module);
 			}
@@ -68,7 +69,7 @@ namespace PSOBB
 			//Register every GameInit module
 			foreach(GameSceneType sceneType in Enum.GetValues(typeof(GameSceneType)))
 			{
-				builder.RegisterModule(new GameInitializableRegisterationAutofacModule(sceneType));
+				builder.RegisterModule(new EngineInterfaceRegisterationModule(sceneType));
 			}
 
 			//Manually register SceneJect services

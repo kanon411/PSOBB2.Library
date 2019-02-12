@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Features.AttributeFilters;
-using Fasterflect;
-using SceneJect.Common;
 using UnityEngine;
 
 namespace PSOBB
 {
-	//TODO: Convert to AutoFac Module
-	public class AutoCreatedRegisteration : NonBehaviourDependency
+	public sealed class EngineInterfaceRegisterationModule : Module
 	{
 		private static Type[] EngineTypes = new Type[] { typeof(IGameTickable), typeof(IGameInitializable) };
 
@@ -20,22 +16,25 @@ namespace PSOBB
 		/// <summary>
 		/// The scene to load initializables for.
 		/// </summary>
-		[SerializeField]
-		private GameSceneType SceneType;
+		private GameSceneType SceneType { get; }
 
-		void Awake()
+		/// <inheritdoc />
+		public EngineInterfaceRegisterationModule(GameSceneType sceneType)
 		{
-			if(!Enum.IsDefined(typeof(GameSceneType), SceneType))
-				throw new InvalidOperationException($"Invalid {nameof(GameSceneType)}: {(byte)SceneType}");
+			SceneType = sceneType;
+		}
+
+		private EngineInterfaceRegisterationModule()
+		{
+
 		}
 
 		/// <inheritdoc />
-		public override void Register(ContainerBuilder builder)
+		protected override void Load(ContainerBuilder builder)
 		{
 			foreach(var creatable in GetType().Assembly.GetTypes()
-				.Where(t => EngineTypes.Any(et => t.Implements(et)))
-				.Where(t => t.Attributes<SceneTypeCreateAttribute>().Any(a => a.SceneType == SceneType))
-				.Where(t => OnFilterCreationType(t)))
+				.Where(t => EngineTypes.Any(et => et.IsAssignableFrom(t))) //TODO: Is this accurate?
+				.Where(t => t.GetCustomAttributes(typeof(SceneTypeCreateAttribute), false).Any(a => ((SceneTypeCreateAttribute)a).SceneType == SceneType)))
 			{
 				//TODO: DO we need register self?
 				var registrationBuilder = builder.RegisterType(creatable)
@@ -46,20 +45,15 @@ namespace PSOBB
 
 				//We should also iterate all RegisterationAs attributes and register
 				//the types under those too
-				foreach(var regAttri in creatable.GetCustomAttributes<AdditionalRegisterationAsAttribute>(false))
+				foreach(var regAttri in creatable.GetCustomAttributes(typeof(AdditionalRegisterationAsAttribute), false))
 				{
-					registrationBuilder = registrationBuilder.As(regAttri.ServiceType);
+					registrationBuilder = registrationBuilder.As(((AdditionalRegisterationAsAttribute)regAttri).ServiceType);
 				}
 
 				foreach(Type engineType in EngineTypes)
-					if(creatable.Implements(engineType))
+					if(engineType.IsAssignableFrom(creatable))
 						registrationBuilder = registrationBuilder.As(engineType);
 			}
-		}
-
-		protected virtual bool OnFilterCreationType(Type t)
-		{
-			return true;
 		}
 	}
 }

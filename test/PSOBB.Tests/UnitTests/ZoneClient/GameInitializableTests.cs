@@ -8,6 +8,7 @@ using Castle.Core.Internal;
 using Fasterflect;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using PSOBB;
 
 namespace PSOBB
 {
@@ -38,8 +39,9 @@ namespace PSOBB
 		{
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
-			GameInitializableRegisterationAutofacModule module = new GameInitializableRegisterationAutofacModule(sceneType);
-			module.Load(builder, GetType().Assembly);
+			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType);
+			builder.RegisterModule(module);
+
 			IReadOnlyCollection<IGameInitializable> initiablizes = builder.Build().Resolve<IReadOnlyCollection<IGameInitializable>>();
 
 			//act

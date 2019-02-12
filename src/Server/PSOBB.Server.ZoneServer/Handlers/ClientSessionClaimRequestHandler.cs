@@ -45,8 +45,8 @@ namespace PSOBB
 			catch(Exception e) //we could get an unauthorized response
 			{
 				Logger.Error($"Failed to Query for AccountId: {e.Message}. AuthToken provided was: {payload.JWT}");
+				throw;
 			}
-
 
 			if(!zoneServerTryClaimSessionResponse.isSuccessful)
 			{

@@ -45,7 +45,6 @@ namespace PSOBB
 				CharacterSessionEnterResponse enterResponse = await CharacterService.TryEnterSession(args.CharacterGuid.EntityId, AuthTokenRepo.RetrieveWithType())
 					.ConfigureAwait(true);
 
-
 				//TODO: handle character session failure
 				CharacterData.UpdateCharacterId(args.CharacterGuid.EntityId);
 

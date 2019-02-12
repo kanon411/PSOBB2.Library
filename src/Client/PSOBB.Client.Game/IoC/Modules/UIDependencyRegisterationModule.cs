@@ -9,10 +9,10 @@ using UnityEngine.SceneManagement;
 
 namespace PSOBB
 {
-	public sealed class ZoneUIDependencyRegisterationModule : NonBehaviourDependency
+	public sealed class UIDependencyRegisterationModule : Module
 	{
 		/// <inheritdoc />
-		public override void Register(ContainerBuilder register)
+		protected override void Load(ContainerBuilder register)
 		{
 			//Because of active load scene, we have to iterate each scene
 			for(int i = 0; i < SceneManager.sceneCount; i++)

@@ -13,7 +13,15 @@ namespace PSOBB.Client
 		/// <inheritdoc />
 		protected override CommonGameDependencyModule CreateModule()
 		{
+			UnityExtended.UnityUIAsyncContinuationBehaviour = this.gameObject.AddComponent<UnityUIAsyncContinuationBehaviour>();
+
 			return new CommonGameDependencyModule(SceneType);
+		}
+
+		//TODO: Move this somewhere else
+		internal class UnityUIAsyncContinuationBehaviour : MonoBehaviour
+		{
+
 		}
 	}
 }

@@ -41,6 +41,7 @@ namespace PSOBB.Client
 			builder.RegisterModule<GameClientMessageHandlerAutofacModule>();
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene));
+			builder.RegisterModule(new UIDependencyRegisterationModule());
 		}
 	}
 }

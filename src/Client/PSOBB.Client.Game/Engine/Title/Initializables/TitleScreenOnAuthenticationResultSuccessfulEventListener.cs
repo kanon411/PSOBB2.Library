@@ -37,20 +37,9 @@ namespace PSOBB
 
 				//TODO: Use the scene manager service.
 				AsyncOperation loadSceneAsync = SceneManager.LoadSceneAsync(1);
+				loadSceneAsync.allowSceneActivation = false;
 
-				//We do a wait so the screen is mostly black before we attempt to async load the scene
-				await Task.Delay(2000);
-
-				try
-				{
-					loadSceneAsync.allowSceneActivation = false;
-				}
-				catch(Exception e)
-				{
-					throw new InvalidOperationException($"Unable to load or set scene as not load immediately. Scene: {1}. Exception: {e.GetType().Name} Reason: {e.Message}\n\n Stack: {e.StackTrace}");
-				}
-
-				await Task.Delay(2500);
+				await Task.Delay(4500);
 
 				loadSceneAsync.allowSceneActivation = true;
 			});

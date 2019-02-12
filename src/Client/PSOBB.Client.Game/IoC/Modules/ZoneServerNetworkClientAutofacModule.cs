@@ -42,6 +42,11 @@ namespace PSOBB
 			builder.RegisterType<PayloadInterceptMessageSendService<GameClientPacketPayload>>()
 				.As<IPeerRequestSendService<GameClientPacketPayload>>()
 				.SingleInstance();
+
+			//Now, with the new design we also have to register the game client itself
+			builder.RegisterType<GameNetworkClient>()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 	}
 }

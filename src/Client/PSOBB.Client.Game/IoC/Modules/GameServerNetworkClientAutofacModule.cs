@@ -10,6 +10,9 @@ namespace PSOBB
 {
 	public sealed class GameServerNetworkClientAutofacModule : Module
 	{
+		//TODO: We need to clean this up on returning to the titlescreen or something. Assuming we aren't auto-disconnected.
+		private static IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload> GloballyManagedClient { get; set; }
+
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
@@ -23,13 +26,15 @@ namespace PSOBB
 
 			ProtobufNetGladNetSerializerAdapter serializer = new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32);
 
-			IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload> client = new DotNetTcpClientNetworkClient()
+			//The idea here is if the global network client it's null we should use it as the instance.
+			if(GloballyManagedClient == null || !GloballyManagedClient.isConnected)
+				GloballyManagedClient = new DotNetTcpClientNetworkClient()
 				.AddHeaderlessNetworkMessageReading(serializer)
 				.For<GameServerPacketPayload, GameClientPacketPayload, IPacketPayload>()
 				.Build()
 				.AsManaged(new UnityLogger(LogLevel.All)); //TODO: How should we handle log level?
 
-			builder.RegisterInstance(client)
+			builder.RegisterInstance(GloballyManagedClient)
 				.As<IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload>>()
 				.As<IPeerPayloadSendService<GameClientPacketPayload>>()
 				.As<IPayloadInterceptable>()

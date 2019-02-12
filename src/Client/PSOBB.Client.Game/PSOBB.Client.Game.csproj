@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\Attributes\**" />
+    <Compile Remove="UI\WorldLoad\**" />
+    <EmbeddedResource Remove="UI\Attributes\**" />
+    <EmbeddedResource Remove="UI\WorldLoad\**" />
+    <None Remove="UI\Attributes\**" />
+    <None Remove="UI\WorldLoad\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
     <PackageReference Include="GladNet3.Client.API" Version="3.0.46" />
     <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.46" />
@@ -52,8 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\Attributes\" />
-    <Folder Include="UI\WorldLoad\" />
+    <Folder Include="Engine\Title\Tickables\" />
   </ItemGroup>
 
 </Project>

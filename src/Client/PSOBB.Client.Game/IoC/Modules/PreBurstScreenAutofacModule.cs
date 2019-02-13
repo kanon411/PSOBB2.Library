@@ -7,23 +7,8 @@ using Refit;
 
 namespace PSOBB
 {
-	public sealed class LoadingScreenDefaultAutofacModule : NetworkServiceDiscoveryableAutofaceModule
+	public sealed class PreBurstScreenAutofacModule : NetworkServiceDiscoveryableAutofaceModule
 	{
-		private string ServiceDiscoveryUrl { get; }
-
-		/// <inheritdoc />
-		public LoadingScreenDefaultAutofacModule(string serviceDiscoveryUrl)
-		{
-			if(string.IsNullOrEmpty(serviceDiscoveryUrl)) throw new ArgumentException("Value cannot be null or empty.", nameof(serviceDiscoveryUrl));
-			ServiceDiscoveryUrl = serviceDiscoveryUrl;
-		}
-
-		public LoadingScreenDefaultAutofacModule()
-		{
-			//Default URL
-			ServiceDiscoveryUrl = @"http://localhost:80";
-		}
-
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{

@@ -11,25 +11,9 @@ namespace PSOBB
 {
 	public sealed class AuthenticationDependencyAutofacModule : Module
 	{
-		/// <summary>
-		/// The URl for service discovery. This is important
-		/// because the authentication service needs to know where its endpoint is
-		/// and can't without querying the service discovery service first.
-		/// </summary>
-		private string ServiceDiscoveryUrl { get; }
-
 		public AuthenticationDependencyAutofacModule()
 		{
-			//Default registeration will result in a MOCK URL
-			ServiceDiscoveryUrl = @"http://localhost:80";
-		}
-
-		/// <inheritdoc />
-		public AuthenticationDependencyAutofacModule(string serviceDiscoveryUrl)
-		{
-			if(string.IsNullOrWhiteSpace(serviceDiscoveryUrl)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(serviceDiscoveryUrl));
-
-			ServiceDiscoveryUrl = serviceDiscoveryUrl;
+			
 		}
 
 		/// <inheritdoc />

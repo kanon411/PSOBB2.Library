@@ -20,7 +20,7 @@ namespace PSOBB.Client
 		/// <summary>
 		/// Default autofac ctor.
 		/// </summary>
-		private CommonGameDependencyModule()
+		public CommonGameDependencyModule()
 		{
 			//We shouldn't call this, I don't think.
 		}

@@ -13,14 +13,6 @@ namespace PSOBB
 	/// </summary>
 	public sealed class AuthenticationRegisterModule : AutofacBasedDependencyRegister<AuthenticationDependencyAutofacModule>
 	{
-		[SerializeField]
-		private string ServiceDiscoveryUrl;
 
-		/// <inheritdoc />
-		protected override AuthenticationDependencyAutofacModule CreateModule()
-		{
-			//We need to provide the Service Disc URL to the auth module so we have to override
-			return new AuthenticationDependencyAutofacModule(ServiceDiscoveryUrl);
-		}
 	}
 }

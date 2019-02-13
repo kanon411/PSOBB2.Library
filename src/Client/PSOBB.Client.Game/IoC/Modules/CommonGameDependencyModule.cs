@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Autofac;
 using Common.Logging;
+using Refit;
 
 namespace PSOBB.Client
 {
@@ -14,19 +15,24 @@ namespace PSOBB.Client
 		/// </summary>
 		private GameSceneType Scene { get; }
 
+		private string ServiceDiscoveryUrl { get; }
+
 		/// <summary>
 		/// Default autofac ctor.
 		/// </summary>
-		public CommonGameDependencyModule()
+		private CommonGameDependencyModule()
 		{
 			//We shouldn't call this, I don't think.
 		}
 
+		//TODO: Shoudl we expose the ServiceDiscovery URL to the editor? Is there value in that?
 		/// <inheritdoc />
-		public CommonGameDependencyModule(GameSceneType scene)
+		public CommonGameDependencyModule(GameSceneType scene, [NotNull] string serviceDiscoveryUrl = "http://192.168.0.3")
 		{
 			if(!Enum.IsDefined(typeof(GameSceneType), scene)) throw new InvalidEnumArgumentException(nameof(scene), (int)scene, typeof(GameSceneType));
+
 			Scene = scene;
+			ServiceDiscoveryUrl = serviceDiscoveryUrl ?? throw new ArgumentNullException(nameof(serviceDiscoveryUrl));
 		}
 
 		/// <inheritdoc />
@@ -63,6 +69,10 @@ namespace PSOBB.Client
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene));
 			builder.RegisterModule(new UIDependencyRegisterationModule());
+
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
+				.As<IServiceDiscoveryService>()
+				.SingleInstance();
 		}
 	}
 }

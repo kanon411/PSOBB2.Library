@@ -35,10 +35,6 @@ namespace PSOBB
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
-				.As<IServiceDiscoveryService>()
-				.SingleInstance();
-
 			builder.Register<IAuthenticationService>(context =>
 			{
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();

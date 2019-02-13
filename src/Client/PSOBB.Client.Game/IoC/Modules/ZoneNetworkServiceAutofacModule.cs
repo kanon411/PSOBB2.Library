@@ -24,10 +24,6 @@ namespace PSOBB
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://sd.vrguardians.net:5000"))
-				.As<IServiceDiscoveryService>()
-				.SingleInstance();
-
 			builder.Register(context =>
 				{
 					//The below is not true for right now, we have global service discovery point to the gameserver for testing.

@@ -34,13 +34,6 @@ namespace PSOBB
 
 			ContainerBuilder register = builder;
 
-			//Postsharp requires we setup some backend stuff
-			//CachingServices.DefaultBackend = new MemoryCachingBackend();
-
-			register.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
-				.As<IServiceDiscoveryService>()
-				.SingleInstance();
-
 			register.Register(context =>
 			{
 				//The below is not true for right now, we have global service discovery point to the gameserver for testing.

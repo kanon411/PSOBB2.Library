@@ -26,8 +26,9 @@ namespace PSOBB
 				//TODO: We should handle REAL scene changes here.
 				int currentIndex = SceneManager.GetActiveScene().buildIndex;
 
+				//TODO: Move to a solution that won't require a +1 (will be confusing to designers)
 				//PreBurst scene should always be the last scene before playable scenes.
-				int sceneIndexToLoad = currentIndex + (int)args.SceneRequested;
+				int sceneIndexToLoad = currentIndex + (int)args.SceneRequested + 1; //otherwise 0th enum index.
 
 				SceneManager.LoadSceneAsync(sceneIndexToLoad, LoadSceneMode.Single).allowSceneActivation = true;
 			}, null);

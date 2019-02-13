@@ -34,6 +34,8 @@ namespace PSOBB
 		{
 			IEnumerable<Type> handlerTypes = LoadHandlerTypes().ToArray();
 
+			StringBuilder handlerResultString = new StringBuilder(200);
+
 			//Registers each type.
 			foreach(Type handlerType in handlerTypes)
 			{
@@ -44,6 +46,8 @@ namespace PSOBB
 				if(attributes == null || !attributes.Any())  //don't use base attributes
 					continue;
 
+				handlerResultString.AppendLine($"Register Handler: {handlerType.Name}");
+
 				bool isForSceneType = DetermineIfHandlerIsForSceneType(handlerType, SceneType);
 
 				//if it's not for the specified scene type, then skip.
@@ -52,15 +56,25 @@ namespace PSOBB
 
 				var handlerRegisterationBuilder = builder.RegisterType(handlerType)
 					.AsSelf()
-					.SingleInstance();
+					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>()
+					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload, IPeerMessageContext<GameClientPacketPayload>>>();
 
 				//Now we need to register it as the additional specified types
 				foreach(var additionalServiceTypeAttri in handlerType.GetCustomAttributes<AdditionalRegisterationAsAttribute>(true))
 				{
+					handlerResultString.AppendLine($"\t As Also: Register Handler: {additionalServiceTypeAttri.ServiceType}");
+
 					handlerRegisterationBuilder = handlerRegisterationBuilder
 						.As(additionalServiceTypeAttri.ServiceType);
 				}
+
+				//Only ever want one handler, otherwise... things get werid with AdditionalRegisterationAsAttributes.
+				handlerRegisterationBuilder = handlerRegisterationBuilder.SingleInstance();
+
+				handlerResultString.AppendLine("\n\n");
 			}
+
+			Debug.Log(handlerResultString.ToString());
 		}
 
 		private IReadOnlyCollection<Type> LoadHandlerTypes()
@@ -68,7 +82,7 @@ namespace PSOBB
 			return GetType().GetTypeInfo()
 				.Assembly
 				.GetTypes()
-				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,>)) && !t.IsAbstract)
+				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerMessageHandler<,>)) && !t.IsAbstract)
 				.Where(t => t != typeof(ZoneClientDefaultRequestHandler))
 				.ToArray();
 		}

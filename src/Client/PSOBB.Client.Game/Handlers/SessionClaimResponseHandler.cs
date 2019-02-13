@@ -17,6 +17,7 @@ namespace PSOBB
 		public SessionClaimResponseHandler(ILog logger)
 			: base(logger)
 		{
+
 		}
 
 		/// <inheritdoc />

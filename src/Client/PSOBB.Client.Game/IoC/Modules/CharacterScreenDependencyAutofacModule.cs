@@ -65,10 +65,6 @@ namespace PSOBB
 			register.Register(context => new CachedNameQueryServiceDecorator(new RemoteNetworkedNameQueryService(context.Resolve<ICharacterService>())))
 				.As<INameQueryService>()
 				.SingleInstance();
-
-			register.RegisterType<LocalCharacterDataRepository>()
-				.As<ICharacterDataRepository>()
-				.SingleInstance();
 		}
 	}
 }

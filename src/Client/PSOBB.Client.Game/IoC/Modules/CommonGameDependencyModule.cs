@@ -45,6 +45,10 @@ namespace PSOBB.Client
 				.As<ILog>()
 				.SingleInstance();
 
+			builder.RegisterType<LocalCharacterDataRepository>()
+				.As<ICharacterDataRepository>()
+				.SingleInstance();
+
 			//Token module is needed in most scenes.
 			builder.RegisterModule<AuthenticationTokenAutofacModule>();
 			

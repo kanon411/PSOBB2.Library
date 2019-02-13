@@ -74,10 +74,6 @@ namespace PSOBB
 				.AsImplementedInterfaces()
 				.SingleInstance();
 
-			builder.RegisterType<LocalCharacterDataRepository>()
-				.As<ICharacterDataRepository>()
-				.SingleInstance();
-
 			RegisterEntityMappableCollections(builder);
 
 			//TODO: This is legacy

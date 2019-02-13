@@ -10,6 +10,7 @@ namespace PSOBB
 	/// <summary>
 	/// The handling of the session claim response.
 	/// </summary>
+	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
 	public sealed class SessionClaimResponseHandler : BaseZoneClientGameMessageHandler<ClientSessionClaimResponsePayload>
 	{
 		/// <inheritdoc />

@@ -46,13 +46,13 @@ namespace PSOBB
 				if(attributes == null || !attributes.Any())  //don't use base attributes
 					continue;
 
-				handlerResultString.AppendLine($"Register Handler: {handlerType.Name}");
-
 				bool isForSceneType = DetermineIfHandlerIsForSceneType(handlerType, SceneType);
 
 				//if it's not for the specified scene type, then skip.
 				if(!isForSceneType)
 					continue;
+
+				handlerResultString.AppendLine($"Register Handler: {handlerType.Name}");
 
 				var handlerRegisterationBuilder = builder.RegisterType(handlerType)
 					.AsSelf()

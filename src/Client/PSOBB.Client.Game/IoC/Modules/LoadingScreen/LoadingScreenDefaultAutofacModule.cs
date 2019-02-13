@@ -32,16 +32,6 @@ namespace PSOBB
 
 			base.Load(builder);
 
-			//Set the sync context
-			UnityExtended.InitializeSyncContext();
-
-			//Postsharp requires we setup some backend stuff
-			//CachingServices.DefaultBackend = new MemoryCachingBackend();
-
-			register.RegisterInstance(new UnityLogger(LogLevel.All))
-				.As<ILog>()
-				.SingleInstance();
-
 			register.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();
@@ -60,10 +50,6 @@ namespace PSOBB
 				.As<ICharacterService>()
 				.SingleInstance();
 
-			register.RegisterType<LocalCharacterDataRepository>()
-				.As<ICharacterDataRepository>()
-				.SingleInstance();
-
 			register.Register(context =>
 				{
 					//The below is not true for right now, we have global service discovery point to the gameserver for testing.
@@ -76,20 +62,6 @@ namespace PSOBB
 					return new AsyncEndpointZoneServerService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"));
 				})
 				.As<IZoneServerService>()
-				.SingleInstance();
-
-			register.Register(context =>
-				{
-					//The below is not true for right now, we have global service discovery point to the gameserver for testing.
-					//This registeration is abit complicated
-					//because we are skipping the game server selection
-					//to do this we must query the service discovery and THEN
-					//we query the the gameserver's service discovery.
-					IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
-
-					return new AsyncEndpointContentServerService(QueryForRemoteServiceEndpoint(serviceDiscovery, "ContentServer"));
-				})
-				.As<IContentServerServiceClient>()
 				.SingleInstance();
 		}
 	}

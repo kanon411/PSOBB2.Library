@@ -76,6 +76,9 @@ namespace PSOBB
 				catch(ApiException e)
 				{
 					jwtModel = e.GetContentAs<JWTModel>();
+
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Encountered Auth Error: {e.Message}");
 				}
 				finally
 				{

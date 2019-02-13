@@ -131,6 +131,8 @@ namespace PSOBB
 				.As<INetworkMessageSender<EntityMovementMessageContext>>()
 				.AsSelf();
 
+			//Keep this one here, zoneserver needs it.
+			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(@"http://192.168.0.3:5000"));
 			builder.Register(context =>
 			{
 				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();

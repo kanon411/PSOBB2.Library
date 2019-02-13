@@ -8,8 +8,9 @@ using GladNet;
 
 namespace PSOBB
 {
+	[AdditionalRegisterationAs(typeof(INetworkConnectionEstablishedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
-	public sealed class PreBurstStartInstanceClientConnection : IGameInitializable
+	public sealed class PreBurstStartInstanceClientConnection : IGameInitializable, INetworkConnectionEstablishedEventSubscribable
 	{
 		/// <summary>
 		/// The managed network client that the Unity3D client is implemented on-top of.
@@ -27,6 +28,9 @@ namespace PSOBB
 		private ILog Logger { get; }
 
 		private INetworkClientManager NetworkClientManager { get; }
+
+		/// <inheritdoc />
+		public event EventHandler OnNetworkConnectionEstablished;
 
 		/// <inheritdoc />
 		public PreBurstStartInstanceClientConnection([NotNull] IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload> client, [NotNull] ICharacterService characterDataService, [NotNull] IReadonlyAuthTokenRepository authTokenRepo, [NotNull] ICharacterDataRepository characterDataRepo, [NotNull] IZoneServerService zoneService, [NotNull] ILog logger, [NotNull] INetworkClientManager networkClientManager)
@@ -85,6 +89,9 @@ namespace PSOBB
 			//since it's connecting the manager should start pumping the messages out of it.
 			await NetworkClientManager.StartHandlingNetworkClient(Client)
 				.ConfigureAwait(true);
+
+			//We should broadcast that the connection has been established to any interested subscribers
+			OnNetworkConnectionEstablished?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

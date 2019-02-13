@@ -11,17 +11,18 @@ namespace PSOBB
 	/// This is the default handler that is invoked when an unknown payload is encountered.
 	/// Or a payload is encountered that doesn't have a registered handler.
 	/// </summary>
-	public sealed class ZoneClientDefaultRequestHandler : BaseZoneClientGameMessageHandler<GameServerPacketPayload>
+	public sealed class ZoneClientDefaultRequestHandler : IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>
 	{
-		/// <inheritdoc />
-		public ZoneClientDefaultRequestHandler(ILog logger)
-			: base(logger)
-		{
+		private ILog Logger { get; }
 
+		/// <inheritdoc />
+		public ZoneClientDefaultRequestHandler([NotNull] ILog logger)
+		{
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
-		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, GameServerPacketPayload payload)
+		public Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, GameServerPacketPayload payload)
 		{
 			if(Logger.IsWarnEnabled)
 				Logger.Warn($"Recieved unhandable Payload: {payload.GetType().Name}");

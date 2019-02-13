@@ -28,7 +28,7 @@ namespace PSOBB
 		{
 			//TODO: Check result
 			//We don't need to be on the main thread to send a session claim request.
-			await SendService.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepository.Retrieve(), CharacterDataRepository.CharacterId))
+			await SendService.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepository.RetrieveWithType(), CharacterDataRepository.CharacterId))
 				.ConfigureAwait(false);
 		}
 	}

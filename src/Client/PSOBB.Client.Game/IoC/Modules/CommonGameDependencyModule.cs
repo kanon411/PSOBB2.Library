@@ -49,6 +49,11 @@ namespace PSOBB.Client
 				.As<ICharacterDataRepository>()
 				.SingleInstance();
 
+			builder.RegisterType<AuthenticationTokenRepository>()
+				.As<IAuthTokenRepository>()
+				.As<IReadonlyAuthTokenRepository>()
+				.SingleInstance();
+
 			//Token module is needed in most scenes.
 			builder.RegisterModule<AuthenticationTokenAutofacModule>();
 			

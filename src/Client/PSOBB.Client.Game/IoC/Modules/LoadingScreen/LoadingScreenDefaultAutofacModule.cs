@@ -42,10 +42,6 @@ namespace PSOBB
 				.As<ILog>()
 				.SingleInstance();
 
-			register.RegisterType<AuthenticationTokenRepository>()
-				.As<IReadonlyAuthTokenRepository>()
-				.SingleInstance();
-
 			register.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();

@@ -37,11 +37,6 @@ namespace PSOBB
 			//Postsharp requires we setup some backend stuff
 			//CachingServices.DefaultBackend = new MemoryCachingBackend();
 
-			register.RegisterType<AuthenticationTokenRepository>()
-				.As<IReadonlyAuthTokenRepository>()
-				.As<IAuthTokenRepository>()
-				.SingleInstance();
-
 			register.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();

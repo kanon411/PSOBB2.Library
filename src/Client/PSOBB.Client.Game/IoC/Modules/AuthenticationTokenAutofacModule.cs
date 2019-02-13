@@ -21,11 +21,7 @@ namespace PSOBB
 
 		protected virtual void RegisterAuthenticationTokenRepository(ContainerBuilder builder)
 		{
-			//This is used in many scenes to get and/or set the
-			//the auth token for the session.
-			builder.RegisterType<AuthenticationTokenRepository>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
+
 		}
 	}
 }

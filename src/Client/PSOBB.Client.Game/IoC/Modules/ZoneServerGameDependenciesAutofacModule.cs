@@ -82,11 +82,6 @@ namespace PSOBB
 				.As<IGameObjectToEntityMappable>()
 				.SingleInstance();
 
-			//Auth token
-			builder.RegisterType<AuthenticationTokenRepository>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
-
 			builder.RegisterType<DefaultLoadableContentResourceManager>()
 				.As<ILoadableContentResourceManager>()
 				.As<IDisposable>()

@@ -16,9 +16,6 @@ namespace PSOBB
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			//Set the sync context
-			UnityExtended.InitializeSyncContext();
-
 			builder.RegisterType<DefaultEntityFactory<DefaultEntityCreationContext>>()
 				.As<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>()
 				.AsSelf()
@@ -50,21 +47,6 @@ namespace PSOBB
 				.As<IMovementBlockHandler>()
 				.AsSelf();
 
-			builder.RegisterType<MovementSimulationTickable>()
-				.As<IGameTickable>()
-				.AsSelf()
-				.SingleInstance();
-
-			builder.RegisterType<EntityDataChangeTickable>()
-				.As<IGameTickable>()
-				.AsSelf()
-				.SingleInstance();
-
-			builder.RegisterType<ChatMessageHandlerTickable>()
-				.As<IGameTickable>()
-				.AsSelf()
-				.SingleInstance();
-
 			//This service is required by the entity data change system/tickable
 			builder.RegisterType<EntityDataChangeCallbackManager>()
 				.AsImplementedInterfaces()
@@ -80,21 +62,6 @@ namespace PSOBB
 			builder.RegisterType<DefaultGameObjectToEntityMappable>()
 				.As<IReadonlyGameObjectToEntityMappable>()
 				.As<IGameObjectToEntityMappable>()
-				.SingleInstance();
-
-			builder.RegisterType<DefaultLoadableContentResourceManager>()
-				.As<ILoadableContentResourceManager>()
-				.As<IDisposable>()
-				.AsSelf()
-				.SingleInstance();
-
-			//Text chat factory
-			builder.RegisterType<DefaultTextChatEventFactory>()
-				.As<ITextChatEventFactory>();
-
-			//Text queue
-			builder.RegisterType<Queue<TextChatEventData>>()
-				.AsSelf()
 				.SingleInstance();
 		}
 

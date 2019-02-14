@@ -8,10 +8,14 @@ namespace PSOBB
 {
 	//The name might be confusing, but it just an event listener
 	//that spawns the player on selfspawnevent.
+	[AdditionalRegisterationAs(typeof(ILocalPlayerSpawnedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class LobbySelfPlayerSpawnSpawnPlayerEventListener : BaseSingleEventListenerInitializable<ISelfPlayerSpawnEventSubscribable, SelfPlayerSpawnEventArgs>
+	public sealed class LobbySelfPlayerSpawnSpawnPlayerEventListener : BaseSingleEventListenerInitializable<ISelfPlayerSpawnEventSubscribable, SelfPlayerSpawnEventArgs>, ILocalPlayerSpawnedEventSubscribable
 	{
 		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> PlayerFactory { get; }
+
+		/// <inheritdoc />
+		public event EventHandler<LocalPlayerSpawnedEventArgs> OnLocalPlayerSpawned;
 
 		/// <inheritdoc />
 		public LobbySelfPlayerSpawnSpawnPlayerEventListener([NotNull] ISelfPlayerSpawnEventSubscribable subscriptionService, [NotNull] IFactoryCreatable<GameObject, DefaultEntityCreationContext> playerFactory) 
@@ -27,6 +31,9 @@ namespace PSOBB
 
 			//Don't do any checks for now, we just spawn
 			GameObject playerGameObject = PlayerFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, EntityPrefab.LocalPlayer, entityData));
+
+			//Broadcast that the player has spawned.
+			OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.CreationData.EntityGuid));
 		}
 
 		private static EntityFieldDataCollection<EntityDataFieldType> CreateEntityDataCollectionFromPayload(FieldValueUpdate fieldUpdateValues)

@@ -9,6 +9,7 @@ using Nito.AsyncEx;
 
 namespace PSOBB
 {
+	//TODO: Server need to be rewritten to no longer require sceneject injection on components.
 	//TODO: Refactor this, it's becoming quie bloated and depends on nearly everything.
 	public class DefaultEntityFactory<TCreationContext> : IFactoryCreatable<GameObject, TCreationContext>
 		where TCreationContext : IEntityCreationContext
@@ -20,9 +21,6 @@ namespace PSOBB
 		private IEntityGuidMappable<IMovementData> GuidToMovementInfoMappable { get; }
 
 		private IGameObjectToEntityMappable GameObjectToEntityMap { get; }
-
-		//Sceneject GameObject factory
-		private IGameObjectFactory ObjectFactory { get; }
 
 		private IFactoryCreatable<GameObject, EntityPrefab> PrefabFactory { get; }
 
@@ -40,7 +38,6 @@ namespace PSOBB
 			IEntityGuidMappable<GameObject> guidToGameObjectMappable, 
 			IEntityGuidMappable<IMovementData> guidToMovementInfoMappable, 
 			IGameObjectToEntityMappable gameObjectToEntityMap, 
-			IGameObjectFactory objectFactory,
 			IFactoryCreatable<GameObject, EntityPrefab> prefabFactory,
 			IMovementDataHandlerService movementHandlerService, 
 			IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers, 
@@ -51,7 +48,6 @@ namespace PSOBB
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
 			GuidToMovementInfoMappable = guidToMovementInfoMappable ?? throw new ArgumentNullException(nameof(guidToMovementInfoMappable));
 			GameObjectToEntityMap = gameObjectToEntityMap ?? throw new ArgumentNullException(nameof(gameObjectToEntityMap));
-			ObjectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
 			PrefabFactory = prefabFactory ?? throw new ArgumentNullException(nameof(prefabFactory));
 			MovementHandlerService = movementHandlerService ?? throw new ArgumentNullException(nameof(movementHandlerService));
 			FieldDataContainers = fieldDataContainers;
@@ -68,9 +64,7 @@ namespace PSOBB
 			//load the entity's prefab from the factory
 			GameObject prefab = PrefabFactory.Create(context.PrefabType);
 
-			GameObject entityGameObject = ObjectFactory.CreateBuilder()
-				.With(Service<NetworkEntityGuid>.As(context.EntityGuid))
-				.Create(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
+			GameObject entityGameObject = GameObject.Instantiate(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(entityGameObject, context.EntityGuid);
 

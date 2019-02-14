@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PSOBB
 {
-	public sealed class ZoneServerGameDependencies : AutofacBasedDependencyRegister<ZoneServerGameDependenciesAutofacModule>
+	public sealed class LobbyGameDependencies : AutofacBasedDependencyRegister<LobbyGameDependenciesAutofacModule>
 	{
 		
 	}

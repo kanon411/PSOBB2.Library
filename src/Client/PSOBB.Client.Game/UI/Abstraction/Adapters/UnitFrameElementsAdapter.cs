@@ -35,19 +35,13 @@ namespace PSOBB
 		//These are the actual serialzied fields.
 
 		[SerializeField]
-		private UnityEngine.UI.Text CurrentHealthText;
-
-		[SerializeField]
-		private UnityEngine.UI.Text MaximumHealthText;
+		private UnityEngine.UI.Text HealthText;
 
 		[SerializeField]
 		private UnityEngine.UI.Image HealthBarImage;
 
 		[SerializeField]
-		private UnityEngine.UI.Text CurrentTechniquePointsText;
-
-		[SerializeField]
-		private UnityEngine.UI.Text MaximumTechniquePointsText;
+		private UnityEngine.UI.Text TechniquePointsText;
 
 		[SerializeField]
 		private UnityEngine.UI.Image TechniquePointsBarImage;
@@ -60,8 +54,8 @@ namespace PSOBB
 
 		void Awake()
 		{
-			HealthBar = new UILabeledBar(new UnityTextUITextAdapterImplementation(CurrentHealthText), new UnityTextUITextAdapterImplementation(MaximumHealthText), new UnityImageUIFillableImageAdapterImplementation(HealthBarImage));
-			TechniquePointsBar = new UILabeledBar(new UnityTextUITextAdapterImplementation(CurrentTechniquePointsText), new UnityTextUITextAdapterImplementation(MaximumTechniquePointsText), new UnityImageUIFillableImageAdapterImplementation(TechniquePointsBarImage));
+			HealthBar = new UILabeledBar(new UnityTextUITextAdapterImplementation(HealthText), new UnityImageUIFillableImageAdapterImplementation(HealthBarImage));
+			TechniquePointsBar = new UILabeledBar(new UnityTextUITextAdapterImplementation(TechniquePointsText), new UnityImageUIFillableImageAdapterImplementation(TechniquePointsBarImage));
 
 			UnitName = new UnityTextUITextAdapterImplementation(PlayerNameText);
 			UnitLevel = new UnityTextUITextAdapterImplementation(UnitLevelText);

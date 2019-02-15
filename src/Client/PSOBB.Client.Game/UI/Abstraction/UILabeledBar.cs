@@ -6,17 +6,14 @@ namespace PSOBB
 {
 	public sealed class UILabeledBar
 	{
-		public IUIText BarCurrent { get; }
-
-		public IUIText BarMaximum { get; }
+		public IUIText BarText { get; }
 
 		public IUIFillableImage BarFillable { get; }
 
 		/// <inheritdoc />
-		public UILabeledBar([NotNull] IUIText barCurrent, [NotNull] IUIText barMaximum, [NotNull] IUIFillableImage barFillable)
+		public UILabeledBar([NotNull] IUIText barText, [NotNull] IUIFillableImage barFillable)
 		{
-			BarCurrent = barCurrent ?? throw new ArgumentNullException(nameof(barCurrent));
-			BarMaximum = barMaximum ?? throw new ArgumentNullException(nameof(barMaximum));
+			BarText = barText ?? throw new ArgumentNullException(nameof(barText));
 			BarFillable = barFillable ?? throw new ArgumentNullException(nameof(barFillable));
 		}
 	}

@@ -39,7 +39,7 @@ namespace PSOBB
 						{
 							//TODO: We don't REALLY want to lock on the dispatching. This could be a REAL bottleneck in the future. We need to redesign this abit
 							//TODO: Might be a better way to handle this API, and provide the value instead of the collection.
-							EntityDataCallbackDispatcher.InvokeChangeEvents(changeTrackerPair.Key, (EntityDataFieldType)changedIndex, changeTrackerPair.Value);
+							EntityDataCallbackDispatcher.InvokeChangeEvents(changeTrackerPair.Key, (EntityDataFieldType)changedIndex, changeTrackerPair.Value.GetFieldValue<int>((int)changedIndex));
 						}
 
 						//After we're done servicing the changes, we should clear the changes.

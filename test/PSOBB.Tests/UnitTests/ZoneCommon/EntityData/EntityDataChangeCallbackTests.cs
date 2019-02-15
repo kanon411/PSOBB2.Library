@@ -48,7 +48,7 @@ namespace PSOBB
 			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
 
 			//assert
-			Assert.DoesNotThrow(() => callbackManager.InvokeChangeEvents(NetworkEntityGuid.Empty, EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>()));
+			Assert.DoesNotThrow(() => callbackManager.InvokeChangeEvents(NetworkEntityGuid.Empty, EntityDataFieldType.EntityCurrentHealth, 5));
 		}
 
 		[Test]
@@ -68,7 +68,7 @@ namespace PSOBB
 				testCallback.Object.GetEnumerator();
 			});
 
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, 5);
 
 			//assert
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Once);
@@ -93,8 +93,8 @@ namespace PSOBB
 			});
 
 			//Call twice
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, 5);
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, 5);
 
 			//assert
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
@@ -127,8 +127,8 @@ namespace PSOBB
 			});
 
 			//Call twice
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, 5);
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)guid), fieldType, 5);
 
 			//assert
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(2));
@@ -158,8 +158,8 @@ namespace PSOBB
 			});
 
 			//Call twice
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>());
-			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, new EntityFieldDataCollection<EntityDataFieldType>());
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, 5);
+			callbackManager.InvokeChangeEvents(new NetworkEntityGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, 5);
 
 			//assert
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(1));

@@ -12,7 +12,7 @@ namespace PSOBB
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <param name="field"></param>
-		/// <param name="dataContainer"></param>
-		void InvokeChangeEvents(NetworkEntityGuid entity, EntityDataFieldType field, IEntityDataFieldContainer dataContainer);
+		/// <param name="dataValueAsInt">The new data value as an integer.</param>
+		void InvokeChangeEvents(NetworkEntityGuid entity, EntityDataFieldType field, int dataValueAsInt);
 	}
 }

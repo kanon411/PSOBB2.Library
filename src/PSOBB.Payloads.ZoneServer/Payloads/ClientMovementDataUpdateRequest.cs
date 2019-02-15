@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
+using UnityEngine;
 
 namespace PSOBB
 {
@@ -18,12 +19,12 @@ namespace PSOBB
 		/// The movement data to update the server with.
 		/// </summary>
 		[ProtoMember(1)]
-		public IMovementData MovementData { get; }
+		public Vector2 MovementInput { get; }
 
 		/// <inheritdoc />
-		public ClientMovementDataUpdateRequest([NotNull] IMovementData movementData)
+		public ClientMovementDataUpdateRequest(Vector2 movementInput)
 		{
-			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
+			MovementInput = movementInput;
 		}
 
 		/// <summary>

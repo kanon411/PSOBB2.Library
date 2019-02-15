@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	//TODO: Rewrite: We need to rewrite this so that this stuff doesn't block networking AND runs IN ORDER on the main thread.
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class FieldValueUpdateEventHandler : BaseZoneClientGameMessageHandler<FieldValueUpdateEvent>
 	{
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainerMap { get; }

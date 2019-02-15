@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 
 namespace PSOBB
 {
-	public sealed class EntityDataChangeTickable : IGameTickable
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	public sealed class EntityDataChangeTrackerTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableMap { get; }
 
 		private IEntityDataChangeCallbackService EntityDataCallbackDispatcher { get; }
 
 		/// <inheritdoc />
-		public EntityDataChangeTickable(IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableMap, IEntityDataChangeCallbackService entityDataCallbackDispatcher)
+		public EntityDataChangeTrackerTickable(IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableMap, IEntityDataChangeCallbackService entityDataCallbackDispatcher)
 		{
 			ChangeTrackableMap = changeTrackableMap ?? throw new ArgumentNullException(nameof(changeTrackableMap));
 			EntityDataCallbackDispatcher = entityDataCallbackDispatcher ?? throw new ArgumentNullException(nameof(entityDataCallbackDispatcher));

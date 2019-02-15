@@ -6,6 +6,8 @@ namespace PSOBB
 {
 	public interface IEntityDataFieldContainer : IReadonlyEntityDataFieldContainer
 	{
+		object SyncObj { get; }
+
 		/// <summary>
 		/// Bit array that indicates what data fields have been set.
 		/// This is not related to the dirty/tracked changes bit array

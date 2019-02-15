@@ -25,6 +25,9 @@ namespace PSOBB
 		private int[] InternalDataFields { get; }
 
 		/// <inheritdoc />
+		public object SyncObj { get; } = new object();
+
+		/// <inheritdoc />
 		public WireReadyBitArray DataSetIndicationArray { get; }
 
 		public EntityFieldDataCollection()
@@ -99,10 +102,13 @@ namespace PSOBB
 		{
 			IfIndexExceedsLengthThrow(index);
 
-			//Whenever someone sets, even if the value is not changing, we should set it being set (not changed).
-			DataSetIndicationArray.Set(index, true);
+			lock(SyncObj)
+			{
+				//Whenever someone sets, even if the value is not changing, we should set it being set (not changed).
+				DataSetIndicationArray.Set(index, true);
 
-			InternalDataFields[index] = Unsafe.As<TValueType, int>(ref value);
+				InternalDataFields[index] = Unsafe.As<TValueType, int>(ref value);
+			}
 		}
 
 		/// <inheritdoc />

@@ -7,6 +7,7 @@ using GladNet;
 
 namespace PSOBB
 {
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class TimeSyncronizationResponseHandler : BaseZoneClientGameMessageHandler<ServerTimeSyncronizationResponsePayload>
 	{
 		private INetworkTimeService TimeService { get; }

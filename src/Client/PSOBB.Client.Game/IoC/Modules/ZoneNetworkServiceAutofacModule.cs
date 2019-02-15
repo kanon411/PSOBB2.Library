@@ -72,13 +72,13 @@ namespace PSOBB
 				.SingleInstance();
 
 			//Social service
-			builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubClient>()
+			/*builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubClient>()
 				.AsImplementedInterfaces()
 				.SingleInstance();
 
 			builder.RegisterType<SignalRForwardedIRemoteSocialTextChatHubServer>()
 				.AsImplementedInterfaces()
-				.SingleInstance();
+				.SingleInstance();*/
 		}
 
 		//TODO: Put this in a base class or something

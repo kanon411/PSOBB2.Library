@@ -28,15 +28,24 @@ namespace PSOBB
 			//may register their interest
 			foreach(var changeTrackerPair in ChangeTrackableMap)
 			{
-				//We need to try to dispatch events for each changed value.
-				foreach(int changedIndex in changeTrackerPair.Value.ChangeTrackingArray.EnumerateSetBitsByIndex())
+				if(changeTrackerPair.Value.HasPendingChanges)
 				{
-					//TODO: Might be a better way to handle this API, and provide the value instead of the collection.
-					EntityDataCallbackDispatcher.InvokeChangeEvents(changeTrackerPair.Key, (EntityDataFieldType)changedIndex, changeTrackerPair.Value);
-				}
+					//We have to lock here otherwise we could encounter race conditions with the
+					//change tracking system.
+					lock(changeTrackerPair.Value.SyncObj)
+					{
+						//We need to try to dispatch events for each changed value.
+						foreach(int changedIndex in changeTrackerPair.Value.ChangeTrackingArray.EnumerateSetBitsByIndex())
+						{
+							//TODO: We don't REALLY want to lock on the dispatching. This could be a REAL bottleneck in the future. We need to redesign this abit
+							//TODO: Might be a better way to handle this API, and provide the value instead of the collection.
+							EntityDataCallbackDispatcher.InvokeChangeEvents(changeTrackerPair.Key, (EntityDataFieldType)changedIndex, changeTrackerPair.Value);
+						}
 
-				//After we're done servicing the changes, we should clear the changes.
-				changeTrackerPair.Value.ClearTrackedChanges();
+						//After we're done servicing the changes, we should clear the changes.
+						changeTrackerPair.Value.ClearTrackedChanges();
+					}
+				}
 			}
 		}
 	}

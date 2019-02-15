@@ -32,12 +32,15 @@ namespace PSOBB
 				//TODO: We shouldn't assume we know the entity, but technically we should based on order of server-side events.
 				IEntityDataFieldContainer entityDataContainer = EntityDataContainerMap[update.EntityGuid];
 
-				foreach(var entry in update.Data.FieldValueUpdateMask
-					.EnumerateSetBitsByIndex()
-					.Zip(update.Data.FieldValueUpdates, (setIndex, value) => new {setIndex, value}))
-				{
-					entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
-				}
+				//We have to lock here otherwise we could encounter race conditions with the
+				//change tracking system.
+				lock(entityDataContainer.SyncObj)
+					foreach(var entry in update.Data.FieldValueUpdateMask
+						.EnumerateSetBitsByIndex()
+						.Zip(update.Data.FieldValueUpdates, (setIndex, value) => new {setIndex, value}))
+					{
+						entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
+					}
 			}
 
 			return Task.CompletedTask;

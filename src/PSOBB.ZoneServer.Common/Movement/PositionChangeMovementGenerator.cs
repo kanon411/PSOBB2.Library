@@ -22,11 +22,6 @@ namespace PSOBB
 
 			//TODO: This is demo code, we should handle actual movement differently.
 			entity.transform.position = MovementData.InitialPosition;
-
-			//TODO: We need to handle multiple movement types
-			//This is just a hacky little thing we're using for the demo
-			if(entity.GetComponent<IMovementDirectionSettable>() is IMovementDirectionSettable demoController)
-				demoController.Direction = MovementData.Direction;
 		}
 
 		/// <inheritdoc />

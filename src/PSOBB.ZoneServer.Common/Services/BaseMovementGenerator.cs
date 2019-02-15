@@ -6,25 +6,32 @@ using UnityEngine;
 
 namespace PSOBB
 {
-	/// <summary>
-	/// Base for movement generators that control client and serverside movement simulation.
-	/// </summary>
-	/// <typeparam name="TDataInputType">The data input type.</typeparam>
-	public abstract class BaseMovementGenerator<TDataInputType> : IMovementGenerator<GameObject>
+	public abstract class LateInitializationBaseMovementGenerator<TDataInputType> : MoveGenerator
 		where TDataInputType : class, IMovementData
 	{
 		/// <summary>
 		/// The movement data used by this generator.
 		/// </summary>
-		protected TDataInputType MovementData { get; }
+		protected TDataInputType MovementData { get; private set; }
 
-		protected bool hasStartFired { get; private set; }
-
-		/// <inheritdoc />
-		protected BaseMovementGenerator([NotNull] TDataInputType movementData)
+		/// <summary>
+		/// If overriden, make sure to call base.
+		/// Otherwise <see cref="InitializeMovementData"/> will not be
+		/// called and <see cref="MovementData"/> was remain null.
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <param name="currentTime"></param>
+		protected override void Start(GameObject entity, long currentTime)
 		{
-			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
+			MovementData = InitializeMovementData(entity, currentTime);
 		}
+
+		protected abstract TDataInputType InitializeMovementData(GameObject entity, long currentTime);
+	}
+
+	public abstract class MoveGenerator : IMovementGenerator<GameObject>
+	{
+		protected bool hasStartFired { get; private set; } = false;
 
 		protected abstract void Start(GameObject entity, long currentTime);
 
@@ -36,7 +43,7 @@ namespace PSOBB
 				Start(entity, currentTime);
 				hasStartFired = true;
 			}
-			else 
+			else
 				InternalUpdate(entity, currentTime); //don't update if we called Start
 		}
 
@@ -46,5 +53,24 @@ namespace PSOBB
 		/// <param name="entity"></param>
 		/// <param name="currentTime"></param>
 		protected abstract void InternalUpdate(GameObject entity, long currentTime);
+	}
+
+	/// <summary>
+	/// Base for movement generators that control client and serverside movement simulation.
+	/// </summary>
+	/// <typeparam name="TDataInputType">The data input type.</typeparam>
+	public abstract class BaseMovementGenerator<TDataInputType> : MoveGenerator
+		where TDataInputType : class, IMovementData
+	{
+		/// <summary>
+		/// The movement data used by this generator.
+		/// </summary>
+		protected TDataInputType MovementData { get; }
+
+		/// <inheritdoc />
+		protected BaseMovementGenerator([NotNull] TDataInputType movementData)
+		{
+			MovementData = movementData ?? throw new ArgumentNullException(nameof(movementData));
+		}
 	}
 }

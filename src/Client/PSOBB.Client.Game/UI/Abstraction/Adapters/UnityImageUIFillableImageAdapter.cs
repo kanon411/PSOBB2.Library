@@ -10,6 +10,19 @@ namespace PSOBB
 	[ExecuteInEditMode]
 	public sealed class UnityImageUIFillableImageAdapter : BaseUnityUIImageAdapter<IUIFillableImage>, IUIFillableImage
 	{
+		//This is sorta the new design
+		//Create an adapter property that will actually handle the adaptor
+		//the responsibility of this class is to expose registeration and to
+		//handle the internal complicated parts of exposing it to the editor.
+		private UnityImageUIFillableImageAdapterImplementation Adapter { get; set; }
+
+		//On awake we should just create the adapter for
+		//adaptation forwarding.
+		void Awake()
+		{
+			Adapter = new UnityImageUIFillableImageAdapterImplementation(this.UnityUIObject);
+		}
+
 		//TODO: This won't hold up if the Type changes.
 		//Override validation to check image is fillable
 		protected override bool ValidateInitializedObject(Image obj)
@@ -30,17 +43,17 @@ namespace PSOBB
 			return true;
 		}
 
-		private void Update()
-		{
-			//Just call to revalidation
-			ValidateInitializedObject(UnityUIObject);
-		}
-
 		/// <inheritdoc />
 		public float FillAmount
 		{
-			get => UnityUIObject.fillAmount;
-			set => UnityUIObject.fillAmount = Mathf.Clamp(value, 0, 1.0f);
+			get => Adapter.FillAmount;
+			set => Adapter.FillAmount = value;
+		}
+
+		/// <inheritdoc />
+		public override void SetSpriteTexture(Texture2D texture)
+		{
+			Adapter.SetSpriteTexture(texture);
 		}
 	}
 }

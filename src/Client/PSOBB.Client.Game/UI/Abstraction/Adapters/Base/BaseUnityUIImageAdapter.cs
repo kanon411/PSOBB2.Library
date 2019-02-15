@@ -10,7 +10,7 @@ namespace PSOBB
 		where TAdaptedToType : IUIImage //just make sure it's a IUIImage
 	{
 		/// <inheritdoc />
-		public void SetSpriteTexture(Texture2D texture)
+		public virtual void SetSpriteTexture(Texture2D texture)
 		{
 			if(UnityUIObject.sprite == null)
 				UnityUIObject.sprite = Sprite.Create(texture, Rect.zero, Vector2.zero); //TODO: What should defaults be?

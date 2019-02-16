@@ -187,6 +187,11 @@ namespace PSOBB
 				.AsSelf()
 				.As<IDequeable<EntityInterestChangeContext>>()
 				.SingleInstance();
+
+			//IPhysicsTriggerEventSubscribable TriggerEventSubscribable
+			builder.RegisterInstance(GlobalPhysicsEventSystem.Instance)
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityMappableCollections(ContainerBuilder builder)

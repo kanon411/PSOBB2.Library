@@ -58,9 +58,13 @@ namespace PSOBB
 					PhysicsExitCallbackMap.Add(physicsType, physicsCallback);
 			}
 		}
+
 		/// <inheritdoc />
-		public void DispatchTriggerEnter(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		public void DispatchTriggerEnter(PhysicsTriggerEventType physicsType, [JetBrains.Annotations.NotNull] GameObject objectTrigerRanOn, [JetBrains.Annotations.NotNull] Collider colliderThatTriggered)
 		{
+			if(objectTrigerRanOn == null) throw new ArgumentNullException(nameof(objectTrigerRanOn));
+			if(colliderThatTriggered == null) throw new ArgumentNullException(nameof(colliderThatTriggered));
+
 			if(PhysicsEnterCallbackMap.ContainsKey(physicsType))
 			{
 				Action<object, PhysicsTriggerEventArgs> callback = null;
@@ -70,13 +74,16 @@ namespace PSOBB
 						callback = PhysicsEnterCallbackMap[physicsType];
 				}
 
-				callback?.Invoke(this, new PhysicsTriggerEventArgs(colliderThatRanTrigger, colliderThatTriggered));
+				callback?.Invoke(this, new PhysicsTriggerEventArgs(objectTrigerRanOn, colliderThatTriggered));
 			}
 		}
 
 		/// <inheritdoc />
-		public void DispatchTriggerExit(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		public void DispatchTriggerExit(PhysicsTriggerEventType physicsType, [JetBrains.Annotations.NotNull] GameObject objectTrigerRanOn, [JetBrains.Annotations.NotNull] Collider colliderThatTriggered)
 		{
+			if(objectTrigerRanOn == null) throw new ArgumentNullException(nameof(objectTrigerRanOn));
+			if(colliderThatTriggered == null) throw new ArgumentNullException(nameof(colliderThatTriggered));
+
 			if(PhysicsExitCallbackMap.ContainsKey(physicsType))
 			{
 				Action<object, PhysicsTriggerEventArgs> callback = null;
@@ -86,7 +93,7 @@ namespace PSOBB
 						callback = PhysicsExitCallbackMap[physicsType];
 				}
 
-				callback?.Invoke(this, new PhysicsTriggerEventArgs(colliderThatRanTrigger, colliderThatTriggered));
+				callback?.Invoke(this, new PhysicsTriggerEventArgs(objectTrigerRanOn, colliderThatTriggered));
 			}
 		}
 	}

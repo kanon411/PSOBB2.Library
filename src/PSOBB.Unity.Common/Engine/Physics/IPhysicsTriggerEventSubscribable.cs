@@ -36,7 +36,7 @@ namespace PSOBB
 		/// <summary>
 		/// The collider that ran the trigger event.
 		/// </summary>
-		public Collider ColliderThatRanTrigger { get; }
+		public GameObject GameObjectTriggered { get; }
 		
 		/// <summary>
 		/// The collider that triggered the event.
@@ -45,10 +45,10 @@ namespace PSOBB
 		public Collider ColliderThatTriggered { get; }
 
 		/// <inheritdoc />
-		public PhysicsTriggerEventArgs([JetBrains.Annotations.NotNull] Collider colliderThatRanTrigger, [JetBrains.Annotations.NotNull] Collider colliderThatTriggered)
+		public PhysicsTriggerEventArgs([JetBrains.Annotations.NotNull] GameObject gameObjectTriggered, [JetBrains.Annotations.NotNull] Collider colliderThatTriggered)
 		{
-			this.ColliderThatRanTrigger = colliderThatRanTrigger ?? throw new ArgumentNullException(nameof(colliderThatRanTrigger));
-			this.ColliderThatTriggered = colliderThatTriggered ?? throw new ArgumentNullException(nameof(colliderThatTriggered));
+			GameObjectTriggered = gameObjectTriggered ?? throw new ArgumentNullException(nameof(gameObjectTriggered));
+			ColliderThatTriggered = colliderThatTriggered ?? throw new ArgumentNullException(nameof(colliderThatTriggered));
 		}
 	}
 }

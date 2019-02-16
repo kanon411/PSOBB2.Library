@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using UnityEngine;
 
 namespace PSOBB
 {
-	public sealed class GlobalPhysicsEventSystem : IPhysicsTriggerEventSubscribable
+	public sealed class GlobalPhysicsEventSystem : IPhysicsTriggerEventSubscribable, IPhysicsTriggerEventDispatcher
 	{
 		private object SyncObj = new object();
 
 		private Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>> PhysicsCallbackMap { get; }
 
+		/// <summary>
+		/// The global physics callback system.
+		/// </summary>
 		public static GlobalPhysicsEventSystem Instance { get; } = new GlobalPhysicsEventSystem();
 
 		public GlobalPhysicsEventSystem()
@@ -32,6 +36,22 @@ namespace PSOBB
 				}
 				else
 					PhysicsCallbackMap.Add(physicsType, physicsCallback);
+			}
+		}
+
+		/// <inheritdoc />
+		public void DispatchPhysicsEvent(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		{
+			if(PhysicsCallbackMap.ContainsKey(physicsType))
+			{
+				Action<object, PhysicsTriggerEventArgs> callback = null;
+				lock(SyncObj)
+				{
+					if(PhysicsCallbackMap.ContainsKey(physicsType))
+						callback = PhysicsCallbackMap[physicsType];
+				}
+
+				callback?.Invoke(this, new PhysicsTriggerEventArgs(colliderThatRanTrigger, colliderThatTriggered));
 			}
 		}
 	}

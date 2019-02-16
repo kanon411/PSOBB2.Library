@@ -28,9 +28,10 @@ namespace PSOBB
 		/// <inheritdoc />
 		public void Tick()
 		{
+			long currentTime = DateTime.UtcNow.Ticks;
 			foreach(var entry in MovementGenerators)
 			{
-				entry.Value.Update(WorldObjectMap[entry.Key], TimeService.CurrentRemoteTime);
+				entry.Value.Update(WorldObjectMap[entry.Key], currentTime);
 			}
 		}
 	}

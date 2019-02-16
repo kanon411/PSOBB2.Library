@@ -18,7 +18,9 @@ namespace PSOBB
 		private Vector3 CachedMovementDirection;
 
 		//TODO: We shouldn't do this here
-		private float DefaultPlayerSpeed = 5.0f;
+		private float DefaultPlayerSpeed = 3.0f;
+
+		private long LastMovementUpdateTime;
 
 		/// <inheritdoc />
 		public ServerPlayerInputChangeMovementGenerator(Vector2 input, Action<PositionChangeMovementData> onCreatedCallback, [NotNull] CharacterController controller)
@@ -38,15 +40,8 @@ namespace PSOBB
 			OnCreatedCallback?.Invoke(MovementData);
 
 			//Now, we should also create the movement direction
-			CachedMovementDirection = new Vector3(MovementData.Direction.x, 0.0f, MovementData.Direction.y);
-
-			CachedMovementDirection = entity.transform.TransformDirection(CachedMovementDirection);
-		}
-
-		/// <inheritdoc />
-		protected override PositionChangeMovementData InitializeMovementData(GameObject entity, long currentTime)
-		{
-			return new PositionChangeMovementData(currentTime, Input, entity.transform.position);
+			CachedMovementDirection = new Vector3(MovementData.Direction.x, 0.0f, MovementData.Direction.y).normalized;
+			LastMovementUpdateTime = MovementData.TimeStamp;
 		}
 
 		/// <inheritdoc />
@@ -57,14 +52,23 @@ namespace PSOBB
 
 			//gravity
 			//Don't need to subtract the cached direction Y because it should be 0, or treated as 0.
-			CachedMovementDirection.y = (9.8f * diff);
+			CachedMovementDirection.y = (-9.8f * diff);
 			Controller.Move(CachedMovementDirection * diff);
+
+			//Our new last movement time is now the current time.
+			LastMovementUpdateTime = currentTime;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private float DiffFromStartTime(long currentTime)
 		{
-			return (float)(currentTime - MovementData.TimeStamp) / TimeSpan.TicksPerMillisecond;
+			return (float)(currentTime - LastMovementUpdateTime) / TimeSpan.TicksPerSecond;
+		}
+
+		/// <inheritdoc />
+		protected override PositionChangeMovementData InitializeMovementData(GameObject entity, long currentTime)
+		{
+			return new PositionChangeMovementData(currentTime, entity.transform.position, Input);
 		}
 	}
 }

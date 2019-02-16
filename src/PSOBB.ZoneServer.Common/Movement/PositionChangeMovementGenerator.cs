@@ -15,7 +15,9 @@ namespace PSOBB
 		private Vector3 CachedMovementDirection;
 
 		//TODO: We shouldn't do this here
-		private float DefaultPlayerSpeed = 5.0f;
+		private float DefaultPlayerSpeed = 3.0f;
+
+		private long LastMovementUpdateTime;
 
 		/// <inheritdoc />
 		public PositionChangeMovementGenerator(PositionChangeMovementData movementData, [NotNull] CharacterController controller) 
@@ -28,15 +30,13 @@ namespace PSOBB
 		protected override void Start(GameObject entity, long currentTime)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
-			//We don't need to deal with time when a position change occurs.
-
-			//TODO: This is demo code, we should handle actual movement differently.
-			entity.transform.position = MovementData.InitialPosition;
 
 			//Now, we should also create the movement direction
-			CachedMovementDirection = new Vector3(MovementData.Direction.x, 0.0f, MovementData.Direction.y);
+			CachedMovementDirection = new Vector3(MovementData.Direction.x, 0.0f, MovementData.Direction.y).normalized;
+			LastMovementUpdateTime = MovementData.TimeStamp;
 
-			CachedMovementDirection = entity.transform.TransformDirection(CachedMovementDirection);
+			//For client we need to set the new initial position
+			entity.transform.position = MovementData.InitialPosition;
 		}
 
 		/// <inheritdoc />
@@ -47,14 +47,17 @@ namespace PSOBB
 
 			//gravity
 			//Don't need to subtract the cached direction Y because it should be 0, or treated as 0.
-			CachedMovementDirection.y = (9.8f * diff);
+			CachedMovementDirection.y = (-9.8f * diff);
 			Controller.Move(CachedMovementDirection * diff);
+
+			//Our new last movement time is now the current time.
+			LastMovementUpdateTime = currentTime;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private float DiffFromStartTime(long currentTime)
 		{
-			return (float)(currentTime - MovementData.TimeStamp) / TimeSpan.TicksPerMillisecond;
+			return (float)(currentTime - LastMovementUpdateTime) / TimeSpan.TicksPerSecond;
 		}
 	}
 }

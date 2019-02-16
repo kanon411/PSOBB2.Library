@@ -64,6 +64,7 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="Engine\Title\Tickables\" />
+    <Folder Include="Entity\Movement\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>
 

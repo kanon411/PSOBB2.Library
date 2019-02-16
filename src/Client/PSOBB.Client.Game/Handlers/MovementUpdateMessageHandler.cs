@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class MovementUpdateMessageHandler : BaseZoneClientGameMessageHandler<MovementDataUpdateEventPayload>
 	{
 		private IMovementDataHandlerService MovementHandlerService { get; }

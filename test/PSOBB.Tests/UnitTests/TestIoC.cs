@@ -69,7 +69,7 @@ namespace PSOBB
 			//Register every GameInit module
 			foreach(GameSceneType sceneType in Enum.GetValues(typeof(GameSceneType)))
 			{
-				builder.RegisterModule(new EngineInterfaceRegisterationModule(sceneType));
+				builder.RegisterModule(new EngineInterfaceRegisterationModule(sceneType, typeof(SessionClaimResponseHandler).Assembly));
 			}
 
 			//Manually register SceneJect services

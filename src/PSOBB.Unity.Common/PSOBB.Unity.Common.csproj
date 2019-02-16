@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="SceneJect.Metadata" Version="3.0.31" />
   </ItemGroup>

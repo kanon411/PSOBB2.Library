@@ -13,19 +13,19 @@ namespace PSOBB.Unity
 	/// and ticks tickables.
 	/// </summary>
 	[Injectee]
-	public sealed class DefaultGameFrameworkManager : MonoBehaviour
+	public class DefaultGameFrameworkManager : MonoBehaviour
 	{
 		/// <summary>
 		/// Collection of all game initializables.
 		/// </summary>
 		[Inject]
-		private IEnumerable<IGameInitializable> Initializables { get; }
+		private IEnumerable<IGameInitializable> Initializables { get; set; }
 
 		[Inject]
-		private IEnumerable<IGameTickable> Tickables { get; }
+		private IEnumerable<IGameTickable> Tickables { get; set; }
 
 		[Inject]
-		private ILog Logger { get; }
+		private ILog Logger { get; set; }
 
 		private bool isInitializationFinished = false;
 
@@ -47,7 +47,13 @@ namespace PSOBB.Unity
 					throw;
 				}
 
+			Tickables = OrderTickables(Tickables);
 			isInitializationFinished = true;
+		}
+
+		protected virtual IEnumerable<IGameTickable> OrderTickables(IEnumerable<IGameTickable> tickables)
+		{
+			return tickables;
 		}
 
 		private void Update()

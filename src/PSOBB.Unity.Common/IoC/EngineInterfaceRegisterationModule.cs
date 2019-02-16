@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Features.AttributeFilters;
 using UnityEngine;
+using Module = Autofac.Module;
 
 namespace PSOBB
 {
@@ -18,10 +20,13 @@ namespace PSOBB
 		/// </summary>
 		private GameSceneType SceneType { get; }
 
+		private Assembly AssemblyToParse { get; }
+
 		/// <inheritdoc />
-		public EngineInterfaceRegisterationModule(GameSceneType sceneType)
+		public EngineInterfaceRegisterationModule(GameSceneType sceneType, [JetBrains.Annotations.NotNull] Assembly assemblyToParse)
 		{
 			SceneType = sceneType;
+			AssemblyToParse = assemblyToParse ?? throw new ArgumentNullException(nameof(assemblyToParse));
 		}
 
 		private EngineInterfaceRegisterationModule()
@@ -32,7 +37,7 @@ namespace PSOBB
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			foreach(var creatable in GetType().Assembly.GetTypes()
+			foreach(var creatable in AssemblyToParse.GetTypes()
 				.Where(t => EngineTypes.Any(et => et.IsAssignableFrom(t))) //TODO: Is this accurate?
 				.Where(t => t.GetCustomAttributes(typeof(SceneTypeCreateAttribute), false).Any(a => ((SceneTypeCreateAttribute)a).SceneType == SceneType)))
 			{

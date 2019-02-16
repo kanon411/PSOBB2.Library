@@ -67,7 +67,7 @@ namespace PSOBB.Client
 			//TODO: We should expose SceneTypeCreatable or whatever on handlers
 			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
-			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene));
+			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule());
 
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))

@@ -39,7 +39,7 @@ namespace PSOBB
 		{
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
-			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType);
+			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType, typeof(SessionClaimResponseHandler).Assembly);
 			builder.RegisterModule(module);
 
 			IReadOnlyCollection<IGameInitializable> initiablizes = builder.Build().Resolve<IReadOnlyCollection<IGameInitializable>>();

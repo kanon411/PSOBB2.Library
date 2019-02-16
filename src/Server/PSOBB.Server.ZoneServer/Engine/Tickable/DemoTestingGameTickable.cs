@@ -7,7 +7,7 @@ namespace PSOBB
 {
 	//To put some demo/testing code into
 	[GameInitializableOrdering(1)]
-	[CollectionsLocking(LockType.Read)]
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class DemoTestingGameTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainer { get; }

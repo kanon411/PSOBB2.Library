@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using GladNet;
 using JetBrains.Annotations;
@@ -10,7 +11,7 @@ namespace PSOBB
 {
 	//Don't do a Skippable here, because we actually don't have a good design. It's possible without work there is still something to do.
 	[GameInitializableOrdering(0)] //this should run first
-	[CollectionsLocking(LockType.Read)]
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class DefaultInterestRadiusManager : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }
@@ -19,15 +20,22 @@ namespace PSOBB
 
 		private IDequeable<EntityInterestChangeContext> InterestChangeDequeable { get; }
 
+		/// <summary>
+		/// The collections locking policy.
+		/// </summary>
+		private GlobalEntityCollectionsLockingPolicy LockingPolicy { get; }
+
 		/// <inheritdoc />
 		public DefaultInterestRadiusManager(
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
 			[NotNull] VisibilityChangeMessageSender visibilityMessageSender,
-			[NotNull] IDequeable<EntityInterestChangeContext> interestChangeDequeable)
+			[NotNull] IDequeable<EntityInterestChangeContext> interestChangeDequeable,
+			[NotNull] GlobalEntityCollectionsLockingPolicy lockingPolicy)
 		{
 			ManagedInterestCollections = managedInterestCollections ?? throw new ArgumentNullException(nameof(managedInterestCollections));
 			VisibilityMessageSender = visibilityMessageSender ?? throw new ArgumentNullException(nameof(visibilityMessageSender));
 			InterestChangeDequeable = interestChangeDequeable ?? throw new ArgumentNullException(nameof(interestChangeDequeable));
+			LockingPolicy = lockingPolicy ?? throw new ArgumentNullException(nameof(lockingPolicy));
 		}
 
 		private void ThrowIfNoEntityInterestManaged(NetworkEntityGuid entryContext, NetworkEntityGuid entityGuid)
@@ -39,48 +47,51 @@ namespace PSOBB
 		/// <inheritdoc />
 		public void Tick()
 		{
-			//TODO: We should probably refactor this, since it uses a new queue design
-			if(InterestChangeDequeable.isEmpty)
-				return;
-
-			ServiceIncomingChangeQueue();
-
-			//We need to iterate the entire interest dictionary
-			//That means we need to check the new incoming and outgoing entities
-			//We do this because we need to build update packets for the players
-			//so that they can become aware of them AND we can start pushing
-			//events to them
-			foreach(var kvp in ManagedInterestCollections)
+			using(LockingPolicy.ReaderLock(null, CancellationToken.None))
 			{
-				//We want to skip any collection that doesn't have any pending changes.
-				//No reason to send a message about it nor dequeue anything
-				if(!kvp.Value.HasPendingChanges())
-					continue;
+				//TODO: We should probably refactor this, since it uses a new queue design
+				if(InterestChangeDequeable.isEmpty)
+					return;
 
-				//We should only build packets for players.
-				if(kvp.Key.EntityType == EntityType.Player)
+				ServiceIncomingChangeQueue();
+
+				//We need to iterate the entire interest dictionary
+				//That means we need to check the new incoming and outgoing entities
+				//We do this because we need to build update packets for the players
+				//so that they can become aware of them AND we can start pushing
+				//events to them
+				foreach(var kvp in ManagedInterestCollections)
 				{
-					VisibilityMessageSender.Send(new EntityVisibilityChangeContext(kvp.Key, kvp.Value));
+					//We want to skip any collection that doesn't have any pending changes.
+					//No reason to send a message about it nor dequeue anything
+					if(!kvp.Value.HasPendingChanges())
+						continue;
+
+					//We should only build packets for players.
+					if(kvp.Key.EntityType == EntityType.Player)
+					{
+						VisibilityMessageSender.Send(new EntityVisibilityChangeContext(kvp.Key, kvp.Value));
+					}
+
+					//No matter player or NPC we should dequeue the joining/leaving
+					//entites so that the state of the known entites reflects the diff packets sent
+					InterestDequeueSetCommand dequeueCommand = new InterestDequeueSetCommand(kvp.Value, kvp.Value);
+
+					//TODO: Should we execute right away? Or after all packets are sent?
+					dequeueCommand.Execute();
 				}
 
-				//No matter player or NPC we should dequeue the joining/leaving
-				//entites so that the state of the known entites reflects the diff packets sent
-				InterestDequeueSetCommand dequeueCommand = new InterestDequeueSetCommand(kvp.Value, kvp.Value);
-
-				//TODO: Should we execute right away? Or after all packets are sent?
-				dequeueCommand.Execute();
-			}
-
 #if DEBUG || DEBUG_BUILD
-			foreach(var kvp in ManagedInterestCollections)
-			{
-				if(!kvp.Value.EnteringDequeueable.isEmpty)
-					throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.EnteringDequeueable)}");
+				foreach(var kvp in ManagedInterestCollections)
+				{
+					if(!kvp.Value.EnteringDequeueable.isEmpty)
+						throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.EnteringDequeueable)}");
 
-				if(!kvp.Value.LeavingDequeueable.isEmpty)
-					throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.LeavingDequeueable)}");
-			}
+					if(!kvp.Value.LeavingDequeueable.isEmpty)
+						throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.LeavingDequeueable)}");
+				}
 #endif
+			}
 		}
 
 		private void ServiceIncomingChangeQueue()

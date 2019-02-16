@@ -38,9 +38,8 @@ namespace PSOBB
 
 		private static IContainer BuildTestContainer()
 		{
-			DefaultZoneServerDependencyRegistrar registrar = new DefaultZoneServerDependencyRegistrar(new NoOpLogger(), new NetworkAddressInfo(IPAddress.Any, 5000));
 			ContainerBuilder builder = new ContainerBuilder();
-			registrar.RegisterServices(builder);
+			builder.RegisterModule<DefaultZoneServerDependencyModule>();
 			IContainer build = builder.Build();
 			return build;
 		}

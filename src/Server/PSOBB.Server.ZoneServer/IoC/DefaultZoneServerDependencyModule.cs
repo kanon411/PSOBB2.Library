@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -9,35 +8,31 @@ using System.Threading.Tasks;
 using Autofac;
 using Common.Logging;
 using GladNet;
-using JetBrains.Annotations;
 using ProtoBuf;
 using Refit;
-using SceneJect.Common;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace PSOBB
 {
-	//TODO: Refactor to the Autofac module system
-	public sealed class DefaultZoneServerDependencyRegistrar
+	public sealed class DefaultZoneServerDependencyModule : Module
 	{
-		private ILog LoggerToRegister { get; }
-
-		private NetworkAddressInfo AddressInfo { get; }
-
 		/// <inheritdoc />
-		public DefaultZoneServerDependencyRegistrar([NotNull] ILog loggerToRegister, [NotNull] NetworkAddressInfo addressInfo)
-		{
-			LoggerToRegister = loggerToRegister ?? throw new ArgumentNullException(nameof(loggerToRegister));
-			AddressInfo = addressInfo ?? throw new ArgumentNullException(nameof(addressInfo));
-		}
-
-		public void RegisterServices(ContainerBuilder builder)
+		protected override void Load(ContainerBuilder builder)
 		{
 			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
+
+			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
+			payloadRegister.RegisterDefaults();
+			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
+
+			//Set the sync context
+			UnityExtended.InitializeSyncContext();
+
+			//TODO: We need to not have such a high rate of Update and need to add prediction.
+			Application.targetFrameRate = 60;
 
 			builder.RegisterInstance(new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32))
 				.As<INetworkSerializationService>();
@@ -46,7 +41,7 @@ namespace PSOBB
 				.AsImplementedInterfaces()
 				.SingleInstance();
 
-			builder.RegisterInstance(LoggerToRegister)
+			builder.RegisterInstance(new UnityLogger(LogLevel.All))
 				.As<ILog>();
 
 			builder.RegisterType<MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>>()
@@ -61,7 +56,7 @@ namespace PSOBB
 				.As<ISessionCollection>()
 				.SingleInstance();
 
-			builder.RegisterInstance(AddressInfo)
+			builder.RegisterInstance(new NetworkAddressInfo(IPAddress.Parse("192.168.0.3"), 5006))
 				.As<NetworkAddressInfo>()
 				.SingleInstance()
 				.ExternallyOwned();
@@ -108,15 +103,6 @@ namespace PSOBB
 			builder.RegisterType<QueueBasedPlayerEntitySessionGateway>()
 				.AsImplementedInterfaces()
 				.SingleInstance(); //must only be one, since it's basically a collection.
-
-			//Sceneject stuff that handles GameObject injections
-			builder.RegisterType<DefaultGameObjectFactory>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
-
-			builder.RegisterType<DefaultInjectionStrategy>()
-				.As<IInjectionStrategy>()
-				.SingleInstance();
 
 			//This is for mapping connection IDs to the main controlled EntityGuid.
 			builder.RegisterInstance(new ConnectionEntityMap())
@@ -188,9 +174,9 @@ namespace PSOBB
 				.As<IDequeable<EntityInterestChangeContext>>()
 				.SingleInstance();
 
-			builder.RegisterType<InterestPhysicsTriggerEventListener>()
+			/*builder.RegisterType<InterestPhysicsTriggerEventListener>()
 				.As<IGameInitializable>()
-				.SingleInstance();
+				.SingleInstance();*/
 
 			//IPhysicsTriggerEventSubscribable TriggerEventSubscribable
 			builder.RegisterInstance(GlobalPhysicsEventSystem.Instance)
@@ -268,16 +254,16 @@ namespace PSOBB
 				.SingleInstance();
 
 			builder.Register(context =>
+			{
+				using(var scope = context.Resolve<ILifetimeScope>().BeginLifetimeScope(subBuilder =>
 				{
-					using(var scope = context.Resolve<ILifetimeScope>().BeginLifetimeScope(subBuilder =>
-					{
-						subBuilder.RegisterType<AdditionalServerRegisterationPlayerEntityFactoryDecorator>()
-							.WithParameter(new TypedParameter(typeof(IFactoryCreatable<GameObject, PlayerEntityCreationContext>), context.Resolve<DefaultEntityFactory<PlayerEntityCreationContext>>()));
-					}))
-					{
-						return scope.Resolve<AdditionalServerRegisterationPlayerEntityFactoryDecorator>();
-					}
-				})
+					subBuilder.RegisterType<AdditionalServerRegisterationPlayerEntityFactoryDecorator>()
+						.WithParameter(new TypedParameter(typeof(IFactoryCreatable<GameObject, PlayerEntityCreationContext>), context.Resolve<DefaultEntityFactory<PlayerEntityCreationContext>>()));
+				}))
+				{
+					return scope.Resolve<AdditionalServerRegisterationPlayerEntityFactoryDecorator>();
+				}
+			})
 				.As<IFactoryCreatable<GameObject, PlayerEntityCreationContext>>()
 				.SingleInstance();
 
@@ -308,7 +294,7 @@ namespace PSOBB
 
 		private static void RegisterGameTickable(ContainerBuilder builder)
 		{
-			builder.RegisterTickableType<DefaultInterestRadiusManager>()
+			/*builder.RegisterTickableType<DefaultInterestRadiusManager>()
 				.AsGameTickable() //important to call for AOP decoration
 				.SingleInstance();
 
@@ -330,7 +316,7 @@ namespace PSOBB
 
 			builder.RegisterTickableType<PlayerEntityExitManager>()
 				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
+				.SingleInstance();*/
 		}
 	}
 }

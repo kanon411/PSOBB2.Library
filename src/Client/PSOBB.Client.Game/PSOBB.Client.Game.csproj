@@ -62,6 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Attributes\" />
     <Folder Include="Engine\Title\Tickables\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>

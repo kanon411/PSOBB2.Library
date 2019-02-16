@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable
 	{
 		private IPhysicsTriggerEventSubscribable TriggerEventSubscribable { get; }

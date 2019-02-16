@@ -7,6 +7,8 @@ namespace PSOBB
 {
 	public interface IPhysicsTriggerEventDispatcher
 	{
-		void DispatchPhysicsEvent(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered);
+		void DispatchTriggerEnter(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered);
+
+		void DispatchTriggerExit(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered);
 	}
 }

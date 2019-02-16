@@ -12,14 +12,23 @@ namespace PSOBB
 		/// </summary>
 		/// <param name="physicsType">The type of physics.</param>
 		/// <param name="physicsCallback">The callback to register.</param>
-		void RegisterTriggerEventSubscription(PhysicsTriggerEventType physicsType, Action<object, PhysicsTriggerEventArgs> physicsCallback);
-		
+		void RegisterTriggerEnterEventSubscription(PhysicsTriggerEventType physicsType, Action<object, PhysicsTriggerEventArgs> physicsCallback);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="physicsType">The type of physics.</param>
+		/// <param name="physicsCallback">The callback to register.</param>
+		void RegisterTriggerExitEventSubscription(PhysicsTriggerEventType physicsType, Action<object, PhysicsTriggerEventArgs> physicsCallback);
+
 		//TODO: Add an unregister function.
 	}
 
 	public enum PhysicsTriggerEventType
 	{
-		Interest = 1,
+		InterestExit = 1,
+
+		InterestEnter = 2,
 	}
 
 	public sealed class PhysicsTriggerEventArgs : EventArgs

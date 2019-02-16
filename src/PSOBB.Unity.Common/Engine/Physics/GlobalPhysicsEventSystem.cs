@@ -10,7 +10,9 @@ namespace PSOBB
 	{
 		private object SyncObj = new object();
 
-		private Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>> PhysicsCallbackMap { get; }
+		private Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>> PhysicsEnterCallbackMap { get; }
+
+		private Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>> PhysicsExitCallbackMap { get; }
 
 		/// <summary>
 		/// The global physics callback system.
@@ -19,36 +21,69 @@ namespace PSOBB
 
 		public GlobalPhysicsEventSystem()
 		{
-			PhysicsCallbackMap = new Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>>();
+			PhysicsEnterCallbackMap = new Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>>();
+			PhysicsExitCallbackMap = new Dictionary<PhysicsTriggerEventType, Action<object, PhysicsTriggerEventArgs>>();
 		}
 
 		/// <inheritdoc />
-		public void RegisterTriggerEventSubscription(PhysicsTriggerEventType physicsType, [JetBrains.Annotations.NotNull] Action<object, PhysicsTriggerEventArgs> physicsCallback)
+		public void RegisterTriggerEnterEventSubscription(PhysicsTriggerEventType physicsType, [JetBrains.Annotations.NotNull] Action<object, PhysicsTriggerEventArgs> physicsCallback)
 		{
 			if(physicsCallback == null) throw new ArgumentNullException(nameof(physicsCallback));
 			if(!Enum.IsDefined(typeof(PhysicsTriggerEventType), physicsType)) throw new InvalidEnumArgumentException(nameof(physicsType), (int)physicsType, typeof(PhysicsTriggerEventType));
 
 			lock(SyncObj)
 			{
-				if(PhysicsCallbackMap.ContainsKey(physicsType))
+				if(PhysicsEnterCallbackMap.ContainsKey(physicsType))
 				{
-					PhysicsCallbackMap[physicsType] += physicsCallback;
+					PhysicsEnterCallbackMap[physicsType] += physicsCallback;
 				}
 				else
-					PhysicsCallbackMap.Add(physicsType, physicsCallback);
+					PhysicsEnterCallbackMap.Add(physicsType, physicsCallback);
 			}
 		}
 
 		/// <inheritdoc />
-		public void DispatchPhysicsEvent(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		public void RegisterTriggerExitEventSubscription(PhysicsTriggerEventType physicsType, [JetBrains.Annotations.NotNull] Action<object, PhysicsTriggerEventArgs> physicsCallback)
 		{
-			if(PhysicsCallbackMap.ContainsKey(physicsType))
+			if(physicsCallback == null) throw new ArgumentNullException(nameof(physicsCallback));
+			if(!Enum.IsDefined(typeof(PhysicsTriggerEventType), physicsType)) throw new InvalidEnumArgumentException(nameof(physicsType), (int)physicsType, typeof(PhysicsTriggerEventType));
+
+			lock(SyncObj)
+			{
+				if(PhysicsExitCallbackMap.ContainsKey(physicsType))
+				{
+					PhysicsExitCallbackMap[physicsType] += physicsCallback;
+				}
+				else
+					PhysicsExitCallbackMap.Add(physicsType, physicsCallback);
+			}
+		}
+		/// <inheritdoc />
+		public void DispatchTriggerEnter(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		{
+			if(PhysicsEnterCallbackMap.ContainsKey(physicsType))
 			{
 				Action<object, PhysicsTriggerEventArgs> callback = null;
 				lock(SyncObj)
 				{
-					if(PhysicsCallbackMap.ContainsKey(physicsType))
-						callback = PhysicsCallbackMap[physicsType];
+					if(PhysicsEnterCallbackMap.ContainsKey(physicsType))
+						callback = PhysicsEnterCallbackMap[physicsType];
+				}
+
+				callback?.Invoke(this, new PhysicsTriggerEventArgs(colliderThatRanTrigger, colliderThatTriggered));
+			}
+		}
+
+		/// <inheritdoc />
+		public void DispatchTriggerExit(PhysicsTriggerEventType physicsType, Collider colliderThatRanTrigger, Collider colliderThatTriggered)
+		{
+			if(PhysicsExitCallbackMap.ContainsKey(physicsType))
+			{
+				Action<object, PhysicsTriggerEventArgs> callback = null;
+				lock(SyncObj)
+				{
+					if(PhysicsExitCallbackMap.ContainsKey(physicsType))
+						callback = PhysicsExitCallbackMap[physicsType];
 				}
 
 				callback?.Invoke(this, new PhysicsTriggerEventArgs(colliderThatRanTrigger, colliderThatTriggered));

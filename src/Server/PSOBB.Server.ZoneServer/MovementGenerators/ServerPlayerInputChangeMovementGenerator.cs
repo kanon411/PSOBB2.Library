@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
@@ -11,11 +12,20 @@ namespace PSOBB
 
 		public Action<PositionChangeMovementData> OnCreatedCallback { get; }
 
+		//This is actually unity stuff, for various reasons I have opted to directly depend on it.
+		private CharacterController Controller { get; }
+
+		private Vector3 CachedMovementDirection;
+
+		//TODO: We shouldn't do this here
+		private float DefaultPlayerSpeed = 5.0f;
+
 		/// <inheritdoc />
-		public ServerPlayerInputChangeMovementGenerator(Vector2 input, Action<PositionChangeMovementData> onCreatedCallback)
+		public ServerPlayerInputChangeMovementGenerator(Vector2 input, Action<PositionChangeMovementData> onCreatedCallback, [NotNull] CharacterController controller)
 		{
-			Input = input;
+			Input = input.normalized;
 			OnCreatedCallback = onCreatedCallback;
+			Controller = controller ?? throw new ArgumentNullException(nameof(controller));
 		}
 
 		/// <inheritdoc />
@@ -26,6 +36,11 @@ namespace PSOBB
 
 			//At this point, movement data is initialized so we should set the movement data.
 			OnCreatedCallback?.Invoke(MovementData);
+
+			//Now, we should also create the movement direction
+			CachedMovementDirection = new Vector3(MovementData.Direction.x, 0.0f, MovementData.Direction.y);
+
+			CachedMovementDirection = entity.transform.TransformDirection(CachedMovementDirection);
 		}
 
 		/// <inheritdoc />
@@ -37,7 +52,19 @@ namespace PSOBB
 		/// <inheritdoc />
 		protected override void InternalUpdate(GameObject entity, long currentTime)
 		{
-			//We don't need to do anything in update, position is already changed in start.
+			//TODO: We should have real handling at some point.
+			float diff = DiffFromStartTime(currentTime);
+
+			//gravity
+			//Don't need to subtract the cached direction Y because it should be 0, or treated as 0.
+			CachedMovementDirection.y = (9.8f * diff);
+			Controller.Move(CachedMovementDirection * diff);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private float DiffFromStartTime(long currentTime)
+		{
+			return (float)(currentTime - MovementData.TimeStamp) / TimeSpan.TicksPerMillisecond;
 		}
 	}
 }

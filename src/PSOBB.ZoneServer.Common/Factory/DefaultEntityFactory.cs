@@ -32,6 +32,8 @@ namespace PSOBB
 
 		private IEntityGuidMappable<AsyncReaderWriterLock> EntityAsyncLockMap { get; }
 
+		private IEntityGuidMappable<CharacterController> CharacterControllerMappable { get; }
+
 		/// <inheritdoc />
 		public DefaultEntityFactory(
 			ILog logger, 
@@ -42,7 +44,8 @@ namespace PSOBB
 			IMovementDataHandlerService movementHandlerService, 
 			IEntityGuidMappable<IEntityDataFieldContainer> fieldDataContainers, 
 			IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableEntityDataFieldContainers,
-			[NotNull] IEntityGuidMappable<AsyncReaderWriterLock> entityAsyncLockMap)
+			[NotNull] IEntityGuidMappable<AsyncReaderWriterLock> entityAsyncLockMap,
+			[NotNull] IEntityGuidMappable<CharacterController> characterControllerMappable)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			GuidToGameObjectMappable = guidToGameObjectMappable ?? throw new ArgumentNullException(nameof(guidToGameObjectMappable));
@@ -53,6 +56,7 @@ namespace PSOBB
 			FieldDataContainers = fieldDataContainers;
 			ChangeTrackableEntityDataFieldContainers = changeTrackableEntityDataFieldContainers;
 			EntityAsyncLockMap = entityAsyncLockMap ?? throw new ArgumentNullException(nameof(entityAsyncLockMap));
+			CharacterControllerMappable = characterControllerMappable ?? throw new ArgumentNullException(nameof(characterControllerMappable));
 		}
 
 		/// <inheritdoc />
@@ -65,6 +69,9 @@ namespace PSOBB
 			GameObject prefab = PrefabFactory.Create(context.PrefabType);
 
 			GameObject entityGameObject = GameObject.Instantiate(prefab, context.MovementData.InitialPosition, Quaternion.Euler(0, 0, 0));
+
+			if(context.EntityGuid.EntityType == EntityType.Player)
+				CharacterControllerMappable[context.EntityGuid] = entityGameObject.GetComponent<CharacterController>();
 
 			GameObjectToEntityMap.ObjectToEntityMap.Add(entityGameObject, context.EntityGuid);
 

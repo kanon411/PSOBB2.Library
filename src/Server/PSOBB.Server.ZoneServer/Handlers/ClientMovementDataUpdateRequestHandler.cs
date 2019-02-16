@@ -13,6 +13,8 @@ namespace PSOBB
 	{
 		private IEntityGuidMappable<IMovementData> MovementDataMap { get; }
 
+		private IReadonlyEntityGuidMappable<CharacterController> CharacterControllerMappable { get; }
+
 		private IEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerator { get; }
 
 		/// <inheritdoc />
@@ -21,11 +23,13 @@ namespace PSOBB
 			[NotNull] IReadonlyConnectionEntityCollection connectionIdToEntityMap, 
 			[NotNull] IEntityGuidMappable<IMovementData> movementDataMap,
 			IContextualResourceLockingPolicy<NetworkEntityGuid> lockingPolicy,
-			[NotNull] IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerator) 
+			[NotNull] IEntityGuidMappable<IMovementGenerator<GameObject>> movementGenerator,
+			[NotNull] IReadonlyEntityGuidMappable<CharacterController> characterControllerMappable) 
 			: base(logger, connectionIdToEntityMap, lockingPolicy)
 		{
 			MovementDataMap = movementDataMap ?? throw new ArgumentNullException(nameof(movementDataMap));
 			MovementGenerator = movementGenerator ?? throw new ArgumentNullException(nameof(movementGenerator));
+			CharacterControllerMappable = characterControllerMappable ?? throw new ArgumentNullException(nameof(characterControllerMappable));
 		}
 
 		/// <inheritdoc />
@@ -33,12 +37,12 @@ namespace PSOBB
 		{
 			try
 			{
-				MovementGenerator[guid] = new ServerPlayerInputChangeMovementGenerator(payload.MovementInput, data => MovementDataMap[guid] = data);
+				MovementGenerator[guid] = new ServerPlayerInputChangeMovementGenerator(payload.MovementInput, data => MovementDataMap[guid] = data, CharacterControllerMappable[guid]);
 			}
 			catch(Exception e)
 			{
 				if(Logger.IsErrorEnabled)
-					Logger.Error($"Failed to update MovementData for GUID: {guid}");
+					Logger.Error($"Failed to update MovementData for GUID: {guid} Reason: {e.Message}");
 
 				throw;
 			}

@@ -25,20 +25,21 @@ namespace PSOBB
 	public sealed class PhysicsTriggerEventArgs : EventArgs
 	{
 		/// <summary>
-		/// The collider entering the trigger volume.
+		/// The collider that ran the trigger event.
 		/// </summary>
-		public Collider TriggeringCollider { get; }
-
+		public Collider ColliderThatRanTrigger { get; }
+		
 		/// <summary>
-		/// The collider that the collider is enters.
+		/// The collider that triggered the event.
+		/// (By going into the volume)
 		/// </summary>
-		public Collider TriggeredCollider { get; }
+		public Collider ColliderThatTriggered { get; }
 
 		/// <inheritdoc />
-		public PhysicsTriggerEventArgs([JetBrains.Annotations.NotNull] Collider triggeringCollider, [JetBrains.Annotations.NotNull] Collider triggeredCollider)
+		public PhysicsTriggerEventArgs([JetBrains.Annotations.NotNull] Collider colliderThatRanTrigger, [JetBrains.Annotations.NotNull] Collider colliderThatTriggered)
 		{
-			TriggeringCollider = triggeringCollider ?? throw new ArgumentNullException(nameof(triggeringCollider));
-			TriggeredCollider = triggeredCollider ?? throw new ArgumentNullException(nameof(triggeredCollider));
+			this.ColliderThatRanTrigger = colliderThatRanTrigger ?? throw new ArgumentNullException(nameof(colliderThatRanTrigger));
+			this.ColliderThatTriggered = colliderThatTriggered ?? throw new ArgumentNullException(nameof(colliderThatTriggered));
 		}
 	}
 }

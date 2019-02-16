@@ -188,6 +188,10 @@ namespace PSOBB
 				.As<IDequeable<EntityInterestChangeContext>>()
 				.SingleInstance();
 
+			builder.RegisterType<InterestPhysicsTriggerEventListener>()
+				.As<IGameInitializable>()
+				.SingleInstance();
+
 			//IPhysicsTriggerEventSubscribable TriggerEventSubscribable
 			builder.RegisterInstance(GlobalPhysicsEventSystem.Instance)
 				.AsImplementedInterfaces()

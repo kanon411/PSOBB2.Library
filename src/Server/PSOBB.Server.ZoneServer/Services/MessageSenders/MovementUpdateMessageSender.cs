@@ -59,7 +59,7 @@ namespace PSOBB
 				.ContainedEntities
 				//TODO: Temporarily we are not sending movement data about ourselves.
 				//We also only send information about movement that is dirty from the last update we sent out.
-				.Where(e => e != guid && MovementDataMap.isEntryDirty(e)) 
+				.Where(e => MovementDataMap.isEntryDirty(e)) 
 				.Select(e => new AssociatedMovementData(e, MovementDataMap[e]))
 				.ToArray();
 		}

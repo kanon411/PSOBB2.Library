@@ -86,13 +86,22 @@ namespace PSOBB
 		/// <param name="args"></param>
 		protected abstract void HandleEvent(TEventArgs args);
 
+		/// <summary>
+		/// This is costly, and should rarely be called.
+		/// </summary>
+		/// <param name="predicate"></param>
 		protected void RemoveEventMatchingPredicate([NotNull] Func<TEventArgs, bool> predicate)
 		{
 			if(predicate == null) throw new ArgumentNullException(nameof(predicate));
 
 			lock(SyncObj)
 			{
-				EventQueue = new Queue<TEventArgs>(EventQueue.Where(i => !predicate(i)).ToArrayTryAvoidCopy());
+				//If it doesn't have matching event then we don't need to touch the queue.
+				if(!EventQueue.Any(predicate))
+					return;
+
+				//All the events that DON'T match the predicate
+				EventQueue = new Queue<TEventArgs>(EventQueue.Where(i => !predicate(i)));
 			}
 		}
 	}

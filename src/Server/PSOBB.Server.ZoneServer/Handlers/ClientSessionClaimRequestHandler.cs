@@ -9,24 +9,21 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[AdditionalRegisterationAs(typeof(IPlayerSessionClaimedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class ClientSessionClaimRequestHandler : BaseServerRequestHandler<ClientSessionClaimRequestPayload>
+	public sealed class ClientSessionClaimRequestHandler : BaseServerRequestHandler<ClientSessionClaimRequestPayload>, IPlayerSessionClaimedEventSubscribable
 	{
-		/// <summary>
-		/// The gateway for new player sessions to enter.
-		/// </summary>
-		private IEntityGateway<PlayerEntityEnterWorldCreationContext> PlayerEntityGatewayEntry { get; }
-
 		private IZoneServerToGameServerClient GameServerClient { get; }
 
 		/// <inheritdoc />
+		public event EventHandler<PlayerSessionClaimedEventArgs> OnSuccessfulSessionClaimed;
+
+		/// <inheritdoc />
 		public ClientSessionClaimRequestHandler(
-			[NotNull] IEntityGateway<PlayerEntityEnterWorldCreationContext> playerEntityGatewayEntry,
 			[NotNull] IZoneServerToGameServerClient gameServerClient,
 			[NotNull] ILog logger)
 			: base(logger)
 		{
-			PlayerEntityGatewayEntry = playerEntityGatewayEntry ?? throw new ArgumentNullException(nameof(playerEntityGatewayEntry));
 			GameServerClient = gameServerClient ?? throw new ArgumentNullException(nameof(gameServerClient));
 		}
 
@@ -71,10 +68,8 @@ namespace PSOBB
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Recieved player location: {position}");
 
-			//TODO: Load character position
-			//Now that the session has been accepted we should prepare the entry to the world for
-			//the session's character
-			bool result = PlayerEntityGatewayEntry.TryEntityEnter(new PlayerEntityEnterWorldCreationContext(new PlayerEntitySessionContext(context.PayloadSendService, context.Details.ConnectionId), position), builder.Build());
+			//Just broadcast successful claim, let listeners figure out what to do with this information.
+			OnSuccessfulSessionClaimed?.Invoke(this, new PlayerSessionClaimedEventArgs(builder.Build(), position, context.Details.ConnectionId));
 
 			await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.Success))
 				.ConfigureAwait(false);

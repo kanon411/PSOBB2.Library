@@ -112,6 +112,9 @@ namespace PSOBB
 
 			lock(SyncObj)
 			{
+				if(EventQueue.Count == 0)
+					return;
+
 				//If it doesn't have matching event then we don't need to touch the queue.
 				if(!EventQueue.Any(predicate))
 					return;

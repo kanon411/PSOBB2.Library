@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Logging;
 using Fasterflect;
 
 namespace PSOBB
@@ -17,19 +18,23 @@ namespace PSOBB
 		/// <summary>
 		/// Syncronization object.
 		/// </summary>
-		private readonly object SyncObj = new object();
+		protected readonly object SyncObj = new object();
 
 		private Queue<TEventArgs> EventQueue { get; }
+
+		protected ILog Logger { get; }
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="subscriptionService">The subscription service.</param>
 		/// <param name="serviceAllQueue">Indicates if all events should be serviced from the event queue each tick.</param>
-		protected EventQueueBasedTickable(TEventInterface subscriptionService, bool serviceAllQueue) 
+		/// <param name="logger"></param>
+		protected EventQueueBasedTickable(TEventInterface subscriptionService, bool serviceAllQueue, [NotNull] ILog logger) 
 			: base(subscriptionService)
 		{
 			ServiceAllQueue = serviceAllQueue;
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			EventQueue = new Queue<TEventArgs>(5);
 		}
 

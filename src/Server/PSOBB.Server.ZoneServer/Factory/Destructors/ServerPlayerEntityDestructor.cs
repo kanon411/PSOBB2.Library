@@ -16,54 +16,39 @@ namespace PSOBB
 
 		private IReadonlyEntityGuidMappable<InterestCollection> InterestCollections { get; }
 
+		private IEntityInterestChangeEventSpoofable InterestEventSpoofer { get; }
+
 		/// <inheritdoc />
 		public ServerPlayerEntityDestructor(
 			[NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor, 
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMap,
-			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> interestCollections)
+			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> interestCollections,
+			[NotNull] IEntityInterestChangeEventSpoofable interestEventSpoofer)
 		{
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 			GuidToGameObjectMap = guidToGameObjectMap ?? throw new ArgumentNullException(nameof(guidToGameObjectMap));
 			InterestCollections = interestCollections ?? throw new ArgumentNullException(nameof(interestCollections));
+			InterestEventSpoofer = interestEventSpoofer ?? throw new ArgumentNullException(nameof(interestEventSpoofer));
 		}
 
 		/// <inheritdoc />
 		public bool Destroy(PlayerEntityDestructionContext obj)
 		{
-			//TODO: A hack, that removes this entity from other nearby interest lists
-			//TODO: This really isn't a good solution, we need something that scales better and that isn't faulty. This could have some odd race conditions to cause ghost entities.
-			ProjectVersionStage.AssertAlpha();
-
-			/*SphereCollider ourCollider = GuidToGameObjectMap[obj.EntityGuid].GetComponentInChildren<SphereCollider>();
-			//This is slow, and hacky. We need a better solution for entities getting deconstructed.
-			foreach(var exit in Physics.OverlapSphere(ourCollider.transform.position, ourCollider.radius)
-				.Select(c => c.gameObject.transform.root.GetComponentInChildren<InterestRadiusGatewayExit>())
-				.Where(e => e != null)
-				.Distinct())
-			{
-				//This simulates us leaving their interest radius.
-				exit.OnTriggerExit(ourCollider);
-			}*/
-
 			bool result = EntityDestructor.Destroy(obj.EntityGuid);
 
-
-			throw new NotImplementedException($"TODO: MUST REIMPLEMENT THE INTEREST DEQUEUEING SYSTEM.");
-			/*if(result)
+			if(result)
 			{
-				//To avoid major issues with previous physics based issue we're writing this horriblely slow, hacky solution
+				//To avoid major issues with previous physics based issue we're writing this horriblely slow, hacky solution\
+				//This actually scales O(n) which isn't bad. A quick iteration and a hashmap check basically.
 				foreach(var ic in InterestCollections)
 				{
 					if(ic.Value.Contains(obj.EntityGuid))
 					{
-						//TODO: We need to remove the ability to queue up interest changes.
-						//We cannot unregister it directly, we MUST use the interest change queue.
-						//It will not service interest changes directly
-						InterestChangeQueue.Enqueue(new EntityInterestChangeContext(ic.Key, obj.EntityGuid, EntityInterestChangeContext.ChangeType.Exit));
-						//InterestChangeQueue.Enqueue(new EntityInterestChangeContext(ic.Key, obj.EntityGuid, EntityInterestChangeContext.ChangeType.Exit));
+						//We just spoof an exit to every interested collection who knows of the entity being cleaned up.
+						InterestEventSpoofer.SpoofExitInterest(new EntityInterestChangeEventArgs(ic.Key, obj.EntityGuid, EntityInterestChangeEventArgs.ChangeType.Exit));
 					}
 				}
-			}*/
+			}
 
 			return result;
 		}

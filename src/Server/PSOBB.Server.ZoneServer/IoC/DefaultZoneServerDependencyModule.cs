@@ -143,12 +143,6 @@ namespace PSOBB
 				.As(typeof(INetworkMessageSender<>).MakeGenericType(typeof(GenericSingleTargetMessageContext<>)))
 				.SingleInstance();
 
-			//QUeue for session cleanup
-			builder.RegisterType<PlayerSessionDeconstructionQueue>()
-				.AsSelf()
-				.As<IDequeable<PlayerSessionDeconstructionContext>>()
-				.SingleInstance();
-
 			RegisterLockingPolicies(builder);
 
 			//Interest change queue

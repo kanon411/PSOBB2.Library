@@ -37,6 +37,9 @@ namespace PSOBB
 
 				return;
 			}
+			else
+				if(Logger.IsInfoEnabled)
+					Logger.Info($"About to cleanup Entity: {args.EntityGuid.EntityType}:{args.EntityGuid.EntityId}");
 
 			//TODO: This is a semi-slow process, can any of this be offloaded to the other thread?
 			EntityDestructor.Destroy(args.EntityGuid);

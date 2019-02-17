@@ -145,10 +145,6 @@ namespace PSOBB
 
 			RegisterLockingPolicies(builder);
 
-			/*builder.RegisterType<InterestPhysicsTriggerEventListener>()
-				.As<IGameInitializable>()
-				.SingleInstance();*/
-
 			//IPhysicsTriggerEventSubscribable TriggerEventSubscribable
 			builder.RegisterInstance(GlobalPhysicsEventSystem.Instance)
 				.AsImplementedInterfaces()

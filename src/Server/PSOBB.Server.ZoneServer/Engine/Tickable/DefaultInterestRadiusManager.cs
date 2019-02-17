@@ -57,7 +57,7 @@ namespace PSOBB
 				{
 					case EntityInterestChangeEventArgs.ChangeType.Enter:
 						//If the entity already knows the entity then we should not register it.
-						if(ManagedInterestCollections[args.EnterableEntity].Contains(args.EnteringEntity))
+						if(!ManagedInterestCollections[args.EnterableEntity].Contains(args.EnteringEntity))
 							ManagedInterestCollections[args.EnterableEntity].Register(args.EnteringEntity, args.EnteringEntity);
 						break;
 					case EntityInterestChangeEventArgs.ChangeType.Exit:

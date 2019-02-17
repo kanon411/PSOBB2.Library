@@ -9,7 +9,9 @@ using UnityEngine;
 
 namespace PSOBB
 {
-	public sealed class NetworkVisibilityChangeEventHandler : BaseZoneClientGameMessageHandler<NetworkObjectVisibilityChangeEventPayload>
+	[AdditionalRegisterationAs(typeof(INetworkEntityVisibleEventSubscribable))]
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	public sealed class NetworkVisibilityChangeEventHandler : BaseZoneClientGameMessageHandler<NetworkObjectVisibilityChangeEventPayload>, INetworkEntityVisibleEventSubscribable
 	{
 		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
 
@@ -19,8 +21,10 @@ namespace PSOBB
 
 		private IReadonlyNetworkTimeService TimeService { get; }
 
-
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainerMap { get; }
+
+		/// <inheritdoc />
+		public event EventHandler<NetworkEntityNowVisibleEventArgs> OnNetworkEntityNowVisible;
 
 		/// <inheritdoc />
 		public NetworkVisibilityChangeEventHandler(
@@ -40,12 +44,8 @@ namespace PSOBB
 		}
 
 		/// <inheritdoc />
-		public override async Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
+		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
 		{
-			//TODO: We don't want to have to do this, we should queue this up for handling on the main thread.
-			//Must happen from the main thread
-			await new UnityYieldAwaitable();
-
 			foreach(var entity in payload.EntitiesToCreate)
 			{
 				if(Logger.IsDebugEnabled)
@@ -64,18 +64,11 @@ namespace PSOBB
 				//TODO: Right now we're creating a temporary entity data collection.
 				EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
 
-				try
-				{
-					GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(creationData.EntityGuid, GetInitialMovementData(creationData), ComputePrefabTypeFromGuid(creationData.EntityGuid), testData));
+				//We set the initial values off the main thread, it is much better that way.
+				//However, that means initial values won't dispatch OnChange stuff.
+				SetInitialFieldValues(creationData, testData);
 
-					SetInitialFieldValues(creationData);
-				}
-				catch(Exception e)
-				{
-					if(Logger.IsErrorEnabled)
-					Logger.Error($"Failed to Create Entity: {creationData.EntityGuid} Exception: {e.Message}\n\nStack: {e.StackTrace}");
-					throw;
-				}
+				OnNetworkEntityNowVisible?.Invoke(this, new NetworkEntityNowVisibleEventArgs(creationData.EntityGuid, creationData, testData));
 			}
 
 			foreach(var destroyData in payload.OutOfRangeEntities)
@@ -89,18 +82,21 @@ namespace PSOBB
 
 				EntityDestructor.Destroy(destroyData);
 			}
+
+			return Task.CompletedTask;
 		}
 
-		private void SetInitialFieldValues(EntityCreationData creationData)
+		private void SetInitialFieldValues([NotNull] EntityCreationData creationData, [NotNull] IEntityDataFieldContainer dataContainer)
 		{
-			//TODO: We need a better way to handle initial field values, this is a disaster.
-			IEntityDataFieldContainer entityDataContainer = EntityDataContainerMap[creationData.EntityGuid];
+			if(creationData == null) throw new ArgumentNullException(nameof(creationData));
+			if(dataContainer == null) throw new ArgumentNullException(nameof(dataContainer));
 
+			//TODO: We need a better way to handle initial field values, this is a disaster.
 			foreach(var entry in creationData.InitialFieldValues.FieldValueUpdateMask
 				.EnumerateSetBitsByIndex()
 				.Zip(creationData.InitialFieldValues.FieldValueUpdates, (setIndex, value) => new { setIndex, value }))
 			{
-				entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
+				dataContainer.SetFieldValue(entry.setIndex, entry.value);
 			}
 		}
 

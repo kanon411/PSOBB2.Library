@@ -62,9 +62,6 @@ namespace PSOBB
 				.SingleInstance()
 				.AsSelf();
 
-			//gametickables
-			RegisterGameTickable(builder);
-
 			RegisterEntityMappableCollections(builder);
 
 			//TODO: We should automate the registeration of message senders
@@ -283,33 +280,6 @@ namespace PSOBB
 		private bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
 		{
 			return true;
-		}
-
-		private static void RegisterGameTickable(ContainerBuilder builder)
-		{
-			/*builder.RegisterTickableType<DefaultInterestRadiusManager>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
-
-			builder.RegisterTickableType<PlayerEntityEntryManager>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
-
-			builder.RegisterTickableType<PlayerEntityMovementDataUpdateManager>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
-
-			builder.RegisterTickableType<EntityDataUpdateManager>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
-
-			builder.RegisterTickableType<DemoTestingGameTickable>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();
-
-			builder.RegisterTickableType<PlayerEntityExitManager>()
-				.AsGameTickable() //important to call for AOP decoration
-				.SingleInstance();*/
 		}
 	}
 }

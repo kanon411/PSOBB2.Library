@@ -23,7 +23,7 @@ namespace PSOBB
 		{
 			bool changed = false;
 
-			float horizontal = Input.GetAxis("Horizontal");
+			float horizontal = Input.GetAxisRaw("Horizontal");
 
 			if(Math.Abs(LastHoritzontalInput - horizontal) > 0.005f)
 			{
@@ -31,7 +31,7 @@ namespace PSOBB
 				LastHoritzontalInput = horizontal;
 			}
 
-			float vertical = Input.GetAxis("Vertical");
+			float vertical = Input.GetAxisRaw("Vertical");
 
 			if(Math.Abs(LastVerticalInput - vertical) > 0.005f)
 			{

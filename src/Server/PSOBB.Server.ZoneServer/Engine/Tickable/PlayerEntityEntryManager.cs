@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -28,7 +29,8 @@ namespace PSOBB
 
 		/// <inheritdoc />
 		public PlayerEntityEntryManager(
-			IPlayerSessionClaimedEventSubscribable subscriptionService, 
+			IPlayerSessionClaimedEventSubscribable subscriptionService,
+			ISessionDisconnectionEventSubscribable disconnectionSubscriptionService,
 			IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory, 
 			INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender, 
 			ILog logger,
@@ -38,6 +40,16 @@ namespace PSOBB
 			PlayerFactory = playerFactory;
 			SpawnPayloadSender = spawnPayloadSender;
 			LockingPolicy = lockingPolicy;
+
+			disconnectionSubscriptionService.OnSessionDisconnection += OnSessionDisconnection;
+		}
+
+		private void OnSessionDisconnection(object sender, SessionStatusChangeEventArgs e)
+		{
+			//DO NOT REMOVE. This helps cover race conditions with handling entry/exit from the server.
+			//Remove anything in the entry queue that is related to the connection id disconnecting
+			//This is efficient BECAUSE: Likely case is queue size is 0. Likely case is it's also not in the queue.
+			this.RemoveEventMatchingPredicate(predicateInput => predicateInput.SessionContext.ConnectionId == e.Details.ConnectionId);
 		}
 
 		/// <inheritdoc />

@@ -12,7 +12,7 @@ namespace PSOBB
 	[AdditionalRegisterationAs(typeof(IFactoryCreatable<ManagedClientSession<GameServerPacketPayload, GameClientPacketPayload>, ManagedClientSessionCreationContext>))]
 	[AdditionalRegisterationAs(typeof(IManagedClientSessionFactory))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class DefaultManagedClientSessionFactory : IManagedClientSessionFactory, ISessionDisconnectionEventSubscribable
+	public sealed class DefaultManagedClientSessionFactory : IManagedClientSessionFactory, ISessionDisconnectionEventSubscribable, IGameInitializable
 	{
 		private ILog Logger { get; }
 
@@ -64,6 +64,13 @@ namespace PSOBB
 
 				throw;
 			}
+		}
+
+		//TODO: This is a hack to get it into the scene.
+		/// <inheritdoc />
+		public Task OnGameInitialized()
+		{
+			return Task.CompletedTask;
 		}
 	}
 

@@ -73,14 +73,5 @@ namespace PSOBB
 			//TODO: If we want to do anything post-creation with the provide gameobject we could. But we really don't want to at the moment.
 
 		}
-
-		/*private GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession, EntityFieldDataCollection<EntityDataFieldType> testData)
-		{
-			//TODO: Time stamp
-			//TODO: get real movement info
-			EntityCreationData data = new EntityCreationData(dequeuedPlayerSession.Key, new PositionChangeMovementData(0, dequeuedPlayerSession.Value.SpawnPosition, Vector2.zero), EntityDataUpdateFactory.Create(new EntityFieldUpdateCreationContext(testData, testData.DataSetIndicationArray)));
-
-			return new GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>(dequeuedPlayerSession.Key, new PlayerSelfSpawnEventPayload(data));
-		}*/
 	}
 }

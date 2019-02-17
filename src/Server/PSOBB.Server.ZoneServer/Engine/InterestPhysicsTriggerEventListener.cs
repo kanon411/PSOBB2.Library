@@ -8,8 +8,10 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSpoofable))]
+	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable, IEntityInterestChangeEventSubscribable
+	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable, IEntityInterestChangeEventSubscribable, IEntityInterestChangeEventSpoofable
 	{
 		private IPhysicsTriggerEventSubscribable TriggerEventSubscribable { get; }
 

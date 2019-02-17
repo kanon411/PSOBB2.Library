@@ -77,6 +77,22 @@ namespace PSOBB
 				lock(SyncObj)
 					HandleEvent(EventQueue.Dequeue());
 			}
+
+			//When events are finished handling then we
+			//can dispatch this overridable method to any implementer
+			//who want want to extend the Tick logic to do things after
+			//the original event handling.
+			OnFinishedServicingEvents();
+		}
+
+		/// <summary>
+		/// Implementers can override this method
+		/// which is called at the end of <see cref="Tick"/>
+		/// if ANY events were serviced.
+		/// </summary>
+		protected virtual void OnFinishedServicingEvents()
+		{
+
 		}
 
 		/// <summary>

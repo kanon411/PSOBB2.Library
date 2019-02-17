@@ -31,7 +31,6 @@ namespace PSOBB
 			IPlayerSessionClaimedEventSubscribable subscriptionService, 
 			IFactoryCreatable<GameObject, PlayerEntityCreationContext> playerFactory, 
 			INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> spawnPayloadSender, 
-			IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> entityDataUpdateFactory,
 			ILog logger,
 			GlobalEntityCollectionsLockingPolicy lockingPolicy) 
 			: base(subscriptionService, false, logger)

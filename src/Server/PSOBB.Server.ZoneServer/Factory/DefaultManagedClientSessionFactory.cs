@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
 namespace PSOBB
 {
-	public sealed class DefaultManagedClientSessionFactory : IManagedClientSessionFactory
+	[AdditionalRegisterationAs(typeof(ISessionDisconnectionEventSubscribable))]
+	[AdditionalRegisterationAs(typeof(IFactoryCreatable<ManagedClientSession<GameServerPacketPayload, GameClientPacketPayload>, ManagedClientSessionCreationContext>))]
+	[AdditionalRegisterationAs(typeof(IManagedClientSessionFactory))]
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	public sealed class DefaultManagedClientSessionFactory : IManagedClientSessionFactory, ISessionDisconnectionEventSubscribable
 	{
 		private ILog Logger { get; }
 
@@ -15,31 +20,18 @@ namespace PSOBB
 
 		private IRegisterable<int, ZoneClientSession> SessionRegisterable { get; }
 
-		private IObjectDestructorable<PlayerSessionDeconstructionContext> SessionDestructor { get; }
-
-		private IEntityDataSaveable EntitySaver { get; }
-
-		private PlayerSessionDeconstructionQueue SessionCleanupQueue { get; }
-
-		private IConnectionEntityCollection ConnectionCollection { get; }
+		/// <inheritdoc />
+		public event EventHandler<SessionStatusChangeEventArgs> OnSessionDisconnection;
 
 		/// <inheritdoc />
 		public DefaultManagedClientSessionFactory(
 			[NotNull] ILog logger,
 			[NotNull] MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>> handlerService,
-			[NotNull] IRegisterable<int, ZoneClientSession> sessionRegisterable,
-			[NotNull] IObjectDestructorable<PlayerSessionDeconstructionContext> sessionDestructor,
-			[NotNull] IEntityDataSaveable entitySaver,
-			PlayerSessionDeconstructionQueue playerDeconstructionQueue,
-			[NotNull] IConnectionEntityCollection connectionCollection)
+			[NotNull] IRegisterable<int, ZoneClientSession> sessionRegisterable)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			HandlerService = handlerService ?? throw new ArgumentNullException(nameof(handlerService));
 			SessionRegisterable = sessionRegisterable ?? throw new ArgumentNullException(nameof(sessionRegisterable));
-			SessionDestructor = sessionDestructor ?? throw new ArgumentNullException(nameof(sessionDestructor));
-			EntitySaver = entitySaver ?? throw new ArgumentNullException(nameof(entitySaver));
-			SessionCleanupQueue = playerDeconstructionQueue;
-			ConnectionCollection = connectionCollection ?? throw new ArgumentNullException(nameof(connectionCollection));
 		}
 
 		/// <inheritdoc />
@@ -57,7 +49,12 @@ namespace PSOBB
 
 				//We should add this to the session collection, and also make sure it is unregistered on disconnection
 				SessionRegisterable.Register(context.Details.ConnectionId, clientSession);
-				clientSession.OnSessionDisconnection += async (source, args) =>
+				clientSession.OnSessionDisconnection += (source, args) =>
+				{
+					OnSessionDisconnection?.Invoke(source, args);
+					return Task.CompletedTask;
+				};
+				/*
 				{
 					//throw new NotImplementedException("TODO: Redo the whole session disconnection crap.");
 					if(Logger.IsDebugEnabled)
@@ -94,7 +91,7 @@ namespace PSOBB
 							Logger.Error($"Error Session Cleanup: {e.Message}\n\nStackTrace: {e.StackTrace}");
 						throw;
 					}
-				};
+				};*/
 
 				return clientSession;
 			}

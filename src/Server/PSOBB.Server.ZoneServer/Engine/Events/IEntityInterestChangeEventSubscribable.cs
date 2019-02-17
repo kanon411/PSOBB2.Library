@@ -10,6 +10,13 @@ namespace PSOBB
 		event EventHandler<EntityInterestChangeEventArgs> OnEntityInterestChanged;
 	}
 
+	public interface IEntityInterestChangeEventSpoofable
+	{
+		void SpoofExitInterest(EntityInterestChangeEventArgs args);
+
+		void SpoofEnterInterest(EntityInterestChangeEventArgs args);
+	}
+
 	//Based on the old EntityInterestChangeContext
 	public sealed class EntityInterestChangeEventArgs : EventArgs
 	{

@@ -11,22 +11,54 @@ using Module = Autofac.Module;
 
 namespace PSOBB
 {
-	//based on the server IoC module
-	public sealed class ZoneClientHandlerRegisterationAutofacModule : Module
+	public sealed class BaseHandlerRegisterationModule<THandlerType> : Module
 	{
+		static BaseHandlerRegisterationModule()
+		{
+			if(!typeof(THandlerType).IsGenericType)
+				throw new InvalidOperationException($"Specified {nameof(THandlerType)} is not generic. Is Type: {typeof(THandlerType).Name}");
+		}
+
+		/// <summary>
+		/// Optional additional types to register the handlers as.
+		/// </summary>
+		private Type[] AdditionalTypesToRegisterHandlersAs { get; }
+
+		/// <summary>
+		/// The scene to load handlers for.
+		/// </summary>
 		private GameSceneType SceneType { get; }
 
+		/// <summary>
+		/// The assembly to search the handler types for.
+		/// </summary>
+		private Assembly AssemblyForHandlerTypes { get; }
+
 		/// <inheritdoc />
-		public ZoneClientHandlerRegisterationAutofacModule(GameSceneType sceneType)
+		public BaseHandlerRegisterationModule(GameSceneType sceneType, [JetBrains.Annotations.NotNull] Assembly assemblyForHandlerTypes, params Type[] additionalTypesToRegisterHandlersAs)
 		{
 			if(!Enum.IsDefined(typeof(GameSceneType), sceneType)) throw new InvalidEnumArgumentException(nameof(sceneType), (int)sceneType, typeof(GameSceneType));
 
+			if(additionalTypesToRegisterHandlersAs == null)
+				AdditionalTypesToRegisterHandlersAs = new Type[0];
+
 			SceneType = sceneType;
+			AssemblyForHandlerTypes = assemblyForHandlerTypes ?? throw new ArgumentNullException(nameof(assemblyForHandlerTypes));
+			AdditionalTypesToRegisterHandlersAs = additionalTypesToRegisterHandlersAs;
 		}
 
-		private ZoneClientHandlerRegisterationAutofacModule()
+		protected static bool DetermineIfHandlerIsForSceneType(Type handlerType, GameSceneType sceneType)
 		{
-			
+			//We don't want to get base attributes
+			//devs may want to inherit from a handler and change some stuff. But not register it as a handler
+			//for the same stuff obviously.
+			foreach(SceneTypeCreateAttribute attris in handlerType.GetTypeInfo().GetCustomAttributes<SceneTypeCreateAttribute>(false))
+			{
+				if(attris.SceneType == sceneType)
+					return true;
+			}
+
+			return false;
 		}
 
 		/// <inheritdoc />
@@ -56,8 +88,14 @@ namespace PSOBB
 
 				var handlerRegisterationBuilder = builder.RegisterType(handlerType)
 					.AsSelf()
-					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>()
-					.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload, IPeerMessageContext<GameClientPacketPayload>>>();
+					.As<THandlerType>();
+
+				if(AdditionalTypesToRegisterHandlersAs.Any())
+					foreach(Type additionalHandlerTypeRegisteration in AdditionalTypesToRegisterHandlersAs)
+					{
+						handlerRegisterationBuilder = handlerRegisterationBuilder
+							.As(additionalHandlerTypeRegisteration);
+					}
 
 				//Now we need to register it as the additional specified types
 				foreach(var additionalServiceTypeAttri in handlerType.GetCustomAttributes<AdditionalRegisterationAsAttribute>(true))
@@ -79,25 +117,10 @@ namespace PSOBB
 
 		private IReadOnlyCollection<Type> LoadHandlerTypes()
 		{
-			return GetType().GetTypeInfo()
-				.Assembly
+			return AssemblyForHandlerTypes
 				.GetTypes()
-				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerMessageHandler<,>)) && !t.IsAbstract)
+				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(THandlerType).GetGenericTypeDefinition()) && !t.IsAbstract)
 				.ToArray();
-		}
-
-		private static bool DetermineIfHandlerIsForSceneType(Type handlerType, GameSceneType sceneType)
-		{
-			//We don't want to get base attributes
-			//devs may want to inherit from a handler and change some stuff. But not register it as a handler
-			//for the same stuff obviously.
-			foreach(SceneTypeCreateAttribute attris in handlerType.GetCustomAttributes<SceneTypeCreateAttribute>(false))
-			{
-				if(attris.SceneType == sceneType)
-					return true;
-			}
-
-			return false;
 		}
 	}
 }

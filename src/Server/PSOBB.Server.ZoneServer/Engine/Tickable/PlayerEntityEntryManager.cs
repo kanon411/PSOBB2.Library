@@ -57,10 +57,13 @@ namespace PSOBB
 			testData.SetFieldValue(EntityDataFieldType.EntityCurrentHealth, 100);
 			testData.SetFieldValue(EntityDataFieldType.EntityMaxHealth, 120);
 
-			//TODO: Time stamp
-			//TODO: We should check if the result is valid? Maybe return a CreationResult?
-			//We don't need to do anything with the returned object.
-			GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(args.EntityGuid, args.SessionContext, new PositionChangeMovementData(0, args.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer, testData));
+			using(LockingPolicy.WriterLock(null, CancellationToken.None))
+			{
+				//TODO: Time stamp
+				//TODO: We should check if the result is valid? Maybe return a CreationResult?
+				//We don't need to do anything with the returned object.
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(args.EntityGuid, args.SessionContext, new PositionChangeMovementData(0, args.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer, testData));
+			}
 
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Sending player spawn payload Id: {args.EntityGuid.EntityId}");
@@ -68,6 +71,7 @@ namespace PSOBB
 			OnPlayerWorldSessionCreated?.Invoke(this, new PlayerWorldSessionCreationEventArgs(args.EntityGuid));
 
 			//TODO: If we want to do anything post-creation with the provide gameobject we could. But we really don't want to at the moment.
+
 		}
 
 		/*private GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload> BuildSpawnEventPayload(KeyValuePair<NetworkEntityGuid, PlayerEntityEnterWorldCreationContext> dequeuedPlayerSession, EntityFieldDataCollection<EntityDataFieldType> testData)

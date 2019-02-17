@@ -66,6 +66,9 @@ namespace PSOBB.Unity
 
 			foreach(IGameTickable tickable in Tickables)
 				tickable.Tick();
+
+			//After a tickable is finished, we should set tickable compeltion
+			UnityExtended.SetNextTickableFrame();
 		}
 	}
 }

@@ -85,10 +85,6 @@ namespace PSOBB
 				.AsSelf()
 				.AsImplementedInterfaces();
 
-			//We also have to register factories now for session/sessionclient
-			builder.RegisterType<DefaultManagedClientSessionFactory>()
-				.AsImplementedInterfaces();
-
 			builder.RegisterType<DefaultManagedSessionFactory>()
 				.AsImplementedInterfaces();
 

@@ -80,10 +80,28 @@ namespace PSOBB
 		/// <inheritdoc />
 		public Task OnGameInitialized()
 		{
-			TriggerEventSubscribable.RegisterTriggerEnterEventSubscription(PhysicsTriggerEventType.InterestEnter, InterestTriggerEnter);
-			TriggerEventSubscribable.RegisterTriggerEnterEventSubscription(PhysicsTriggerEventType.InterestExit, InterestTriggerExit);
+			TriggerEventSubscribable.RegisterTriggerEnterEventSubscription(PhysicsTriggerEventType.Interest, InterestTriggerEnter);
+			TriggerEventSubscribable.RegisterTriggerExitEventSubscription(PhysicsTriggerEventType.Interest, InterestTriggerExit);
 
 			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
+		public void SpoofExitInterest(EntityInterestChangeEventArgs args)
+		{
+			if(args.ChangingType != EntityInterestChangeEventArgs.ChangeType.Exit)
+				throw new InvalidOperationException($"Called: {nameof(SpoofExitInterest)} with args: {args.ChangingType}. Must be Exit.");
+
+			OnEntityInterestChanged?.Invoke(this, args);
+		}
+
+		/// <inheritdoc />
+		public void SpoofEnterInterest(EntityInterestChangeEventArgs args)
+		{
+			if(args.ChangingType != EntityInterestChangeEventArgs.ChangeType.Enter)
+				throw new InvalidOperationException($"Called: {nameof(SpoofEnterInterest)} with args: {args.ChangingType}. Must be Enter.");
+
+			OnEntityInterestChanged?.Invoke(this, args);
 		}
 	}
 }

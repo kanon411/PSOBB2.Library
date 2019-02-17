@@ -19,7 +19,7 @@ namespace PSOBB
 		/// <inheritdoc />
 		public override void OnTriggerExit(Collider other)
 		{
-			GlobalPhysicsEventSystem.Instance.DispatchTriggerEnter(PhysicsTriggerEventType.InterestExit, gameObject, other);
+			GlobalPhysicsEventSystem.Instance.DispatchTriggerEnter(PhysicsTriggerEventType.Interest, gameObject, other);
 		}
 	}
 }

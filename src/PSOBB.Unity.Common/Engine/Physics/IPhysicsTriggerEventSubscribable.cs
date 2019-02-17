@@ -26,9 +26,7 @@ namespace PSOBB
 
 	public enum PhysicsTriggerEventType
 	{
-		InterestExit = 1,
-
-		InterestEnter = 2,
+		Interest = 1,
 	}
 
 	public sealed class PhysicsTriggerEventArgs : EventArgs

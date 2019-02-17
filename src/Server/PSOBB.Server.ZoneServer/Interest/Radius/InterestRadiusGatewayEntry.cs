@@ -14,7 +14,7 @@ namespace PSOBB
 		/// <inheritdoc />
 		public override void OnTriggerEnter(Collider other)
 		{
-			GlobalPhysicsEventSystem.Instance.DispatchTriggerEnter(PhysicsTriggerEventType.InterestEnter, gameObject, other);
+			GlobalPhysicsEventSystem.Instance.DispatchTriggerEnter(PhysicsTriggerEventType.Interest, gameObject, other);
 		}
 
 		/// <inheritdoc />

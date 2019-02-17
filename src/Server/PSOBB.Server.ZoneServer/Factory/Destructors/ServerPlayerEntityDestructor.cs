@@ -60,6 +60,7 @@ namespace PSOBB
 						//We cannot unregister it directly, we MUST use the interest change queue.
 						//It will not service interest changes directly
 						InterestChangeQueue.Enqueue(new EntityInterestChangeContext(ic.Key, obj.EntityGuid, EntityInterestChangeContext.ChangeType.Exit));
+						//InterestChangeQueue.Enqueue(new EntityInterestChangeContext(ic.Key, obj.EntityGuid, EntityInterestChangeContext.ChangeType.Exit));
 					}
 				}
 			}*/

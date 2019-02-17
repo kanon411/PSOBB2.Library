@@ -48,9 +48,6 @@ namespace PSOBB
 				.As<MessageHandlerService<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>>()
 				.SingleInstance();
 
-			//This registers all the authentication message handlers
-			builder.RegisterModule<ZoneServerHandlerRegisterationModule>();
-
 			builder.RegisterInstance(new DefaultSessionCollection())
 				.As<IRegisterable<int, ZoneClientSession>>()
 				.As<ISessionCollection>()

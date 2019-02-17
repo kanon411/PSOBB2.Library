@@ -96,10 +96,6 @@ namespace PSOBB
 				.AsImplementedInterfaces();
 
 			//TODO: Extract this into a handlers registrar
-			//We have some entity services that require being registered
-			builder.RegisterType<QueueBasedPlayerEntitySessionGateway>()
-				.AsImplementedInterfaces()
-				.SingleInstance(); //must only be one, since it's basically a collection.
 
 			//This is for mapping connection IDs to the main controlled EntityGuid.
 			builder.RegisterInstance(new ConnectionEntityMap())

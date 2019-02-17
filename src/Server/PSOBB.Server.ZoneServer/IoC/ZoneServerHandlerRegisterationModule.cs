@@ -21,28 +21,8 @@ namespace PSOBB
 			foreach(Type t in handlerTypes)
 				builder.RegisterType(t)
 					.AsSelf()
+					.As<IPeerMessageHandler<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>>()
 					.SingleInstance();
-
-			foreach(Type t in handlerTypes)
-			{
-				Type concretePayloadType = t.GetTypeInfo()
-					.ImplementedInterfaces
-					.First(i => i.GetTypeInfo().IsGenericType && i.GetTypeInfo().GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,,>))
-					.GetGenericArguments()
-					.First();
-
-				Type tryHandlerType = typeof(TrySemanticsBasedOnTypePeerMessageHandler<,,,>)
-					.MakeGenericType(typeof(GameClientPacketPayload), typeof(GameServerPacketPayload), concretePayloadType, typeof(IPeerSessionMessageContext<GameServerPacketPayload>));
-
-				builder.Register(context =>
-					{
-						object handler = context.Resolve(t);
-
-						return Activator.CreateInstance(tryHandlerType, handler);
-					})
-					.As(typeof(IPeerMessageHandler<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>))
-					.SingleInstance();
-			}
 		}
 
 		private IEnumerable<Type> LoadHandlerTypes()
@@ -50,7 +30,7 @@ namespace PSOBB
 			return GetType().GetTypeInfo()
 				.Assembly
 				.GetTypes()
-				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerPayloadSpecificMessageHandler<,,>)) && !t.IsAbstract);
+				.Where(t => t.GetInterfaces().Any(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IPeerMessageHandler<,,>)) && !t.IsAbstract);
 		}
 	}
 }

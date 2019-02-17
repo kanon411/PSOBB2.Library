@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace PSOBB
 {
-	public sealed class ClientSessionClaimRequestHandler : IPeerPayloadSpecificMessageHandler<ClientSessionClaimRequestPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>
+	public sealed class ClientSessionClaimRequestHandler : BaseServerRequestHandler<ClientSessionClaimRequestPayload>
 	{
 		/// <summary>
 		/// The gateway for new player sessions to enter.
@@ -18,21 +18,19 @@ namespace PSOBB
 
 		private IZoneServerToGameServerClient GameServerClient { get; }
 
-		private ILog Logger { get; }
-
 		/// <inheritdoc />
 		public ClientSessionClaimRequestHandler(
 			[NotNull] IEntityGateway<PlayerEntityEnterWorldCreationContext> playerEntityGatewayEntry,
 			[NotNull] IZoneServerToGameServerClient gameServerClient,
 			[NotNull] ILog logger)
+			: base(logger)
 		{
 			PlayerEntityGatewayEntry = playerEntityGatewayEntry ?? throw new ArgumentNullException(nameof(playerEntityGatewayEntry));
 			GameServerClient = gameServerClient ?? throw new ArgumentNullException(nameof(gameServerClient));
-			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
-		public async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientSessionClaimRequestPayload payload)
+		public override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientSessionClaimRequestPayload payload)
 		{
 			//TODO: We need better validation/authorization for clients trying to claim a session. Right now it's open to malicious attack
 			ZoneServerTryClaimSessionResponse zoneServerTryClaimSessionResponse = null;

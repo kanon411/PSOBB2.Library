@@ -33,7 +33,7 @@ namespace PSOBB
 		}
 
 		/// <inheritdoc />
-		protected override async Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
+		protected override Task HandleMessage(IPeerSessionMessageContext<GameServerPacketPayload> context, ClientMovementDataUpdateRequest payload, NetworkEntityGuid guid)
 		{
 			try
 			{
@@ -46,6 +46,8 @@ namespace PSOBB
 
 				throw;
 			}
+
+			return Task.CompletedTask;
 		}
 	}
 }

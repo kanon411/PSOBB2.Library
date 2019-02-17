@@ -69,7 +69,7 @@ namespace PSOBB
 				Logger.Debug($"Recieved player location: {position}");
 
 			//Just broadcast successful claim, let listeners figure out what to do with this information.
-			OnSuccessfulSessionClaimed?.Invoke(this, new PlayerSessionClaimedEventArgs(builder.Build(), position, context.Details.ConnectionId));
+			OnSuccessfulSessionClaimed?.Invoke(this, new PlayerSessionClaimedEventArgs(builder.Build(), position, new PlayerEntitySessionContext(context.PayloadSendService, context.Details.ConnectionId)));
 
 			await context.PayloadSendService.SendMessage(new ClientSessionClaimResponsePayload(ClientSessionClaimResponseCode.Success))
 				.ConfigureAwait(false);

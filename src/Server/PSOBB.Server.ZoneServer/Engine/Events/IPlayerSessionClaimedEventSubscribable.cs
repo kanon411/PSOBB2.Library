@@ -17,18 +17,16 @@ namespace PSOBB
 		public Vector3 SpawnPosition { get; }
 
 		/// <summary>
-		/// The connection ID of the session.
+		/// Context about the network session.
 		/// </summary>
-		public int ConnectionId { get; }
+		public PlayerEntitySessionContext SessionContext { get; }
 
 		/// <inheritdoc />
-		public PlayerSessionClaimedEventArgs([NotNull] NetworkEntityGuid entityGuid, Vector3 spawnPosition, int connectionId)
+		public PlayerSessionClaimedEventArgs([NotNull] NetworkEntityGuid entityGuid, Vector3 spawnPosition, [NotNull] PlayerEntitySessionContext sessionContext)
 		{
-			if(connectionId < 0) throw new ArgumentOutOfRangeException(nameof(connectionId));
-
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			SpawnPosition = spawnPosition;
-			ConnectionId = connectionId;
+			SessionContext = sessionContext ?? throw new ArgumentNullException(nameof(sessionContext));
 		}
 	}
 }

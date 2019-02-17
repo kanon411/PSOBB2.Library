@@ -18,8 +18,6 @@ namespace PSOBB
 
 		private INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> SpawnPayloadSender { get; }
 
-		private IFactoryCreatable<FieldValueUpdate, EntityFieldUpdateCreationContext> EntityDataUpdateFactory { get; }
-
 		/// <inheritdoc />
 		public event EventHandler<PlayerWorldSessionCreationEventArgs> OnPlayerWorldSessionCreated;
 
@@ -40,7 +38,6 @@ namespace PSOBB
 		{
 			PlayerFactory = playerFactory;
 			SpawnPayloadSender = spawnPayloadSender;
-			EntityDataUpdateFactory = entityDataUpdateFactory;
 			LockingPolicy = lockingPolicy;
 		}
 

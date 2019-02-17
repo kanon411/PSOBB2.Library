@@ -60,6 +60,11 @@ namespace PSOBB.Client
 				.As<IReadonlyAuthTokenRepository>()
 				.SingleInstance();
 
+			builder.RegisterType<GlobalEntityResourceLockingPolicy>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.SingleInstance();
+
 			//Token module is needed in most scenes.
 			builder.RegisterModule<AuthenticationTokenAutofacModule>();
 			

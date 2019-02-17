@@ -9,38 +9,24 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[AdditionalRegisterationAs(typeof(INetworkEntityVisibilityLostEventSubscribable))]
 	[AdditionalRegisterationAs(typeof(INetworkEntityVisibleEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class NetworkVisibilityChangeEventHandler : BaseZoneClientGameMessageHandler<NetworkObjectVisibilityChangeEventPayload>, INetworkEntityVisibleEventSubscribable
+	public sealed class NetworkVisibilityChangeEventHandler : BaseZoneClientGameMessageHandler<NetworkObjectVisibilityChangeEventPayload>, 
+		INetworkEntityVisibleEventSubscribable, 
+		INetworkEntityVisibilityLostEventSubscribable
 	{
-		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
-
-		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }
-
-		private IReadonlyEntityGuidMappable<GameObject> KnownEntites { get; }
-
-		private IReadonlyNetworkTimeService TimeService { get; }
-
-		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainerMap { get; }
-
 		/// <inheritdoc />
 		public event EventHandler<NetworkEntityNowVisibleEventArgs> OnNetworkEntityNowVisible;
 
 		/// <inheritdoc />
-		public NetworkVisibilityChangeEventHandler(
-			ILog logger,
-			IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory,
-			IObjectDestructorable<NetworkEntityGuid> entityDestructor,
-			IReadonlyEntityGuidMappable<GameObject> knownEntites,
-			IReadonlyNetworkTimeService timeService,
-			[NotNull] IReadonlyEntityGuidMappable<IEntityDataFieldContainer> entityDataContainerMap)
+		public event EventHandler<NetworkEntityVisibilityLostEventArgs> OnNetworkEntityVisibilityLost;
+
+		/// <inheritdoc />
+		public NetworkVisibilityChangeEventHandler(ILog logger)
 			: base(logger)
 		{
-			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
-			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
-			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
-			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
-			EntityDataContainerMap = entityDataContainerMap ?? throw new ArgumentNullException(nameof(entityDataContainerMap));
+
 		}
 
 		/// <inheritdoc />
@@ -73,14 +59,7 @@ namespace PSOBB
 
 			foreach(var destroyData in payload.OutOfRangeEntities)
 			{
-				//If we don't know it, we likely encountered the rare edge case that is the result
-				//of some hacks that were added to keep the wheels from falling off.
-				//These will eventually be fixed, but for now we should just skip ones we don't know
-				//because we can't remove what we don't know.
-				if(!KnownEntites.ContainsKey(destroyData))
-					continue;
-
-				EntityDestructor.Destroy(destroyData);
+				OnNetworkEntityVisibilityLost?.Invoke(this, new NetworkEntityVisibilityLostEventArgs(destroyData));
 			}
 
 			return Task.CompletedTask;
@@ -98,40 +77,6 @@ namespace PSOBB
 			{
 				dataContainer.SetFieldValue(entry.setIndex, entry.value);
 			}
-		}
-
-		private IMovementData GetInitialMovementData(EntityCreationData creationData)
-		{
-			//TODO: Remove path debug testing.
-			//If it's not a player, let's return a debug path data.
-			/*if(creationData.EntityGuid.EntityType != EntityType.Player)
-				return new PathBasedMovementData(new Vector3[]
-				{
-					new Vector3(2,3,4),
-					new Vector3(-5, 1, 5), 
-					new Vector3(-5, 1, 17), 
-					new Vector3(10, 1, 17), 
-					new Vector3(10, 1, 5) 
-				}, TimeService.CurrentRemoteTime); //TODO: This only works on local*/
-
-			return creationData.InitialMovementData;
-		}
-
-		private EntityPrefab ComputePrefabTypeFromGuid(NetworkEntityGuid creationDataEntityGuid)
-		{
-			switch(creationDataEntityGuid.EntityType)
-			{
-				case EntityType.None:
-					return EntityPrefab.Unknown;
-				case EntityType.Player:
-					return EntityPrefab.RemotePlayer;
-				case EntityType.GameObject:
-					return EntityPrefab.Unknown;
-				case EntityType.Npc:
-					return EntityPrefab.NetworkNpc;
-			}
-
-			return EntityPrefab.Unknown;
 		}
 	}
 }

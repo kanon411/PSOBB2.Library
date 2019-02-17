@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Common.Logging;
 using Fasterflect;
 
@@ -20,7 +22,7 @@ namespace PSOBB
 		/// </summary>
 		protected readonly object SyncObj = new object();
 
-		private Queue<TEventArgs> EventQueue { get; }
+		private Queue<TEventArgs> EventQueue { get; set; }
 
 		protected ILog Logger { get; }
 
@@ -83,5 +85,15 @@ namespace PSOBB
 		/// </summary>
 		/// <param name="args"></param>
 		protected abstract void HandleEvent(TEventArgs args);
+
+		protected void RemoveEventMatchingPredicate([NotNull] Func<TEventArgs, bool> predicate)
+		{
+			if(predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+			lock(SyncObj)
+			{
+				EventQueue = new Queue<TEventArgs>(EventQueue.Where(i => !predicate(i)).ToArrayTryAvoidCopy());
+			}
+		}
 	}
 }

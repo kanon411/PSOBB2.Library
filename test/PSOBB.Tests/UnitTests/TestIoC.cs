@@ -56,7 +56,7 @@ namespace PSOBB
 			ContainerBuilder builder = new ContainerBuilder();
 
 			//We can't let autofac do this, since we have multiple versions of some modules.
-			foreach(var module in typeof(ZoneClientHandlerRegisterationAutofacModule).Assembly
+			foreach(var module in typeof(AuthenticationRegisterModule).Assembly
 				.GetExportedTypes()
 				.Where(t => t.Inherits(typeof(Autofac.Module)))
 				.Where(t => !t.IsAbstract) //we can't deal with base abstract autofac modules

@@ -36,7 +36,7 @@ namespace PSOBB
 				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));
 
-			builder.RegisterModule(new ZoneClientHandlerRegisterationAutofacModule(SceneType));
+			builder.RegisterModule(new BaseHandlerRegisterationModule<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>(SceneType, GetType().Assembly));
 		}
 	}
 }

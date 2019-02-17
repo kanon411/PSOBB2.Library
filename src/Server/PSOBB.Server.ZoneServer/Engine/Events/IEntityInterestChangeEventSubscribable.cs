@@ -7,7 +7,7 @@ namespace PSOBB
 {
 	public interface IEntityInterestChangeEventSubscribable
 	{
-		
+		event EventHandler<EntityInterestChangeEventArgs> OnEntityInterestChanged;
 	}
 
 	//Based on the old EntityInterestChangeContext

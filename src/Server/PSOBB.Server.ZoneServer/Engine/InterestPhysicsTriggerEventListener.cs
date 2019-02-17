@@ -9,7 +9,7 @@ using UnityEngine;
 namespace PSOBB
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable
+	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable, IEntityInterestChangeEventSubscribable
 	{
 		private IPhysicsTriggerEventSubscribable TriggerEventSubscribable { get; }
 
@@ -17,15 +17,18 @@ namespace PSOBB
 
 		public ILog Logger { get; }
 
-		public IInterestRadiusManager RadiusManager { get; }
+		/// <inheritdoc />
+		public event EventHandler<EntityInterestChangeEventArgs> OnEntityInterestChanged;
 
 		/// <inheritdoc />
-		public InterestPhysicsTriggerEventListener([NotNull] IPhysicsTriggerEventSubscribable triggerEventSubscribable, [NotNull] IReadonlyGameObjectToEntityMappable objectToEntityMapper, [NotNull] ILog logger, [NotNull] IInterestRadiusManager radiusManager)
+		public InterestPhysicsTriggerEventListener(
+			[NotNull] IPhysicsTriggerEventSubscribable triggerEventSubscribable, 
+			[NotNull] IReadonlyGameObjectToEntityMappable objectToEntityMapper, 
+			[NotNull] ILog logger)
 		{
 			TriggerEventSubscribable = triggerEventSubscribable ?? throw new ArgumentNullException(nameof(triggerEventSubscribable));
 			ObjectToEntityMapper = objectToEntityMapper ?? throw new ArgumentNullException(nameof(objectToEntityMapper));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-			RadiusManager = radiusManager ?? throw new ArgumentNullException(nameof(radiusManager));
 		}
 
 		private void InterestTriggerExit([NotNull] object sender, [NotNull] PhysicsTriggerEventArgs args)
@@ -45,11 +48,7 @@ namespace PSOBB
 				return;
 			}
 
-			bool result = RadiusManager.TryEntityLeave(me, ObjectToEntityMapper.ObjectToEntityMap[rootObject]);
-
-			if(!result)
-				if(Logger.IsErrorEnabled)
-					Logger.Error($"Failed to exit Entity: {ObjectToEntityMapper.ObjectToEntityMap[rootObject]} to from Entity Interest ID: {me}");
+			OnEntityInterestChanged?.Invoke(this, new EntityInterestChangeEventArgs(me, ObjectToEntityMapper.ObjectToEntityMap[rootObject], EntityInterestChangeEventArgs.ChangeType.Exit));
 		}
 
 		private void InterestTriggerEnter([NotNull] object sender, [NotNull] PhysicsTriggerEventArgs args)
@@ -75,16 +74,7 @@ namespace PSOBB
 				return;
 			}
 
-			//TODO: Handle non-bool result. Ex (Entered, AlreadyExists, Failed) etc.
-			bool result = RadiusManager.TryEntityEnter(me, ObjectToEntityMapper.ObjectToEntityMap[rootObject]);
-
-			if(!result)
-			{
-				if(Logger.IsErrorEnabled)
-					Logger.Error($"Failed to enter Entity: {ObjectToEntityMapper.ObjectToEntityMap[rootObject]} to Entity Interest ID: {me}");
-			}
-			else if(Logger.IsInfoEnabled)
-				Logger.Info($"Entity: {ObjectToEntityMapper.ObjectToEntityMap[rootObject]} entered interest radius of Entity: {me}");
+			OnEntityInterestChanged?.Invoke(this, new EntityInterestChangeEventArgs(me, ObjectToEntityMapper.ObjectToEntityMap[rootObject], EntityInterestChangeEventArgs.ChangeType.Enter));
 		}
 
 		/// <inheritdoc />

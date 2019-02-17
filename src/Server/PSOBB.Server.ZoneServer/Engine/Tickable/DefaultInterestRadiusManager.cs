@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
@@ -12,13 +13,11 @@ namespace PSOBB
 	//Don't do a Skippable here, because we actually don't have a good design. It's possible without work there is still something to do.
 	[GameInitializableOrdering(0)] //this should run first
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
-	public sealed class DefaultInterestRadiusManager : IGameTickable
+	public sealed class DefaultInterestRadiusManager : EventQueueBasedTickable<IEntityInterestChangeEventSubscribable, EntityInterestChangeEventArgs>
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }
 
 		private INetworkMessageSender<EntityVisibilityChangeContext> VisibilityMessageSender { get; }
-
-		private IDequeable<EntityInterestChangeContext> InterestChangeDequeable { get; }
 
 		/// <summary>
 		/// The collections locking policy.
@@ -27,14 +26,15 @@ namespace PSOBB
 
 		/// <inheritdoc />
 		public DefaultInterestRadiusManager(
+			[NotNull] IEntityInterestChangeEventSubscribable subscriptionService,
+			[NotNull] ILog logger,
 			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
-			[NotNull] VisibilityChangeMessageSender visibilityMessageSender,
-			[NotNull] IDequeable<EntityInterestChangeContext> interestChangeDequeable,
-			[NotNull] GlobalEntityCollectionsLockingPolicy lockingPolicy)
+			[NotNull] INetworkMessageSender<EntityVisibilityChangeContext> visibilityMessageSender,
+			[NotNull] GlobalEntityCollectionsLockingPolicy lockingPolicy) 
+			: base(subscriptionService, true, logger)
 		{
 			ManagedInterestCollections = managedInterestCollections ?? throw new ArgumentNullException(nameof(managedInterestCollections));
 			VisibilityMessageSender = visibilityMessageSender ?? throw new ArgumentNullException(nameof(visibilityMessageSender));
-			InterestChangeDequeable = interestChangeDequeable ?? throw new ArgumentNullException(nameof(interestChangeDequeable));
 			LockingPolicy = lockingPolicy ?? throw new ArgumentNullException(nameof(lockingPolicy));
 		}
 
@@ -45,28 +45,50 @@ namespace PSOBB
 		}
 
 		/// <inheritdoc />
-		public void Tick()
+		protected override void HandleEvent(EntityInterestChangeEventArgs args)
 		{
 			using(LockingPolicy.ReaderLock(null, CancellationToken.None))
 			{
-				//TODO: We should probably refactor this, since it uses a new queue design
-				if(InterestChangeDequeable.isEmpty)
-					return;
+				ThrowIfNoEntityInterestManaged(args.EnterableEntity, args.EnteringEntity);
 
-				ServiceIncomingChangeQueue();
-
-				//We need to iterate the entire interest dictionary
-				//That means we need to check the new incoming and outgoing entities
-				//We do this because we need to build update packets for the players
-				//so that they can become aware of them AND we can start pushing
-				//events to them
-				foreach(var kvp in ManagedInterestCollections)
+				//When we encounter an entity interest change, we just want to register into the interest collection
+				//Something should eventually run to handle the interest changes, we just basically register/queue them up.
+				switch(args.ChangingType)
 				{
-					//We want to skip any collection that doesn't have any pending changes.
-					//No reason to send a message about it nor dequeue anything
-					if(!kvp.Value.HasPendingChanges())
-						continue;
+					case EntityInterestChangeEventArgs.ChangeType.Enter:
+						ManagedInterestCollections[args.EnterableEntity].Register(args.EnteringEntity, args.EnteringEntity);
+						break;
+					case EntityInterestChangeEventArgs.ChangeType.Exit:
+						ManagedInterestCollections[args.EnterableEntity].Unregister(args.EnteringEntity);
+						break;
+				}
+			}
+		}
 
+		/// <inheritdoc />
+		protected override void OnFinishedServicingEvents()
+		{
+			//After ALL the queued interest changes have been serviced
+			//we can actually handle the changes and send them and such
+
+			//We need to iterate the entire interest dictionary
+			//That means we need to check the new incoming and outgoing entities
+			//We do this because we need to build update packets for the players
+			//so that they can become aware of them AND we can start pushing
+			//events to them
+			foreach(var kvp in ManagedInterestCollections)
+			{
+				//We want to skip any collection that doesn't have any pending changes.
+				//No reason to send a message about it nor dequeue anything
+				if(!kvp.Value.HasPendingChanges())
+					continue;
+
+				//Even though this modifies the collections
+				//the write lock of this type is reserved only
+				//for adding or removing new entities. Not for
+				//actually changing the data itself.
+				using(LockingPolicy.ReaderLock(null, CancellationToken.None))
+				{
 					//We should only build packets for players.
 					if(kvp.Key.EntityType == EntityType.Player)
 					{
@@ -80,39 +102,18 @@ namespace PSOBB
 					//TODO: Should we execute right away? Or after all packets are sent?
 					dequeueCommand.Execute();
 				}
+			}
 
 #if DEBUG || DEBUG_BUILD
-				foreach(var kvp in ManagedInterestCollections)
-				{
-					if(!kvp.Value.EnteringDequeueable.isEmpty)
-						throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.EnteringDequeueable)}");
-
-					if(!kvp.Value.LeavingDequeueable.isEmpty)
-						throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.LeavingDequeueable)}");
-				}
-#endif
-			}
-		}
-
-		private void ServiceIncomingChangeQueue()
-		{
-			//We should servive the entire queue
-			while(!InterestChangeDequeable.isEmpty)
+			foreach(var kvp in ManagedInterestCollections)
 			{
-				EntityInterestChangeContext changeContext = InterestChangeDequeable.Dequeue();
+				if(!kvp.Value.EnteringDequeueable.isEmpty)
+					throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.EnteringDequeueable)}");
 
-				ThrowIfNoEntityInterestManaged(changeContext.EnterableEntity, changeContext.EnteringEntity);
-
-				switch(changeContext.ChangingType)
-				{
-					case EntityInterestChangeContext.ChangeType.Enter:
-						ManagedInterestCollections[changeContext.EnterableEntity].Register(changeContext.EnteringEntity, changeContext.EnteringEntity);
-						break;
-					case EntityInterestChangeContext.ChangeType.Exit:
-						ManagedInterestCollections[changeContext.EnterableEntity].Unregister(changeContext.EnteringEntity);
-						break;
-				}
+				if(!kvp.Value.LeavingDequeueable.isEmpty)
+					throw new InvalidOperationException($"Failed to fully queue: {nameof(kvp.Value.LeavingDequeueable)}");
 			}
+#endif
 		}
 	}
 }

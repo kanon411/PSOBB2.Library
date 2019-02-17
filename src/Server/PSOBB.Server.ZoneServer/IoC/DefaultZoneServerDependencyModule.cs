@@ -145,15 +145,6 @@ namespace PSOBB
 
 			RegisterLockingPolicies(builder);
 
-			//Interest change queue
-			builder.RegisterType<QueuingEntityInterestGateway>()
-				.As<IInterestRadiusManager>();
-
-			builder.RegisterType<EntityInterestChangeQueue>()
-				.AsSelf()
-				.As<IDequeable<EntityInterestChangeContext>>()
-				.SingleInstance();
-
 			/*builder.RegisterType<InterestPhysicsTriggerEventListener>()
 				.As<IGameInitializable>()
 				.SingleInstance();*/

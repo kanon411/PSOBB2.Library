@@ -16,19 +16,15 @@ namespace PSOBB
 
 		private IReadonlyEntityGuidMappable<InterestCollection> InterestCollections { get; }
 
-		private EntityInterestChangeQueue InterestChangeQueue { get; }
-
 		/// <inheritdoc />
 		public ServerPlayerEntityDestructor(
 			[NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor, 
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> guidToGameObjectMap,
-			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> interestCollections,
-			[NotNull] EntityInterestChangeQueue interestChangeQueue)
+			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> interestCollections)
 		{
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
 			GuidToGameObjectMap = guidToGameObjectMap ?? throw new ArgumentNullException(nameof(guidToGameObjectMap));
 			InterestCollections = interestCollections ?? throw new ArgumentNullException(nameof(interestCollections));
-			InterestChangeQueue = interestChangeQueue ?? throw new ArgumentNullException(nameof(interestChangeQueue));
 		}
 
 		/// <inheritdoc />
@@ -51,7 +47,9 @@ namespace PSOBB
 
 			bool result = EntityDestructor.Destroy(obj.EntityGuid);
 
-			if(result)
+
+			throw new NotImplementedException($"TODO: MUST REIMPLEMENT THE INTEREST DEQUEUEING SYSTEM.");
+			/*if(result)
 			{
 				//To avoid major issues with previous physics based issue we're writing this horriblely slow, hacky solution
 				foreach(var ic in InterestCollections)
@@ -64,7 +62,7 @@ namespace PSOBB
 						InterestChangeQueue.Enqueue(new EntityInterestChangeContext(ic.Key, obj.EntityGuid, EntityInterestChangeContext.ChangeType.Exit));
 					}
 				}
-			}
+			}*/
 
 			return result;
 		}

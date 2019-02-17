@@ -56,9 +56,16 @@ namespace PSOBB
 				switch(args.ChangingType)
 				{
 					case EntityInterestChangeEventArgs.ChangeType.Enter:
-						ManagedInterestCollections[args.EnterableEntity].Register(args.EnteringEntity, args.EnteringEntity);
+						//If the entity already knows the entity then we should not register it.
+						if(ManagedInterestCollections[args.EnterableEntity].Contains(args.EnteringEntity))
+							ManagedInterestCollections[args.EnterableEntity].Register(args.EnteringEntity, args.EnteringEntity);
 						break;
 					case EntityInterestChangeEventArgs.ChangeType.Exit:
+						//It's possible we'll want to be having an entity EXIT without being known.
+						//They could have Entered (and will be added above at some point) but within
+						//the time before this interest system services interest it's possible
+						//that they also LEFT it. Therefore there could be an ENTER + EXIT in one go.
+						//Registering exits always will address this cleanup.
 						ManagedInterestCollections[args.EnterableEntity].Unregister(args.EnteringEntity);
 						break;
 				}

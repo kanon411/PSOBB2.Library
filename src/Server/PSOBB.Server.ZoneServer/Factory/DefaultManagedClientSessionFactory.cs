@@ -54,44 +54,6 @@ namespace PSOBB
 					OnSessionDisconnection?.Invoke(source, args);
 					return Task.CompletedTask;
 				};
-				/*
-				{
-					//throw new NotImplementedException("TODO: Redo the whole session disconnection crap.");
-					if(Logger.IsDebugEnabled)
-						Logger.Debug($"Session disconnecting. Details: {args.Details} Status: {args.Status}");
-
-					try
-					{
-						//It's possible they disconnected before they even own an entity.
-						if(!SessionDestructor.OwnsEntityToDestruct(source.Details.ConnectionId))
-						{
-							Logger.Debug($"Connection: {source.Details.ConnectionId} disconnecting does not own an entity.");
-
-							//Do NOT return from here, we still want to queue up a removal.
-							//The reason being that it's possible they could be disconnecting in the middle of an entity session claim request
-							//therefore the main thread cleanup, that runs after spawn, needs to run for this connection id.
-						}
-						else
-						{
-							//We know that an entity exists, so we must save it. Before we even queue it up for removal.
-							await EntitySaver.SaveAsync(ConnectionCollection[source.Details.ConnectionId])
-								.ConfigureAwait(false);
-						}
-
-						//All collections and world entity stuff is still intact at this point. We've only taken time to
-						//save entity data (maybe on another server/db) and will enqueue actual removal to be handled elsewhere.
-
-						//You may wonder why we're queueing this up for removal. The reason is as follows:
-						//It's possible that the player spawn request is enqueued up and to be handled by the EntryManager. We need to handle checking this on the main thread AFTER entry manager has run.
-						SessionCleanupQueue.Enqueue(new PlayerSessionDeconstructionContext(source.Details.ConnectionId));
-					}
-					catch(Exception e)
-					{
-						if(Logger.IsErrorEnabled)
-							Logger.Error($"Error Session Cleanup: {e.Message}\n\nStackTrace: {e.StackTrace}");
-						throw;
-					}
-				};*/
 
 				return clientSession;
 			}

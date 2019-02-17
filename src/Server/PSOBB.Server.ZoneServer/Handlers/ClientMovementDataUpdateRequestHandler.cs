@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace PSOBB
 {
+	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class ClientMovementDataUpdateRequestHandler : ControlledEntityRequestHandler<ClientMovementDataUpdateRequest>
 	{
 		private IEntityGuidMappable<IMovementData> MovementDataMap { get; }

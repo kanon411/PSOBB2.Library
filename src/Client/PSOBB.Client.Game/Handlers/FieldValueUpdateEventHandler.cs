@@ -29,8 +29,20 @@ namespace PSOBB
 			//Assume the update fields aren't null and there is at least 1
 			foreach(EntityAssociatedData<FieldValueUpdate> update in payload.FieldValueUpdates)
 			{
+
 				//TODO: We shouldn't assume we know the entity, but technically we should based on order of server-side events.
-				IEntityDataFieldContainer entityDataContainer = EntityDataContainerMap[update.EntityGuid];
+				IEntityDataFieldContainer entityDataContainer = null;
+				try
+				{
+					entityDataContainer = EntityDataContainerMap[update.EntityGuid];
+				}
+				catch(Exception e)
+				{
+					if(Logger.IsWarnEnabled)
+						Logger.Warn($"Encountered Entity FieldValueUpdate for Unknown Entity: {update.EntityGuid.EntityType}:{update.EntityGuid.EntityId}. Error: {e.Message}");
+
+					throw;
+				}
 
 				//We have to lock here otherwise we could encounter race conditions with the
 				//change tracking system.

@@ -30,7 +30,7 @@ namespace PSOBB
 		}
 
 		/// <inheritdoc />
-		public override Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
+		public override async Task HandleMessage(IPeerMessageContext<GameClientPacketPayload> context, NetworkObjectVisibilityChangeEventPayload payload)
 		{
 			foreach(var entity in payload.EntitiesToCreate)
 			{
@@ -62,7 +62,15 @@ namespace PSOBB
 				OnNetworkEntityVisibilityLost?.Invoke(this, new NetworkEntityVisibilityLostEventArgs(destroyData));
 			}
 
-			return Task.CompletedTask;
+			//TODO: We should not waste 2, maybe even more, frames to prevent the race condition for spawn/despawn and other packets.
+			//We SHOULD actually only call these awaits in other handlers where we realize we MAY not have spawned the entity yet.
+			//This should yield better-case throughput because MANY packets could be handled unrelated inbetween these awaits.
+			//Two tickable frames is long enough for all spawn/despawn logic to have run.
+			await UnityExtended.AwaitNextTickableFrameAsync()
+				.ConfigureAwait(false);
+
+			await UnityExtended.AwaitNextTickableFrameAsync()
+				.ConfigureAwait(false);
 		}
 
 		private void SetInitialFieldValues([NotNull] EntityCreationData creationData, [NotNull] IEntityDataFieldContainer dataContainer)

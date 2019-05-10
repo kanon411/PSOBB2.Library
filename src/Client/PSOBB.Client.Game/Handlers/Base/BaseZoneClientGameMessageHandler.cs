@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base handler for all game handlers.

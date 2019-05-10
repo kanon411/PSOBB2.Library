@@ -6,7 +6,7 @@ using System.Threading;
 using Autofac.Features.AttributeFilters;
 using Nito.AsyncEx;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionButtonClickedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]

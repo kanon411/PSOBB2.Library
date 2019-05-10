@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class ILoggerFactoryExtensions
 	{

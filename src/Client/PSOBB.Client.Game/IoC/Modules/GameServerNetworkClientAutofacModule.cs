@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GameServerNetworkClientAutofacModule : Module
 	{

@@ -8,7 +8,7 @@ using GladNet;
 using ProtoBuf;
 using ProtoBuf.Meta;
 
-namespace PSOBB
+namespace GladMMO
 {
 	class Program
 	{

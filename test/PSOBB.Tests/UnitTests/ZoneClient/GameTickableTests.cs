@@ -7,7 +7,7 @@ using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public static class GameTickableTests

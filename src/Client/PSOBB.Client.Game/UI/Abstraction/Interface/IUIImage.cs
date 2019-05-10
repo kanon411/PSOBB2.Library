@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Contract for types that implement UI image.

@@ -5,7 +5,7 @@ using System.Text;
 using Common.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>

@@ -8,7 +8,7 @@ using Common.Logging.Simple;
 using GladNet;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class ZoneServerIoCTests

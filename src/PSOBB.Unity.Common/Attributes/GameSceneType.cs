@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Enumeration of scene types for a game initializable.

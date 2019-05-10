@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]

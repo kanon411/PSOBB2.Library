@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-namespace PSOBB.Tests.Collections
+namespace GladMMO.Tests.Collections
 {
 	[TestFixture]
 	public class DataEntityCollectionTests

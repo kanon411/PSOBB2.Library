@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class SharedBaseSingleEventListenerInitializable<TSubscribableType, THandlerType, TEventArgsType> : IGameInitializable
 		where TSubscribableType : class

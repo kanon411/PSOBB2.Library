@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class VisibilityChangeMessageSender : INetworkMessageSender<EntityVisibilityChangeContext>
 	{

@@ -5,7 +5,7 @@ using SceneJect.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base-type for <see cref="MonoBehaviour"/>'s

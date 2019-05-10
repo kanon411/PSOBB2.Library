@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the NPC Template Repository.

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public abstract class UIController<TViewType> : MonoBehaviour

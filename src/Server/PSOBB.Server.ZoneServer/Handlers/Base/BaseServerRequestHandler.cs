@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class BaseServerRequestHandler<TSpecificPayloadType> : IPeerMessageHandler<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>
 		where TSpecificPayloadType : GameClientPacketPayload

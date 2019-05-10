@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
-using PSOBB.Client;
+using GladMMO.Client;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ILoginButtonClickedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.TitleScreen)]

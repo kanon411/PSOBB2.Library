@@ -1,4 +1,4 @@
-﻿namespace PSOBB
+﻿namespace GladMMO
 {
 	/// <summary>
 	/// Enumeration of potential results of a name query.

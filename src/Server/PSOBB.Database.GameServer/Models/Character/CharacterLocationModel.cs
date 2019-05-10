@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Support instance/world linking so that we can load back into the same map/instance we logged out from (if the instance is still up)
 	[Table("character_locations")]

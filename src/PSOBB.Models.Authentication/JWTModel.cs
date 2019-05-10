@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// JWT Token model.

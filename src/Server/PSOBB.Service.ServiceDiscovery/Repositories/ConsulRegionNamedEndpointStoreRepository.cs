@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Consul;
 using Consul.Net;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ConsulRegionNamedEndpointStoreRepository : IRegionbasedNameEndpointResolutionRepository
 	{

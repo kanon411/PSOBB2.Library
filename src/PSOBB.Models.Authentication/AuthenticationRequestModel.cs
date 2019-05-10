@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// The authentication request model.

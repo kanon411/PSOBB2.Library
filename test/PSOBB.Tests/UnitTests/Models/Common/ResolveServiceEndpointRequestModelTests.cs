@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public static class ResolveServiceEndpointRequestTests

@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf.Meta;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Unity3D version of <see cref="ProtobufPayloadRegister"/>.

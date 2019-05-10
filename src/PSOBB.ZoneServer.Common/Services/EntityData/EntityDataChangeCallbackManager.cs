@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: We need some handling for callback cleanup, especially when an entity disappears.
 	public sealed class EntityDataChangeCallbackManager : IEntityDataChangeCallbackRegisterable, IEntityDataChangeCallbackService

@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class AuthorizationReadyController : BaseGuardiansController
 	{

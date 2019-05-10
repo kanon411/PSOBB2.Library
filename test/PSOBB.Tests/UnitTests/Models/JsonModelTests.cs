@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class JsonModelTests : GenericModelTests<JsonPropertyAttribute, JsonIgnoreAttribute, JsonObjectAttribute>

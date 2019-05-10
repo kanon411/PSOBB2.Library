@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class InterestCollectionExtensions
 	{

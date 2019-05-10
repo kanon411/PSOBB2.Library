@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class LateInitializationBaseMovementGenerator<TDataInputType> : MoveGenerator
 		where TDataInputType : class, IMovementData

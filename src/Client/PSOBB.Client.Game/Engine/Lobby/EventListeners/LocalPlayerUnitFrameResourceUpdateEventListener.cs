@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.AttributeFilters;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class LocalPlayerUnitFrameResourceUpdateEventListener : BaseSingleEventListenerInitializable<ILocalPlayerSpawnedEventSubscribable, LocalPlayerSpawnedEventArgs>

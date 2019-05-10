@@ -8,7 +8,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IPlayerWorldSessionCreatedEventSubscribable))]
 	[GameInitializableOrdering(2)]

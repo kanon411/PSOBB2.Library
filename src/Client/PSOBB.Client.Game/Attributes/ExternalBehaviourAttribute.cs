@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Metadata to indicate a Type is actually an external dependency for

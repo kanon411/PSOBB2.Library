@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PSOBB;
+using GladMMO;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Response to <see cref="ResolveServiceEndpointRequest"/> containing the endpoint of the requested service.

@@ -7,7 +7,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class ClientMovementDataUpdateRequestHandler : ControlledEntityRequestHandler<ClientMovementDataUpdateRequest>

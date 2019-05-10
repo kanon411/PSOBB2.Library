@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Payload sent by a zone server to update a player about movement data

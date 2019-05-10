@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Payload sent by the client to update the server about local client

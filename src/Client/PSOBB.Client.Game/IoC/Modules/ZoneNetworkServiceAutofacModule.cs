@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Refit;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ZoneNetworkServiceAutofacModule : Module
 	{

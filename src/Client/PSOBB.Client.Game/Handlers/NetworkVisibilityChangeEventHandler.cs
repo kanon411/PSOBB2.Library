@@ -7,7 +7,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(INetworkEntityVisibilityLostEventSubscribable))]
 	[AdditionalRegisterationAs(typeof(INetworkEntityVisibleEventSubscribable))]

@@ -12,7 +12,7 @@ using ProtoBuf;
 using Refit;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DefaultZoneServerDependencyModule : Module
 	{

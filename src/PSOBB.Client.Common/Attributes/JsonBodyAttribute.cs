@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Stub/Mock for old TypeSafe.Http.Net to help return to it

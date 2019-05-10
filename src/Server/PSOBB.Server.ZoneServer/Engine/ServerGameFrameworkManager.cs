@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using PSOBB.Unity;
+using GladMMO.Unity;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ServerGameFrameworkManager : DefaultGameFrameworkManager
 	{

@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
-using PSOBB;
+using GladMMO;
 using SceneJect.Common;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// The component that manages the game network client.

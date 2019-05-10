@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Route("api/registeration")]
 	public class RegisterationController : Controller

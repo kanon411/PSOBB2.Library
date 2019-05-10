@@ -6,7 +6,7 @@ using System.Text;
 using Generic.Math;
 using Reinterpret.Net;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class EntityFieldDataCollection<TFieldType> : IEntityDataFieldContainer, IEntityDataFieldContainer<TFieldType>
 		where TFieldType : struct //TODO: When C# 8.0 or 7.3 is better supported switch to it for Enum constraint

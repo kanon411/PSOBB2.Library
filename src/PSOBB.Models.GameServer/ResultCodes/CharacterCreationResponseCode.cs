@@ -1,4 +1,4 @@
-﻿namespace PSOBB
+﻿namespace GladMMO
 {
 	/// <summary>
 	/// Enumeration of all potential results/codes

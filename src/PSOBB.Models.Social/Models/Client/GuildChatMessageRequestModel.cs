@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Data model for <see cref="TargetlessChannelChatMessageRequestModel"/>

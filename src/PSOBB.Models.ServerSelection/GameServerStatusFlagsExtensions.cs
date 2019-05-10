@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Extensions for the <see cref="GameServerStatusFlags"/> Type.

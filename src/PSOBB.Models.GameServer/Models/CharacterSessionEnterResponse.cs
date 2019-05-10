@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Response model for requests that try to create/enter sessions.

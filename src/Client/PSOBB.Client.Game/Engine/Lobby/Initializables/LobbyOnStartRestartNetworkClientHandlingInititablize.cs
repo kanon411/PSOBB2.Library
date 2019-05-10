@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Basically, on Start in the lobby scene this initializable will
 	//just take the client manager and start the networking pump again

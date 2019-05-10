@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Table("character_sessions")]
 	public class CharacterSessionModel

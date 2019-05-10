@@ -4,7 +4,7 @@ using System.Text;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class UnitFrameElementsAdapter: SerializedMonoBehaviour, IUIAdapterRegisterable, IUIUnitFrame
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Marks a controller/action indicating it should produce JSON

@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GenericMessageSender<TPayloadType> : INetworkMessageSender<GenericSingleTargetMessageContext<TPayloadType>> 
 		where TPayloadType : GameServerPacketPayload

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
 	public sealed class PreBurstSessionClaimOnClientConnectionEventListener : BaseSingleEventListenerInitializable<INetworkConnectionEstablishedEventSubscribable>

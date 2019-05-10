@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[JsonObject]
 	public sealed class ZoneServerNpcEntryModel

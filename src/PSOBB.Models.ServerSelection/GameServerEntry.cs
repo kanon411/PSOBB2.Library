@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Represents a single entry of a game listing.

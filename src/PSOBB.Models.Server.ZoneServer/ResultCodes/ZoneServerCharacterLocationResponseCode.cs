@@ -1,4 +1,4 @@
-﻿namespace PSOBB
+﻿namespace GladMMO
 {
 	/// <summary>
 	/// Enumeration of response codes for <see cref="ZoneServerCharacterLocationResponse"/>.

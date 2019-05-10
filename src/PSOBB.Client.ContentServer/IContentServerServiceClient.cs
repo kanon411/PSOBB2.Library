@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: We should seperate editor service from the general content server that the client reads.
 	//From ProjectVindictive: https://github.com/HelloKitty/ProjectVindictive.Library/blob/master/src/ProjectVindictive.SDK.Editor.Build/Client/IUserContentManagementServiceClient.cs

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Don't subscribe to this event if you want to do something

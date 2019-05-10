@@ -4,7 +4,7 @@ using System.Text;
 using Autofac;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public class AuthenticationTokenAutofacModule : Module
 	{

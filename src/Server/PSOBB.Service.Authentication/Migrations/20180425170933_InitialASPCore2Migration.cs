@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace PSOBB.Service.Authentication.Migrations
+namespace GladMMO.Service.Authentication.Migrations
 {
     public partial class InitialASPCore2Migration : Migration
     {

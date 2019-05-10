@@ -5,7 +5,7 @@ using System.Threading;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Refactor, this is just for testing
 	[GameInitializableOrdering(1)]

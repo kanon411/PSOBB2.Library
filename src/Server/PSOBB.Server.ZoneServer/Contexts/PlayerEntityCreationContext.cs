@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class PlayerEntityCreationContext : IEntityGuidContainer, IEntityCreationContext
 	{

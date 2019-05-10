@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: This might not be something that should be common between client/server
 	public sealed class EntityPrefabFactory : IFactoryCreatable<GameObject, EntityPrefab>

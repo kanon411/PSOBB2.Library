@@ -6,7 +6,7 @@ using Nito.AsyncEx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//This just selects the character as soon as one is clicked.
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]

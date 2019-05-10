@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[GameInitializableOrdering(1)]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]

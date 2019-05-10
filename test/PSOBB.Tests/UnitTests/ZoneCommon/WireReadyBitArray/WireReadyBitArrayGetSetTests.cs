@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace PSOBB.Tests.Collections
+namespace GladMMO.Tests.Collections
 {
 	public static class WireReadyBitArrayGetSetTests
 	{

@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class BaseUnityUIImageAdapter<TAdaptedToType> : BaseUnityUIAdapter<Image, TAdaptedToType>, IUIImage
 		where TAdaptedToType : IUIImage //just make sure it's a IUIImage

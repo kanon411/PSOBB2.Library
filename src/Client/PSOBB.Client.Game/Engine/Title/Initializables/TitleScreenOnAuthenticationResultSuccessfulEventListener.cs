@@ -7,7 +7,7 @@ using Nito.AsyncEx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.TitleScreen)]
 	public sealed class TitleScreenOnAuthenticationResultSuccessfulEventListener : BaseSingleEventListenerInitializable<IAuthenticationResultRecievedEventSubscribable, AuthenticationResultEventArgs>

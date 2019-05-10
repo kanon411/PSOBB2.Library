@@ -6,7 +6,7 @@ using GladNet;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class CommonInstanceServerDependencyRegister : NonBehaviourDependency
 	{

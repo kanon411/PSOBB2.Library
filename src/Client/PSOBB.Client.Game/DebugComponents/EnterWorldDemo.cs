@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public sealed class EnterWorldDemo : NetworkRequestSender

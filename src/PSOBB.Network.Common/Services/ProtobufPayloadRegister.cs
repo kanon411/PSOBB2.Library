@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ProtoBuf.Meta;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public class ProtobufPayloadRegister
 	{

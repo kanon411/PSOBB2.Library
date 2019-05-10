@@ -8,9 +8,9 @@ using Castle.Core.Internal;
 using Fasterflect;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using PSOBB;
+using GladMMO;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class GameInitializableTests

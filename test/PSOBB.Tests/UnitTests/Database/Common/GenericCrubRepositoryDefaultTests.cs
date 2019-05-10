@@ -6,12 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Generic.Math;
-using PSOBB;
+using GladMMO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public abstract class GenericCrubRepositoryDefaultTests<TDbContextType, TRepositoryType, TKeyType, TModelType>

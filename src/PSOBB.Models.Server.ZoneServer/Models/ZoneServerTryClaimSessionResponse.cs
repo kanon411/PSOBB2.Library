@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ZoneServerTryClaimSessionResponse : IResponseModel<ZoneServerTryClaimSessionResponseCode>, ISucceedable
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Local config path builder for the region endpoints.

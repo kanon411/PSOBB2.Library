@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PSOBB.Database.GameServer.Migrations
+namespace GladMMO.Database.GameServer.Migrations
 {
     public partial class NewCharacterFriendsRequestMigration : Migration
     {

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Based on source from: https://github.com/dotnet/corefx/blob/4a58e005144f023bf176f2ba5f87d32688f10d85/src/Common/src/CoreLib/System/Runtime/CompilerServices/YieldAwaitable.cs
 	/// <summary>Provides an awaitable context for switching into a target environment.</summary>

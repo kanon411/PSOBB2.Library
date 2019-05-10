@@ -4,7 +4,7 @@ using System.Text;
 using Common.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class EntityDespawnTickable : EventQueueBasedTickable<INetworkEntityVisibilityLostEventSubscribable, NetworkEntityVisibilityLostEventArgs>

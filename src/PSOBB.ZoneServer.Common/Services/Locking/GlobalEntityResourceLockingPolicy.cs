@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using Nito.AsyncEx;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GlobalEntityResourceLockingPolicy : IContextualResourceLockingPolicy<NetworkEntityGuid>
 	{

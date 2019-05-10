@@ -2,7 +2,7 @@
 using GladNet;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: PR to Protobuf-Net doc fix for EnumPassthru
 	/// <summary>

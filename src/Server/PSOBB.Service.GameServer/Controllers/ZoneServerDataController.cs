@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Route("api/[controller]")]
 	public class ZoneServerDataController : Controller

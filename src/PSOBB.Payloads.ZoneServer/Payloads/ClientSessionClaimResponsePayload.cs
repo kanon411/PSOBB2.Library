@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Response payload sent in response to a <see cref="ClientSessionClaimRequestPayload"/>.

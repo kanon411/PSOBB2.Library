@@ -4,7 +4,7 @@ using System.Text;
 using Common.Logging;
 using Common.Logging.Factory;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//From the Freecraft Proxy
 	public sealed class ConsoleLogger : AbstractLogger

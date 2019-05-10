@@ -5,7 +5,7 @@ using System.Text;
 using Autofac;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GameClientMessageHandlerAutofacModule : Module
 	{

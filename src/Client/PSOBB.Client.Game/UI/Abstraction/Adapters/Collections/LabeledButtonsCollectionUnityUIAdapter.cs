@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Exposed designers the ability to register collections of <see cref="IUILabeledButton"/>s.

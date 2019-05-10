@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Movement data that can be used to denote

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// The model for the character database table.

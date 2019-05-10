@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class IMvcBuilderExtensions
 	{

@@ -5,7 +5,7 @@ using Autofac;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class LobbyGameDependencies : AutofacBasedDependencyRegister<LobbyGameDependenciesAutofacModule>
 	{

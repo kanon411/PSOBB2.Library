@@ -10,7 +10,7 @@ using NUnit.Compatibility;
 using NUnit.Framework;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public abstract class GenericModelTests<TPropertyAttributeType, TIgnorePropertyAttributeType, TContractType>

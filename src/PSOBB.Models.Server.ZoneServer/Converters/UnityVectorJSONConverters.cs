@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Refactor to share serialization code.
 	public class Vector4Converter : JsonConverter<Vector4>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Contracts for types that require initialization when

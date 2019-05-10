@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PSOBB;
+using GladMMO;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Adapters for the Unity3D UI Type: <see cref="Text"/> adapted to

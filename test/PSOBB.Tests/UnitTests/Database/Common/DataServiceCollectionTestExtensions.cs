@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class DataServiceCollectionTestExtensions
 	{

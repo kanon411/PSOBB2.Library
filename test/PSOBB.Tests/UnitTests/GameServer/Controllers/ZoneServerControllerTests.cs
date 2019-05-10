@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using static PSOBB.ControllerTestsHelpers;
+using static GladMMO.ControllerTestsHelpers;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public class ZoneServerControllerTests

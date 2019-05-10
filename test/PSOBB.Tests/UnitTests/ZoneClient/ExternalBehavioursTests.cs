@@ -8,7 +8,7 @@ using Fasterflect;
 using GladNet;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public class ExternalBehavioursTests

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DatabaseContextBasedRegionBasedNameEndpointResolutionRepository : IRegionbasedNameEndpointResolutionRepository
 	{

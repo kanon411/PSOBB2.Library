@@ -7,7 +7,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// The handler for the player spawn event

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	// A vector of bits.  Use this to store bits efficiently, without having to do bit 
 	// shifting yourself.

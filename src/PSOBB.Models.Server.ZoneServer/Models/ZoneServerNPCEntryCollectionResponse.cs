@@ -5,7 +5,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[JsonObject]
 	public sealed class ZoneServerNPCEntryCollectionResponse : IResponseModel<NpcEntryCollectionResponseCode>

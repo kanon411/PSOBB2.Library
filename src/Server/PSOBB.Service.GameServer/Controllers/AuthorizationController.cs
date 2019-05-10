@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Route("api/[controller]")]
 	public class AuthorizationController : Controller

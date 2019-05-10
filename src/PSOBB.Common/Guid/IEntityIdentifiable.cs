@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Contract for types that can indentify a Entity.

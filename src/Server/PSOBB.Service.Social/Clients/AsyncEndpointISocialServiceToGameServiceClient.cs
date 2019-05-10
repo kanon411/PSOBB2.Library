@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public class AsyncEndpointISocialServiceToGameServiceClient : BaseAsyncEndpointService<ISocialServiceToGameServiceClient>, ISocialServiceToGameServiceClient
 	{

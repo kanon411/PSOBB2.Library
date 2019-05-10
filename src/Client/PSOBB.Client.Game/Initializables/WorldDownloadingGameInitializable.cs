@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.WorldDownloadingScreen)]
 	public sealed class WorldDownloadingGameInitializable : IGameInitializable

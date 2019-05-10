@@ -6,7 +6,7 @@ using Common.Logging;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public sealed class InterestRadiusGatewayEntry : InterestMonitorComponent

@@ -6,7 +6,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class MovementUpdateMessageHandler : BaseZoneClientGameMessageHandler<MovementDataUpdateEventPayload>

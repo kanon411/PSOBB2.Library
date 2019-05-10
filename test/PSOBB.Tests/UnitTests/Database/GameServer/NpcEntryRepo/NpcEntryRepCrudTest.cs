@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PSOBB.Database;
+using GladMMO.Database;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Reinterpret.Net;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the NPC Entry Repository.

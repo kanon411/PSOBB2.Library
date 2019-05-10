@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Initializable that just starts the zoneserver network listener.
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]

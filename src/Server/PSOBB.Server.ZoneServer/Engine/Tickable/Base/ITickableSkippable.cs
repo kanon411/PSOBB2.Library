@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//This is mostly introduced to reduce write lock contention
 	//without skipping it would be possible to enter write locks very often on

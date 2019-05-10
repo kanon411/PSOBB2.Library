@@ -8,7 +8,7 @@ using Nito.AsyncEx;
 using Refit;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IAuthenticationResultRecievedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.TitleScreen)]

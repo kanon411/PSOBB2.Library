@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// This is the default handler that is invoked when an unknown payload is encountered.

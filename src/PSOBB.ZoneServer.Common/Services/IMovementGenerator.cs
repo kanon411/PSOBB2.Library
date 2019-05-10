@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface IMovementGenerator<in TEntityType> //we make entity type generic so it will be easy to swap between guid/gameobject if needed.
 	{

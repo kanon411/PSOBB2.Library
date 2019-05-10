@@ -1,7 +1,7 @@
 ﻿using System;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Client payload sent by a client in an attempt to

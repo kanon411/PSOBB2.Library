@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[ProtoContract]
 	public sealed class EntityCreationData : IEntityGuidContainer

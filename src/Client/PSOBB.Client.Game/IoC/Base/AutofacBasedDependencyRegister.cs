@@ -5,7 +5,7 @@ using Autofac;
 using Autofac.Core;
 using SceneJect.Common;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base asbtract type for easily registering Sceneject dependency collections

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ZoneChatMessageEnvelopeFactory : BaseTargetlessChannelMessageEnvelopeFactory<ZoneChatMessageRequestModel, ZoneChatMessageEventModel>
 	{

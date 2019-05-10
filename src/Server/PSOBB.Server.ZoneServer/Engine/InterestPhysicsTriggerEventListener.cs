@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSpoofable))]
 	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSubscribable))]

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class IApplicationBuilderExtensions
 	{

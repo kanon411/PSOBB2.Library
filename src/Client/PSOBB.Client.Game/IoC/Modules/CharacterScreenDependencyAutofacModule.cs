@@ -8,7 +8,7 @@ using Autofac;
 using Common.Logging;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class CharacterScreenDependencyAutofacModule : NetworkServiceDiscoveryableAutofaceModule
 	{

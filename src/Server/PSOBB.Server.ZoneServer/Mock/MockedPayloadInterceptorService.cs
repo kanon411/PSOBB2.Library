@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class MockedPayloadInterceptorService : IPeerRequestSendService<GameServerPacketPayload>
 	{

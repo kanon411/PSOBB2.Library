@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DatabaseBackedCharacterLocationRepository : ICharacterLocationRepository
 	{

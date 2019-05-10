@@ -5,7 +5,7 @@ using System.Text;
 using Moq;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class EntityDataChangeCallbackTests

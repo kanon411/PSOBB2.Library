@@ -7,7 +7,7 @@ using GladNet;
 using Nito.AsyncEx;
 using UnityEngine.Events;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[GameInitializableOrdering(Int32.MaxValue)] //this should ALWAYS be last, just incase anything else is in queue.
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]

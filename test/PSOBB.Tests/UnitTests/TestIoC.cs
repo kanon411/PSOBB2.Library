@@ -6,11 +6,11 @@ using Autofac;
 using Common.Logging;
 using Fasterflect;
 using Moq;
-using PSOBB.Client;
+using GladMMO.Client;
 using SceneJect;
 using SceneJect.Common;
 
-namespace PSOBB
+namespace GladMMO
 {
 	internal static class TestIoC
 	{

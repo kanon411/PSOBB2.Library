@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Extensions for the <see cref="IServiceCollection"/> Type.

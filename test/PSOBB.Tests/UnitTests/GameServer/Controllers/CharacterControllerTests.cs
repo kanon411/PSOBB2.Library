@@ -12,9 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Moq;
 using NUnit.Framework;
-using static PSOBB.ControllerTestsHelpers;
+using static GladMMO.ControllerTestsHelpers;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public class CharacterControllerTests

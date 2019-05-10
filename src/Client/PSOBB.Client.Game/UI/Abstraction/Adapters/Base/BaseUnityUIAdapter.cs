@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using PSOBB;
+using GladMMO;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Unitysync.Async;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class BaseUnityUIAdapter<TAdaptedUnityEngineType, TAdaptedToType> : BaseUnityUI<TAdaptedToType>
 	{

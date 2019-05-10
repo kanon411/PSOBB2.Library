@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PSOBB;
+using GladMMO;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// UI combination of <see cref="IUIButton"/>

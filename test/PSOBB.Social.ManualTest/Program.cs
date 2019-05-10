@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace PSOBB.Social.ManualTest
+namespace GladMMO.Social.ManualTest
 {
 	class Program
 	{

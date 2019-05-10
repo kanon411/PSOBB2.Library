@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Response sent by the server as a response to <see cref="ServerTimeSyncronizationRequestPayload"/>.

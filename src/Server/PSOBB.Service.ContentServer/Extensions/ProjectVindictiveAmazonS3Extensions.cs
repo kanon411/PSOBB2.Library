@@ -7,7 +7,7 @@ using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//From ProjectVindictive: https://github.com/HelloKitty/ProjectVindictive.Library/blob/master/src/ProjectVindictive.Server.AmazonS3/Extensions/ProjectVindictiveAmazonS3Extensions.cs
 	public static class ProjectVindictiveAmazonS3Extensions

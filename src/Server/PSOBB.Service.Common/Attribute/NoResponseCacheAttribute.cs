@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Marks an action with a <see cref="ResponseCacheAttribute"/>

@@ -7,7 +7,7 @@ using SceneJect.Common;
 using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class UIDependencyRegisterationModule : Module
 	{

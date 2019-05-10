@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class MovementBlockhandlerTests

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class SignalRClientExtensions
 	{

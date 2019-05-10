@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: This is mostly copy-paste from the server one. Can we unify this somehow?
 	public sealed class PositionChangeMovementGenerator : BaseMovementGenerator<PositionChangeMovementData>

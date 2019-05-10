@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//From ProjectVindictive: https://github.com/HelloKitty/ProjectVindictive.Library/blob/master/src/ProjectVindictive.Models.UserContentManagement/RequestedUrlResponseModel.cs
 	/// <summary>

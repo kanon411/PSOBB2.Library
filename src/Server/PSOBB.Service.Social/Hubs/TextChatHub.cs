@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AuthorizeJwt]
 	public sealed class TextChatHub : AuthorizationReadySignalRHub<IRemoteSocialTextChatHubClient>, 

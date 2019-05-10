@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Response model for name validation requests.

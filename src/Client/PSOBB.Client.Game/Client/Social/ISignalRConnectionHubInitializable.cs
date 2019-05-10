@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface ISignalRConnectionHubInitializable
 	{

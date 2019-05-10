@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using PSOBB.Database;
+using GladMMO.Database;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Table that represents an actual NPC entry that exists in the world.

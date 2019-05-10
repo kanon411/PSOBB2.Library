@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
-using PSOBB;
+using GladMMO;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public static class IClaimsPrincipalReaderExtensions
 	{

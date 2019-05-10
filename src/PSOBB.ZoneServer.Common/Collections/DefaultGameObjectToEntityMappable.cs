@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Do a better implementation
 	public sealed class DefaultGameObjectToEntityMappable : IReadonlyGameObjectToEntityMappable, IGameObjectToEntityMappable

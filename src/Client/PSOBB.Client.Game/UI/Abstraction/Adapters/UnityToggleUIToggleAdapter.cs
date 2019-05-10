@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Unitysync.Async;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class UnityToggleUIToggleAdapter : BaseUnityUIAdapter<Toggle, IUIToggle>, IUIToggle
 	{

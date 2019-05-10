@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Meta-data that marks an action/controller with an <see cref="AuthorizeAttribute"/>

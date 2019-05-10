@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Serializable]
 	public sealed class ReferenceCountedPrefabContentResourceHandle : IPrefabContentResourceHandle

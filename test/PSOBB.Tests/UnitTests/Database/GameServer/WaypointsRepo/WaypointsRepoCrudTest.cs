@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using PSOBB.Database;
+using GladMMO.Database;
 using NUnit.Framework;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Runs all the crud repo interface default tests against the character repository.

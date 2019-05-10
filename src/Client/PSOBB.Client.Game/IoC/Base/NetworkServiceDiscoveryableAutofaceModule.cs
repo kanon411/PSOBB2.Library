@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Autofac;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class NetworkServiceDiscoveryableAutofaceModule : Module
 	{

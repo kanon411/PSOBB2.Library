@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface IReadonlyAuthTokenRepository
 	{

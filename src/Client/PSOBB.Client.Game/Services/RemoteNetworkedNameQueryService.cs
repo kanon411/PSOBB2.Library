@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class RemoteNetworkedNameQueryService : INameQueryService
 	{

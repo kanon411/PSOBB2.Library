@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CommandLine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Default command line hosting options for HaloLive web services.

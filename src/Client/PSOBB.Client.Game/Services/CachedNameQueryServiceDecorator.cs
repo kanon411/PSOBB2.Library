@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 //using PostSharp.Patterns.Caching;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//[CacheConfiguration(AbsoluteExpiration = 5, IgnoreThisParameter = true)]
 	public sealed class CachedNameQueryServiceDecorator : INameQueryService

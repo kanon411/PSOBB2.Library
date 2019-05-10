@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public class Startup
 	{

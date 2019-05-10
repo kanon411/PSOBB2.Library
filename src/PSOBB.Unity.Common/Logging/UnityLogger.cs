@@ -7,7 +7,7 @@ using Common.Logging;
 using Common.Logging.Factory;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class UnityLogger : AbstractLogger
 	{

@@ -4,7 +4,7 @@ using System.Text;
 using ProtoBuf;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[ProtoContract]
 	[ProtoInclude(1, typeof(PositionChangeMovementData))]

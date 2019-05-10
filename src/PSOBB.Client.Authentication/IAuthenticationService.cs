@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Proxy interface for Authentication Server RPCs.

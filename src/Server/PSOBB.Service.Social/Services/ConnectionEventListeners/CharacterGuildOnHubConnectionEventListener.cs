@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class CharacterGuildOnHubConnectionEventListener : IOnHubConnectionEventListener
 	{

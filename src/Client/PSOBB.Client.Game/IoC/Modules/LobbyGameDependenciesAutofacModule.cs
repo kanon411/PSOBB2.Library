@@ -4,7 +4,7 @@ using System.Text;
 using Autofac;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class LobbyGameDependenciesAutofacModule : Module
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Packet sent when object visibility changes.

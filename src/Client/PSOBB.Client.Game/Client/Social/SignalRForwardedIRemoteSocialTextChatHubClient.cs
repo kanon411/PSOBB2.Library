@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class SignalRForwardedIRemoteSocialTextChatHubClient : IRemoteSocialTextChatHubServer, ISignalRConnectionHubInitializable
 	{

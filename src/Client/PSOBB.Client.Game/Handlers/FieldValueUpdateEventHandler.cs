@@ -7,7 +7,7 @@ using Common.Logging;
 using GladNet;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Rewrite: We need to rewrite this so that this stuff doesn't block networking AND runs IN ORDER on the main thread.
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]

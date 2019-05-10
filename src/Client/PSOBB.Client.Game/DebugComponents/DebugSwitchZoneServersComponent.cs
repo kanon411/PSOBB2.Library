@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Unitysync.Async;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public sealed class DebugSwitchZoneServersComponent : MonoBehaviour

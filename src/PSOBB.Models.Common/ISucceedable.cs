@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//From: https://github.com/HaloLive/HaloLive.Library/tree/master/src/HaloLive.Models.Common
 	/// <summary>

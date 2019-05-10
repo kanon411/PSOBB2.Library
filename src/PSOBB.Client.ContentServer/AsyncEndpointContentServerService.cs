@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class AsyncEndpointContentServerService : BaseAsyncEndpointService<IContentServerServiceClient>, IContentServerServiceClient
 	{

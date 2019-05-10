@@ -2,7 +2,7 @@
 using GladNet;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base type for the game packets that clients send.

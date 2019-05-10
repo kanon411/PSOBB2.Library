@@ -6,7 +6,7 @@ using Autofac;
 using Common.Logging;
 using Refit;
 
-namespace PSOBB.Client
+namespace GladMMO.Client
 {
 	public sealed class CommonGameDependencyModule : NetworkServiceDiscoveryableAutofaceModule
 	{

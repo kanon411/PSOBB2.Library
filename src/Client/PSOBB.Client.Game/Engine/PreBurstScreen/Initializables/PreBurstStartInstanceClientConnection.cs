@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(INetworkConnectionEstablishedEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]

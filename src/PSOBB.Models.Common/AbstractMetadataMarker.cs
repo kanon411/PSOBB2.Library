@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class AbstractMetadataMarker<TTypeToScanAssemblyFrom>
 		where TTypeToScanAssemblyFrom : class

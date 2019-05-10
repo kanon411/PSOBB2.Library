@@ -5,7 +5,7 @@ using Common.Logging;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public abstract class InterestMonitorComponent : MonoBehaviour, IPhysicsTriggerCallbackable

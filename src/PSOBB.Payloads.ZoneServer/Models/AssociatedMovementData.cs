@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Right now this looks a lot like EntityCreationData but creation data, and this model, will eventually diverge as features are added.
 	/// <summary>

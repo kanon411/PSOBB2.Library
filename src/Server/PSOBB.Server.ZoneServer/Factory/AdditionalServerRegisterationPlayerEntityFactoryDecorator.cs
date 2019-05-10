@@ -5,7 +5,7 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Decorator for <see cref="IFactoryCreatable{TCreateType,TContextType}"/>'s that create

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Route("api/npcdata")]
 	public class NpcDataController : AuthorizationReadyController

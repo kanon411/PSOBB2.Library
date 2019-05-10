@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class TimeSyncronizationResponseHandler : BaseZoneClientGameMessageHandler<ServerTimeSyncronizationResponsePayload>

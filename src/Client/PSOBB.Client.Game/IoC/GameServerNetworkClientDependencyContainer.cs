@@ -11,7 +11,7 @@ using SceneJect.Common;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Module responsible for registering the dependencies associated with the game client.

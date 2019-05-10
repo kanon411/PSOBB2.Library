@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Component that grabs the main camera in the scene

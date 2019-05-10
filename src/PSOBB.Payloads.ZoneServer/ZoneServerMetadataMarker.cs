@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Class that offers high-level metadata about the payload assembly.

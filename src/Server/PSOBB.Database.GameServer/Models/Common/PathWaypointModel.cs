@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using PSOBB.Database;
+using GladMMO.Database;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// EF table model for waypoint paths.

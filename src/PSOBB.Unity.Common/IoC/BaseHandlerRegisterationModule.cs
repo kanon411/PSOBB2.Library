@@ -9,7 +9,7 @@ using GladNet;
 using UnityEngine;
 using Module = Autofac.Module;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class BaseHandlerRegisterationModule<THandlerType> : Module
 	{

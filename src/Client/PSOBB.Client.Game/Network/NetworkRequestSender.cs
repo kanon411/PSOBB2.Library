@@ -5,7 +5,7 @@ using GladNet;
 using SceneJect.Common;
 using Sirenix.OdinInspector;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base for network request senders.

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GuildMessageBroadcastMessageHandler : BaseTextChatGroupBroadcastSignalRMessageHandler<GuildChatMessageRequestModel, GuildChatMessageEventModel>
 	{

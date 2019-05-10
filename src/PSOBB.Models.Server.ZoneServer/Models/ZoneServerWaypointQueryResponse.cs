@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[JsonObject]
 	public sealed class ZoneServerWaypointQueryResponse : IResponseModel<WaypointQueryResponseCode>, ISucceedable

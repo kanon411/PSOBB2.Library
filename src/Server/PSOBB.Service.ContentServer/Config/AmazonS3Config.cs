@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//From Project Vindictive: https://github.com/HelloKitty/ProjectVindictive.Library/blob/master/src/ProjectVindictive.Server.AmazonS3/Config/AmazonS3Config.cs
 	/// <summary>

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface INetworkClientManager : INetworkClientManager<GameServerPacketPayload, GameClientPacketPayload>
 	{

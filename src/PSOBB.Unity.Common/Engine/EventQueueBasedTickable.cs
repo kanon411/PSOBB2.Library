@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using Common.Logging;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class EventQueueBasedTickable<TEventInterface, TEventArgs> : BaseSingleEventListenerInitializable<TEventInterface, TEventArgs>, IGameTickable
 		where TEventInterface : class 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PSOBB;
+using GladMMO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Format for the endpoint map storage.

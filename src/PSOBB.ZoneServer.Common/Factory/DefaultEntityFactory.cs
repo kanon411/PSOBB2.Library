@@ -7,7 +7,7 @@ using UnityEngine;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Server need to be rewritten to no longer require sceneject injection on components.
 	//TODO: Refactor this, it's becoming quie bloated and depends on nearly everything.

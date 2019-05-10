@@ -8,7 +8,7 @@ using Autofac.Features.AttributeFilters;
 using UnityEngine;
 using Module = Autofac.Module;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class EngineInterfaceRegisterationModule : Module
 	{

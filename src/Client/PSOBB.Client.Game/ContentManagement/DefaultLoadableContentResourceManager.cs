@@ -9,7 +9,7 @@ using Nito.AsyncEx;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: We should do some threading and safety stuff.
 	public sealed class DefaultLoadableContentResourceManager : ILoadableContentResourceManager, IDisposable

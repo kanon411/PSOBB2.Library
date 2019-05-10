@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Data model for <see cref="TargetlessChannelChatMessageEventModel"/>

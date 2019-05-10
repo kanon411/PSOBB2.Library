@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Contract for REST service that provides

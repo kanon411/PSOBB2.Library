@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class GlobalPhysicsEventSystem : IPhysicsTriggerEventSubscribable, IPhysicsTriggerEventDispatcher
 	{

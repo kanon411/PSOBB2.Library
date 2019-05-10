@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//The name might be confusing, but it just an event listener
 	//that spawns the player on selfspawnevent.

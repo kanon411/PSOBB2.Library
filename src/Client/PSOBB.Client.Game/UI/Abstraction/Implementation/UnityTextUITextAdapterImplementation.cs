@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PSOBB;
+using GladMMO;
 using UnityEngine.UI;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class UnityTextUITextAdapterImplementation : IUIText
 	{

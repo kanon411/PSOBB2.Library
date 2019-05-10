@@ -6,7 +6,7 @@ using Autofac.Features.AttributeFilters;
 using Common.Logging;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
 	public sealed class ChatWindowInputController : IGameInitializable

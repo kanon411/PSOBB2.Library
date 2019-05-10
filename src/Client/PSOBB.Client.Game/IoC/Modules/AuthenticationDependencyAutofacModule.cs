@@ -7,7 +7,7 @@ using GladNet;
 using Refit;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class AuthenticationDependencyAutofacModule : Module
 	{

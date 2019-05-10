@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ISelfPlayerSpawnEventSubscribable))]
 	[SceneTypeCreate(GameSceneType.DefaultLobby)] //we spawn in lobbies

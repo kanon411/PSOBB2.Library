@@ -16,7 +16,7 @@ using SceneJect.Common;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Refactor to the Autofac module system
 	public sealed class DefaultZoneServerDependencyRegistrar : NonBehaviourDependency

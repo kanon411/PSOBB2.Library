@@ -6,7 +6,7 @@ using NUnit.Framework;
 using ProtoBuf;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[TestFixture]
 	public sealed class PayloadSerializationTests

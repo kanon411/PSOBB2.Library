@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: We should unify these clients into a single GameServer client.
 	/// <summary>

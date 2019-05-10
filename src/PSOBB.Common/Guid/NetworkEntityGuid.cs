@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Format: 0xSSEE XXXX IIII IIII
 	//[IIII IIII] unsigned 32bit unique identifier.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Sirenix.OdinInspector;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface ILoadedContentResourceHandle
 	{

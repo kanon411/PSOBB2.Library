@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//This listener only does one thing, but it looks like it a lot.
 	//When the player's world representation exists in the server scene

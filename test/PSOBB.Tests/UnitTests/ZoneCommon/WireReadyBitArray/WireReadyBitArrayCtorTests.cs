@@ -6,7 +6,7 @@ using System.Text;
 using NUnit.Framework;
 using Reinterpret.Net;
 
-namespace PSOBB.Tests.Collections
+namespace GladMMO.Tests.Collections
 {
 	[TestFixture]
 	public sealed class WireReadyBitArrayCtorTests

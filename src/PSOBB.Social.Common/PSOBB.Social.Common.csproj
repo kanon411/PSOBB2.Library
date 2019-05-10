@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PSOBB.Models.Social\PSOBB.Models.Social.csproj" />
+    <Folder Include="NetworkInterfaces\" />
   </ItemGroup>
 
 </Project>

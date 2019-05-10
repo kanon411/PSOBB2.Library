@@ -25,11 +25,6 @@ namespace GladMMO
 
 				return new AsyncEndpointAuthenticationService(QueryForRemoteServiceEndpoint(serviceDiscovery, "Authentication"), new RefitSettings() { HttpMessageHandlerFactory = () => new FiddlerEnabledWebProxyHandler() });
 			});
-
-			//TODO: We should do this only once, so we should move this to it's own special setup scene for one-time stuff.
-			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
-			payloadRegister.RegisterDefaults();
-			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
 		}
 
 		//TODO: Put this in a base class or something

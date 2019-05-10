@@ -10,14 +10,14 @@ namespace GladMMO
 	[SceneTypeCreate(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>
 	{
-		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
+		//private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
 
 		/// <inheritdoc />
-		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, [NotNull] ILog logger,
-			[NotNull] IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory)
+		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, [NotNull] ILog logger
+			/*[NotNull] IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory*/)
 			: base(subscriptionService, true, logger) //TODO: We probably shouldn't spawn everything per frame. We should probably stagger spawning.
 		{
-			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+			//EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
 		}
 
 		/// <inheritdoc />
@@ -25,7 +25,7 @@ namespace GladMMO
 		{
 			try
 			{
-				GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, ComputePrefabTypeFromGuid(args.EntityGuid), args.EntityDataContainer));
+				//GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, ComputePrefabTypeFromGuid(args.EntityGuid), args.EntityDataContainer));
 			}
 			catch(Exception e)
 			{

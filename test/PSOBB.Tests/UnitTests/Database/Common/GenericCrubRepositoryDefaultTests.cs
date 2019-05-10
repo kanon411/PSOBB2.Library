@@ -67,7 +67,7 @@ namespace GladMMO
 			bool result = await repository.ContainsAsync(keyValue);
 
 			//assert
-			Assert.False(result, $"Expected empty repository with {nameof(ICharacterRepository.ContainsAsync)} to produce false on empy.");
+			Assert.False(result, $"Expected empty repository with {nameof(IGenericRepositoryCrudable<TKeyType, TModelType>.ContainsAsync)} to produce false on empy.");
 		}
 
 		[Test]

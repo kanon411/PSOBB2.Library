@@ -27,7 +27,7 @@ namespace GladMMO
 		{
 			Logger.Info($"About to send movement change.");
 
-			SendService.SendMessage(new ClientMovementDataUpdateRequest(new Vector2(args.isMoving ? args.NewHorizontalInput : 0.0f, args.isMoving ? args.NewVerticalInput : 0.0f)));
+			//SendService.SendMessage(new ClientMovementDataUpdateRequest(new Vector2(args.isMoving ? args.NewHorizontalInput : 0.0f, args.isMoving ? args.NewVerticalInput : 0.0f)));
 		}
 	}
 }

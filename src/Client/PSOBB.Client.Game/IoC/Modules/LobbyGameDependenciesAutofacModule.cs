@@ -16,36 +16,15 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<DefaultEntityFactory<DefaultEntityCreationContext>>()
-				.As<IFactoryCreatable<GameObject, DefaultEntityCreationContext>>()
-				.AsSelf()
-				.SingleInstance();
-
 			builder.RegisterType<EntityPrefabFactory>()
 				.As<IFactoryCreatable<GameObject, EntityPrefab>>()
 				.AsSelf()
 				.SingleInstance();
 
-			builder.RegisterType<DefaultEntityDestructor>()
-				.As<IObjectDestructorable<NetworkEntityGuid>>()
-				.AsSelf();
-
 			builder.RegisterType<UtcNowNetworkTimeService>()
 				.As<INetworkTimeService>()
 				.As<IReadonlyNetworkTimeService>()
 				.SingleInstance();
-
-			builder.RegisterType<DefaultMovementHandlerService>()
-				.As<IMovementDataHandlerService>()
-				.AsSelf();
-
-			builder.RegisterType<PositionChangeMovementBlockHandler>()
-				.As<IMovementBlockHandler>()
-				.AsSelf();
-
-			builder.RegisterType<PathMovementBlockHandler>()
-				.As<IMovementBlockHandler>()
-				.AsSelf();
 
 			//This service is required by the entity data change system/tickable
 			builder.RegisterType<EntityDataChangeCallbackManager>()

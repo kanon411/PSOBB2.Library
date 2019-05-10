@@ -27,11 +27,6 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			//New IPeerContext generic param now so we register as implemented interface
-			builder.RegisterType<ZoneClientDefaultRequestHandler>()
-				.AsImplementedInterfaces()
-				.SingleInstance();
-
 			builder.RegisterType<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));

@@ -10,7 +10,7 @@ namespace GladMMO
 	[SceneTypeCreate(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionOnStartRequestCharacterListInitializable : IGameInitializable, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
-		private ICharacterService CharacterQueryable { get; }
+		//private ICharacterService CharacterQueryable { get; }
 
 		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
 
@@ -20,9 +20,9 @@ namespace GladMMO
 		public event EventHandler<CharacterSelectionEntryDataChangeEventArgs> OnCharacterSelectionEntryChanged;
 
 		/// <inheritdoc />
-		public CharacterSelectionOnStartRequestCharacterListInitializable([NotNull] ICharacterService characterQueryable, [NotNull] IReadonlyAuthTokenRepository authTokenRepository, [NotNull] ILog logger)
+		public CharacterSelectionOnStartRequestCharacterListInitializable([NotNull] IReadonlyAuthTokenRepository authTokenRepository, [NotNull] ILog logger)
 		{
-			CharacterQueryable = characterQueryable ?? throw new ArgumentNullException(nameof(characterQueryable));
+			//CharacterQueryable = characterQueryable ?? throw new ArgumentNullException(nameof(characterQueryable));
 			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
@@ -31,7 +31,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public async Task OnGameInitialized()
 		{
-			CharacterListResponse listResponse = await CharacterQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
+			/*CharacterListResponse listResponse = await CharacterQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
 				.ConfigureAwait(true);
 
 			if(!listResponse.isSuccessful || listResponse.CharacterIds.Count == 0)
@@ -52,7 +52,7 @@ namespace GladMMO
 					.Build();
 
 				OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(entityGuid));
-			}
+			}*/
 		}
 	}
 }

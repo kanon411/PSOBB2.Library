@@ -13,11 +13,12 @@ namespace GladMMO
 			if(incomingChatMessageEventData == null) throw new ArgumentNullException(nameof(incomingChatMessageEventData));
 			if(associatedEntityName == null) throw new ArgumentNullException(nameof(associatedEntityName));
 
-			ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.Data.TargetChannel);
+			/*ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.Data.TargetChannel);
 
 			string renderableMessage = $"<color=#{ComputeColorFromChatType(messageType)}>{ComputeChannelText(messageType)} {associatedEntityName}: {incomingChatMessageEventData.Data.Message}</color>";
 
-			return new TextChatEventData(renderableMessage, incomingChatMessageEventData.EntityGuid, messageType);
+			return new TextChatEventData(renderableMessage, incomingChatMessageEventData.EntityGuid, messageType);*/
+			throw new NotImplementedException($"Haven't reimplemented chat yet.");
 		}
 
 		/// <inheritdoc />
@@ -26,11 +27,12 @@ namespace GladMMO
 		{
 			if(incomingChatMessageEventData == null) throw new ArgumentNullException(nameof(incomingChatMessageEventData));
 
-			ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.TargetChannel);
+			/*ChatMessageType messageType = MessageTypeFromChannel(incomingChatMessageEventData.TargetChannel);
 
 			string renderableMessage = $"<color=#{ComputeColorFromChatType(messageType)}>{ComputeChannelText(messageType)}: {incomingChatMessageEventData.Message}</color>";
 
-			return new TextChatEventData(renderableMessage, messageType);
+			return new TextChatEventData(renderableMessage, messageType);*/
+			throw new NotImplementedException($"Haven't reimplemented chat yet.");
 		}
 
 		private string ComputeColorFromChatType(ChatMessageType messageType)

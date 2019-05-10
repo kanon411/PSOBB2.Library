@@ -34,11 +34,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PSOBB.Client.Authentication\PSOBB.Client.Authentication.csproj" />
     <ProjectReference Include="..\..\PSOBB.Client.Common\PSOBB.Client.Common.csproj" />
-    <ProjectReference Include="..\..\PSOBB.Client.ContentServer\PSOBB.Client.ContentServer.csproj" />
     <ProjectReference Include="..\..\PSOBB.Common\PSOBB.Common.csproj" />
     <ProjectReference Include="..\..\PSOBB.Models.Authentication\PSOBB.Models.Authentication.csproj" />
-    <ProjectReference Include="..\..\PSOBB.Models.GameServer\PSOBB.Models.GameServer.csproj" />
-    <ProjectReference Include="..\..\PSOBB.Payloads.ZoneServer\PSOBB.Payloads.ZoneServer.csproj" />
+    <ProjectReference Include="..\..\PSOBB.Models.Social\PSOBB.Models.Social.csproj" />
     <ProjectReference Include="..\..\PSOBB.Social.Common\PSOBB.Social.Common.csproj" />
     <ProjectReference Include="..\..\PSOBB.Unity.Common\PSOBB.Unity.Common.csproj" />
     <ProjectReference Include="..\..\PSOBB.ZoneServer.Common\PSOBB.ZoneServer.Common.csproj" />
@@ -65,6 +63,7 @@
     <Folder Include="Attributes\" />
     <Folder Include="Engine\Title\Tickables\" />
     <Folder Include="Entity\Movement\" />
+    <Folder Include="Initializables\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>
 

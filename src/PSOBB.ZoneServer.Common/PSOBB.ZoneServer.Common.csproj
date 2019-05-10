@@ -11,13 +11,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PSOBB.Network.Common\PSOBB.Network.Common.csproj" />
-    <ProjectReference Include="..\PSOBB.Payloads.ZoneServer\PSOBB.Payloads.ZoneServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\..\lib\Unity\UnityEngine.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Factory\Context\" />
   </ItemGroup>
 
 </Project>

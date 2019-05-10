@@ -15,7 +15,7 @@ namespace GladMMO
 
 		private IUIText ChatInputText { get; }
 
-		private IRemoteSocialTextChatHubServer ChatService { get; }
+		//private IRemoteSocialTextChatHubServer ChatService { get; }
 
 		private ILog Logger { get; }
 
@@ -23,12 +23,12 @@ namespace GladMMO
 		public ChatWindowInputController(
 			[KeyFilter(UnityUIRegisterationKey.ChatBox)] [NotNull] IUIButton chatInputButton,
 			[KeyFilter(UnityUIRegisterationKey.ChatBox)] [NotNull] IUIText chatInputText,
-			[NotNull] IRemoteSocialTextChatHubServer chatService,
+			//[NotNull] IRemoteSocialTextChatHubServer chatService,
 			[NotNull] ILog logger)
 		{
 			ChatInputButton = chatInputButton ?? throw new ArgumentNullException(nameof(chatInputButton));
 			ChatInputText = chatInputText ?? throw new ArgumentNullException(nameof(chatInputText));
-			ChatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
+			//ChatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
@@ -55,7 +55,8 @@ namespace GladMMO
 			try
 			{
 				//TODO: This is kinda a hack, just for testing purposes.
-				if(ChatInputText.Text.Contains("/guild "))
+				throw new NotImplementedException($"Not implemented chat again yet.");
+				/*if(ChatInputText.Text.Contains("/guild "))
 				{
 					string strippedChat = ChatInputText.Text.Replace("/guild ", "");
 
@@ -64,7 +65,7 @@ namespace GladMMO
 				}
 				else
 					await ChatService.SendZoneChannelTextChatMessageAsync(new ZoneChatMessageRequestModel(ChatInputText.Text))
-						.ConfigureAwait(true);
+						.ConfigureAwait(true);*/
 			}
 			catch(Exception e)
 			{

@@ -28,8 +28,8 @@ namespace GladMMO
 		{
 			//TODO: Check result
 			//We don't need to be on the main thread to send a session claim request.
-			await SendService.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepository.RetrieveWithType(), CharacterDataRepository.CharacterId))
-				.ConfigureAwait(false);
+			/*await SendService.SendMessage(new ClientSessionClaimRequestPayload(AuthTokenRepository.RetrieveWithType(), CharacterDataRepository.CharacterId))
+				.ConfigureAwait(false);*/
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace GladMMO
 		{
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
-			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType, typeof(SessionClaimResponseHandler).Assembly);
+			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType, typeof(IMovementInputChangedEventSubscribable).Assembly);
 			builder.RegisterModule(module);
 
 			IReadOnlyCollection<IGameInitializable> initiablizes = builder.Build().Resolve<IReadOnlyCollection<IGameInitializable>>();

@@ -63,7 +63,7 @@ namespace GladMMO
 		protected override void OnEventFired(object source, EventArgs args)
 		{
 			//We should not do async OnEventFired because we will get silent failures.
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				JWTModel jwtModel = null;
 

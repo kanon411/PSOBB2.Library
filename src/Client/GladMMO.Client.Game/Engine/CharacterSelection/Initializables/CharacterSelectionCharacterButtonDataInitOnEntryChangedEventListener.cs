@@ -42,7 +42,7 @@ namespace GladMMO
 
 			int slot = Interlocked.Increment(ref ButtonIndex);
 
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				//TODO: Handle errors
 				//TODO: We should expose NetworkEntityGuid endpoint

@@ -22,7 +22,7 @@ namespace GladMMO
 			//TODO: Is there a better way to abstract this?
 			//We are not likely on the main thread at this point.
 			//So we need to queue up a scene change on the main thread
-			UnityExtended.UnityMainThreadContext.Send(state =>
+			UnityAsyncHelper.UnityMainThreadContext.Send(state =>
 			{
 				//TODO: We should handle REAL scene changes here.
 				int currentIndex = SceneManager.GetActiveScene().buildIndex;

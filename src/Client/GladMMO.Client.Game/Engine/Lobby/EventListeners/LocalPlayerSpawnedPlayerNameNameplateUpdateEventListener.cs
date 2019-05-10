@@ -29,7 +29,7 @@ namespace GladMMO
 		protected override void OnEventFired(object source, LocalPlayerSpawnedEventArgs args)
 		{
 			//TODO: Find a better way to do async stuff on events.
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				string nameQueryResponseValue = await NameQueryable.RetrieveAsync(args.EntityGuid.EntityId)
 					.ConfigureAwait(true);

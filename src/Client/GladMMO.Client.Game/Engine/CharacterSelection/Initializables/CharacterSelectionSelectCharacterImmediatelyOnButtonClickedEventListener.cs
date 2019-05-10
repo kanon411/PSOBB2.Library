@@ -39,7 +39,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void OnEventFired(object source, CharacterButtonClickedEventArgs args)
 		{
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				//We must actually create a session
 				//before the character can login.

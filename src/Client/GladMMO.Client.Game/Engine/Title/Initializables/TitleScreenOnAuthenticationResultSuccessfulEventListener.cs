@@ -35,7 +35,7 @@ namespace GladMMO
 			if(!args.isSuccessful)
 				return;
 
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				SceneEndPlayable.Play();
 

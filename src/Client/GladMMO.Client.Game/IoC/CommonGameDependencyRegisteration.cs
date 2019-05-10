@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO.Client
@@ -13,7 +14,7 @@ namespace GladMMO.Client
 		/// <inheritdoc />
 		protected override CommonGameDependencyModule CreateModule()
 		{
-			UnityExtended.UnityUIAsyncContinuationBehaviour = this.gameObject.AddComponent<UnityUIAsyncContinuationBehaviour>();
+			UnityAsyncHelper.UnityUIAsyncContinuationBehaviour = this.gameObject.AddComponent<UnityUIAsyncContinuationBehaviour>();
 
 			return new CommonGameDependencyModule(SceneType);
 		}

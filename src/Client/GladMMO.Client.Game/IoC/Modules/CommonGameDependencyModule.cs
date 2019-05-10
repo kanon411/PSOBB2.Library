@@ -42,7 +42,7 @@ namespace GladMMO.Client
 			base.Load(builder);
 
 			//Set the sync context
-			UnityExtended.InitializeSyncContext();
+			UnityAsyncHelper.InitializeSyncContext();
 
 			builder.Register(context => LogLevel.All)
 				.As<LogLevel>()
@@ -65,13 +65,10 @@ namespace GladMMO.Client
 				.AsSelf()
 				.AsImplementedInterfaces()
 				.SingleInstance();
-
-			//Token module is needed in most scenes.
-			builder.RegisterModule<AuthenticationTokenAutofacModule>();
 			
 			//Handlers aren't needed for all scenes, but for most.
 			//TODO: We should expose SceneTypeCreatable or whatever on handlers
-			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
+			//builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule());

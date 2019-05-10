@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using Glader.Essentials;
 using Nito.AsyncEx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,7 @@ using UnityEngine.SceneManagement;
 namespace GladMMO
 {
 	//This just selects the character as soon as one is clicked.
-	[SceneTypeCreate(GameSceneType.CharacterSelection)]
+	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionSelectCharacterImmediatelyOnButtonClickedEventListener : BaseSingleEventListenerInitializable<ICharacterSelectionButtonClickedEventSubscribable, CharacterButtonClickedEventArgs>
 	{
 		//private ICharacterService CharacterService { get; }

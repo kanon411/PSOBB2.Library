@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using Common.Logging;
 using Fasterflect;
+using Glader.Essentials;
 using Moq;
 using GladMMO.Client;
 using SceneJect;
@@ -69,7 +70,7 @@ namespace GladMMO
 			//Register every GameInit module
 			foreach(GameSceneType sceneType in Enum.GetValues(typeof(GameSceneType)))
 			{
-				builder.RegisterModule(new EngineInterfaceRegisterationModule(sceneType, typeof(IMovementInputChangedEventSubscribable).Assembly));
+				builder.RegisterModule(new EngineInterfaceRegisterationModule((int)sceneType, typeof(IMovementInputChangedEventSubscribable).Assembly));
 			}
 
 			//Manually register SceneJect services

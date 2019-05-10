@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Autofac.Features.AttributeFilters;
+using Glader.Essentials;
 using Nito.AsyncEx;
 
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionButtonClickedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.CharacterSelection)]
+	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener : BaseSingleEventListenerInitializable<ICharacterSelectionEntryDataChangeEventSubscribable, CharacterSelectionEntryDataChangeEventArgs>, ICharacterSelectionButtonClickedEventSubscribable
 	{
 		private INameQueryService NameQueryService { get; }

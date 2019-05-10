@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class SharedMovementInputChangedSendNetworkedInputEventListener : BaseSingleEventListenerInitializable<IMovementInputChangedEventSubscribable, MovementInputChangedEventArgs>
 	{
 		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }

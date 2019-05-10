@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using GladNet;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.PreZoneBurstingScreen)]
 	public sealed class PreBurstSessionClaimOnClientConnectionEventListener : BaseSingleEventListenerInitializable<INetworkConnectionEstablishedEventSubscribable>
 	{
 		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }

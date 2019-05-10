@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Castle.Core.Internal;
 using Fasterflect;
+using Glader.Essentials;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using GladMMO;
@@ -27,10 +28,10 @@ namespace GladMMO
 			//arrange
 
 			//act
-			bool hasAttribute = t.HasAttribute<SceneTypeCreateAttribute>();
+			bool hasAttribute = t.HasAttribute<SceneTypeCreateGladMMO>();
 
 			//assert
-			Assert.True(hasAttribute, $"Type: {t.Name} does not have {nameof(SceneTypeCreateAttribute)}. All {nameof(IGameInitializable)} must have this attribute.");
+			Assert.True(hasAttribute, $"Type: {t.Name} does not have {nameof(SceneTypeCreateGladMMO)}. All {nameof(IGameInitializable)} must have this attribute.");
 		}
 
 		[Test]
@@ -39,7 +40,7 @@ namespace GladMMO
 		{
 			//arrange
 			ContainerBuilder builder = new ContainerBuilder();
-			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule(sceneType, typeof(IMovementInputChangedEventSubscribable).Assembly);
+			EngineInterfaceRegisterationModule module = new EngineInterfaceRegisterationModule((int)sceneType, typeof(IMovementInputChangedEventSubscribable).Assembly);
 			builder.RegisterModule(module);
 
 			IReadOnlyCollection<IGameInitializable> initiablizes = builder.Build().Resolve<IReadOnlyCollection<IGameInitializable>>();
@@ -48,11 +49,11 @@ namespace GladMMO
 			foreach(var init in initiablizes)
 			{
 				//If we have an intiiablizable that doesn't have the scene then this will throw.
-				Assert.True(init.GetType().GetAttributes<SceneTypeCreateAttribute>().Any(a => a.SceneType == sceneType));
+				Assert.True(init.GetType().GetAttributes<SceneTypeCreateGladMMO>().Any(a => a.SceneType == (int)sceneType));
 			}
 		}
 
-		[SceneTypeCreate(GameSceneType.ZoneGameScene)]
+		[SceneTypeCreateGladMMO(GameSceneType.ZoneGameScene)]
 		public class TestGameSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />
@@ -62,7 +63,7 @@ namespace GladMMO
 			}
 		}
 
-		[SceneTypeCreate(GameSceneType.TitleScreen)]
+		[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 		public class TestTitleSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />
@@ -72,8 +73,8 @@ namespace GladMMO
 			}
 		}
 
-		[SceneTypeCreate(GameSceneType.ZoneGameScene)]
-		[SceneTypeCreate(GameSceneType.TitleScreen)]
+		[SceneTypeCreateGladMMO(GameSceneType.ZoneGameScene)]
+		[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 		public class TestBothSceneInit : IGameInitializable
 		{
 			/// <inheritdoc />

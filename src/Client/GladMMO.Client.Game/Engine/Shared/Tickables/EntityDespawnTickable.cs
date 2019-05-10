@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntityDespawnTickable : EventQueueBasedTickable<INetworkEntityVisibilityLostEventSubscribable, NetworkEntityVisibilityLostEventArgs>
 	{
 		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }

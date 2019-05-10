@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Autofac;
+using Glader.Essentials;
 using GladNet;
 
 namespace GladMMO
@@ -31,7 +32,7 @@ namespace GladMMO
 				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
 				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));
 
-			builder.RegisterModule(new BaseHandlerRegisterationModule<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>(SceneType, GetType().Assembly));
+			builder.RegisterModule(new BaseHandlerRegisterationModule<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>((int)SceneType, GetType().Assembly));
 		}
 	}
 }

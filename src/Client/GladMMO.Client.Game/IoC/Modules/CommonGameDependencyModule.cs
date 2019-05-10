@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Autofac;
 using Common.Logging;
+using Glader.Essentials;
 using Refit;
 
 namespace GladMMO.Client
@@ -72,7 +73,7 @@ namespace GladMMO.Client
 			//TODO: We should expose SceneTypeCreatable or whatever on handlers
 			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
-			builder.RegisterModule(new EngineInterfaceRegisterationModule(Scene, GetType().Assembly));
+			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule());
 
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))

@@ -4,11 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.ZoneGameScene)]
+	[SceneTypeCreateGladMMO(GameSceneType.ZoneGameScene)]
 	public sealed class ChatWindowInputController : IGameInitializable
 	{
 		private IUIButton ChatInputButton { get; }

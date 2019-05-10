@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>
 	{
 		//private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }

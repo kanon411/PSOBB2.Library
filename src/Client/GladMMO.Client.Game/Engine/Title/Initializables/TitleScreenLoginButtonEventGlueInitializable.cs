@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
+using Glader.Essentials;
 using GladMMO.Client;
 
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ILoginButtonClickedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.TitleScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 	public sealed class TitleScreenLoginButtonEventGlueInitializable : IGameInitializable, ILoginButtonClickedEventSubscribable
 	{
 		private IUIButton LoginButton { get; }

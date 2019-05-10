@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 
 namespace GladMMO
@@ -12,7 +13,7 @@ namespace GladMMO
 	//just take the client manager and start the networking pump again
 	//from the assumed to be connected and exported managed client.
 	[AdditionalRegisterationAs(typeof(INetworkConnectionEstablishedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class LobbyOnStartRestartNetworkClientHandlingInititablize : IGameInitializable, INetworkConnectionEstablishedEventSubscribable
 	{
 		/// <summary>

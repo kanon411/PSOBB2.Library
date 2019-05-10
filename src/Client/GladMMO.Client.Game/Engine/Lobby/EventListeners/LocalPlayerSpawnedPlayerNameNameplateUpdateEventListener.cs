@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.AttributeFilters;
+using Glader.Essentials;
 using Nito.AsyncEx;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class LocalPlayerSpawnedPlayerNameNameplateUpdateEventListener : BaseSingleEventListenerInitializable<ILocalPlayerSpawnedEventSubscribable, LocalPlayerSpawnedEventArgs>
 	{
 		private IUIText PlayerNameTextField { get; }

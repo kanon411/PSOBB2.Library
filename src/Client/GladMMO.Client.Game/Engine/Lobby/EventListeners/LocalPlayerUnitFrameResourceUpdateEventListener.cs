@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.AttributeFilters;
+using Glader.Essentials;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class LocalPlayerUnitFrameResourceUpdateEventListener : BaseSingleEventListenerInitializable<ILocalPlayerSpawnedEventSubscribable, LocalPlayerSpawnedEventArgs>
 	{
 		private IEntityDataChangeCallbackRegisterable EntityDataCallbackRegister { get; }

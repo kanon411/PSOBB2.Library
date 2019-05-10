@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
+using Glader.Essentials;
 using Nito.AsyncEx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.TitleScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 	public sealed class TitleScreenOnAuthenticationResultSuccessfulEventListener : BaseSingleEventListenerInitializable<IAuthenticationResultRecievedEventSubscribable, AuthenticationResultEventArgs>
 	{
 		//TODO: Don't expose Unity directors directly.

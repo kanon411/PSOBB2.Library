@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using Glader.Essentials;
 using Nito.AsyncEx;
 using Refit;
 using UnityEngine.SceneManagement;
@@ -11,7 +12,7 @@ using UnityEngine.SceneManagement;
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IAuthenticationResultRecievedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.TitleScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 	public sealed class TitleScreenTryAuthenticateOnLoginButtonClickedEventListener : BaseSingleEventListenerInitializable<ILoginButtonClickedEventSubscribable>, IAuthenticationResultRecievedEventSubscribable
 	{
 		/// <summary>

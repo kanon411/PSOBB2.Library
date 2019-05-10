@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.PreZoneBurstingScreen)]
 	public sealed class SharedOnSceneChangedDisableNetworkHandlingEventListener : BaseSingleEventListenerInitializable<IServerRequestedSceneChangeEventSubscribable, ServerRequestedSceneChangeEventArgs>
 	{
 		private INetworkClientManager ClientManager { get; }

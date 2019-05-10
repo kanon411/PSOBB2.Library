@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using UnityEngine.SceneManagement;
 
 namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.PreZoneBurstingScreen)]
+	[SceneTypeCreateGladMMO(GameSceneType.PreZoneBurstingScreen)]
 	public class PreBurstSceneChangeChangerEventListener : BaseSingleEventListenerInitializable<IServerRequestedSceneChangeEventSubscribable, ServerRequestedSceneChangeEventArgs>
 	{
 		/// <inheritdoc />

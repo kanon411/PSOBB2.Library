@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.CharacterSelection)]
+	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	public sealed class CharacterSelectionOnStartRequestCharacterListInitializable : IGameInitializable, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
 		//private ICharacterService CharacterQueryable { get; }

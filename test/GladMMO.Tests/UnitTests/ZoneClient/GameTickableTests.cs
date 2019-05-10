@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac;
 using Autofac.Core;
+using Glader.Essentials;
 using NUnit.Framework;
 using SceneJect;
 using SceneJect.Common;

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IMovementInputChangedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class MovementInputBroadcastingTickable : IGameTickable, IMovementInputChangedEventSubscribable
 	{
 		/// <inheritdoc />

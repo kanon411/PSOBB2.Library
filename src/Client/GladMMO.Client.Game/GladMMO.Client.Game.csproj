@@ -61,6 +61,7 @@
 
   <ItemGroup>
     <Folder Include="Attributes\" />
+    <Folder Include="Component\Base\" />
     <Folder Include="Engine\Title\Tickables\" />
     <Folder Include="Entity\Movement\" />
     <Folder Include="Initializables\" />

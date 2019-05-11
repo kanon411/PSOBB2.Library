@@ -71,7 +71,7 @@ namespace GladMMO.Client
 			//builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
-			builder.RegisterModule(new UIDependencyRegisterationModule());
+			builder.RegisterModule(new UIDependencyRegisterationModule<UnityUIRegisterationKey>());
 
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()

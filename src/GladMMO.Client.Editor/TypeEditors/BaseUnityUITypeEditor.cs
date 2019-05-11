@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Fasterflect;
+using Glader.Essentials;
+using UnityEditor;
+
+namespace GladMMO
+{
+	[CustomEditor(typeof(BaseUnityUI), true)]
+	public sealed class BaseUnityUITypeEditor : Editor
+	{
+		/// <inheritdoc />
+		public override void OnInspectorGUI()
+		{
+			base.OnInspectorGUI();
+
+			var t = (BaseUnityUI)target;
+
+			//HelloKitty: At the bottom we'll just add the enum popup/dropdown for easy selection.
+			t.SetFieldValue("_RegisterationKey", Convert.ToInt32(EditorGUILayout.EnumPopup((UnityUIRegisterationKey)t.RegisterationKey)));
+		}
+	}
+}

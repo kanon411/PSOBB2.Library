@@ -6,10 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entity\**" />
+    <Compile Remove="Initializables\**" />
     <Compile Remove="UI\Attributes\**" />
     <Compile Remove="UI\WorldLoad\**" />
+    <EmbeddedResource Remove="Entity\**" />
+    <EmbeddedResource Remove="Initializables\**" />
     <EmbeddedResource Remove="UI\Attributes\**" />
     <EmbeddedResource Remove="UI\WorldLoad\**" />
+    <None Remove="Entity\**" />
+    <None Remove="Initializables\**" />
     <None Remove="UI\Attributes\**" />
     <None Remove="UI\WorldLoad\**" />
   </ItemGroup>
@@ -61,8 +67,7 @@
   <ItemGroup>
     <Folder Include="Component\Base\" />
     <Folder Include="Engine\Title\Tickables\" />
-    <Folder Include="Entity\Movement\" />
-    <Folder Include="Initializables\" />
+    <Folder Include="Network\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>
 

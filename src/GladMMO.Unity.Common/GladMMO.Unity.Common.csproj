@@ -33,6 +33,7 @@
     <Folder Include="Components\" />
     <Folder Include="Factory\" />
     <Folder Include="IoC\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

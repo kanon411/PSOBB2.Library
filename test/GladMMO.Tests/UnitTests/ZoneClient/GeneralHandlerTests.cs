@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using Autofac.Core;
 using Fasterflect;
+using FreecraftCore;
 using GladNet;
 using Moq;
 using NUnit.Framework;
@@ -25,12 +26,12 @@ namespace GladMMO
 
 			IContainer resolver = builder.Build();
 
-			MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload> handler = null;
+			MessageHandlerService<GamePacketPayload, GamePacketPayload> handler = null;
 
 			//act
 			try
 			{
-				handler = resolver.Resolve<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>();
+				handler = resolver.Resolve<MessageHandlerService<GamePacketPayload, GamePacketPayload>>();
 			}
 			catch(DependencyResolutionException e)
 			{

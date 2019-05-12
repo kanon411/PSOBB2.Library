@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using FreecraftCore;
 using Glader.Essentials;
 using GladNet;
 using UnityEngine;
@@ -11,12 +12,12 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class SharedMovementInputChangedSendNetworkedInputEventListener : BaseSingleEventListenerInitializable<IMovementInputChangedEventSubscribable, MovementInputChangedEventArgs>
 	{
-		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }
+		private IPeerPayloadSendService<GamePacketPayload> SendService { get; }
 
 		private ILog Logger { get; }
 
 		/// <inheritdoc />
-		public SharedMovementInputChangedSendNetworkedInputEventListener(IMovementInputChangedEventSubscribable subscriptionService, [NotNull] IPeerPayloadSendService<GameClientPacketPayload> sendService, [NotNull] ILog logger) 
+		public SharedMovementInputChangedSendNetworkedInputEventListener(IMovementInputChangedEventSubscribable subscriptionService, [NotNull] IPeerPayloadSendService<GamePacketPayload> sendService, [NotNull] ILog logger) 
 			: base(subscriptionService)
 		{
 			SendService = sendService ?? throw new ArgumentNullException(nameof(sendService));

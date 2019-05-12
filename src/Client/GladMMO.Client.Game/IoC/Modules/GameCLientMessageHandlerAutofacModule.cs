@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Autofac;
+using FreecraftCore;
 using Glader.Essentials;
 using GladNet;
 
@@ -28,11 +29,18 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
-				.As<MessageHandlerService<GameServerPacketPayload, GameClientPacketPayload>>()
-				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GameServerPacketPayload, GameClientPacketPayload>));
+			//New IPeerContext generic param now so we register as implemented interface
+			builder.RegisterType<DefaultServerPayloadHandler>()
+				.AsImplementedInterfaces()
+				.InstancePerLifetimeScope();
 
-			builder.RegisterModule(new BaseHandlerRegisterationModule<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>((int)SceneType, GetType().Assembly));
+			builder.RegisterType<MessageHandlerService<GamePacketPayload, GamePacketPayload>>()
+				.As<MessageHandlerService<GamePacketPayload, GamePacketPayload>>()
+				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GamePacketPayload, GamePacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GamePacketPayload, GamePacketPayload>))
+				.InstancePerLifetimeScope();
+
+			//HelloKitty: We just pass 1 since we don't really use the concept of scenes, so it can kinda be ignored.
+			builder.RegisterModule(new BaseHandlerRegisterationModule<IPeerMessageHandler<GamePacketPayload, GamePacketPayload>>((int)SceneType, GetType().Assembly));
 		}
 	}
 }

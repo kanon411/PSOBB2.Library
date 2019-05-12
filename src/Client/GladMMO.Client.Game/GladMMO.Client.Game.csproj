@@ -22,10 +22,12 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="Glader.Essentials.Unity" Version="0.0.5" />
+    <PackageReference Include="FreecraftCore.Packet.Game" Version="4.0.0" />
+    <PackageReference Include="Glader.Essentials.Unity" Version="0.0.7" />
     <PackageReference Include="GladNet3.Client.API" Version="3.0.46" />
     <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.46" />
     <PackageReference Include="GladNet3.Handler.API" Version="3.0.46" />
+    <PackageReference Include="GladNet3.Serializer.FreecraftCore" Version="3.0.46" />
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.46" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
@@ -67,7 +69,6 @@
   <ItemGroup>
     <Folder Include="Component\Base\" />
     <Folder Include="Engine\Title\Tickables\" />
-    <Folder Include="Network\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>
 

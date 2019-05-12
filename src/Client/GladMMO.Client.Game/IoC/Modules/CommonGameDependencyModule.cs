@@ -68,7 +68,7 @@ namespace GladMMO.Client
 			
 			//Handlers aren't needed for all scenes, but for most.
 			//TODO: We should expose SceneTypeCreatable or whatever on handlers
-			//builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
+			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(Scene));
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule<UnityUIRegisterationKey>());

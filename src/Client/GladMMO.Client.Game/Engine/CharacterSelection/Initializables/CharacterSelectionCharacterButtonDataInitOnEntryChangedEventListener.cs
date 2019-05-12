@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Autofac.Features.AttributeFilters;
+using Common.Logging;
 using Glader.Essentials;
 using Nito.AsyncEx;
 
@@ -11,10 +12,8 @@ namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionButtonClickedEventSubscribable))]
 	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
-	public sealed class CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener : BaseSingleEventListenerInitializable<ICharacterSelectionEntryDataChangeEventSubscribable, CharacterSelectionEntryDataChangeEventArgs>, ICharacterSelectionButtonClickedEventSubscribable
+	public sealed class CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener : EventQueueBasedTickable<ICharacterSelectionEntryDataChangeEventSubscribable, CharacterSelectionEntryDataChangeEventArgs>, ICharacterSelectionButtonClickedEventSubscribable
 	{
-		private INameQueryService NameQueryService { get; }
-
 		//This state helps manage the button index.
 		private int ButtonIndex = -1;
 
@@ -24,39 +23,29 @@ namespace GladMMO
 		public event EventHandler<CharacterButtonClickedEventArgs> OnCharacterButtonClicked;
 
 		/// <inheritdoc />
-		public CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener(
+		public CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener(ILog logger,
 			[NotNull] ICharacterSelectionEntryDataChangeEventSubscribable subscriptionService,
-			[NotNull] INameQueryService nameQueryService,
 			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUILabeledButton> characterButtons) 
-			: base(subscriptionService)
+			: base(subscriptionService, false, logger)
 		{
-			NameQueryService = nameQueryService ?? throw new ArgumentNullException(nameof(nameQueryService));
 			CharacterButtons = characterButtons ?? throw new ArgumentNullException(nameof(characterButtons));
 		}
 
 		/// <inheritdoc />
-		protected override void OnEventFired(object source, CharacterSelectionEntryDataChangeEventArgs args)
+		protected override void HandleEvent(CharacterSelectionEntryDataChangeEventArgs args)
 		{
+			//TODO: This should run on main thread now, no need to interlocked
 			//At this point, we have a new character. BUT we don't know the name of it yet
 			//We must query the name service for it.
-
 			int slot = Interlocked.Increment(ref ButtonIndex);
 
-			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
-			{
-				//TODO: Handle errors
-				//TODO: We should expose NetworkEntityGuid endpoint
-				string name = await NameQueryService.RetrieveAsync(args.CharacterEntityGuid.EntityId)
-					.ConfigureAwait(true);
+			//Once we have the result, we can assign the name.
+			IUILabeledButton button = CharacterButtons.ElementAt(slot);
+			button.Text = "TODO IMPLEMENT NAMES AGAIN";
+			button.IsInteractable = true;
 
-				//Once we have the result, we can assign the name.
-				IUILabeledButton button = CharacterButtons.ElementAt(slot);
-				button.Text = name;
-				button.IsInteractable = true;
-
-				//When clicked just broadcast a named event to everything that it has been clicked, and who it was.
-				button.AddOnClickListener(() => OnCharacterButtonClicked?.Invoke(this, new CharacterButtonClickedEventArgs(args.CharacterEntityGuid, slot)));
-			});
+			//When clicked just broadcast a named event to everything that it has been clicked, and who it was.
+			button.AddOnClickListener(() => OnCharacterButtonClicked?.Invoke(this, new CharacterButtonClickedEventArgs(args.CharacterEntityGuid, slot)));
 		}
 	}
 }

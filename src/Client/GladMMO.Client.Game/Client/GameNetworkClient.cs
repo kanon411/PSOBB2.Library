@@ -10,8 +10,6 @@ using FreecraftCore;
 using GladNet;
 using GladMMO;
 using SceneJect.Common;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 namespace GladMMO

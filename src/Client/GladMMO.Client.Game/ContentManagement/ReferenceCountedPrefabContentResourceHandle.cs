@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace GladMMO
@@ -25,9 +24,6 @@ namespace GladMMO
 		/// <summary>
 		/// The name of the asset bundle.
 		/// </summary>
-		[ReadOnly]
-		[ShowInInspector]
-		[PropertyTooltip("The name of the asset bundle's content.")]
 		public string BundleName => Bundle.name;
 
 		public AssetBundle Bundle { get; }

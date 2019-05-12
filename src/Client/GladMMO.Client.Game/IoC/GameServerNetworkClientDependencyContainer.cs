@@ -8,7 +8,6 @@ using Common.Logging;
 using GladNet;
 using ProtoBuf;
 using SceneJect.Common;
-using Sirenix.Serialization;
 using UnityEngine;
 
 namespace GladMMO

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace GladMMO
 {
 	public sealed class AvatarLerper : MonoBehaviour
 	{
-		[ReadOnly]
-		[ShowInInspector]
 		private Vector3 lastPosition;
 
 		[SerializeField]

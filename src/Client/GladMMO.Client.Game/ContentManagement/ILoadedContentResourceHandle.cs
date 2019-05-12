@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Sirenix.OdinInspector;
 
 namespace GladMMO
 {
@@ -12,8 +11,6 @@ namespace GladMMO
 		/// that representing how many objects are dependent on this
 		/// resource being loaded.
 		/// </summary>
-		[ReadOnly]
-		[ShowInInspector]
 		int CurrentUseCount { get; }
 
 		/// <summary>

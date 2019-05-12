@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using SceneJect.Common;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

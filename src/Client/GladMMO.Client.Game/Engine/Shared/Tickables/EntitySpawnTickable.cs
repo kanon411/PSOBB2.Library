@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>
 	{
 		//private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }

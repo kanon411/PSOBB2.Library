@@ -6,7 +6,7 @@ using Glader.Essentials;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntityDataChangeTrackerTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableMap { get; }

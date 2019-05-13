@@ -7,7 +7,7 @@ using Glader.Essentials;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class LocalPlayerUnitFrameResourceUpdateEventListener : BaseSingleEventListenerInitializable<ILocalPlayerSpawnedEventSubscribable, LocalPlayerSpawnedEventArgs>
 	{
 		private IEntityDataChangeCallbackRegisterable EntityDataCallbackRegister { get; }

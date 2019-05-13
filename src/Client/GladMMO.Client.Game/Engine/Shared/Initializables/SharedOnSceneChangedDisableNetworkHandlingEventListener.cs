@@ -5,6 +5,7 @@ using Glader.Essentials;
 
 namespace GladMMO
 {
+	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	[SceneTypeCreateGladMMO(GameSceneType.PreZoneBurstingScreen)]
 	public sealed class SharedOnSceneChangedDisableNetworkHandlingEventListener : BaseSingleEventListenerInitializable<IServerRequestedSceneChangeEventSubscribable, ServerRequestedSceneChangeEventArgs>
 	{

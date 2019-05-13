@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class MovementSimulationTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerators { get; }

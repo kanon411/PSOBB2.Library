@@ -7,7 +7,7 @@ using Nito.AsyncEx;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class LocalPlayerSpawnedPlayerNameNameplateUpdateEventListener : BaseSingleEventListenerInitializable<ILocalPlayerSpawnedEventSubscribable, LocalPlayerSpawnedEventArgs>
 	{
 		private IUIText PlayerNameTextField { get; }

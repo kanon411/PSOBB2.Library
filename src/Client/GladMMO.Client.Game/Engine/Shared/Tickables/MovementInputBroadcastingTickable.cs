@@ -9,7 +9,7 @@ using UnityEngine;
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IMovementInputChangedEventSubscribable))]
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class MovementInputBroadcastingTickable : IGameTickable, IMovementInputChangedEventSubscribable
 	{
 		/// <inheritdoc />

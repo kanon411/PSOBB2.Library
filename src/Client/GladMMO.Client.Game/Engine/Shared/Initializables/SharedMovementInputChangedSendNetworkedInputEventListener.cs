@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class SharedMovementInputChangedSendNetworkedInputEventListener : BaseSingleEventListenerInitializable<IMovementInputChangedEventSubscribable, MovementInputChangedEventArgs>
 	{
 		private IPeerPayloadSendService<GamePacketPayload> SendService { get; }

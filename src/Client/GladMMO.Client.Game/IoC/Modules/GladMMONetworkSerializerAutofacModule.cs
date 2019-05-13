@@ -34,6 +34,7 @@ namespace GladMMO
 					args.Instance.RegisterType<CharacterListRequest>();
 					args.Instance.RegisterType<CharacterListResponse>();
 					args.Instance.RegisterType<SMSG_LOGIN_VERIFY_WORLD_PAYLOAD>();
+					args.Instance.RegisterType<SMSG_COMPRESSED_UPDATE_OBJECT_Payload>();
 
 					args.Instance.Compile();
 				})

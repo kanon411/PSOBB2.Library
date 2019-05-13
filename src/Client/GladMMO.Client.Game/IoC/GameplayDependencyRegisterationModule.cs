@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	public sealed class LobbyGameDependencies : AutofacBasedDependencyRegister<LobbyGameDependenciesAutofacModule>
+	public sealed class GameplayDependencyRegisterationModule : AutofacBasedDependencyRegister<GameplayDependencyRegisterationAutofacModule>
 	{
 		
 	}

@@ -34,6 +34,11 @@ namespace GladMMO
 				.AsImplementedInterfaces()
 				.InstancePerLifetimeScope();
 
+			builder.RegisterType<LoggableUnknownOpcodePayloadHandler>()
+				.AsImplementedInterfaces()
+				.AsSelf()
+				.SingleInstance();
+
 			builder.RegisterType<MessageHandlerService<GamePacketPayload, GamePacketPayload>>()
 				.As<MessageHandlerService<GamePacketPayload, GamePacketPayload>>()
 				.UsingConstructor(typeof(IEnumerable<IPeerMessageHandler<GamePacketPayload, GamePacketPayload>>), typeof(IPeerPayloadSpecificMessageHandler<GamePacketPayload, GamePacketPayload>))

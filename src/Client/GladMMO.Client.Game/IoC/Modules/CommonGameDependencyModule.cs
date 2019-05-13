@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Autofac;
 using Common.Logging;
+using FreecraftCore;
 using Glader.Essentials;
 using Refit;
 
@@ -72,6 +73,7 @@ namespace GladMMO.Client
 
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule<UnityUIRegisterationKey>());
+			builder.RegisterModule<EntityMappableRegisterationModule<ObjectGuid>>();
 
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -174,6 +175,11 @@ namespace GladMMO
 				//so if we don't specify the length we could end up with an issue.
 				payload = Serializer.Deserialize<TReadPayloadBaseType>(PacketPayloadReadBuffer, 0, header.PayloadSize);
 			}
+
+			//TODO: This is bad for performance because it copies of the buffer, only use this during dev.
+			//HelloKitty: Kinda a hack here to add logging for unknown/default opcodes.
+			if(payload is UnknownGamePayload)
+				return new NetworkIncomingMessage<TReadPayloadBaseType>(header, new LoggableUnknownOpcodePayload(header.PacketSize, (NetworkOperationCode)PacketPayloadReadBuffer.Reinterpret<short>(), PacketPayloadReadBuffer.Skip(2).ToArray()) as TReadPayloadBaseType);
 
 			return new NetworkIncomingMessage<TReadPayloadBaseType>(header, payload);
 		}

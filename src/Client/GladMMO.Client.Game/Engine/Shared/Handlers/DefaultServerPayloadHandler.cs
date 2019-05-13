@@ -13,7 +13,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public async Task HandleMessage(IPeerMessageContext<GamePacketPayload> context, GamePacketPayload payload)
 		{
-			Debug.LogWarning($"Recieved unhandled Packet. TODO: Implement opcoding logging like PSO emulator.");
+			Debug.LogWarning($"Recieved unhandled Packet: {payload.GetType().Name}");
 		}
 	}
 }

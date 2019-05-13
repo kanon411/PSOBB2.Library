@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FreecraftCore;
 
 namespace GladMMO
 {
 	public sealed class DefaultLocalPlayerDetails : ILocalPlayerDetails, IReadonlyLocalPlayerDetails
 	{
 		/// <inheritdoc />
-		public NetworkEntityGuid LocalPlayerGuid { get; set; }
+		public ObjectGuid LocalPlayerGuid { get; set; }
 
 		//TODO: Come up with a better way of storing entity data, without downcasting.
 		/// <inheritdoc />

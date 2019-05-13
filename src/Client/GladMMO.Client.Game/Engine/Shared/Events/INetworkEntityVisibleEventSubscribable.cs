@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FreecraftCore;
 
 namespace GladMMO
 {
@@ -15,7 +16,7 @@ namespace GladMMO
 		/// <summary>
 		/// The entity guid.
 		/// </summary>
-		public NetworkEntityGuid EntityGuid { get; }
+		public ObjectGuid EntityGuid { get; }
 
 		/// <summary>
 		/// The creation data for the entity.
@@ -25,7 +26,7 @@ namespace GladMMO
 		public IEntityDataFieldContainer EntityDataContainer { get; }
 
 		/// <inheritdoc />
-		public NetworkEntityNowVisibleEventArgs([NotNull] NetworkEntityGuid entityGuid, /*[NotNull] EntityCreationData creationData,*/ [NotNull] IEntityDataFieldContainer entityDataContainer)
+		public NetworkEntityNowVisibleEventArgs([NotNull] ObjectGuid entityGuid, /*[NotNull] EntityCreationData creationData,*/ [NotNull] IEntityDataFieldContainer entityDataContainer)
 		{
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			//CreationData = creationData ?? throw new ArgumentNullException(nameof(creationData));

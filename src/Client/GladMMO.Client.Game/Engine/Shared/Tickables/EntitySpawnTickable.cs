@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
+using FreecraftCore;
 using Glader.Essentials;
 using UnityEngine;
 
@@ -36,17 +37,17 @@ namespace GladMMO
 			}
 		}
 
-		private EntityPrefab ComputePrefabTypeFromGuid(NetworkEntityGuid creationDataEntityGuid)
+		private EntityPrefab ComputePrefabTypeFromGuid(ObjectGuid creationDataEntityGuid)
 		{
-			switch(creationDataEntityGuid.EntityType)
+			switch(creationDataEntityGuid.ObjectType)
 			{
-				case EntityType.None:
+				case EntityGuidMask.Instance:
 					return EntityPrefab.Unknown;
-				case EntityType.Player:
+				case EntityGuidMask.Player:
 					return EntityPrefab.RemotePlayer;
-				case EntityType.GameObject:
+				case EntityGuidMask.GameObject:
 					return EntityPrefab.Unknown;
-				case EntityType.Npc:
+				case EntityGuidMask.Unit:
 					return EntityPrefab.NetworkNpc;
 			}
 

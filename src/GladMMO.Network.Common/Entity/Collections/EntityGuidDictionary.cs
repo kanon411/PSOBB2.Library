@@ -3,37 +3,16 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FreecraftCore;
 
 namespace GladMMO
 {
 	/// <summary>
-	/// Generic dictionary with <see cref="NetworkEntityGuid"/> key types.
+	/// Generic dictionary with <see cref="ObjectGuid"/> key types.
 	/// </summary>
 	/// <typeparam name="TValue">Value type.</typeparam>
-	public class EntityGuidDictionary<TValue> : ConcurrentDictionary<NetworkEntityGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
+	public class EntityGuidDictionary<TValue> : Glader.Essentials.EntityGuidDictionary<ObjectGuid, TValue>
 	{
-		public EntityGuidDictionary()
-			: base(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
-		{
-
-		}
-
-		public EntityGuidDictionary(int capacity)
-			: base(4, capacity, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
-		{
-
-		}
-
-		public EntityGuidDictionary(IDictionary<NetworkEntityGuid, TValue> dictionary)
-			: base(dictionary, NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
-		{
-
-		}
-
-		/// <inheritdoc />
-		public bool RemoveEntityEntry(NetworkEntityGuid entityGuid)
-		{
-			return TryRemove(entityGuid, out var temp);
-		}
+		
 	}
 }

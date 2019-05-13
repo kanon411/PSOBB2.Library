@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using FreecraftCore;
 using UnityEngine;
 
 namespace GladMMO
@@ -11,20 +12,20 @@ namespace GladMMO
 	public sealed class DefaultGameObjectToEntityMappable : IReadonlyGameObjectToEntityMappable, IGameObjectToEntityMappable
 	{
 		/// <inheritdoc />
-		public IReadOnlyDictionary<GameObject, NetworkEntityGuid> ObjectToEntityMap => InternalMap;
+		public IReadOnlyDictionary<GameObject, ObjectGuid> ObjectToEntityMap => InternalMap;
 
 		/// <inheritdoc />
-		IDictionary<GameObject, NetworkEntityGuid> IGameObjectToEntityMappable.ObjectToEntityMap => InternalMap;
+		IDictionary<GameObject, ObjectGuid> IGameObjectToEntityMappable.ObjectToEntityMap => InternalMap;
 
-		private ConcurrentDictionary<GameObject, NetworkEntityGuid> InternalMap { get; }
+		private ConcurrentDictionary<GameObject, ObjectGuid> InternalMap { get; }
 
 		public DefaultGameObjectToEntityMappable()
 		{
-			InternalMap = new ConcurrentDictionary<GameObject, NetworkEntityGuid>();
+			InternalMap = new ConcurrentDictionary<GameObject, ObjectGuid>();
 		}
 
 		/// <inheritdoc />
-		public IEnumerator<NetworkEntityGuid> GetEnumerator()
+		public IEnumerator<ObjectGuid> GetEnumerator()
 		{
 			return ObjectToEntityMap.Values.GetEnumerator();
 		}

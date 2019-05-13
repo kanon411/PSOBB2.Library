@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.AttributeFilters;
+using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO
@@ -49,7 +50,7 @@ namespace GladMMO
 			PlayerUnitFrame.HealthBar.BarText.Text = $"{currentHealth} / {PlayerDetails.EntityData.GetFieldValue<int>(EntityDataFieldType.EntityMaxHealth)}";
 		}
 
-		private void OnCurrentHealthChangedValue(NetworkEntityGuid source, EntityDataChangedArgs<int> changeArgs)
+		private void OnCurrentHealthChangedValue(ObjectGuid source, EntityDataChangedArgs<int> changeArgs)
 		{
 			RecalulateHealthUI(changeArgs.NewValue);
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
+using FreecraftCore;
 using Glader.Essentials;
 using UnityEngine;
 
@@ -10,14 +11,14 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntityDespawnTickable : EventQueueBasedTickable<INetworkEntityVisibilityLostEventSubscribable, NetworkEntityVisibilityLostEventArgs>
 	{
-		private IObjectDestructorable<NetworkEntityGuid> EntityDestructor { get; }
+		private IObjectDestructorable<ObjectGuid> EntityDestructor { get; }
 
 		private IReadonlyEntityGuidMappable<GameObject> KnownEntites { get; }
 
 		/// <inheritdoc />
 		public EntityDespawnTickable(INetworkEntityVisibilityLostEventSubscribable subscriptionService, ILog logger,
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> knownEntites,
-			[NotNull] IObjectDestructorable<NetworkEntityGuid> entityDestructor) 
+			[NotNull] IObjectDestructorable<ObjectGuid> entityDestructor) 
 			: base(subscriptionService, true, logger)
 		{
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
@@ -34,13 +35,13 @@ namespace GladMMO
 			if(!KnownEntites.ContainsKey(args.EntityGuid))
 			{
 				if(Logger.IsErrorEnabled)
-					Logger.Error($"Encountered {nameof(NetworkEntityVisibilityLostEventArgs)} with Guid: {args.EntityGuid.EntityType}:{args.EntityGuid.EntityId} who is not a KNOWN entity. This should never happen.");
+					Logger.Error($"Encountered {nameof(NetworkEntityVisibilityLostEventArgs)} with Guid: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} who is not a KNOWN entity. This should never happen.");
 
 				return;
 			}
 			else
 				if(Logger.IsInfoEnabled)
-					Logger.Info($"About to cleanup Entity: {args.EntityGuid.EntityType}:{args.EntityGuid.EntityId}");
+					Logger.Info($"About to cleanup Entity: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid}");
 
 			//TODO: This is a semi-slow process, can any of this be offloaded to the other thread?
 			EntityDestructor.Destroy(args.EntityGuid);

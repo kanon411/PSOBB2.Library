@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Glader.Essentials.Common" Version="0.0.8" />
     <PackageReference Include="GladNet3.Common.API" Version="3.0.46" />
     <PackageReference Include="protobuf-net" Version="2.3.7" />
   </ItemGroup>
@@ -17,6 +18,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GladMMO.Common\GladMMO.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FreecraftCore.API.Common.Entity.Identity">
+      <HintPath>..\..\..\..\..\.nuget\packages\freecraftcore.api.common.entity.identity\4.0.0\lib\netstandard2.0\FreecraftCore.API.Common.Entity.Identity.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FreecraftCore;
 
 namespace GladMMO
 {
@@ -13,6 +14,6 @@ namespace GladMMO
 		/// <param name="entity"></param>
 		/// <param name="field"></param>
 		/// <param name="dataValueAsInt">The new data value as an integer.</param>
-		void InvokeChangeEvents(NetworkEntityGuid entity, EntityDataFieldType field, int dataValueAsInt);
+		void InvokeChangeEvents(ObjectGuid entity, EntityDataFieldType field, int dataValueAsInt);
 	}
 }

@@ -26,7 +26,8 @@ namespace GladMMO
 			//PreBurst scene should always be the last scene before playable scenes.
 			int sceneIndexToLoad = currentIndex + (int)args.SceneRequested + 1; //otherwise 0th enum index.
 
-			SceneManager.LoadSceneAsync(sceneIndexToLoad, LoadSceneMode.Single).allowSceneActivation = true;
+			//TODO: Reimplement proper map/scene loading. This is just hardcoded lobby.
+			SceneManager.LoadSceneAsync((int)PlayableGameScene.LobbyType1 + currentIndex + 1, LoadSceneMode.Single).allowSceneActivation = true;
 		}
 	}
 }

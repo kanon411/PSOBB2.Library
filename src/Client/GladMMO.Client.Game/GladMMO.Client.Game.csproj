@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="FreecraftCore.Packet.Game" Version="4.0.2" />
+    <PackageReference Include="FreecraftCore.Packet.Game" Version="4.0.3" />
     <PackageReference Include="Glader.Essentials.Unity" Version="0.0.8" />
     <PackageReference Include="GladNet3.Client.API" Version="3.0.46" />
     <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.46" />

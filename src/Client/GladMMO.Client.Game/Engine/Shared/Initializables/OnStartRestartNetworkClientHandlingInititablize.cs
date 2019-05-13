@@ -54,6 +54,9 @@ namespace GladMMO
 				await ClientManager.StartHandlingNetworkClient(Client)
 					.ConfigureAwait(true); //it's just scene start, it's probably ok to capture the sync context
 
+				if(Logger.IsInfoEnabled)
+					Logger.Warn($"Network Connection restarted. Message handling resumed. Dispatching {nameof(INetworkConnectionEstablishedEventSubscribable)}");
+
 				OnNetworkConnectionEstablished?.Invoke(this, EventArgs.Empty);
 			}
 		}

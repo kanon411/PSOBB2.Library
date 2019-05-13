@@ -17,8 +17,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public ServerRequestedSceneChangeEventArgs(PlayableGameScene sceneRequested)
 		{
-			if(!Enum.IsDefined(typeof(PlayableGameScene), sceneRequested)) throw new InvalidEnumArgumentException(nameof(sceneRequested), (int)sceneRequested, typeof(PlayableGameScene));
-
+			//HelloKitty: We actually aren't going to complain if it's unknown. If the server requests an unknown map, it should be handled somewhere else, not as an exception here.
 			SceneRequested = sceneRequested;
 		}
 	}

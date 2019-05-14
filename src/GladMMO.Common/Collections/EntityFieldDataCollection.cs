@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using FreecraftCore;
 using Generic.Math;
 using Reinterpret.Net;
 
@@ -22,7 +23,7 @@ namespace GladMMO
 		//.NET runtime does a really good job of optimizing Int32 operations
 		//and Int32 arrays. Most fields are small enough to be represented by integer fields
 		//and the largest 64bit fields can just take up 2 slots.
-		private int[] InternalDataFields { get; }
+		private byte[] InternalDataFields { get; }
 
 		/// <inheritdoc />
 		public object SyncObj { get; } = new object();
@@ -33,7 +34,7 @@ namespace GladMMO
 		public EntityFieldDataCollection()
 		{
 			//TODO: Make this allocation more efficient. Maybe even use pooling.
-			InternalDataFields = new int[ComputeDataFieldCollectionLength()];
+			InternalDataFields = new byte[ComputeDataFieldCollectionLength()];
 			DataSetIndicationArray = new WireReadyBitArray(ComputeDataFieldCollectionLength());
 		}
 
@@ -43,7 +44,7 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="initialDataSetIndicationArray">The initial data set array.</param>
 		/// <param name="entityData"></param>
-		public EntityFieldDataCollection(WireReadyBitArray initialDataSetIndicationArray, int[] entityData)
+		public EntityFieldDataCollection(WireReadyBitArray initialDataSetIndicationArray, byte[] entityData)
 		{
 			if(initialDataSetIndicationArray == null) throw new ArgumentNullException(nameof(initialDataSetIndicationArray));
 
@@ -58,11 +59,11 @@ namespace GladMMO
 
 		private static int ComputeDataFieldCollectionLength()
 		{
-			return Enum.GetValues(typeof(TFieldType)).Length;
+			return Enum.GetValues(typeof(TFieldType)).Length * 4;
 		}
 
 		/// <inheritdoc />
-		public EntityFieldDataCollection(int[] internalDataFields)
+		public EntityFieldDataCollection(byte[] internalDataFields)
 		{
 			if(internalDataFields == null) throw new ArgumentNullException(nameof(internalDataFields));
 			if(internalDataFields.Length != ComputeDataFieldCollectionLength())
@@ -87,7 +88,7 @@ namespace GladMMO
 			IfIndexExceedsLengthThrow(index);
 
 			//Just assume we can do it, the caller is responsible for the diaster.
-			return Unsafe.As<int, TValueType>(ref InternalDataFields[index]);
+			return Unsafe.As<byte, TValueType>(ref InternalDataFields[index]);
 		}
 
 		private void IfIndexExceedsLengthThrow(int index)
@@ -106,8 +107,7 @@ namespace GladMMO
 			{
 				//Whenever someone sets, even if the value is not changing, we should set it being set (not changed).
 				DataSetIndicationArray.Set(index, true);
-
-				InternalDataFields[index] = Unsafe.As<TValueType, int>(ref value);
+				value.Reinterpret(InternalDataFields, index);
 			}
 		}
 

@@ -13,16 +13,16 @@ namespace GladMMO
 	{
 		private IObjectDestructorable<ObjectGuid> EntityDestructor { get; }
 
-		private IReadonlyEntityGuidMappable<GameObject> KnownEntites { get; }
+		private IReadonlyKnownEntitySet KnownEntites { get; }
 
 		/// <inheritdoc />
 		public EntityDespawnTickable(INetworkEntityVisibilityLostEventSubscribable subscriptionService, ILog logger,
-			[NotNull] IReadonlyEntityGuidMappable<GameObject> knownEntites,
-			[NotNull] IObjectDestructorable<ObjectGuid> entityDestructor) 
+			[NotNull] IObjectDestructorable<ObjectGuid> entityDestructor,
+			[NotNull] IReadonlyKnownEntitySet knownEntites) 
 			: base(subscriptionService, true, logger)
 		{
-			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			EntityDestructor = entityDestructor ?? throw new ArgumentNullException(nameof(entityDestructor));
+			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 		}
 
 		/// <inheritdoc />
@@ -32,7 +32,7 @@ namespace GladMMO
 			//of some hacks that were added to keep the wheels from falling off.
 			//These will eventually be fixed, but for now we should just skip ones we don't know
 			//because we can't remove what we don't know.
-			if(!KnownEntites.ContainsKey(args.EntityGuid))
+			if(!KnownEntites.isEntityKnown(args.EntityGuid))
 			{
 				if(Logger.IsErrorEnabled)
 					Logger.Error($"Encountered {nameof(NetworkEntityVisibilityLostEventArgs)} with Guid: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} who is not a KNOWN entity. This should never happen.");

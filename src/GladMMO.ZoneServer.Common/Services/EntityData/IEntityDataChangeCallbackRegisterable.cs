@@ -16,7 +16,7 @@ namespace GladMMO
 		/// <param name="entity"></param>
 		/// <param name="dataField"></param>
 		/// <param name="callback"></param>
-		void RegisterCallback<TCallbackValueCastType>(ObjectGuid entity, EntityDataFieldType dataField, Action<ObjectGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback)
+		void RegisterCallback<TCallbackValueCastType>(ObjectGuid entity, int dataField, Action<ObjectGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback)
 			where TCallbackValueCastType : struct;
 
 		//TODO: Add unregisteration for callbacks

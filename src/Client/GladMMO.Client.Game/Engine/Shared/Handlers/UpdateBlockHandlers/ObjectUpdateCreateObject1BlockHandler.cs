@@ -3,19 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
 using FreecraftCore;
+using Glader.Essentials;
 
 namespace GladMMO
 {
-	public sealed class ObjectUpdateCreateObject1BlockHandler : BaseObjectUpdateBlockHandler<ObjectUpdateCreateObject1Block>, ILocalPlayerSpawnedEventSubscribable
+	[AdditionalRegisterationAs(typeof(INetworkEntityVisibleEventSubscribable))]
+	public sealed class ObjectUpdateCreateObject1BlockHandler : BaseObjectUpdateBlockHandler<ObjectUpdateCreateObject1Block>, INetworkEntityVisibleEventSubscribable
 	{
 		/// <inheritdoc />
-		public event EventHandler<LocalPlayerSpawnedEventArgs> OnLocalPlayerSpawned;
+		public event EventHandler<NetworkEntityNowVisibleEventArgs> OnNetworkEntityNowVisible;
+
+		public IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
 
 		/// <inheritdoc />
-		public ObjectUpdateCreateObject1BlockHandler(ILog logger) 
+		public ObjectUpdateCreateObject1BlockHandler(ILog logger, IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableCollection) 
 			: base(ObjectUpdateType.UPDATETYPE_CREATE_OBJECT, logger)
 		{
+			ChangeTrackableCollection = changeTrackableCollection;
+		}
 
+		public IEntityDataFieldContainer Test(ObjectCreationData creationData)
+		{
+			/*IEntityDataFieldContainer t = new EntityFieldDataCollection<EUnitFields>(creationData.ObjectValuesCollection.UpdateMask, );
+
+			foreach(var entry in t.DataSetIndicationArray.FieldValueUpdateMask
+				.EnumerateSetBitsByIndex()
+				.Zip(creationData.InitialFieldValues.FieldValueUpdates, (setIndex, value) => new { setIndex, value }))
+			{
+				entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
+			}*/
+			return null;
 		}
 
 		/// <inheritdoc />
@@ -41,13 +58,13 @@ namespace GladMMO
 					{
 						if(Logger.IsInfoEnabled)
 							Logger.Info($"Recieved local player spawn data. Id:{updateBlock.CreationData.CreationGuid.CurrentObjectGuid}");
-
-						OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(new ObjectGuid(updateBlock.CreationData.CreationGuid)));
 					}
-					else
-					{
 
-					}
+					//TODO: This is just a test
+					//ChangeTrackableCollection[new ObjectGuid(updateBlock.CreationData.CreationGuid)] = new ChangeTrackingEntityFieldDataCollectionDecorator(Test());
+
+					//Now we broadcast that an entity is now visible.
+					OnNetworkEntityNowVisible?.Invoke(this, new NetworkEntityNowVisibleEventArgs(new ObjectGuid(updateBlock.CreationData.CreationGuid)));
 					break;
 				case ObjectType.GameObject:
 					break;

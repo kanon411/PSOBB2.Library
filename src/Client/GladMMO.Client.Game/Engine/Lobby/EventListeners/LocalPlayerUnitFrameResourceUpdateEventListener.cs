@@ -33,21 +33,21 @@ namespace GladMMO
 		protected override void OnEventFired(object source, LocalPlayerSpawnedEventArgs args)
 		{
 			//One local player spawn we want to subscribe the resource updates
-			RecalulateHealthUI(PlayerDetails.EntityData.GetFieldValue<int>(EntityDataFieldType.EntityCurrentHealth));
+			RecalulateHealthUI(PlayerDetails.EntityData.GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH));
 
 			//TODO: Any way to do type inference on generics for Action types???
 			//We should subscribe to changes in the current health
-			EntityDataCallbackRegister.RegisterCallback<int>(PlayerDetails.LocalPlayerGuid, EntityDataFieldType.EntityCurrentHealth, OnCurrentHealthChangedValue);
+			EntityDataCallbackRegister.RegisterCallback<int>(PlayerDetails.LocalPlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH, OnCurrentHealthChangedValue);
 		}
 
 		private void RecalulateHealthUI(int currentHealth)
 		{
-			float healthPercentage = (float)currentHealth / PlayerDetails.EntityData.GetFieldValue<int>(EntityDataFieldType.EntityMaxHealth);
+			float healthPercentage = (float)currentHealth / PlayerDetails.EntityData.GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH);
 
 			PlayerUnitFrame.HealthBar.BarFillable.FillAmount = healthPercentage;
 
 			//Also we want to see the percentage text
-			PlayerUnitFrame.HealthBar.BarText.Text = $"{currentHealth} / {PlayerDetails.EntityData.GetFieldValue<int>(EntityDataFieldType.EntityMaxHealth)}";
+			PlayerUnitFrame.HealthBar.BarText.Text = $"{currentHealth} / {PlayerDetails.EntityData.GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH)}";
 		}
 
 		private void OnCurrentHealthChangedValue(ObjectGuid source, EntityDataChangedArgs<int> changeArgs)

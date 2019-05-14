@@ -18,10 +18,10 @@ namespace GladMMO
 		}
 
 		[Test]
-		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
-		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
-		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
-		public void Test_Can_Register_Callback_Without_Throw(long guid, EntityDataFieldType fieldType)
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
+		public void Test_Can_Register_Callback_Without_Throw(long guid, int fieldType)
 		{
 			//arrange
 			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
@@ -30,10 +30,10 @@ namespace GladMMO
 		}
 
 		[Test]
-		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
-		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
-		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
-		public void Test_Can_Register_Multple_Callback_Without_Throw(long guid, EntityDataFieldType fieldType)
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
+		public void Test_Can_Register_Multple_Callback_Without_Throw(long guid, int fieldType)
 		{
 			//arrange
 			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
@@ -49,14 +49,14 @@ namespace GladMMO
 			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
 
 			//assert
-			Assert.DoesNotThrow(() => callbackManager.InvokeChangeEvents(ObjectGuid.Empty, EntityDataFieldType.EntityCurrentHealth, 5));
+			Assert.DoesNotThrow(() => callbackManager.InvokeChangeEvents(ObjectGuid.Empty, 3, 5));
 		}
 
 		[Test]
-		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
-		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
-		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
-		public void Test_Can_Registered_Callback_Called(long guid, EntityDataFieldType fieldType)
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
+		public void Test_Can_Registered_Callback_Called(long guid, int fieldType)
 		{
 			//arrange
 			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
@@ -77,10 +77,10 @@ namespace GladMMO
 
 		//Mostly check the next call will still invoke the same callbacks
 		[Test]
-		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
-		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
-		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
-		public void Test_Can_Registered_Callback_Called_Be_Called_Twice(long guid, EntityDataFieldType fieldType)
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
+		public void Test_Can_Registered_Callback_Called_Be_Called_Twice(long guid, int fieldType)
 		{
 			//arrange
 			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
@@ -103,10 +103,10 @@ namespace GladMMO
 
 		//Mostly check the next call will still invoke the same callbacks
 		[Test]
-		[TestCase(5, EntityDataFieldType.EntityMaxHealth)]
-		[TestCase(5, EntityDataFieldType.EntityCurrentHealth)]
-		[TestCase(555, EntityDataFieldType.EntityCurrentHealth)]
-		public void Test_Can_Registered_Multiple_Callbacks_Called_Be_Called_Twice(long guid, EntityDataFieldType fieldType)
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
+		public void Test_Can_Registered_Multiple_Callbacks_Called_Be_Called_Twice(long guid, int fieldType)
 		{
 			//arrange
 			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
@@ -145,22 +145,22 @@ namespace GladMMO
 			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
 
 			//act
-			callbackManager.RegisterCallback<float>(new ObjectGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, (eg, args) =>
+			callbackManager.RegisterCallback<float>(new ObjectGuid((ulong)5), 2, (eg, args) =>
 			{
 				//Call so we can check for test purposes
 				testCallback.Object.GetEnumerator();
 			});
 
 			//Of the same type
-			callbackManager.RegisterCallback<float>(new ObjectGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, (eg, args) =>
+			callbackManager.RegisterCallback<float>(new ObjectGuid((ulong)6), 2, (eg, args) =>
 			{
 				//Call so we can check for test purposes
 				testCallback2.Object.GetEnumerator();
 			});
 
 			//Call twice
-			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)5), EntityDataFieldType.EntityCurrentHealth, 5);
-			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)6), EntityDataFieldType.EntityCurrentHealth, 5);
+			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)5), 2, 5);
+			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)6), 2, 5);
 
 			//assert
 			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Exactly(1));

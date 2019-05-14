@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO
@@ -13,38 +14,47 @@ namespace GladMMO
 
 		private IEntityDataChangeCallbackService EntityDataCallbackDispatcher { get; }
 
+		private IReadonlyKnownEntitySet KnownEntites { get; }
+
 		/// <inheritdoc />
-		public EntityDataChangeTrackerTickable(IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableMap, IEntityDataChangeCallbackService entityDataCallbackDispatcher)
+		public EntityDataChangeTrackerTickable(IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableMap, 
+			IEntityDataChangeCallbackService entityDataCallbackDispatcher,
+			[NotNull] IReadonlyKnownEntitySet knownEntites)
 		{
 			ChangeTrackableMap = changeTrackableMap ?? throw new ArgumentNullException(nameof(changeTrackableMap));
 			EntityDataCallbackDispatcher = entityDataCallbackDispatcher ?? throw new ArgumentNullException(nameof(entityDataCallbackDispatcher));
+			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 		}
 
 		/// <inheritdoc />
 		public void Tick()
 		{
-			//TODO: We can make this faster if we skip entities that have no registered callbacks.
-			//The idea is here that we check the changed values, while on the MAIN THREAD
-			//and dispatch the changes via a callback registeration service where UI or gameplay systems
-			//may register their interest
-			foreach(var changeTrackerPair in ChangeTrackableMap)
+			//We just iterate known entites, this prevents some race conditions when we're adding in new entities data into collections
+			//but they aren't ready.
+			foreach(ObjectGuid entity in KnownEntites)
 			{
-				if(changeTrackerPair.Value.HasPendingChanges)
+				var changeTrackable = ChangeTrackableMap[entity];
+
+				//TODO: We can make this faster if we skip entities that have no registered callbacks.
+				//The idea is here that we check the changed values, while on the MAIN THREAD
+				//and dispatch the changes via a callback registeration service where UI or gameplay systems
+				//may register their interest
+				if(changeTrackable.HasPendingChanges)
 				{
 					//We have to lock here otherwise we could encounter race conditions with the
 					//change tracking system.
-					lock(changeTrackerPair.Value.SyncObj)
+					lock(changeTrackable.SyncObj)
 					{
 						//We need to try to dispatch events for each changed value.
-						foreach(int changedIndex in changeTrackerPair.Value.ChangeTrackingArray.EnumerateSetBitsByIndex())
+						foreach(int changedIndex in changeTrackable.ChangeTrackingArray.EnumerateSetBitsByIndex())
 						{
 							//TODO: We don't REALLY want to lock on the dispatching. This could be a REAL bottleneck in the future. We need to redesign this abit
 							//TODO: Might be a better way to handle this API, and provide the value instead of the collection.
-							EntityDataCallbackDispatcher.InvokeChangeEvents(changeTrackerPair.Key, (EntityDataFieldType)changedIndex, changeTrackerPair.Value.GetFieldValue<int>((int)changedIndex));
+							EntityDataCallbackDispatcher.InvokeChangeEvents(entity, changedIndex, changeTrackable.GetFieldValue<int>((int)changedIndex));
 						}
 
 						//After we're done servicing the changes, we should clear the changes.
-						changeTrackerPair.Value.ClearTrackedChanges();
+						changeTrackable.ClearTrackedChanges();
 					}
 				}
 			}

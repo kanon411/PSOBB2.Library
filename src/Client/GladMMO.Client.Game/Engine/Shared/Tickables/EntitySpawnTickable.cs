@@ -9,16 +9,20 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>
 	{
 		//private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
 
+		private IKnownEntitySet KnownEntites { get; }
+
 		/// <inheritdoc />
-		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, [NotNull] ILog logger
-			/*[NotNull] IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory*/)
+		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, 
+			[NotNull] ILog logger,
+			[NotNull] IKnownEntitySet knownEntites)
 			: base(subscriptionService, true, logger) //TODO: We probably shouldn't spawn everything per frame. We should probably stagger spawning.
 		{
+			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			//EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
 		}
 
@@ -27,6 +31,12 @@ namespace GladMMO
 		{
 			try
 			{
+				//TODO: We need to do abit MORE about this, to know the entity.
+				KnownEntites.AddEntity(args.EntityGuid);
+
+				if(Logger.IsDebugEnabled)
+					Logger.Debug($"Entity: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} is now known.");
+
 				//GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, ComputePrefabTypeFromGuid(args.EntityGuid), args.EntityDataContainer));
 			}
 			catch(Exception e)

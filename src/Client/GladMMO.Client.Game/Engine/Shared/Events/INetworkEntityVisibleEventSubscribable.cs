@@ -18,19 +18,10 @@ namespace GladMMO
 		/// </summary>
 		public ObjectGuid EntityGuid { get; }
 
-		/// <summary>
-		/// The creation data for the entity.
-		/// </summary>
-		//public EntityCreationData CreationData { get; }
-
-		public IEntityDataFieldContainer EntityDataContainer { get; }
-
 		/// <inheritdoc />
-		public NetworkEntityNowVisibleEventArgs([NotNull] ObjectGuid entityGuid, /*[NotNull] EntityCreationData creationData,*/ [NotNull] IEntityDataFieldContainer entityDataContainer)
+		public NetworkEntityNowVisibleEventArgs([NotNull] ObjectGuid entityGuid)
 		{
 			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
-			//CreationData = creationData ?? throw new ArgumentNullException(nameof(creationData));
-			EntityDataContainer = entityDataContainer ?? throw new ArgumentNullException(nameof(entityDataContainer));
 		}
 	}
 }

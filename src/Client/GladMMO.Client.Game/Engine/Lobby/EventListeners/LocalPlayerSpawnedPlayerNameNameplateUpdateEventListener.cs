@@ -17,7 +17,7 @@ namespace GladMMO
 			/// <inheritdoc />
 		public LocalPlayerSpawnedPlayerNameNameplateUpdateEventListener([NotNull] ILocalPlayerSpawnedEventSubscribable subscriptionService,
 				[NotNull] [KeyFilter(UnityUIRegisterationKey.PlayerUnitFrame)] IUIText playerNameTextField,
-				[NotNull] INameQueryService nameQueryable) 
+				[NotNull] INameQueryService nameQueryable)
 				: base(subscriptionService)
 		{
 			if(subscriptionService == null) throw new ArgumentNullException(nameof(subscriptionService));

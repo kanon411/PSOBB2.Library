@@ -14,6 +14,6 @@ namespace GladMMO
 	{
 		ObjectGuid LocalPlayerGuid { get; }
 
-		IEntityDataFieldContainer<EntityDataFieldType> EntityData { get; }
+		IEntityDataFieldContainer<int> EntityData { get; }
 	}
 }

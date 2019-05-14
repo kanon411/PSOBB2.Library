@@ -57,6 +57,11 @@ namespace GladMMO
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_NEAR_OBJECTS)).As<IObjectUpdateBlockHandler>();
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_OUT_OF_RANGE_OBJECTS)).As<IObjectUpdateBlockHandler>();
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_VALUES)).As<IObjectUpdateBlockHandler>();
+
+			builder.RegisterType<DefaultThreadUnSafeKnownEntitySet>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 
 		private static void RegisterUpdateBlockHandler<THandlerType>([NotNull] ContainerBuilder builder)
@@ -65,7 +70,7 @@ namespace GladMMO
 			if(builder == null) throw new ArgumentNullException(nameof(builder));
 
 			builder.RegisterType<THandlerType>()
-				.As<IObjectUpdateBlockHandler>()
+				.AsImplementedInterfaces()
 				.SingleInstance();
 		}
 	}

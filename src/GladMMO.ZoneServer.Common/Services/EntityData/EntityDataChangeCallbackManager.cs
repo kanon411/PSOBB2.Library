@@ -14,7 +14,7 @@ namespace GladMMO
 
 		public EntityDataChangeCallbackManager()
 		{
-			CallbackMap = new Dictionary<ObjectGuid, Dictionary<int, Action<int>>>();
+			CallbackMap = new Dictionary<ObjectGuid, Dictionary<int, Action<int>>>(ObjectGuidEqualityComparer<ObjectGuid>.Instance);
 		}
 
 		/// <inheritdoc />

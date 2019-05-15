@@ -45,6 +45,25 @@ namespace GladMMO
 			ChangeTrackingArray = new WireReadyBitArray(entityDataCollection.DataSetIndicationArray.Length); //just the size of the initial data indiciation bitarray
 		}
 
+		/// <summary>
+		/// Overloaded constructor which will actually take an initial <see cref="ChangeTrackingArray"/>.
+		/// Useful for initial creation if you want initial values to be viewed as changes.
+		/// </summary>
+		/// <param name="entityDataCollection"></param>
+		/// <param name="initialChangeTrackBitArray"></param>
+		public ChangeTrackingEntityFieldDataCollectionDecorator(IEntityDataFieldContainer entityDataCollection, [JetBrains.Annotations.NotNull] WireReadyBitArray initialChangeTrackBitArray)
+		{
+			if(initialChangeTrackBitArray == null) throw new ArgumentNullException(nameof(initialChangeTrackBitArray));
+			if(initialChangeTrackBitArray.Length != entityDataCollection.DataSetIndicationArray.Length)
+				throw new InvalidOperationException($"Cannot set fields in {nameof(ChangeTrackingEntityFieldDataCollectionDecorator)} since provided collections {nameof(entityDataCollection)} and {nameof(initialChangeTrackBitArray)} do not have matching lengths.");
+
+			EntityDataCollection = entityDataCollection ?? throw new ArgumentNullException(nameof(entityDataCollection));
+			ChangeTrackingArray = initialChangeTrackBitArray; //just the size of the initial data indiciation bitarray
+
+			//TODO: Technically we can't ASSUME it has any changes, but probably more efficient to than to check.
+			HasPendingChanges = true;
+		}
+
 		/// <inheritdoc />
 		public TValueType GetFieldValue<TValueType>(int index)
 			where TValueType : struct

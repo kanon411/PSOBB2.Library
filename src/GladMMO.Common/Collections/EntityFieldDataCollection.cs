@@ -35,7 +35,7 @@ namespace GladMMO
 		{
 			//TODO: Make this allocation more efficient. Maybe even use pooling.
 			InternalDataFields = new byte[ComputeDataFieldCollectionLength()];
-			DataSetIndicationArray = new WireReadyBitArray(ComputeDataFieldCollectionLength());
+			DataSetIndicationArray = new WireReadyBitArray(ComputeBitLength());
 		}
 
 		/// <summary>
@@ -51,15 +51,23 @@ namespace GladMMO
 			//TODO: Make this allocation more efficient. Maybe even use pooling.
 			InternalDataFields = entityData ?? throw new ArgumentNullException(nameof(entityData));
 
-			if(InternalDataFields.Length != initialDataSetIndicationArray.Length)
-				throw new ArgumentException($"Failed to initialize entity field data collection due to incorrect Length: {initialDataSetIndicationArray.Length} vs Field Length: {InternalDataFields.Length}");
+			//Internal data representation is bytes. Soooo, we must reduce it to 4 byte chunks which is what the bitlength for the wireready
+			//bitarray represents.
+			if((InternalDataFields.Length / 4) != initialDataSetIndicationArray.Length)
+				throw new ArgumentException($"Failed to initialize entity field data collection due to incorrect Length: {initialDataSetIndicationArray.Length} vs Field Length: {(InternalDataFields.Length / 4)}");
 
 			DataSetIndicationArray = initialDataSetIndicationArray;
 		}
 
+		//Same number of bits as fields.
+		private static int ComputeBitLength()
+		{
+			return Enum.GetValues(typeof(TFieldType)).Length;
+		}
+
 		private static int ComputeDataFieldCollectionLength()
 		{
-			return Enum.GetValues(typeof(TFieldType)).Length * 4;
+			return ComputeBitLength() * 4;
 		}
 
 		/// <inheritdoc />
@@ -88,7 +96,7 @@ namespace GladMMO
 			IfIndexExceedsLengthThrow(index);
 
 			//Just assume we can do it, the caller is responsible for the diaster.
-			return Unsafe.As<byte, TValueType>(ref InternalDataFields[index]);
+			return Unsafe.As<byte, TValueType>(ref InternalDataFields[index * sizeof(int)]);
 		}
 
 		private void IfIndexExceedsLengthThrow(int index)
@@ -107,7 +115,7 @@ namespace GladMMO
 			{
 				//Whenever someone sets, even if the value is not changing, we should set it being set (not changed).
 				DataSetIndicationArray.Set(index, true);
-				value.Reinterpret(InternalDataFields, index);
+				value.Reinterpret(InternalDataFields, index * sizeof(int));
 			}
 		}
 

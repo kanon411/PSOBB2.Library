@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Logging;
 using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO
 {
-	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntityDataChangeTrackerTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableMap { get; }
@@ -16,14 +17,18 @@ namespace GladMMO
 
 		private IReadonlyKnownEntitySet KnownEntites { get; }
 
+		private ILog Logger { get; }
+
 		/// <inheritdoc />
 		public EntityDataChangeTrackerTickable(IReadonlyEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableMap, 
 			IEntityDataChangeCallbackService entityDataCallbackDispatcher,
-			[NotNull] IReadonlyKnownEntitySet knownEntites)
+			[NotNull] IReadonlyKnownEntitySet knownEntites,
+			[NotNull] ILog logger)
 		{
 			ChangeTrackableMap = changeTrackableMap ?? throw new ArgumentNullException(nameof(changeTrackableMap));
 			EntityDataCallbackDispatcher = entityDataCallbackDispatcher ?? throw new ArgumentNullException(nameof(entityDataCallbackDispatcher));
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		/// <inheritdoc />
@@ -48,6 +53,9 @@ namespace GladMMO
 						//We need to try to dispatch events for each changed value.
 						foreach(int changedIndex in changeTrackable.ChangeTrackingArray.EnumerateSetBitsByIndex())
 						{
+							if(Logger.IsDebugEnabled)
+								Logger.Debug($"Entity: {entity.ObjectType}:{entity.CurrentObjectGuid} ChangedData: {(EUnitFields)changedIndex}:{changeTrackable.GetFieldValue<int>((int)changedIndex)}");
+
 							//TODO: We don't REALLY want to lock on the dispatching. This could be a REAL bottleneck in the future. We need to redesign this abit
 							//TODO: Might be a better way to handle this API, and provide the value instead of the collection.
 							EntityDataCallbackDispatcher.InvokeChangeEvents(entity, changedIndex, changeTrackable.GetFieldValue<int>((int)changedIndex));

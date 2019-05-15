@@ -15,24 +15,38 @@ namespace GladMMO
 
 		public IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
 
+		public IEntityGuidMappable<IEntityDataFieldContainer> DataMappable { get; } 
+
 		/// <inheritdoc />
-		public ObjectUpdateCreateObject1BlockHandler(ILog logger, IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableCollection) 
+		public ObjectUpdateCreateObject1BlockHandler(
+			ILog logger, 
+			IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableCollection,
+			[NotNull] IEntityGuidMappable<IEntityDataFieldContainer> dataMappable) 
 			: base(ObjectUpdateType.UPDATETYPE_CREATE_OBJECT, logger)
 		{
 			ChangeTrackableCollection = changeTrackableCollection;
+			DataMappable = dataMappable ?? throw new ArgumentNullException(nameof(dataMappable));
 		}
 
 		public IEntityDataFieldContainer Test(ObjectCreationData creationData)
 		{
-			/*IEntityDataFieldContainer t = new EntityFieldDataCollection<EUnitFields>(creationData.ObjectValuesCollection.UpdateMask, );
+			//TODO: We could pool this.
+			//we actually CAN'T use the field enum length or count. Since TrinityCore may send additional bytes at the end so that
+			//it's evently divisible by 32.
+			byte[] internalEntityDataBytes = new byte[creationData.ObjectValuesCollection.UpdateMask.Length * sizeof(int)]; 
+			IEntityDataFieldContainer t = new EntityFieldDataCollection<EUnitFields>(creationData.ObjectValuesCollection.UpdateMask, internalEntityDataBytes);
 
-			foreach(var entry in t.DataSetIndicationArray.FieldValueUpdateMask
-				.EnumerateSetBitsByIndex()
-				.Zip(creationData.InitialFieldValues.FieldValueUpdates, (setIndex, value) => new { setIndex, value }))
+			int updateDiffIndex = 0;
+			foreach(int setIndex in t.DataSetIndicationArray.EnumerateSetBitsByIndex())
 			{
-				entityDataContainer.SetFieldValue(entry.setIndex, entry.value);
-			}*/
-			return null;
+				//The way wow works is these are 4 byte chunks
+				for(int i = 0; i < 4; i++)
+					internalEntityDataBytes[setIndex * sizeof(int) + i] = creationData.ObjectValuesCollection.UpdateDiffValues[updateDiffIndex * sizeof(int) + i];
+
+				updateDiffIndex++;
+			}
+
+			return t;
 		}
 
 		/// <inheritdoc />
@@ -58,13 +72,14 @@ namespace GladMMO
 					{
 						if(Logger.IsInfoEnabled)
 							Logger.Info($"Recieved local player spawn data. Id:{updateBlock.CreationData.CreationGuid.CurrentObjectGuid}");
+
+						DataMappable[new ObjectGuid(updateBlock.CreationData.CreationGuid)] = Test(updateBlock.CreationData);
+						//TODO: This is just a test
+						ChangeTrackableCollection[new ObjectGuid(updateBlock.CreationData.CreationGuid)] = new ChangeTrackingEntityFieldDataCollectionDecorator(DataMappable[new ObjectGuid(updateBlock.CreationData.CreationGuid)], updateBlock.CreationData.ObjectValuesCollection.UpdateMask);
+
+						//Now we broadcast that an entity is now visible.
+						OnNetworkEntityNowVisible?.Invoke(this, new NetworkEntityNowVisibleEventArgs(new ObjectGuid(updateBlock.CreationData.CreationGuid)));
 					}
-
-					//TODO: This is just a test
-					//ChangeTrackableCollection[new ObjectGuid(updateBlock.CreationData.CreationGuid)] = new ChangeTrackingEntityFieldDataCollectionDecorator(Test());
-
-					//Now we broadcast that an entity is now visible.
-					OnNetworkEntityNowVisible?.Invoke(this, new NetworkEntityNowVisibleEventArgs(new ObjectGuid(updateBlock.CreationData.CreationGuid)));
 					break;
 				case ObjectType.GameObject:
 					break;

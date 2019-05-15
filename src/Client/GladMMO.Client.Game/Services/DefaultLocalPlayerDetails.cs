@@ -12,7 +12,7 @@ namespace GladMMO
 
 		//TODO: Come up with a better way of storing entity data, without downcasting.
 		/// <inheritdoc />
-		public IEntityDataFieldContainer<int> EntityData => (IEntityDataFieldContainer<int>)FieldDataMap[LocalPlayerGuid];
+		public IEntityDataFieldContainer EntityData => FieldDataMap[LocalPlayerGuid];
 
 		/// <summary>
 		/// Entity data map used to access the entity data through <see cref="EntityData"/>

@@ -10,16 +10,20 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class NetworkVisibilityCreationBlockToVisibilityEventFactory : IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>
 	{
-		public IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
+		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
 
-		public IEntityGuidMappable<IEntityDataFieldContainer> DataMappable { get; }
+		private IEntityGuidMappable<IEntityDataFieldContainer> DataMappable { get; }
+
+		private IEntityGuidMappable<MovementBlockData> MovementBlockMappable { get; }
 
 		/// <inheritdoc />
 		public NetworkVisibilityCreationBlockToVisibilityEventFactory([NotNull] IEntityGuidMappable<IChangeTrackableEntityDataCollection> changeTrackableCollection,
-			[NotNull] IEntityGuidMappable<IEntityDataFieldContainer> dataMappable)
+			[NotNull] IEntityGuidMappable<IEntityDataFieldContainer> dataMappable,
+			[NotNull] IEntityGuidMappable<MovementBlockData> movementBlockMappable)
 		{
 			ChangeTrackableCollection = changeTrackableCollection ?? throw new ArgumentNullException(nameof(changeTrackableCollection));
 			DataMappable = dataMappable ?? throw new ArgumentNullException(nameof(dataMappable));
+			MovementBlockMappable = movementBlockMappable ?? throw new ArgumentNullException(nameof(movementBlockMappable));
 		}
 
 		/// <inheritdoc />
@@ -28,9 +32,8 @@ namespace GladMMO
 			ObjectGuid guid = new ObjectGuid(context.CreationData.CreationGuid);
 
 			var initialContainer = DataMappable[guid] = CreateInitialEntityFieldContainer(context.CreationData);
-
-			//TODO: This is just a test
 			ChangeTrackableCollection[guid] = new ChangeTrackingEntityFieldDataCollectionDecorator(initialContainer, context.CreationData.ObjectValuesCollection.UpdateMask);
+			MovementBlockMappable[guid] = context.CreationData.MovementData;
 
 			return new NetworkEntityNowVisibleEventArgs(guid);
 		}

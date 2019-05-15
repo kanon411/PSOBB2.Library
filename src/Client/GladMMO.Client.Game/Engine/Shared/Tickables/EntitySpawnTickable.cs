@@ -13,32 +13,23 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>, ILocalPlayerSpawnedEventSubscribable
 	{
-		//private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
-
 		private IKnownEntitySet KnownEntites { get; }
 
-		//TODO: This is just for testing, w
-		private ICharacterDataRepository CharacterDataRepo { get; }
-
-		//TODO: JUst for testing.
 		/// <inheritdoc />
 		public event EventHandler<LocalPlayerSpawnedEventArgs> OnLocalPlayerSpawned;
 
-		//TODO: Just for testing.
-		private ILocalPlayerDetails LocalPlayerDetails { get; }
+		//Really just to determine if the local player is spawning. Such a hack though.
+		private IReadonlyEntityGuidMappable<MovementBlockData> MovementDataMappable { get; }
 
 		/// <inheritdoc />
 		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, 
 			[NotNull] ILog logger,
 			[NotNull] IKnownEntitySet knownEntites,
-			[NotNull] ICharacterDataRepository characterDataRepo,
-			[NotNull] ILocalPlayerDetails localPlayerDetails)
+			[NotNull] IReadonlyEntityGuidMappable<MovementBlockData> movementDataMappable)
 			: base(subscriptionService, true, logger) //TODO: We probably shouldn't spawn everything per frame. We should probably stagger spawning.
 		{
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
-			CharacterDataRepo = characterDataRepo ?? throw new ArgumentNullException(nameof(characterDataRepo));
-			LocalPlayerDetails = localPlayerDetails ?? throw new ArgumentNullException(nameof(localPlayerDetails));
-			//EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
+			MovementDataMappable = movementDataMappable ?? throw new ArgumentNullException(nameof(movementDataMappable));
 		}
 
 		/// <inheritdoc />
@@ -48,12 +39,11 @@ namespace GladMMO
 			{
 				//TODO: We need to do abit MORE about this, to know the entity.
 				KnownEntites.AddEntity(args.EntityGuid);
-				LocalPlayerDetails.LocalPlayerGuid = args.EntityGuid; //TODO: For testing! Remove othgerwise player looks like ALL objects.
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Entity: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} is now known.");
-
-				if(CharacterDataRepo.CharacterId == args.EntityGuid.CurrentObjectGuid)
+				
+				if(IsSpawningEntityLocalPlayer(args.EntityGuid)) 
 					OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.EntityGuid));
 
 				//GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, ComputePrefabTypeFromGuid(args.EntityGuid), args.EntityDataContainer));
@@ -66,21 +56,16 @@ namespace GladMMO
 			}
 		}
 
-		private EntityPrefab ComputePrefabTypeFromGuid(ObjectGuid creationDataEntityGuid)
+		private bool IsSpawningEntityLocalPlayer([NotNull] ObjectGuid guid)
 		{
-			switch(creationDataEntityGuid.ObjectType)
-			{
-				case EntityGuidMask.Instance:
-					return EntityPrefab.Unknown;
-				case EntityGuidMask.Player:
-					return EntityPrefab.RemotePlayer;
-				case EntityGuidMask.GameObject:
-					return EntityPrefab.Unknown;
-				case EntityGuidMask.Unit:
-					return EntityPrefab.NetworkNpc;
-			}
+			if(guid == null) throw new ArgumentNullException(nameof(guid));
 
-			return EntityPrefab.Unknown;
+			//TODO: This is a hack, is there a more efficient way?
+			//Possible we create objects without any movement data, but unlikely. Don't know
+			if(MovementDataMappable.ContainsKey(guid))
+				return MovementDataMappable[guid].UpdateFlags.HasFlag(ObjectUpdateFlags.UPDATEFLAG_SELF); //TODO: Is this flag ONLY set for player??
+
+			return false;
 		}
 	}
 }

@@ -50,13 +50,13 @@ namespace GladMMO
 				.SingleInstance();
 
 			RegisterUpdateBlockHandler<ObjectUpdateCreateObject1BlockHandler>(builder);
+			RegisterUpdateBlockHandler<ObjectUpdateValuesObjectBlockHandler>(builder);
 
 			//Stub out all unused ones
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_CREATE_OBJECT2)).As<IObjectUpdateBlockHandler>();
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_MOVEMENT)).As<IObjectUpdateBlockHandler>();
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_NEAR_OBJECTS)).As<IObjectUpdateBlockHandler>();
 			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_OUT_OF_RANGE_OBJECTS)).As<IObjectUpdateBlockHandler>();
-			builder.RegisterInstance(new StubbedObjectUpdateBlockHandler(ObjectUpdateType.UPDATETYPE_VALUES)).As<IObjectUpdateBlockHandler>();
 
 			builder.RegisterType<DefaultThreadUnSafeKnownEntitySet>()
 				.AsSelf()

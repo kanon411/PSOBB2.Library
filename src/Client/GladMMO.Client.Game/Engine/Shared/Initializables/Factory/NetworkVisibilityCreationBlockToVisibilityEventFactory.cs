@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using FreecraftCore;
 using Glader.Essentials;
 
@@ -8,7 +9,7 @@ namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>))]
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
-	public sealed class NetworkVisibilityCreationBlockToVisibilityEventFactory : IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>
+	public sealed class NetworkVisibilityCreationBlockToVisibilityEventFactory : IGameInitializable, IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>
 	{
 		private IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
 
@@ -58,6 +59,12 @@ namespace GladMMO
 			}
 
 			return t;
+		}
+
+		/// <inheritdoc />
+		public Task OnGameInitialized()
+		{
+			return Task.CompletedTask;
 		}
 	}
 }

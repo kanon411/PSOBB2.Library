@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
@@ -67,8 +68,17 @@ namespace GladMMO
 			{
 				try
 				{
-					await SendService.SendMessage(new ChatMessageRequest(new SayPlayerChatMessage(ChatLanguage.LANG_ORCISH, ChatEnterText.Text)))
-						.ConfigureAwait(true);
+					if(ChatEnterText.Text.Contains("/invite"))
+					{
+						string toInvite = ChatEnterText.Text.Split(' ').Last();
+						if(Logger.IsDebugEnabled)
+							Logger.Debug($"About to invite: {toInvite}");
+
+						await SendService.SendMessage(new ClientGroupInviteRequest(toInvite));
+					}
+					else
+						await SendService.SendMessage(new ChatMessageRequest(new SayPlayerChatMessage(ChatLanguage.LANG_ORCISH, ChatEnterText.Text)))
+							.ConfigureAwait(true);
 
 					//We clear text here because we actually DON'T wanna clear the text if there was an error.
 					ChatEnterText.Text = "";

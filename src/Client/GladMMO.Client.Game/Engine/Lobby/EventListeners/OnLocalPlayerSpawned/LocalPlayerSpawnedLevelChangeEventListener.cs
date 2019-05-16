@@ -24,7 +24,6 @@ namespace GladMMO
 		protected override void OnLocalPlayerSpawned(LocalPlayerSpawnedEventArgs args)
 		{
 			RegisterPlayerDataChangeCallback<int>(EUnitFields.UNIT_FIELD_LEVEL, OnLevelChanged);
-			OnLevelChanged(args.EntityGuid, new EntityDataChangedArgs<int>(0, this.PlayerDetails.EntityData.GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_LEVEL)));
 		}
 
 		private void OnLevelChanged(ObjectGuid entity, EntityDataChangedArgs<int> changeArgs)

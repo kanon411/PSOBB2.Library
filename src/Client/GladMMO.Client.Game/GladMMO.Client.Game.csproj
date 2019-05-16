@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="FreecraftCore.Packet.Game" Version="4.0.6" />
+    <PackageReference Include="FreecraftCore.Packet.Game" Version="4.0.9" />
     <PackageReference Include="Glader.Essentials.Unity" Version="0.0.9" />
     <PackageReference Include="GladNet3.Client.API" Version="3.0.46" />
     <PackageReference Include="GladNet3.Client.DotNetTcpClient" Version="3.0.46" />
@@ -62,7 +62,6 @@
 
   <ItemGroup>
     <Folder Include="Component\Base\" />
-    <Folder Include="Engine\Lobby\Initializables\" />
     <Folder Include="Engine\Title\Tickables\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>

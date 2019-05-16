@@ -108,16 +108,24 @@ namespace GladMMO
 		/// <inheritdoc />
 		public virtual Task WriteAsync(TWritePayloadBaseType payload)
 		{
-			//Serializer the payload first so we can build the header
-			byte[] payloadData = Serializer.Serialize(payload);
+			try
+			{
+				//Serializer the payload first so we can build the header
+				byte[] payloadData = Serializer.Serialize(payload);
 
-			OutgoingClientPacketHeader header = new OutgoingClientPacketHeader(payloadData.Length - 2, (NetworkOperationCode)payloadData.Reinterpret<short>(0));
+				OutgoingClientPacketHeader header = new OutgoingClientPacketHeader(payloadData.Length - 2, (NetworkOperationCode)payloadData.Reinterpret<short>(0));
 
-			//We subtract 2 from the payload data length because first 2 bytes are opcode and header contains opcode.
-			//Then we reinterpet the first 2 bytes of the payload data because it's the opcode we need to use.
-			byte[] clientPacketHeader = Serializer.Serialize(header);
+				//We subtract 2 from the payload data length because first 2 bytes are opcode and header contains opcode.
+				//Then we reinterpet the first 2 bytes of the payload data because it's the opcode we need to use.
+				byte[] clientPacketHeader = Serializer.Serialize(header);
 
-			return CryptAndSend(payloadData, clientPacketHeader, 0, payloadData.Length);
+				return CryptAndSend(payloadData, clientPacketHeader, 0, payloadData.Length);
+			}
+			catch(Exception e)
+			{
+				UnityEngine.Debug.LogError($"Encountered Exception in serializing outgoing packet Type: {payload.GetType().Name}. Exception: {e.Message}");
+				throw;
+			}
 		}
 
 		private async Task CryptAndSend(byte[] payloadData, byte[] clientPacketHeader, int payloadBytesOffset, int payloadBytesCount)

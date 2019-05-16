@@ -42,9 +42,19 @@ namespace GladMMO
 
 				if(Logger.IsDebugEnabled)
 					Logger.Debug($"Entity: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} is now known.");
-				
-				if(IsSpawningEntityLocalPlayer(args.EntityGuid)) 
+
+				if(args.EntityGuid.HasType(EntityGuidMask.Player) && IsSpawningEntityLocalPlayer(args.EntityGuid))
+				{
+					if(Logger.IsInfoEnabled)
+						Logger.Info($"Spawning local player.");
+
 					OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.EntityGuid));
+				}
+				else
+				{
+					if(Logger.IsInfoEnabled)
+						Logger.Info($"Spawning remote player.");
+				}
 
 				//GameObject entityRootObject = EntityFactory.Create(new DefaultEntityCreationContext(args.CreationData.EntityGuid, args.CreationData.InitialMovementData, ComputePrefabTypeFromGuid(args.EntityGuid), args.EntityDataContainer));
 			}
@@ -64,6 +74,8 @@ namespace GladMMO
 			//Possible we create objects without any movement data, but unlikely. Don't know
 			if(MovementDataMappable.ContainsKey(guid))
 				return MovementDataMappable[guid].UpdateFlags.HasFlag(ObjectUpdateFlags.UPDATEFLAG_SELF); //TODO: Is this flag ONLY set for player??
+			else
+				throw new InvalidOperationException($"Encountered Player Entity: {guid.ObjectType}:{guid.CurrentObjectGuid} without movement data.");
 
 			return false;
 		}

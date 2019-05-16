@@ -7,8 +7,14 @@ namespace GladMMO
 {
 	public sealed class DefaultLocalPlayerDetails : ILocalPlayerDetails, IReadonlyLocalPlayerDetails
 	{
+		private Lazy<ObjectGuid> _localPlayerGuid;
+
 		/// <inheritdoc />
-		public ObjectGuid LocalPlayerGuid { get; set; }
+		public ObjectGuid LocalPlayerGuid
+		{
+			get => _localPlayerGuid.Value;
+			set => throw new NotSupportedException();
+		}
 
 		//TODO: Come up with a better way of storing entity data, without downcasting.
 		/// <inheritdoc />
@@ -19,15 +25,15 @@ namespace GladMMO
 		/// </summary>
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> FieldDataMap { get; }
 
+		private ICharacterDataRepository CharacterDataRepo { get; }
+
 		/// <inheritdoc />
-		public DefaultLocalPlayerDetails(IReadonlyEntityGuidMappable<IEntityDataFieldContainer> fieldDataMap)
+		public DefaultLocalPlayerDetails(IReadonlyEntityGuidMappable<IEntityDataFieldContainer> fieldDataMap, [NotNull] ICharacterDataRepository characterDataRepo)
 		{
 			FieldDataMap = fieldDataMap ?? throw new ArgumentNullException(nameof(fieldDataMap));
-		}
+			CharacterDataRepo = characterDataRepo ?? throw new ArgumentNullException(nameof(characterDataRepo));
 
-		private DefaultLocalPlayerDetails()
-		{
-			
+			_localPlayerGuid = new Lazy<ObjectGuid>(() => new ObjectGuid(((ulong)characterDataRepo.CharacterId + ((ulong)EntityGuidMask.Player << 48))));
 		}
 	}
 }

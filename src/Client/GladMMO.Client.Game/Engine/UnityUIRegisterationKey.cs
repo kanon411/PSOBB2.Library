@@ -29,5 +29,7 @@ namespace GladMMO
 		CharacterSelection = 9,
 
 		ChatInput = 10,
+
+		GroupUnitFrames = 11,
 	}
 }

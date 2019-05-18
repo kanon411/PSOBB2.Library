@@ -38,6 +38,7 @@ namespace GladMMO
 					args.Instance.RegisterType<ChatMessageRequest>();
 					args.Instance.RegisterType<ClientGroupInviteRequest>();
 					args.Instance.RegisterType<ServerPartyCommandResultResponse>();
+					args.Instance.RegisterType<ServerGroupListEvent>();
 
 					args.Instance.Compile();
 				})

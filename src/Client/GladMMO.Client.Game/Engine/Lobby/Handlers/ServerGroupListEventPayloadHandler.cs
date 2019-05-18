@@ -93,7 +93,7 @@ namespace GladMMO
 			GroupedPlayerSet.Add(newPlayer);
 
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Player: {currentPlayerDataDictionary[newPlayer].PlayerName} joined.");
+				Logger.Debug($"Player: {currentPlayerDataDictionary[newPlayer].PlayerName} joined the group.");
 		}
 
 		private void HandlePlayerRemoved([NotNull] ObjectGuid playerLeaving)
@@ -101,11 +101,12 @@ namespace GladMMO
 			if(playerLeaving == null) throw new ArgumentNullException(nameof(playerLeaving));
 
 			OnPlayerLeftGroup?.Invoke(this, new PlayerJoinedGroupEventArgs(playerLeaving));
-			GroupMemberDataDictionary.Remove(playerLeaving);
-			GroupedPlayerSet.Remove(playerLeaving);
 
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Player: {GroupMemberDataDictionary[playerLeaving].PlayerName} left group.");
+				Logger.Debug($"Player: {GroupMemberDataDictionary[playerLeaving].PlayerName} left the group.");
+
+			GroupMemberDataDictionary.Remove(playerLeaving);
+			GroupedPlayerSet.Remove(playerLeaving);
 		}
 	}
 }

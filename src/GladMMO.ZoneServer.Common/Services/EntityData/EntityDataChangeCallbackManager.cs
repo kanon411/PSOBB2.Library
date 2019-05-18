@@ -18,7 +18,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void RegisterCallback<TCallbackValueCastType>(ObjectGuid entity, int dataField, Action<ObjectGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback) 
+		public IEntityDataEventUnregisterable RegisterCallback<TCallbackValueCastType>(ObjectGuid entity, int dataField, Action<ObjectGuid, EntityDataChangedArgs<TCallbackValueCastType>> callback) 
 			where TCallbackValueCastType : struct
 		{
 			//TODO: Anyway we can avoid this for registering callbacks, wasted cycles kinda
@@ -38,6 +38,8 @@ namespace GladMMO
 				CallbackMap[entity].Add(dataField, dataChangeEvent);
 			else
 				CallbackMap[entity][dataField] += dataChangeEvent;
+
+			return new DefaultEntityDataEventUnregisterable(() => CallbackMap[entity][dataField] -= dataChangeEvent);
 		}
 
 		/// <inheritdoc />

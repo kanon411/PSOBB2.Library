@@ -35,9 +35,6 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void HandleEvent(PlayerJoinedGroupEventArgs args)
 		{
-			//TODO: For demo
-			GroupUnitFrames[0].SetElementActive(true);
-
 			//Even if we don't know them, we should register an event for it.
 			EntityDataCallbackRegister.RegisterCallback<int>(args.PlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH, OnCurrentHealthChangedValue);
 
@@ -74,12 +71,10 @@ namespace GladMMO
 		public override async Task OnGameInitialized()
 		{
 			await base.OnGameInitialized();
-
+			
+			//This just sets all unitframes as disabled. We'll disable them as they are needed.
 			foreach(var u in GroupUnitFrames)
-			{
-				Logger.Info("Disabling a unitframe");
 				u.SetElementActive(false);
-			}
 		}
 	}
 }

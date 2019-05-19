@@ -37,7 +37,7 @@ namespace GladMMO
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			EntityCallbackRegister = entityCallbackRegister ?? throw new ArgumentNullException(nameof(entityCallbackRegister));
 			OwnedGroupUnitFrames = new Dictionary<ObjectGuid, ClaimedGroupUnitFrame>(ObjectGuidEqualityComparer<ObjectGuid>.Instance);
-			AvailableUnitFrames = new Stack<IUIUnitFrame>(groupUnitFrames);
+			AvailableUnitFrames = new Stack<IUIUnitFrame>(groupUnitFrames.Reverse());
 		}
 
 		/// <inheritdoc />

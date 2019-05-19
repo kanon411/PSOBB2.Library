@@ -18,6 +18,12 @@ namespace GladMMO
 			Unregisterables = new List<IEntityDataEventUnregisterable>(5);
 		}
 
+		public void RegisterUnregisterableCallback([NotNull] IEntityDataEventUnregisterable unregisterable)
+		{
+			if(unregisterable == null) throw new ArgumentNullException(nameof(unregisterable));
+			Unregisterables.Add(unregisterable);
+		}
+
 		public void ClearRegisteredCallbacks()
 		{
 			foreach(var unr in Unregisterables)

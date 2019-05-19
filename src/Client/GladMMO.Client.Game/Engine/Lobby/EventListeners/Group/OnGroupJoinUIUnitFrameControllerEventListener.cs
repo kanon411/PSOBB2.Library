@@ -66,15 +66,5 @@ namespace GladMMO
 		{
 			RecalulateHealthUI(source, changeArgs.NewValue);
 		}
-
-		/// <inheritdoc />
-		public override async Task OnGameInitialized()
-		{
-			await base.OnGameInitialized();
-			
-			//This just sets all unitframes as disabled. We'll disable them as they are needed.
-			foreach(var u in GroupUnitFrames)
-				u.SetElementActive(false);
-		}
 	}
 }

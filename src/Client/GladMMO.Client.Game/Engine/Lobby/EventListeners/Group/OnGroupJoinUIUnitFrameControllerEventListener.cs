@@ -13,15 +13,12 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class OnGroupJoinUIUnitFrameControllerEventListener : EventQueueBasedTickable<IPlayerGroupJoinedEventSubscribable, PlayerJoinedGroupEventArgs>
 	{
-		private IUIUnitFrame[] GroupUnitFrames { get; }
-
 		IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataMappable { get; }
 
 		private IGroupUnitFrameManager GroupUnitframeManager { get; }
 
 		/// <inheritdoc />
 		public OnGroupJoinUIUnitFrameControllerEventListener(IPlayerGroupJoinedEventSubscribable subscriptionService,
-			[KeyFilter(UnityUIRegisterationKey.GroupUnitFrames)] IReadOnlyCollection<IUIUnitFrame> groupUnitFrames,
 			[NotNull] IReadonlyEntityGuidMappable<IEntityDataFieldContainer> entityDataMappable,
 			[NotNull] ILog logger,
 			[NotNull] IGroupUnitFrameManager groupUnitframeManager)
@@ -29,7 +26,6 @@ namespace GladMMO
 		{
 			EntityDataMappable = entityDataMappable ?? throw new ArgumentNullException(nameof(entityDataMappable));
 			GroupUnitframeManager = groupUnitframeManager ?? throw new ArgumentNullException(nameof(groupUnitframeManager));
-			GroupUnitFrames = groupUnitFrames.ToArrayTryAvoidCopy();
 		}
 
 		/// <inheritdoc />

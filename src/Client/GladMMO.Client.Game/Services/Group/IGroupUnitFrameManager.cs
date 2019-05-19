@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GladMMO
 {
-	public interface IGroupUnitFrameManager : IGroupUnitFrameIssuable, IGroupUnitframeManagedCollection
+	public interface IGroupUnitFrameManager : IGroupUnitFrameIssuable, IGroupUnitframeManagedCollection, IEntityDataChangeCallbackRegisterable
 	{
 
 	}

@@ -106,6 +106,33 @@ namespace GladMMO
 		[TestCase(5, 1)]
 		[TestCase(5, 2)]
 		[TestCase(555, 3)]
+		public void Test_Can_Registered_Callback_Called_Not_Called_Twice_If_Unregistered(long guid, int fieldType)
+		{
+			//arrange
+			Mock<IEnumerable> testCallback = new Mock<IEnumerable>(MockBehavior.Loose);
+			EntityDataChangeCallbackManager callbackManager = new EntityDataChangeCallbackManager();
+
+			//act
+			IEntityDataEventUnregisterable unregisterable = callbackManager.RegisterCallback<float>(new ObjectGuid((ulong)guid), fieldType, (eg, args) =>
+			{
+				//Call so we can check for test purposes
+				testCallback.Object.GetEnumerator();
+			});
+
+			//Call twice but unregister after the first call.
+			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)guid), fieldType, 5);
+			unregisterable.Unregister();
+			callbackManager.InvokeChangeEvents(new ObjectGuid((ulong)guid), fieldType, 5);
+
+			//assert
+			testCallback.Verify(enumerable => enumerable.GetEnumerator(), Times.Once);
+		}
+
+		//Mostly check the next call will still invoke the same callbacks
+		[Test]
+		[TestCase(5, 1)]
+		[TestCase(5, 2)]
+		[TestCase(555, 3)]
 		public void Test_Can_Registered_Multiple_Callbacks_Called_Be_Called_Twice(long guid, int fieldType)
 		{
 			//arrange

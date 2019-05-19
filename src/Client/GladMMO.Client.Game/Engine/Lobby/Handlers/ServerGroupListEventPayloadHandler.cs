@@ -72,7 +72,9 @@ namespace GladMMO
 
 				//So this case is the simple case, broadcast the removal of all players.
 				foreach(ObjectGuid playerLeaving in GroupedPlayerSet)
-					HandlePlayerRemoved(playerLeaving);
+					HandlePlayerRemoved(playerLeaving, false);
+
+				GroupedPlayerSet.Clear();
 			}
 			else
 			{
@@ -96,7 +98,7 @@ namespace GladMMO
 				Logger.Debug($"Player: {currentPlayerDataDictionary[newPlayer].PlayerName} joined the group.");
 		}
 
-		private void HandlePlayerRemoved([NotNull] ObjectGuid playerLeaving)
+		private void HandlePlayerRemoved([NotNull] ObjectGuid playerLeaving, bool handleRemovingFromGroupSet = true)
 		{
 			if(playerLeaving == null) throw new ArgumentNullException(nameof(playerLeaving));
 
@@ -106,7 +108,9 @@ namespace GladMMO
 				Logger.Debug($"Player: {GroupMemberDataDictionary[playerLeaving].PlayerName} left the group.");
 
 			GroupMemberDataDictionary.Remove(playerLeaving);
-			GroupedPlayerSet.Remove(playerLeaving);
+
+			if(handleRemovingFromGroupSet)
+				GroupedPlayerSet.Remove(playerLeaving);
 		}
 	}
 }

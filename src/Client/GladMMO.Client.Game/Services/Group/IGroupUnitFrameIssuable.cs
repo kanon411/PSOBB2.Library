@@ -3,8 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using FreecraftCore;
 
-namespace GladMMO.Services
+namespace GladMMO
 {
+	public enum GroupUnitFrameIssueResult
+	{
+		Unknown = 0,
+		Success = 1,
+		FailedNotAPlayer = 2,
+		FailedUnitframeUnavailable = 3,
+		FailedAlreadyClaimedUnitframe = 4
+	}
+
+	public enum GroupUnitFrameReleaseResult
+	{
+		Unknown = 0,
+		Sucess = 1,
+		FailedNotAPlayer = 2,
+		FailedNoUnitFrameClaimed = 3,
+	}
+
 	public interface IGroupUnitFrameIssuable
 	{
 		/// <summary>
@@ -13,7 +30,7 @@ namespace GladMMO.Services
 		/// </summary>
 		/// <param name="guid">The guid of the player.</param>
 		/// <returns>True if a unitframe could be claimed.</returns>
-		bool TryClaimUnitFrame(ObjectGuid guid);
+		GroupUnitFrameIssueResult TryClaimUnitFrame(ObjectGuid guid);
 
 		/// <summary>
 		/// Attempts to release a claimed unitframe
@@ -21,6 +38,6 @@ namespace GladMMO.Services
 		/// </summary>
 		/// <param name="guid">The guid of the player.</param>
 		/// <returns>True if a unitframe was claimed and successfully released for the player.</returns>
-		bool TryReleaseUnitFrame(ObjectGuid guid);
+		GroupUnitFrameReleaseResult TryReleaseUnitFrame(ObjectGuid guid);
 	}
 }

@@ -24,7 +24,7 @@ namespace GladMMO
 		public event EventHandler<PlayerJoinedGroupEventArgs> OnPlayerJoinedGroup;
 
 		/// <inheritdoc />
-		public event EventHandler<PlayerJoinedGroupEventArgs> OnPlayerLeftGroup;
+		public event EventHandler<PlayerLeftGroupEventArgs> OnPlayerLeftGroup;
 
 		/// <inheritdoc />
 		public ServerGroupListEventPayloadHandler(ILog logger)
@@ -102,7 +102,7 @@ namespace GladMMO
 		{
 			if(playerLeaving == null) throw new ArgumentNullException(nameof(playerLeaving));
 
-			OnPlayerLeftGroup?.Invoke(this, new PlayerJoinedGroupEventArgs(playerLeaving));
+			OnPlayerLeftGroup?.Invoke(this, new PlayerLeftGroupEventArgs(playerLeaving));
 
 			if(Logger.IsDebugEnabled)
 				Logger.Debug($"Player: {GroupMemberDataDictionary[playerLeaving].PlayerName} left the group.");

@@ -7,7 +7,7 @@ namespace GladMMO
 {
 	public interface IPlayerGroupLeftEventSubscribable
 	{
-		event EventHandler<PlayerJoinedGroupEventArgs> OnPlayerLeftGroup;
+		event EventHandler<PlayerLeftGroupEventArgs> OnPlayerLeftGroup;
 	}
 
 	public sealed class PlayerLeftGroupEventArgs : EventArgs

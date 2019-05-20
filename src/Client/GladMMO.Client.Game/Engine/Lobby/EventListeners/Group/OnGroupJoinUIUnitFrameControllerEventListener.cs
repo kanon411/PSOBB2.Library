@@ -13,7 +13,7 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class OnGroupJoinUIUnitFrameControllerEventListener : EventQueueBasedTickable<IPlayerGroupJoinedEventSubscribable, PlayerJoinedGroupEventArgs>
 	{
-		IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataMappable { get; }
+		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataMappable { get; }
 
 		private IGroupUnitFrameManager GroupUnitframeManager { get; }
 

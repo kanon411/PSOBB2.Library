@@ -37,6 +37,7 @@ namespace GladMMO
 
 			//Even if we don't know them, we should register an event for it.
 			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH, OnCurrentHealthChangedValue);
+			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_LEVEL, OnCurrentLevelChanged);
 
 			//TODO: If we come to know them after group join, we'll need to register.
 			if(!EntityDataMappable.ContainsKey(args.PlayerGuid))
@@ -52,8 +53,19 @@ namespace GladMMO
 				//Very possible we don't know them
 				//But if we do we should calculate their initial unitframe resources
 				RecalulateHealthUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH));
+				RecaculateLevelUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_LEVEL));
 				GroupUnitframeManager[args.PlayerGuid].SetElementActive(true);
 			}
+		}
+
+		private void OnCurrentLevelChanged(ObjectGuid entity, EntityDataChangedArgs<int> eventArgs)
+		{
+			RecaculateLevelUI(entity, eventArgs.NewValue);
+		}
+
+		private void RecaculateLevelUI(ObjectGuid player, int currentLevel)
+		{
+			GroupUnitframeManager[player].UnitLevel.Text = currentLevel.ToString();
 		}
 
 		private void RecalulateHealthUI(ObjectGuid player, int currentHealth)

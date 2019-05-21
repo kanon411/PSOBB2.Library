@@ -25,8 +25,8 @@ namespace GladMMO
 		public DefaultEntityCreationContext([NotNull] ObjectGuid entityGuid, Vector3 initialPosition, float orientation, EntityPrefab prefabType)
 		{
 			if(!Enum.IsDefined(typeof(EntityPrefab), prefabType)) throw new InvalidEnumArgumentException(nameof(prefabType), (int)prefabType, typeof(EntityPrefab));
-			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 
+			EntityGuid = entityGuid ?? throw new ArgumentNullException(nameof(entityGuid));
 			InitialPosition = initialPosition;
 			Orientation = orientation;
 			PrefabType = prefabType;

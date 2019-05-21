@@ -20,17 +20,17 @@ namespace GladMMO
 					if(Application.isEditor)
 					{
 						//TODO: We should handle prefabs better
-						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar");
+						return Resources.Load<GameObject>("Prefabs/LocalPlayer");
 					}
 					else
 					{
 						//TODO: Renable VR builds someday
 						//return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar_vr");
-						return Resources.Load<GameObject>("Prefabs/LocalPlayerAvatar");
+						return Resources.Load<GameObject>("Prefabs/LocalPlayer");
 					}
 				case EntityPrefab.RemotePlayer:
 					//TODO: We should handle prefabs better
-					return Resources.Load<GameObject>("Prefabs/RemotePlayerAvatar");
+					return Resources.Load<GameObject>("Prefabs/RemotePlayer");
 				case EntityPrefab.NetworkNpc:
 					return Resources.Load<GameObject>("Prefabs/NetworkNpc");
 			}

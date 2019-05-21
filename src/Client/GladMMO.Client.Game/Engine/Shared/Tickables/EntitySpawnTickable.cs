@@ -21,15 +21,19 @@ namespace GladMMO
 		//Really just to determine if the local player is spawning. Such a hack though.
 		private IReadonlyEntityGuidMappable<MovementBlockData> MovementDataMappable { get; }
 
+		private IFactoryCreatable<GameObject, DefaultEntityCreationContext> EntityFactory { get; }
+
 		/// <inheritdoc />
 		public EntitySpawnTickable([NotNull] INetworkEntityVisibleEventSubscribable subscriptionService, 
 			[NotNull] ILog logger,
 			[NotNull] IKnownEntitySet knownEntites,
-			[NotNull] IReadonlyEntityGuidMappable<MovementBlockData> movementDataMappable)
+			[NotNull] IReadonlyEntityGuidMappable<MovementBlockData> movementDataMappable,
+			[NotNull] IFactoryCreatable<GameObject, DefaultEntityCreationContext> entityFactory)
 			: base(subscriptionService, true, logger) //TODO: We probably shouldn't spawn everything per frame. We should probably stagger spawning.
 		{
 			KnownEntites = knownEntites ?? throw new ArgumentNullException(nameof(knownEntites));
 			MovementDataMappable = movementDataMappable ?? throw new ArgumentNullException(nameof(movementDataMappable));
+			EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
 		}
 
 		/// <inheritdoc />
@@ -47,6 +51,10 @@ namespace GladMMO
 				{
 					if(Logger.IsInfoEnabled)
 						Logger.Info($"Spawning local player.");
+
+					//Let's spawn the local player's world representation now.
+					EntityFactory.Create(new DefaultEntityCreationContext(args.EntityGuid, MovementDataMappable[args.EntityGuid].MoveInfo.Position.ToUnityVector(), 
+						MovementDataMappable[args.EntityGuid].MoveInfo.Orientation, EntityPrefab.LocalPlayer));
 
 					OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.EntityGuid));
 				}

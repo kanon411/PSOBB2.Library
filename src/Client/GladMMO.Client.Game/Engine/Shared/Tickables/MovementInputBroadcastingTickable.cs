@@ -9,8 +9,8 @@ using UnityEngine;
 namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IMovementInputChangedEventSubscribable))]
-	//[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
-	public sealed class MovementInputBroadcastingTickable : IGameTickable, IMovementInputChangedEventSubscribable
+	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	public sealed class MovementInputBroadcastingTickable : OnLocalPlayerSpawnedEventListener, IGameTickable, IMovementInputChangedEventSubscribable
 	{
 		/// <inheritdoc />
 		public event EventHandler<MovementInputChangedEventArgs> OnMovementInputDataChanged;
@@ -19,9 +19,21 @@ namespace GladMMO
 
 		private float LastVerticalInput { get; set; }
 
+		private bool isLocalPlayerSpawned { get; set; } = false;
+
+		/// <inheritdoc />
+		public MovementInputBroadcastingTickable(ILocalPlayerSpawnedEventSubscribable subscriptionService)
+			: base(subscriptionService)
+		{
+
+		}
+
 		/// <inheritdoc />
 		public void Tick()
 		{
+			if(!isLocalPlayerSpawned)
+				return;
+
 			bool changed = false;
 
 			float horizontal = Input.GetAxisRaw("Horizontal");
@@ -43,6 +55,13 @@ namespace GladMMO
 			//If the input has changed we should dispatch to anyone interested.
 			if(changed)
 				OnMovementInputDataChanged?.Invoke(this, new MovementInputChangedEventArgs(vertical, horizontal));
+		}
+
+		/// <inheritdoc />
+		protected override void OnLocalPlayerSpawned(LocalPlayerSpawnedEventArgs args)
+		{
+			//Local player is spawned, we should actually handle input now.
+			isLocalPlayerSpawned = true;
 		}
 	}
 }

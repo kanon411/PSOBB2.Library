@@ -17,7 +17,7 @@ namespace GladMMO
 		//This state helps manage the button index.
 		private int ButtonIndex = -1;
 
-		private IReadOnlyCollection<IUILabeledButton> CharacterButtons { get; }
+		private IReadOnlyCollection<IUICharacterSlot> CharacterButtons { get; }
 
 		/// <inheritdoc />
 		public event EventHandler<CharacterButtonClickedEventArgs> OnCharacterButtonClicked;
@@ -25,7 +25,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener(ILog logger,
 			[NotNull] ICharacterSelectionEntryDataChangeEventSubscribable subscriptionService,
-			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUILabeledButton> characterButtons) 
+			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUICharacterSlot> characterButtons) 
 			: base(subscriptionService, false, logger)
 		{
 			CharacterButtons = characterButtons ?? throw new ArgumentNullException(nameof(characterButtons));
@@ -40,12 +40,16 @@ namespace GladMMO
 			int slot = Interlocked.Increment(ref ButtonIndex);
 
 			//Once we have the result, we can assign the name.
-			IUILabeledButton button = CharacterButtons.ElementAt(slot);
+			IUICharacterSlot button = CharacterButtons.ElementAt(slot);
 			button.Text = "TODO IMPLEMENT NAMES AGAIN";
 			button.IsInteractable = true;
 
 			//When clicked just broadcast a named event to everything that it has been clicked, and who it was.
-			button.AddOnClickListener(() => OnCharacterButtonClicked?.Invoke(this, new CharacterButtonClickedEventArgs(args.CharacterEntityGuid, slot)));
+			button.AddOnToggleChangedListener(toggleState =>
+			{
+				if(toggleState)
+					OnCharacterButtonClicked?.Invoke(this, new CharacterButtonClickedEventArgs(args.CharacterEntityGuid, slot));
+			});
 		}
 	}
 }

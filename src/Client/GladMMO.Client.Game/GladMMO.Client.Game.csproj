@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>GladMMO</RootNamespace>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -62,6 +63,7 @@
 
   <ItemGroup>
     <Folder Include="Component\Base\" />
+    <Folder Include="Engine\Lobby\Tickables\" />
     <Folder Include="Engine\Title\Tickables\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>

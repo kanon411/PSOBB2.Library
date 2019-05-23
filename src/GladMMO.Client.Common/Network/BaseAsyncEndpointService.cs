@@ -20,13 +20,13 @@ namespace GladMMO
 		private Task<TRestInterfaceType> GeneratedRestService { get; }
 
 		/// <inheritdoc />
-		public BaseAsyncEndpointService([NotNull] Task<string> futureEndpoint)
+		public BaseAsyncEndpointService(Task<string> futureEndpoint)
 		{
 			if(futureEndpoint == null) throw new ArgumentNullException(nameof(futureEndpoint));
 			GeneratedRestService = BuildRestService(futureEndpoint);
 		}
 
-		public BaseAsyncEndpointService([NotNull] Task<string> futureEndpoint, [NotNull] RefitSettings settings)
+		public BaseAsyncEndpointService(Task<string> futureEndpoint, RefitSettings settings)
 		{
 			if(futureEndpoint == null) throw new ArgumentNullException(nameof(futureEndpoint));
 			if(settings == null) throw new ArgumentNullException(nameof(settings));
@@ -34,14 +34,14 @@ namespace GladMMO
 			GeneratedRestService = BuildRestService(futureEndpoint, settings);
 		}
 
-		private async Task<TRestInterfaceType> BuildRestService([NotNull] Task<string> futureEndpoint)
+		private async Task<TRestInterfaceType> BuildRestService(Task<string> futureEndpoint)
 		{
 			if(futureEndpoint == null) throw new ArgumentNullException(nameof(futureEndpoint));
 
 			return RestService.For<TRestInterfaceType>(await futureEndpoint.ConfigureAwait(false));
 		}
 
-		private async Task<TRestInterfaceType> BuildRestService([NotNull] Task<string> futureEndpoint, RefitSettings settings)
+		private async Task<TRestInterfaceType> BuildRestService(Task<string> futureEndpoint, RefitSettings settings)
 		{
 			if(futureEndpoint == null) throw new ArgumentNullException(nameof(futureEndpoint));
 

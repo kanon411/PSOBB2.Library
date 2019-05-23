@@ -2,27 +2,35 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using FreecraftCore;
 
 namespace GladMMO
 {
 	public interface INameQueryService
 	{
 		/// <summary>
-		/// Retrieves the name of the entity
-		/// from the provided <see cref="id"/>.
+		/// Ensures a name is known/exists with the <see cref="ObjectGuid"/> 
 		/// </summary>
-		/// <param name="id">The id of the entity.</param>
-		/// <exception cref="KeyNotFoundException">Throws if the key is not found.</exception>
-		/// <returns>The name.</returns>
-		string Retrieve(int id);
+		/// <param name="entity">The entity guid</param>
+		/// <exception cref="KeyNotFoundException">Thrown if the <see cref="entity"/> is not known.</exception>
+		void EnsureExists(ObjectGuid entity);
 
 		/// <summary>
 		/// Retrieves the name of the entity
-		/// from the provided <see cref="id"/>.
+		/// from the provided <see cref="entity"/>.
 		/// </summary>
-		/// <param name="id">The id of the entity.</param>
+		/// <param name="entity">The id of the entity.</param>
+		/// <exception cref="KeyNotFoundException">Throws if the key is not found.</exception>
+		/// <returns>The name.</returns>
+		string Retrieve(ObjectGuid entity);
+
+		/// <summary>
+		/// Retrieves the name of the entity
+		/// from the provided <see cref="entity"/>.
+		/// </summary>
+		/// <param name="entity">The id of the entity.</param>
 		/// <exception cref="KeyNotFoundException">Throws if the key is not found.</exception> 
 		/// <returns>The name.</returns>
-		Task<string> RetrieveAsync(int id);
+		Task<string> RetrieveAsync(ObjectGuid entity);
 	}
 }

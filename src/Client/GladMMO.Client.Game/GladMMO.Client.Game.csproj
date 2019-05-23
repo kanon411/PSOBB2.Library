@@ -65,6 +65,7 @@
     <Folder Include="Component\Base\" />
     <Folder Include="Engine\Lobby\Tickables\" />
     <Folder Include="Engine\Title\Tickables\" />
+    <Folder Include="Services\Name\" />
     <Folder Include="UI\CharacterSelection\" />
   </ItemGroup>
 

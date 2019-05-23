@@ -41,7 +41,7 @@ namespace GladMMO
 		/// Initializes the <see cref="AuthToken"/> with the provided <see cref="AuthToken"/>
 		/// </summary>
 		/// <param name="authToken"></param>
-		public AuthenticationTokenRepository([NotNull] string authToken)
+		public AuthenticationTokenRepository(string authToken)
 		{
 			AuthToken = authToken ?? throw new ArgumentNullException(nameof(authToken));
 		}
@@ -54,7 +54,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void Update([NotNull] string authToken)
+		public void Update(string authToken)
 		{
 			if(string.IsNullOrEmpty(authToken)) throw new ArgumentException("Value cannot be null or empty.", nameof(authToken));
 

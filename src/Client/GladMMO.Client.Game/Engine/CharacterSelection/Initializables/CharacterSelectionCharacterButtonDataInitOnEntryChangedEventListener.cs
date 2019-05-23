@@ -25,7 +25,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener(ILog logger,
 			[NotNull] ICharacterSelectionEntryDataChangeEventSubscribable subscriptionService,
-			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUICharacterSlot> characterButtons) 
+			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUICharacterSlot> characterButtons)
 			: base(subscriptionService, false, logger)
 		{
 			CharacterButtons = characterButtons ?? throw new ArgumentNullException(nameof(characterButtons));
@@ -43,6 +43,7 @@ namespace GladMMO
 			IUICharacterSlot button = CharacterButtons.ElementAt(slot);
 			button.Text = "TODO IMPLEMENT NAMES AGAIN";
 			button.IsInteractable = true;
+			button.SetElementActive(true);
 
 			//When clicked just broadcast a named event to everything that it has been clicked, and who it was.
 			button.AddOnToggleChangedListener(toggleState =>

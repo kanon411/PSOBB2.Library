@@ -31,5 +31,7 @@ namespace GladMMO
 		ChatInput = 10,
 
 		GroupUnitFrames = 11,
+
+		EnterWorld = 12,
 	}
 }

@@ -80,6 +80,12 @@ namespace GladMMO.Client
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();
+
+			//TODO: This is just for testing.
+			builder.RegisterType<LocalTestNameQueryService>()
+				.As<INameQueryService>()
+				.As<INameQueryStorageable>()
+				.SingleInstance();
 		}
 
 		private static void RegisterEntityContainers(ContainerBuilder builder)

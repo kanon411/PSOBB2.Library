@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
+using FreecraftCore;
 using Glader.Essentials;
 using Nito.AsyncEx;
 
@@ -19,16 +20,20 @@ namespace GladMMO
 
 		private IReadOnlyCollection<IUICharacterSlot> CharacterButtons { get; }
 
+		private INameQueryService NameQueryable { get; }
+
 		/// <inheritdoc />
 		public event EventHandler<CharacterButtonClickedEventArgs> OnCharacterButtonClicked;
 
 		/// <inheritdoc />
 		public CharacterSelectionCharacterButtonDataInitOnEntryChangedEventListener(ILog logger,
 			[NotNull] ICharacterSelectionEntryDataChangeEventSubscribable subscriptionService,
-			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUICharacterSlot> characterButtons)
+			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IReadOnlyCollection<IUICharacterSlot> characterButtons,
+			[NotNull] INameQueryService nameQueryable)
 			: base(subscriptionService, false, logger)
 		{
 			CharacterButtons = characterButtons ?? throw new ArgumentNullException(nameof(characterButtons));
+			NameQueryable = nameQueryable ?? throw new ArgumentNullException(nameof(nameQueryable));
 		}
 
 		/// <inheritdoc />
@@ -39,11 +44,19 @@ namespace GladMMO
 			//We must query the name service for it.
 			int slot = Interlocked.Increment(ref ButtonIndex);
 
-			//Once we have the result, we can assign the name.
-			IUICharacterSlot button = CharacterButtons.ElementAt(slot);
-			button.Text = "TODO IMPLEMENT NAMES AGAIN";
-			button.IsInteractable = true;
-			button.SetElementActive(true);
+			IUICharacterSlot button = null;
+			try
+			{
+				//Once we have the result, we can assign the name.
+				button = CharacterButtons.ElementAt(slot);
+				InitializeCharacterName(args.CharacterEntityGuid, button);
+				button.IsInteractable = true;
+				button.SetElementActive(true);
+			}
+			catch(Exception e)
+			{
+				throw new InvalidOperationException($"Failed to initialize CharacterSlot for Index: {slot} Guid: {args.CharacterEntityGuid}. Message: {e.Message}");
+			}
 
 			//When clicked just broadcast a named event to everything that it has been clicked, and who it was.
 			button.AddOnToggleChangedListener(toggleState =>
@@ -51,6 +64,15 @@ namespace GladMMO
 				if(toggleState)
 					OnCharacterButtonClicked?.Invoke(this, new CharacterButtonClickedEventArgs(args.CharacterEntityGuid, slot));
 			});
+		}
+
+		private void InitializeCharacterName([NotNull] ObjectGuid guid, [NotNull] IUICharacterSlot button)
+		{
+			if(guid == null) throw new ArgumentNullException(nameof(guid));
+			if(button == null) throw new ArgumentNullException(nameof(button));
+
+			NameQueryable.EnsureExists(guid);
+			button.Text = NameQueryable.Retrieve(guid);
 		}
 	}
 }

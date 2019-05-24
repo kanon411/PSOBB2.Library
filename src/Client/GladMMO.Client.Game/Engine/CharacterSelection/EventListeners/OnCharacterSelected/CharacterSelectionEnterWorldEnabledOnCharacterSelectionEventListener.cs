@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Autofac.Features.AttributeFilters;
 using Glader.Essentials;
 
 namespace GladMMO
@@ -12,7 +13,7 @@ namespace GladMMO
 
 		/// <inheritdoc />
 		public CharacterSelectionEnterWorldEnabledOnCharacterSelectionEventListener(ICharacterSelectionButtonClickedEventSubscribable subscriptionService,
-			[NotNull] IUIButton enterWorldButton) 
+			[KeyFilter(UnityUIRegisterationKey.EnterWorld)] [NotNull] IUIButton enterWorldButton) 
 			: base(subscriptionService)
 		{
 			EnterWorldButton = enterWorldButton ?? throw new ArgumentNullException(nameof(enterWorldButton));

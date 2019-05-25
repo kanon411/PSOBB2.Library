@@ -85,6 +85,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Models.GameServer",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Models.Server.ZoneServer", "src\GladMMO.Models.Server.ZoneServer\GladMMO.Models.Server.ZoneServer.csproj", "{054BC8CE-5703-445A-BD6E-B438791739A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladMMO.Client.CharacterService", "src\Client\GladMMO.Client.CharacterService\GladMMO.Client.CharacterService.csproj", "{F9CDA439-A658-4699-A5C4-091242F7E5D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
@@ -384,6 +386,16 @@ Global
 		{054BC8CE-5703-445A-BD6E-B438791739A3}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
 		{054BC8CE-5703-445A-BD6E-B438791739A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{054BC8CE-5703-445A-BD6E-B438791739A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Database_Migration|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Database_Migration|Any CPU.Build.0 = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.DEBUG_LOCAL|Any CPU.Build.0 = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Debug-Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Debug-Local|Any CPU.Build.0 = Debug|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -428,6 +440,7 @@ Global
 		{468603D7-6D01-441B-BCEC-BED7F377562E} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9} = {572E4B21-970E-4889-9B0D-357816B1307C}
 		{054BC8CE-5703-445A-BD6E-B438791739A3} = {572E4B21-970E-4889-9B0D-357816B1307C}
+		{F9CDA439-A658-4699-A5C4-091242F7E5D1} = {8C598CE2-9578-41F6-A195-24678617AE6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

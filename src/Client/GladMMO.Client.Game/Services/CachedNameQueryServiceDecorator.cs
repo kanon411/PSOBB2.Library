@@ -20,21 +20,21 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void EnsureExists(ObjectGuid entity)
+		public void EnsureExists(NetworkEntityGuid entity)
 		{
 			NameQueryService.EnsureExists(entity);
 		}
 
 		/// <inheritdoc />
 		//[Cache]
-		public string Retrieve(ObjectGuid entity)
+		public string Retrieve(NetworkEntityGuid entity)
 		{
 			return NameQueryService.Retrieve(entity);
 		}
 
 		/// <inheritdoc />
 		//[Cache]
-		public async Task<string> RetrieveAsync(ObjectGuid entity)
+		public async Task<string> RetrieveAsync(NetworkEntityGuid entity)
 		{
 			return await NameQueryService.RetrieveAsync(entity)
 				.ConfigureAwait(false);

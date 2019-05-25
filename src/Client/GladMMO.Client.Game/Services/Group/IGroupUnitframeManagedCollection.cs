@@ -14,7 +14,7 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="entity">The entity guid.</param>
 		/// <returns>True if the entity guid has a unitframe associated with it.</returns>
-		bool Contains(ObjectGuid entity);
+		bool Contains(NetworkEntityGuid entity);
 
 		/// <summary>
 		/// Gets a <see cref="IUIUnitFrame"/>
@@ -22,6 +22,6 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="entity">The entity guid.</param>
 		/// <returns></returns>
-		IUIUnitFrame this[ObjectGuid entity] { get; }
+		IUIUnitFrame this[NetworkEntityGuid entity] { get; }
 	}
 }

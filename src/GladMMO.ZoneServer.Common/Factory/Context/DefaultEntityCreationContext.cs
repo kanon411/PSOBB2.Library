@@ -10,7 +10,7 @@ namespace GladMMO
 	public sealed class DefaultEntityCreationContext : IEntityCreationContext
 	{
 		/// <inheritdoc />
-		public ObjectGuid EntityGuid { get; }
+		public NetworkEntityGuid EntityGuid { get; }
 
 		/// <inheritdoc />
 		public Vector3 InitialPosition { get; }
@@ -22,7 +22,7 @@ namespace GladMMO
 		public EntityPrefab PrefabType { get; }
 
 		/// <inheritdoc />
-		public DefaultEntityCreationContext([NotNull] ObjectGuid entityGuid, Vector3 initialPosition, float orientation, EntityPrefab prefabType)
+		public DefaultEntityCreationContext([NotNull] NetworkEntityGuid entityGuid, Vector3 initialPosition, float orientation, EntityPrefab prefabType)
 		{
 			if(!Enum.IsDefined(typeof(EntityPrefab), prefabType)) throw new InvalidEnumArgumentException(nameof(prefabType), (int)prefabType, typeof(EntityPrefab));
 

@@ -12,6 +12,6 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <param name="name"></param>
-		void Add(ObjectGuid entity, string name);
+		void Add(NetworkEntityGuid entity, string name);
 	}
 }

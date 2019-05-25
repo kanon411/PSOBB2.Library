@@ -36,7 +36,7 @@ namespace GladMMO
 		public GameObject Create(TCreationContext context)
 		{
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Creating entity. Type: {context.EntityGuid.ObjectType} Id: {context.EntityGuid.CurrentObjectGuid}");
+				Logger.Debug($"Creating entity. Type: {context.EntityGuid.EntityType} Id: {context.EntityGuid.EntityId}");
 
 			//load the entity's prefab from the factory
 			GameObject prefab = PrefabFactory.Create(context.PrefabType);

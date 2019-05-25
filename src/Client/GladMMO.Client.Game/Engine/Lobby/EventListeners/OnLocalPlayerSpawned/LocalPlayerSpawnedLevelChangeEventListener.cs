@@ -26,7 +26,7 @@ namespace GladMMO
 			RegisterPlayerDataChangeCallback<int>(EUnitFields.UNIT_FIELD_LEVEL, OnLevelChanged);
 		}
 
-		private void OnLevelChanged(ObjectGuid entity, EntityDataChangedArgs<int> changeArgs)
+		private void OnLevelChanged(NetworkEntityGuid entity, EntityDataChangedArgs<int> changeArgs)
 		{
 			PlayerUnitFrame.UnitLevel.Text = changeArgs.NewValue.ToString();
 		}

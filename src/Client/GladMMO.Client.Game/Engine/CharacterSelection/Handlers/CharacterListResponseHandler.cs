@@ -14,13 +14,11 @@ namespace FreecraftCore.Swarm
 	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	public sealed class CharacterListResponseHandler : BaseGameClientGameMessageHandler<CharacterListResponse>, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
-		private INameQueryStorageable NameQueryStorage { get; }
-
 		/// <inheritdoc />
-		public CharacterListResponseHandler(ILog logger, [NotNull] INameQueryStorageable nameQueryStorage) 
+		public CharacterListResponseHandler(ILog logger) 
 			: base(logger)
 		{
-			NameQueryStorage = nameQueryStorage ?? throw new ArgumentNullException(nameof(nameQueryStorage));
+
 		}
 
 		/// <inheritdoc />
@@ -44,9 +42,8 @@ namespace FreecraftCore.Swarm
 			//TODO: Should we make this API spit out network guids?
 			foreach(var character in payload.Characters)
 			{
-				//We don't need to do namequery for these now, and other things can expect it exists immediately.
-				NameQueryStorage.Add(character.Data.CharacterGuid, character.Data.CharacterName);
-				OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(character.Data.CharacterGuid));
+				throw new NotImplementedException($"TODO: Reimplement");
+				//OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(character.Data.CharacterGuid));
 			}
 		}
 	}

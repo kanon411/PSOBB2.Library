@@ -40,8 +40,8 @@ namespace GladMMO
 		public override void HandleUpdateBlock(ObjectUpdateValuesObjectBlock updateBlock)
 		{
 			//TODO: We should assume we know this
-			if(ChangeTrackableCollection.ContainsKey(new ObjectGuid(updateBlock.ObjectToUpdate.RawGuidValue)))
-				Test(updateBlock.UpdateValuesCollection, ChangeTrackableCollection[new ObjectGuid(updateBlock.ObjectToUpdate.RawGuidValue)]);
+			if(ChangeTrackableCollection.ContainsKey(new NetworkEntityGuid(updateBlock.ObjectToUpdate.RawGuidValue)))
+				Test(updateBlock.UpdateValuesCollection, ChangeTrackableCollection[new NetworkEntityGuid(updateBlock.ObjectToUpdate.RawGuidValue)]);
 		}
 	}
 }

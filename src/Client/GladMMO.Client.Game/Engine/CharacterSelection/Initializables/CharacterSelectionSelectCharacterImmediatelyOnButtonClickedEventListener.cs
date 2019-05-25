@@ -29,7 +29,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public event EventHandler<ServerRequestedSceneChangeEventArgs> OnServerRequestedSceneChange;
 
-		private ObjectGuid SelectedCharacterGuid { get; set; }
+		private NetworkEntityGuid SelectedCharacterGuid { get; set; }
 
 		/// <inheritdoc />
 		public CharacterSelectionSelectCharacterImmediatelyOnButtonClickedEventListener(
@@ -68,7 +68,11 @@ namespace GladMMO
 		private async Task OnEnterWorldButtonClicked()
 		{
 			if(SelectedCharacterGuid == null)
+			{
 				Logger.Error($"Tried to enter the world without any selected character guid.");
+				return;
+			}
+				
 
 			//We do this before sending the player login BECAUSE of a race condition that can be caused
 			//since I actually KNOW this event should disable networking. We should not handle messages in this scene after this point basically.
@@ -80,10 +84,11 @@ namespace GladMMO
 			//There isn't really a response to this, TrinityCore will just send back: SMSG_LOGIN_VERIFY_WORLD
 			//when it's successful and then the player will begin actually creating itself in the world and recieving
 			//some data about the world state.
-			await SendService.SendMessage(new CharacterLoginRequest(SelectedCharacterGuid));
+			throw new NotImplementedException($"TODO: Reimplement new CharacterLoginRequest(SelectedCharacterGuid)");
+			//await SendService.SendMessage(new CharacterLoginRequest(SelectedCharacterGuid));
 
 			//TODO: handle character session failure
-			CharacterData.UpdateCharacterId(SelectedCharacterGuid.CurrentObjectGuid);
+			CharacterData.UpdateCharacterId(SelectedCharacterGuid.EntityId);
 
 			//TODO: Use the scene manager service.
 			//TODO: Don't hardcode scene ids. Don't load scenes directly.

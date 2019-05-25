@@ -5,14 +5,14 @@ using FreecraftCore;
 
 namespace GladMMO
 {
-	public interface IReadonlyKnownEntitySet : IEnumerable<ObjectGuid>
+	public interface IReadonlyKnownEntitySet : IEnumerable<NetworkEntityGuid>
 	{
 		/// <summary>
 		/// Indicates if the entity is a known entity.
 		/// </summary>
 		/// <param name="guid">The guid to check</param>
 		/// <returns>True if known.</returns>
-		bool isEntityKnown(ObjectGuid guid);
+		bool isEntityKnown(NetworkEntityGuid guid);
 	}
 
 	public interface IKnownEntitySet : IReadonlyKnownEntitySet
@@ -22,13 +22,13 @@ namespace GladMMO
 		/// Throws if not known.
 		/// </summary>
 		/// <param name="guid">The entity to removed.</param>
-		void RemoveEntity(ObjectGuid guid);
+		void RemoveEntity(NetworkEntityGuid guid);
 
 		/// <summary>
 		/// Adds the entity if it's not known.
 		/// Throws if already known.
 		/// </summary>
 		/// <param name="guid"></param>
-		void AddEntity(ObjectGuid guid);
+		void AddEntity(NetworkEntityGuid guid);
 	}
 }

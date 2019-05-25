@@ -66,7 +66,7 @@ namespace GladMMO
 			});
 		}
 
-		private void InitializeCharacterName([NotNull] ObjectGuid guid, [NotNull] IUICharacterSlot button)
+		private void InitializeCharacterName([NotNull] NetworkEntityGuid guid, [NotNull] IUICharacterSlot button)
 		{
 			if(guid == null) throw new ArgumentNullException(nameof(guid));
 			if(button == null) throw new ArgumentNullException(nameof(button));

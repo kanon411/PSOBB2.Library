@@ -45,9 +45,9 @@ namespace GladMMO
 				KnownEntites.AddEntity(args.EntityGuid);
 
 				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Entity: {args.EntityGuid.ObjectType}:{args.EntityGuid.CurrentObjectGuid} is now known.");
+					Logger.Debug($"Entity: {args.EntityGuid.EntityType}:{args.EntityGuid.EntityId} is now known.");
 
-				if(args.EntityGuid.HasType(EntityGuidMask.Player) && IsSpawningEntityLocalPlayer(args.EntityGuid))
+				if(args.EntityGuid.EntityType == EntityType.Player && IsSpawningEntityLocalPlayer(args.EntityGuid))
 				{
 					if(Logger.IsInfoEnabled)
 						Logger.Info($"Spawning local player.");
@@ -74,7 +74,7 @@ namespace GladMMO
 			}
 		}
 
-		private bool IsSpawningEntityLocalPlayer([NotNull] ObjectGuid guid)
+		private bool IsSpawningEntityLocalPlayer([NotNull] NetworkEntityGuid guid)
 		{
 			if(guid == null) throw new ArgumentNullException(nameof(guid));
 
@@ -83,7 +83,7 @@ namespace GladMMO
 			if(MovementDataMappable.ContainsKey(guid))
 				return MovementDataMappable[guid].UpdateFlags.HasFlag(ObjectUpdateFlags.UPDATEFLAG_SELF); //TODO: Is this flag ONLY set for player??
 			else
-				throw new InvalidOperationException($"Encountered Player Entity: {guid.ObjectType}:{guid.CurrentObjectGuid} without movement data.");
+				throw new InvalidOperationException($"Encountered Player Entity: {guid.EntityType}:{guid.EntityId} without movement data.");
 
 			return false;
 		}

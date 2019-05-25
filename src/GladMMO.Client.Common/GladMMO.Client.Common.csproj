@@ -23,4 +23,8 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GladMMO.Common\GladMMO.Common.csproj" />
+  </ItemGroup>
+
 </Project>

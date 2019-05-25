@@ -98,7 +98,7 @@ namespace GladMMO
 				.As<ISceneManager>();
 
 			//Common thing used in temp registeration
-			builder.RegisterInstance(ObjectGuid.Empty)
+			builder.RegisterInstance(NetworkEntityGuid.Empty)
 				.AsSelf();
 
 			//We do this to override the UnityLogger which calls ECall Sec errors.

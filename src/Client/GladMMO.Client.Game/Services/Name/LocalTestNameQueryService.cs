@@ -8,10 +8,10 @@ namespace GladMMO
 {
 	public sealed class LocalTestNameQueryService : INameQueryService, INameQueryStorageable
 	{
-		private Dictionary<ObjectGuid, string> LocalNameMap { get; } = new Dictionary<ObjectGuid, string>(ObjectGuidEqualityComparer<ObjectGuid>.Instance);
+		private Dictionary<NetworkEntityGuid, string> LocalNameMap { get; } = new Dictionary<NetworkEntityGuid, string>(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance);
 
 		/// <inheritdoc />
-		public void EnsureExists([NotNull] ObjectGuid entity)
+		public void EnsureExists([NotNull] NetworkEntityGuid entity)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 
@@ -20,7 +20,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public string Retrieve([NotNull] ObjectGuid entity)
+		public string Retrieve([NotNull] NetworkEntityGuid entity)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 
@@ -28,7 +28,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public Task<string> RetrieveAsync([NotNull] ObjectGuid entity)
+		public Task<string> RetrieveAsync([NotNull] NetworkEntityGuid entity)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 
@@ -36,7 +36,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void Add([NotNull] ObjectGuid entity, [NotNull] string name)
+		public void Add([NotNull] NetworkEntityGuid entity, [NotNull] string name)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 			if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));

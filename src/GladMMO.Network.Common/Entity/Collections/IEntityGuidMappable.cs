@@ -6,7 +6,7 @@ using Glader.Essentials;
 
 namespace GladMMO
 {
-	public interface IEntityGuidMappable<TValue> : Glader.Essentials.IEntityGuidMappable<ObjectGuid, TValue>
+	public interface IEntityGuidMappable<TValue> : Glader.Essentials.IEntityGuidMappable<NetworkEntityGuid, TValue>
 	{
 		
 	}

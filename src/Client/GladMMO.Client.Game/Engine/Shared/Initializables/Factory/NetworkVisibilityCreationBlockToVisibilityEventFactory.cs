@@ -30,7 +30,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public NetworkEntityNowVisibleEventArgs Create(ObjectUpdateCreateObject1Block context)
 		{
-			ObjectGuid guid = new ObjectGuid(context.CreationData.CreationGuid);
+			NetworkEntityGuid guid = new NetworkEntityGuid(context.CreationData.CreationGuid);
 
 			var initialContainer = DataMappable[guid] = CreateInitialEntityFieldContainer(context.CreationData);
 			ChangeTrackableCollection[guid] = new ChangeTrackingEntityFieldDataCollectionDecorator(initialContainer, context.CreationData.ObjectValuesCollection.UpdateMask);

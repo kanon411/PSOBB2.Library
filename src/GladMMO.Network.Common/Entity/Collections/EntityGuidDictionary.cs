@@ -9,13 +9,13 @@ using Glader.Essentials;
 namespace GladMMO
 {
 	/// <summary>
-	/// Generic dictionary with <see cref="ObjectGuid"/> key types.
+	/// Generic dictionary with <see cref="NetworkEntityGuid"/> key types.
 	/// </summary>
 	/// <typeparam name="TValue">Value type.</typeparam>
-	public class EntityGuidDictionary<TValue> : Glader.Essentials.EntityGuidDictionary<ObjectGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
+	public class EntityGuidDictionary<TValue> : Glader.Essentials.EntityGuidDictionary<NetworkEntityGuid, TValue>, IReadonlyEntityGuidMappable<TValue>, IEntityGuidMappable<TValue>
 	{
 		public EntityGuidDictionary()
-			: base(ObjectGuidEqualityComparer<ObjectGuid>.Instance)
+			: base(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance)
 		{
 
 		}

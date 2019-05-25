@@ -43,7 +43,7 @@ namespace GladMMO
 			if(!EntityDataMappable.ContainsKey(args.PlayerGuid))
 			{
 				if(Logger.IsDebugEnabled)
-					Logger.Debug($"Encountered GroupJoin from far-away Entity: {args.PlayerGuid.CurrentObjectGuid}");
+					Logger.Debug($"Encountered GroupJoin from far-away Entity: {args.PlayerGuid.RawGuidValue}");
 
 				GroupUnitframeManager[args.PlayerGuid].SetElementActive(true);
 				return;
@@ -58,17 +58,17 @@ namespace GladMMO
 			}
 		}
 
-		private void OnCurrentLevelChanged(ObjectGuid entity, EntityDataChangedArgs<int> eventArgs)
+		private void OnCurrentLevelChanged(NetworkEntityGuid entity, EntityDataChangedArgs<int> eventArgs)
 		{
 			RecaculateLevelUI(entity, eventArgs.NewValue);
 		}
 
-		private void RecaculateLevelUI(ObjectGuid player, int currentLevel)
+		private void RecaculateLevelUI(NetworkEntityGuid player, int currentLevel)
 		{
 			GroupUnitframeManager[player].UnitLevel.Text = currentLevel.ToString();
 		}
 
-		private void RecalulateHealthUI(ObjectGuid player, int currentHealth)
+		private void RecalulateHealthUI(NetworkEntityGuid player, int currentHealth)
 		{
 			float healthPercentage = (float)currentHealth / EntityDataMappable[player].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH);
 
@@ -78,7 +78,7 @@ namespace GladMMO
 			GroupUnitframeManager[player].HealthBar.BarText.Text = $"{currentHealth} / {EntityDataMappable[player].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH)}";
 		}
 
-		private void OnCurrentHealthChangedValue(ObjectGuid source, EntityDataChangedArgs<int> changeArgs)
+		private void OnCurrentHealthChangedValue(NetworkEntityGuid source, EntityDataChangedArgs<int> changeArgs)
 		{
 			RecalulateHealthUI(source, changeArgs.NewValue);
 		}

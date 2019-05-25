@@ -30,7 +30,7 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="guid">The guid of the player.</param>
 		/// <returns>True if a unitframe could be claimed.</returns>
-		GroupUnitFrameIssueResult TryClaimUnitFrame(ObjectGuid guid);
+		GroupUnitFrameIssueResult TryClaimUnitFrame(NetworkEntityGuid guid);
 
 		/// <summary>
 		/// Attempts to release a claimed unitframe
@@ -38,6 +38,6 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="guid">The guid of the player.</param>
 		/// <returns>True if a unitframe was claimed and successfully released for the player.</returns>
-		GroupUnitFrameReleaseResult TryReleaseUnitFrame(ObjectGuid guid);
+		GroupUnitFrameReleaseResult TryReleaseUnitFrame(NetworkEntityGuid guid);
 	}
 }

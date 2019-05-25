@@ -12,10 +12,10 @@ namespace GladMMO
 
 	public sealed class PlayerJoinedGroupEventArgs : EventArgs
 	{
-		public ObjectGuid PlayerGuid { get; }
+		public NetworkEntityGuid PlayerGuid { get; }
 
 		/// <inheritdoc />
-		public PlayerJoinedGroupEventArgs([NotNull] ObjectGuid playerGuid)
+		public PlayerJoinedGroupEventArgs([NotNull] NetworkEntityGuid playerGuid)
 		{
 			PlayerGuid = playerGuid ?? throw new ArgumentNullException(nameof(playerGuid));
 		}

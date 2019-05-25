@@ -74,7 +74,7 @@ namespace GladMMO.Client
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)Scene, GetType().Assembly));
 			builder.RegisterModule(new UIDependencyRegisterationModule<UnityUIRegisterationKey>());
 
-			//builder.RegisterModule<EntityMappableRegisterationModule<ObjectGuid>>();
+			//builder.RegisterModule<EntityMappableRegisterationModule<NetworkEntityGuid>>();
 			RegisterEntityContainers(builder);
 
 			builder.Register<IServiceDiscoveryService>(context => RestService.For<IServiceDiscoveryService>(ServiceDiscoveryUrl))
@@ -93,7 +93,7 @@ namespace GladMMO.Client
 			//HelloKitty: We actually have to do this manually, and not use GladerEssentials because we use simplified interfaces.
 			//The below is kinda a hack to register the non-generic types in the
 			//removabale collection
-			List<IEntityCollectionRemovable<ObjectGuid>> removableComponentsList = new List<IEntityCollectionRemovable<ObjectGuid>>(10);
+			List<IEntityCollectionRemovable<NetworkEntityGuid>> removableComponentsList = new List<IEntityCollectionRemovable<NetworkEntityGuid>>(10);
 
 			builder.RegisterGeneric(typeof(EntityGuidDictionary<>))
 				.AsSelf()
@@ -101,14 +101,14 @@ namespace GladMMO.Client
 				.As(typeof(IEntityGuidMappable<>))
 				.OnActivated(args =>
 				{
-					if(args.Instance is IEntityCollectionRemovable<ObjectGuid> removable)
+					if(args.Instance is IEntityCollectionRemovable<NetworkEntityGuid> removable)
 						removableComponentsList.Add(removable);
 				})
 				.SingleInstance();
 
 			//This will allow everyone to register the removable collection collection.
 			builder.RegisterInstance(removableComponentsList)
-				.As<IReadOnlyCollection<IEntityCollectionRemovable<ObjectGuid>>>()
+				.As<IReadOnlyCollection<IEntityCollectionRemovable<NetworkEntityGuid>>>()
 				.AsSelf()
 				.SingleInstance();
 		}

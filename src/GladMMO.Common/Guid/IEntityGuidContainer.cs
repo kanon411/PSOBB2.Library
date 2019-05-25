@@ -7,13 +7,13 @@ using FreecraftCore;
 namespace GladMMO
 {
 	/// <summary>
-	/// Contract for types that contain a <see cref="ObjectGuid"/>
+	/// Contract for types that contain a <see cref="NetworkEntityGuid"/>
 	/// </summary>
 	public interface IEntityGuidContainer
 	{
 		/// <summary>
 		/// The Network GUID contained inside the container.
 		/// </summary>
-		ObjectGuid EntityGuid { get; }
+		NetworkEntityGuid EntityGuid { get; }
 	}
 }

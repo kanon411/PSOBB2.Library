@@ -5,7 +5,7 @@ using FreecraftCore;
 
 namespace GladMMO
 {
-	public interface IReadonlyEntityGuidMappable<TValue> : IReadOnlyDictionary<ObjectGuid, TValue>
+	public interface IReadonlyEntityGuidMappable<TValue> : IReadOnlyDictionary<NetworkEntityGuid, TValue>
 	{
 		
 	}

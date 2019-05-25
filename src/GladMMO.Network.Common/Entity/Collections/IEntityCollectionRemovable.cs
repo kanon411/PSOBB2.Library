@@ -8,9 +8,9 @@ namespace GladMMO
 {
 	/// <summary>
 	/// Contract for collections that can have entries
-	/// removed via a <see cref="ObjectGuid"/>.
+	/// removed via a <see cref="NetworkEntityGuid"/>.
 	/// </summary>
-	public interface IEntityCollectionRemovable : Glader.Essentials.IEntityCollectionRemovable<ObjectGuid>
+	public interface IEntityCollectionRemovable : Glader.Essentials.IEntityCollectionRemovable<NetworkEntityGuid>
 	{
 
 	}

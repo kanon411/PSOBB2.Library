@@ -7,12 +7,12 @@ namespace GladMMO
 {
 	public interface ILocalPlayerDetails
 	{
-		ObjectGuid LocalPlayerGuid { get; set; }
+		NetworkEntityGuid LocalPlayerGuid { get; set; }
 	}
 
 	public interface IReadonlyLocalPlayerDetails
 	{
-		ObjectGuid LocalPlayerGuid { get; }
+		NetworkEntityGuid LocalPlayerGuid { get; }
 
 		IEntityDataFieldContainer EntityData { get; }
 	}

@@ -19,10 +19,10 @@ namespace GladMMO
 		/// <summary>
 		/// The entity guid of the local player.
 		/// </summary>
-		public ObjectGuid EntityGuid { get; }
+		public NetworkEntityGuid EntityGuid { get; }
 
 		/// <inheritdoc />
-		public LocalPlayerSpawnedEventArgs([NotNull] ObjectGuid entityGuid)
+		public LocalPlayerSpawnedEventArgs([NotNull] NetworkEntityGuid entityGuid)
 		{
 			//TODO: Validate this.
 

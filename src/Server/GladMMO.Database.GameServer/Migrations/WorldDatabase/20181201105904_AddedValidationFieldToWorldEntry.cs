@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PSOBB.Database.GameServer.Migrations.WorldDatabase
+namespace GladMMO.Database.GameServer.Migrations.WorldDatabase
 {
     public partial class AddedValidationFieldToWorldEntry : Migration
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: If owned models are ever available we should do this.
 	[Owned]

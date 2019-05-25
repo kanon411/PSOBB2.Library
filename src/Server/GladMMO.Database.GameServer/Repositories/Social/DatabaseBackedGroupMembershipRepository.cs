@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DatabaseBackedGroupMembershipRepository : BaseGenericBackedDatabaseRepository<CharacterDatabaseContext, int, CharacterGroupMembershipModel>, IGroupMembershipRepository
 	{

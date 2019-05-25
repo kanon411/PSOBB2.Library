@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PSOBB.Database.GameServer.Migrations.CommonGameDatabase
+namespace GladMMO.Database.GameServer.Migrations.CommonGameDatabase
 {
     public partial class PathWaypointsMigration : Migration
     {

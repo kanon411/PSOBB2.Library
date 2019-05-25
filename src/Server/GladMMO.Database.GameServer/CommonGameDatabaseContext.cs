@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class CommonGameDatabaseContext : DbContext
 	{

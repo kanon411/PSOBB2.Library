@@ -81,6 +81,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Database.GameServer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Service.GameServer", "src\Server\GladMMO.Service.GameServer\GladMMO.Service.GameServer.csproj", "{468603D7-6D01-441B-BCEC-BED7F377562E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Models.GameServer", "src\GladMMO.Models.GameServer\GladMMO.Models.GameServer.csproj", "{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GladMMO.Models.Server.ZoneServer", "src\GladMMO.Models.Server.ZoneServer\GladMMO.Models.Server.ZoneServer.csproj", "{054BC8CE-5703-445A-BD6E-B438791739A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Database_Migration|Any CPU = Database_Migration|Any CPU
@@ -360,6 +364,26 @@ Global
 		{468603D7-6D01-441B-BCEC-BED7F377562E}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
 		{468603D7-6D01-441B-BCEC-BED7F377562E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{468603D7-6D01-441B-BCEC-BED7F377562E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Database_Migration|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Database_Migration|Any CPU.Build.0 = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Debug-Local|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Database_Migration|Any CPU.ActiveCfg = Database_Migration|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Database_Migration|Any CPU.Build.0 = Database_Migration|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.DEBUG_LOCAL|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.DEBUG_LOCAL|Any CPU.Build.0 = Debug_Local|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Debug-Local|Any CPU.ActiveCfg = Debug_Local|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Debug-Local|Any CPU.Build.0 = Debug_Local|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054BC8CE-5703-445A-BD6E-B438791739A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -402,6 +426,8 @@ Global
 		{7F224F16-CED0-4F27-92E1-5D9764B89DBF} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
 		{730F0707-7974-4EA9-A1DC-0339C9279D5F} = {98B85CCA-E727-485B-AD3C-68AC2A2B0364}
 		{468603D7-6D01-441B-BCEC-BED7F377562E} = {0478C448-622F-4C60-BDBB-E103D4A2520B}
+		{45191700-B9F8-4643-8C2A-08D2D7B8D8A9} = {572E4B21-970E-4889-9B0D-357816B1307C}
+		{054BC8CE-5703-445A-BD6E-B438791739A3} = {572E4B21-970E-4889-9B0D-357816B1307C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {886DD3D7-35E3-42F0-8CE9-74FB5AD7BBD0}

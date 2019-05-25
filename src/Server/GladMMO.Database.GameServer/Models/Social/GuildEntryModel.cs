@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Table("guild_entry")]
 	public class GuildEntryModel

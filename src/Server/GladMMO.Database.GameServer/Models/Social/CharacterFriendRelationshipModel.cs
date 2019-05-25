@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Database table model for friend requests.

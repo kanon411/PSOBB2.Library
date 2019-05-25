@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PSOBB.Database.GameServer.Migrations
+namespace GladMMO.Database.GameServer.Migrations
 {
     public partial class AddedZoneServerGuidIndex : Migration
     {

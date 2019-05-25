@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GladNet;
 using Microsoft.AspNetCore.SignalR;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface IHubConnectionMessageContext<TRemoteClientHubInterfaceType> : IHubConnectionMessageContext
 	{

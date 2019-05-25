@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class BaseTextChatGroupBroadcastSignalRMessageHandler<TMessageType, TSendMessageType> : BaseTextChatHubSignalRMessageHandler<TMessageType>
 		where TMessageType : class, ITextMessageContainable, IChatChannelAssociatable

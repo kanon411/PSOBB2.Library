@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PSOBB.Database.GameServer.Migrations
+namespace GladMMO.Database.GameServer.Migrations
 {
     public partial class AddedGroupInviteModelMigration : Migration
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Base class type for all repositories that want to

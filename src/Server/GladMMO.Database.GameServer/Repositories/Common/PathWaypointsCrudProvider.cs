@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//We have to override Find because we have a complex key
 	public sealed class PathWaypointsCrudProvider : GeneralGenericCrudRepositoryProvider<PathWaypointKey, PathWaypointModel>

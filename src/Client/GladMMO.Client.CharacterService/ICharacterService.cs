@@ -24,15 +24,6 @@ namespace GladMMO
 		Task<CharacterListResponse> GetCharacters([AuthenticationToken] string authToken);
 
 		/// <summary>
-		/// TODO Doc
-		/// </summary>
-		/// <param name="characterId"></param>
-		/// <returns></returns>
-		[Headers("Cache-Control: max-age=360")]
-		[Get("/api/characters/name/{id}")]
-		Task<NameQueryResponse> NameQuery([AliasAs("id")] int characterId);
-
-		/// <summary>
 		/// TODO DOC
 		/// </summary>
 		/// <param name="characterId"></param>

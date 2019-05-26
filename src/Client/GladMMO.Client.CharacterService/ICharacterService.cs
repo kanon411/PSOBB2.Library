@@ -13,34 +13,32 @@ namespace GladMMO
 	public interface ICharacterService
 	{
 		/// <summary>
-		/// Requests a list of all available characters
-		/// using the provided <see cref="authToken"/> to
-		/// authorize the request.
+		/// Requests a list of all available characters.
 		/// </summary>
-		/// <param name="authToken">The authentication token.</param>
 		/// <returns>The character request.</returns>
+		[RequiresAuthentication]
 		[Headers("Cache-Control: max-age=60")]
 		[Get("/api/characters")]
-		Task<CharacterListResponse> GetCharacters([AuthenticationToken] string authToken);
+		Task<CharacterListResponse> GetCharacters();
 
 		/// <summary>
 		/// TODO DOC
 		/// </summary>
 		/// <param name="characterId"></param>
-		/// <param name="authToken"></param>
 		/// <returns></returns>
+		[RequiresAuthentication]
 		[Post("/api/charactersession/enter/{id}")]
-		Task<CharacterSessionEnterResponse> TryEnterSession([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
+		Task<CharacterSessionEnterResponse> TryEnterSession([AliasAs("id")] int characterId);
 
 		/// <summary>
 		/// Gets a character's session id, if authorized.
 		/// </summary>
 		/// <param name="characterId">The character id to get session data for.</param>
-		/// <param name="authToken">The authentication token for authorization.</param>
 		/// <returns>The session data response.</returns>
+		[RequiresAuthentication]
 		[Get("/api/charactersession/{id}/data")]
 		[Headers("Cache-Control: NoCache")] //TODO: I frgot what this is suppose to be
-		Task<CharacterSessionDataResponse> GetCharacterSessionData([AliasAs("id")] int characterId, [AuthenticationToken] string authToken);
+		Task<CharacterSessionDataResponse> GetCharacterSessionData([AliasAs("id")] int characterId);
 
 		//TODO: Doc
 		/// <summary>
@@ -49,9 +47,9 @@ namespace GladMMO
 		/// </summary>
 		/// <param name="characterId"></param>
 		/// <param name="zoneId"></param>
-		/// <param name="authToken"></param>
 		/// <returns></returns>
+		[RequiresAuthentication]
 		[Post("/api/charactersession/{charid}/data")]
-		Task<CharacterSessionEnterResponse> SetCharacterSessionData([AliasAs("charid")] int characterId, [JsonBody] int zoneId, [AuthenticationToken] string authToken);
+		Task<CharacterSessionEnterResponse> SetCharacterSessionData([AliasAs("charid")] int characterId, [JsonBody] int zoneId);
 	}
 }

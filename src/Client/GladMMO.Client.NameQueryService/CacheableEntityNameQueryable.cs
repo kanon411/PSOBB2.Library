@@ -44,18 +44,21 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public async Task<string> RetrieveAsync([NotNull] NetworkEntityGuid entity)
+		public async Task<NameQueryResponse> RetrieveAsync([NotNull] NetworkEntityGuid entity)
 		{
 			if(entity == null) throw new ArgumentNullException(nameof(entity));
 
 			using(await SyncObj.ReaderLockAsync())
 			{
 				if(LocalNameMap.ContainsKey(entity))
-					return LocalNameMap[entity]; //do not call Retrieve, old versions of Unity3D don't support recursive readwrite locking.
+					return new NameQueryResponse(LocalNameMap[entity]); //do not call Retrieve, old versions of Unity3D don't support recursive readwrite locking.
 			}
 
 			//If we're here, it wasn't contained
-			string name = await NameServiceQueryable.RetrieveAsync(entity);
+			var result = await NameServiceQueryable.RetrieveAsync(entity);
+
+			if(!result.isSuccessful)
+				throw new InvalidOperationException($"Failed to query name for Entity: {entity}. Result: {result.ResultCode}.");
 
 			//Add it
 			using(await SyncObj.WriterLockAsync())
@@ -63,9 +66,9 @@ namespace GladMMO
 				//Check if some other thing already initialized it
 
 				if(LocalNameMap.ContainsKey(entity))
-					return LocalNameMap[entity]; //do not call Retrieve, old versions of Unity3D don't support recursive readwrite locking.
+					return new NameQueryResponse(LocalNameMap[entity]); //do not call Retrieve, old versions of Unity3D don't support recursive readwrite locking.
 
-				return LocalNameMap[entity] = name;
+				return new NameQueryResponse(LocalNameMap[entity] = result.EntityName);
 			}
 		}
 	}

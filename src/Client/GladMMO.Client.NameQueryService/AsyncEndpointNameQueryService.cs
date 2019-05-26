@@ -23,7 +23,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public async Task<string> RetrieveAsync(NetworkEntityGuid entity)
+		public async Task<NameQueryResponse> RetrieveAsync(NetworkEntityGuid entity)
 		{
 			return await(await GetService().ConfigureAwait(false)).RetrieveAsync(entity).ConfigureAwait(false);
 		}

@@ -24,7 +24,7 @@ namespace GladMMO
 				.OnActivated(args =>
 				{
 					//TODO: Automate discovery of payload types.
-					args.Instance.RegisterType<GamePacketPayload>();
+					/*args.Instance.RegisterType<GamePacketPayload>();
 					args.Instance.RegisterType<ServerPacketHeader>();
 					args.Instance.RegisterType<OutgoingClientPacketHeader>();
 					args.Instance.RegisterType<SessionAuthChallengeEvent>();
@@ -42,7 +42,7 @@ namespace GladMMO
 					args.Instance.RegisterType<MSG_MOVE_HEARTBEAT_Payload>();
 
 					args.Instance.RegisterType<MSG_MOVE_START_FORWARD_Payload>();
-					args.Instance.RegisterType<MSG_MOVE_STOP_Payload>();
+					args.Instance.RegisterType<MSG_MOVE_STOP_Payload>();*/
 
 					args.Instance.Compile();
 				})

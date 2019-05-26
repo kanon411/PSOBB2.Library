@@ -21,19 +21,15 @@ namespace GladMMO
 
 		private ICharacterService CharacterServiceQueryable { get; }
 
-		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
-
 		private IEntityNameQueryable EntityNameQueryable { get; }
 
 		/// <inheritdoc />
 		public CharacterSelectionOnStartQueryForCharacterListInitializable([NotNull] ILog logger,
 			[NotNull] ICharacterService characterServiceQueryable,
-			[NotNull] IReadonlyAuthTokenRepository authTokenRepository,
 			[NotNull] IEntityNameQueryable entityNameQueryable)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			CharacterServiceQueryable = characterServiceQueryable ?? throw new ArgumentNullException(nameof(characterServiceQueryable));
-			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
 			EntityNameQueryable = entityNameQueryable ?? throw new ArgumentNullException(nameof(entityNameQueryable));
 		}
 

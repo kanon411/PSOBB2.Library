@@ -16,7 +16,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public CharacterSelectionUpdateCharacterSelectedNameOnCharacterSelectionEventListener(ICharacterSelectionButtonClickedEventSubscribable subscriptionService,
 			[KeyFilter(UnityUIRegisterationKey.CharacterSelection)] [NotNull] IUIText selectedCharacterText,
-			[NotNull] IEntityNameQueryable nameryQueryable) 
+			[NotNull] IEntityNameQueryable nameryQueryable)
 			: base(subscriptionService)
 		{
 			SelectedCharacterText = selectedCharacterText ?? throw new ArgumentNullException(nameof(selectedCharacterText));

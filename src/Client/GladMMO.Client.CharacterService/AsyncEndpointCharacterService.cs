@@ -23,33 +23,27 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public async Task<CharacterListResponse> GetCharacters(string authToken)
+		public async Task<CharacterListResponse> GetCharacters()
 		{
-			return await (await GetService().ConfigureAwait(false)).GetCharacters(authToken).ConfigureAwait(false);
+			return await (await GetService().ConfigureAwait(false)).GetCharacters().ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
-		public async Task<NameQueryResponse> NameQuery(int characterId)
+		public async Task<CharacterSessionEnterResponse> TryEnterSession(int characterId)
 		{
-			return await (await GetService().ConfigureAwait(false)).NameQuery(characterId).ConfigureAwait(false);
+			return await (await GetService().ConfigureAwait(false)).TryEnterSession(characterId).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
-		public async Task<CharacterSessionEnterResponse> TryEnterSession(int characterId, string authToken)
+		public async Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId)
 		{
-			return await (await GetService().ConfigureAwait(false)).TryEnterSession(characterId, authToken).ConfigureAwait(false);
+			return await (await GetService().ConfigureAwait(false)).GetCharacterSessionData(characterId).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
-		public async Task<CharacterSessionDataResponse> GetCharacterSessionData(int characterId, string authToken)
+		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData(int characterId, int zoneId)
 		{
-			return await (await GetService().ConfigureAwait(false)).GetCharacterSessionData(characterId, authToken).ConfigureAwait(false);
-		}
-
-		/// <inheritdoc />
-		public async Task<CharacterSessionEnterResponse> SetCharacterSessionData(int characterId, int zoneId, string authToken)
-		{
-			return await (await GetService().ConfigureAwait(false)).SetCharacterSessionData(characterId, zoneId, authToken).ConfigureAwait(false);
+			return await (await GetService().ConfigureAwait(false)).SetCharacterSessionData(characterId, zoneId).ConfigureAwait(false);
 		}
 	}
 }

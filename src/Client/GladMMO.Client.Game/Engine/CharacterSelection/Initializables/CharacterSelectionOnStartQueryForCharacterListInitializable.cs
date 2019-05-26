@@ -44,7 +44,7 @@ namespace GladMMO
 			{
 				try
 				{
-					CharacterListResponse listResponse = await CharacterServiceQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
+					CharacterListResponse listResponse = await CharacterServiceQueryable.GetCharacters()
 						.ConfigureAwait(false);
 
 					//TODO: Handle errors

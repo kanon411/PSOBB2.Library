@@ -12,7 +12,7 @@ namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
 	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
-	public sealed class CharacterSelectionOnStartGameserverAuthenticateInitializable : IGameInitializable, ICharacterSelectionEntryDataChangeEventSubscribable
+	public sealed class CharacterSelectionOnStartQueryForCharacterListInitializable : IGameInitializable, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
 		private ILog Logger { get; }
 
@@ -26,7 +26,7 @@ namespace GladMMO
 		private IEntityNameQueryable EntityNameQueryable { get; }
 
 		/// <inheritdoc />
-		public CharacterSelectionOnStartGameserverAuthenticateInitializable([NotNull] ILog logger,
+		public CharacterSelectionOnStartQueryForCharacterListInitializable([NotNull] ILog logger,
 			[NotNull] ICharacterService characterServiceQueryable,
 			[NotNull] IReadonlyAuthTokenRepository authTokenRepository,
 			[NotNull] IEntityNameQueryable entityNameQueryable)

@@ -44,9 +44,9 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public async Task<NameQueryResponse> RetrieveAsync([NotNull] NetworkEntityGuid entity)
+		public async Task<NameQueryResponse> RetrieveAsync(ulong rawGuidValue)
 		{
-			if(entity == null) throw new ArgumentNullException(nameof(entity));
+			NetworkEntityGuid entity = new NetworkEntityGuid(rawGuidValue);
 
 			using(await SyncObj.ReaderLockAsync())
 			{

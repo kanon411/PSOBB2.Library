@@ -5,6 +5,7 @@ using System.Text;
 using FreecraftCore;
 using Newtonsoft.Json;
 using ProtoBuf;
+using Refit;
 
 namespace GladMMO
 {
@@ -26,7 +27,8 @@ namespace GladMMO
 		/// <summary>
 		/// Raw 64bit numerical representation of the GUID.
 		/// </summary>
-		[JsonProperty(PropertyName = "GuidValue")]
+		[AliasAs("EntityGuid")]
+		[JsonProperty(PropertyName = "EntityGuid")]
 		[ProtoMember(1, IsRequired = true)]
 		public ulong RawGuidValue { get; private set; } //We added a private set for unity3d JSON
 
@@ -53,7 +55,9 @@ namespace GladMMO
 		public bool isEmpty => RawGuidValue == 0;
 
 		/// <inheritdoc />
-		public EntityGuidMask EntityTypeMask => throw new NotSupportedException();
+		[JsonIgnore]
+		[ProtoIgnore]
+		public EntityGuidMask EntityTypeMask => throw new NotSupportedException($"TODO: This is from FreecraftCore. We should remove this.");
 
 		/// <summary>
 		/// Indiciates the current GUID of the entity. This is the last chunk represents the actual ID without any type or identifying information.

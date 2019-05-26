@@ -23,14 +23,18 @@ namespace GladMMO
 
 		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
 
+		private IEntityNameQueryable EntityNameQueryable { get; }
+
 		/// <inheritdoc />
 		public CharacterSelectionOnStartGameserverAuthenticateInitializable([NotNull] ILog logger,
 			[NotNull] ICharacterService characterServiceQueryable,
-			[NotNull] IReadonlyAuthTokenRepository authTokenRepository)
+			[NotNull] IReadonlyAuthTokenRepository authTokenRepository,
+			[NotNull] IEntityNameQueryable entityNameQueryable)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			CharacterServiceQueryable = characterServiceQueryable ?? throw new ArgumentNullException(nameof(characterServiceQueryable));
 			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
+			EntityNameQueryable = entityNameQueryable ?? throw new ArgumentNullException(nameof(entityNameQueryable));
 		}
 
 		/// <inheritdoc />
@@ -38,18 +42,30 @@ namespace GladMMO
 		{
 			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
-				CharacterListResponse listResponse = await CharacterServiceQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
-					.ConfigureAwait(false);
-
-				//TODO: Handle errors
-				foreach(var character in listResponse.CharacterIds)
+				try
 				{
-					var entityGuid = new NetworkEntityGuidBuilder()
-						.WithId(character)
-						.WithType(EntityType.Player)
-						.Build();
+					CharacterListResponse listResponse = await CharacterServiceQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
+						.ConfigureAwait(false);
 
-					OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(entityGuid));
+					//TODO: Handle errors
+					foreach(var character in listResponse.CharacterIds)
+					{
+						var entityGuid = new NetworkEntityGuidBuilder()
+							.WithId(character)
+							.WithType(EntityType.Player)
+							.Build();
+
+						//Do a namequery so it's in the cache for when anything tries to get entities name.
+						await EntityNameQueryable.RetrieveAsync(entityGuid)
+							.ConfigureAwait(false);
+
+						OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(entityGuid));
+					}
+				}
+				catch(Exception e)
+				{
+					Logger.Error($"Encountered Error: {e.Message}");
+					throw;
 				}
 			});
 

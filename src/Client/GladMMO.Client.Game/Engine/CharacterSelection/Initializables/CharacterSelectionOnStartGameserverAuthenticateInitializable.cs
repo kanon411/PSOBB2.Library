@@ -6,46 +6,54 @@ using Common.Logging;
 using FreecraftCore;
 using Glader.Essentials;
 using GladNet;
+using Nito.AsyncEx;
 
 namespace GladMMO
 {
+	[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
 	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
-	public sealed class CharacterSelectionOnStartGameserverAuthenticateInitializable : IGameInitializable
+	public sealed class CharacterSelectionOnStartGameserverAuthenticateInitializable : IGameInitializable, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
 		private ILog Logger { get; }
 
-		private IConnectionService ConnectService { get; }
+		/// <inheritdoc />
+		public event EventHandler<CharacterSelectionEntryDataChangeEventArgs> OnCharacterSelectionEntryChanged;
 
-		/// <summary>
-		/// The managed network client that the Unity3D client is implemented on-top of.
-		/// </summary>
-		private IManagedNetworkClient<GamePacketPayload, GamePacketPayload> Client { get; }
+		private ICharacterService CharacterServiceQueryable { get; }
 
-		private INetworkClientManager ClientManager { get; }
+		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
 
 		/// <inheritdoc />
-		public CharacterSelectionOnStartGameserverAuthenticateInitializable([NotNull] ILog logger, [NotNull] IConnectionService connectService, [NotNull] INetworkClientManager clientManager, [NotNull] IManagedNetworkClient<GamePacketPayload, GamePacketPayload> client)
+		public CharacterSelectionOnStartGameserverAuthenticateInitializable([NotNull] ILog logger,
+			[NotNull] ICharacterService characterServiceQueryable,
+			[NotNull] IReadonlyAuthTokenRepository authTokenRepository)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-			ConnectService = connectService ?? throw new ArgumentNullException(nameof(connectService));
-			ClientManager = clientManager ?? throw new ArgumentNullException(nameof(clientManager));
-			Client = client ?? throw new ArgumentNullException(nameof(client));
+			CharacterServiceQueryable = characterServiceQueryable ?? throw new ArgumentNullException(nameof(characterServiceQueryable));
+			AuthTokenRepository = authTokenRepository ?? throw new ArgumentNullException(nameof(authTokenRepository));
 		}
 
 		/// <inheritdoc />
 		public async Task OnGameInitialized()
 		{
-			Logger.Info($"Connecting to TrinityCore at: {"127.0.0.1"}:{8085}");
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
+			{
+				CharacterListResponse listResponse = await CharacterServiceQueryable.GetCharacters(AuthTokenRepository.RetrieveWithType())
+					.ConfigureAwait(false);
 
-			bool result = await ConnectService.ConnectAsync("127.0.0.1", 8085)
-				.ConfigureAwait(false);
+				//TODO: Handle errors
+				foreach(var character in listResponse.CharacterIds)
+				{
+					var entityGuid = new NetworkEntityGuidBuilder()
+						.WithId(character)
+						.WithType(EntityType.Player)
+						.Build();
 
-			//TODO: Check connection result.
-			Logger.Info($"Connection result: {result}");
+					OnCharacterSelectionEntryChanged?.Invoke(this, new CharacterSelectionEntryDataChangeEventArgs(entityGuid));
+				}
+			});
 
-			Logger.Info($"Starting network message listening.");
-			await ClientManager.StartHandlingNetworkClient(Client)
-				.ConfigureAwait(false);
+			return;
 		}
 	}
 }

@@ -10,8 +10,8 @@ using GladNet;
 
 namespace FreecraftCore.Swarm
 {
-	[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
-	[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
+	//[AdditionalRegisterationAs(typeof(ICharacterSelectionEntryDataChangeEventSubscribable))]
+	//[SceneTypeCreateGladMMO(GameSceneType.CharacterSelection)]
 	public sealed class CharacterListResponseHandler : BaseGameClientGameMessageHandler<CharacterListResponse>, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
 		/// <inheritdoc />

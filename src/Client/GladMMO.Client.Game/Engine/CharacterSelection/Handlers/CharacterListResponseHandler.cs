@@ -15,7 +15,7 @@ namespace FreecraftCore.Swarm
 	public sealed class CharacterListResponseHandler : BaseGameClientGameMessageHandler<CharacterListResponse>, ICharacterSelectionEntryDataChangeEventSubscribable
 	{
 		/// <inheritdoc />
-		public CharacterListResponseHandler(ILog logger) 
+		public CharacterListResponseHandler(ILog logger)
 			: base(logger)
 		{
 

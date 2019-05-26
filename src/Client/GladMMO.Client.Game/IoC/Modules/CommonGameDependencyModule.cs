@@ -81,10 +81,17 @@ namespace GladMMO.Client
 				.As<IServiceDiscoveryService>()
 				.SingleInstance();
 
-			//TODO: This is just for testing.
-			builder.RegisterType<LocalTestNameQueryService>()
-				.As<INameQueryService>()
-				.As<INameQueryStorageable>()
+
+			builder.Register<INameQueryService>(context =>
+			{
+				IServiceDiscoveryService serviceDiscovery = context.Resolve<IServiceDiscoveryService>();
+
+				//TODO: Eventually gameserver won't be endpoint for namequeries.
+				return new AsyncEndpointNameQueryService(QueryForRemoteServiceEndpoint(serviceDiscovery, "GameServer"), new RefitSettings() { HttpMessageHandlerFactory = () => new FiddlerEnabledWebProxyHandler() });
+			});
+
+			builder.RegisterType<CacheableEntityNameQueryable>()
+				.As<IEntityNameQueryable>()
 				.SingleInstance();
 		}
 

@@ -8,7 +8,7 @@ using Nito.AsyncEx;
 
 namespace GladMMO
 {
-	public sealed class CacheableNameQueryService : INameQueryService
+	public sealed class CacheableEntityNameQueryable : IEntityNameQueryable
 	{
 		private Dictionary<NetworkEntityGuid, string> LocalNameMap { get; } = new Dictionary<NetworkEntityGuid, string>(NetworkGuidEqualityComparer<NetworkEntityGuid>.Instance);
 
@@ -17,7 +17,7 @@ namespace GladMMO
 		private AsyncReaderWriterLock SyncObj { get; } = new AsyncReaderWriterLock();
 
 		/// <inheritdoc />
-		public CacheableNameQueryService([NotNull] INameQueryService nameServiceQueryable)
+		public CacheableEntityNameQueryable([NotNull] INameQueryService nameServiceQueryable)
 		{
 			NameServiceQueryable = nameServiceQueryable ?? throw new ArgumentNullException(nameof(nameServiceQueryable));
 		}

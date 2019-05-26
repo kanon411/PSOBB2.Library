@@ -30,10 +30,11 @@ namespace GladMMO
 		[AllowAnonymous]
 		[ProducesJson]
 		[ResponseCache(Duration = 360)] //We want to cache this for a long time. But it's possible with name changes that we want to not cache forever
-		[HttpGet]
-		public async Task<IActionResult> NameQuery([NotNull] [FromBody] NetworkEntityGuid entityGuid)
+		[HttpGet("{id}")]
+		public async Task<IActionResult> NameQuery(ulong id)
 		{
-			if(entityGuid == null) throw new ArgumentNullException(nameof(entityGuid));
+			//Since this is a GET we can't send a JSON model. We have to use this process instead, sending the raw guid value.
+			NetworkEntityGuid entityGuid = new NetworkEntityGuid(id);
 
 			if(entityGuid.EntityId < 0)
 				return BuildNotFoundUnknownIdResponse();

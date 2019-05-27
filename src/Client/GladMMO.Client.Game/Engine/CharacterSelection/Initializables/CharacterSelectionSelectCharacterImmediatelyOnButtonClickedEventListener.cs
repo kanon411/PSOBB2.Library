@@ -81,7 +81,7 @@ namespace GladMMO
 			CharacterSessionEnterResponse enterResponse = await CharacterServiceQueryable.TryEnterSession(SelectedCharacterGuid.EntityId);
 
 			if(Logger.IsDebugEnabled)
-				Logger.Debug($"Character Session Entry Response: {enterResponse}.");
+				Logger.Debug($"Character Session Entry Response: {enterResponse.ResultCode}.");
 
 			if(!enterResponse.isSuccessful)
 				if(Logger.IsErrorEnabled)

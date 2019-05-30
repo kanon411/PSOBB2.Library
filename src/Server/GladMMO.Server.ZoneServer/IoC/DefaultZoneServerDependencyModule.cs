@@ -25,9 +25,10 @@ namespace GladMMO
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			/*Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
-			payloadRegister.RegisterDefaults();
-			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);*/
+			//Register the serialization models.
+			Unity3DProtobufPayloadRegister unityProtobufRegisteration = new Unity3DProtobufPayloadRegister();
+			unityProtobufRegisteration.RegisterDefaults();
+			unityProtobufRegisteration.Register();
 
 			//Set the sync context
 			UnityAsyncHelper.InitializeSyncContext();

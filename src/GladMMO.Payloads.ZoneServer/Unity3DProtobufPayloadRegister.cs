@@ -13,8 +13,7 @@ namespace GladMMO
 	/// </summary>
 	public sealed class Unity3DProtobufPayloadRegister : ProtobufPayloadRegister
 	{
-		public Unity3DProtobufPayloadRegister([NotNull] Assembly assemblyToLoadFrom)
-			: base(assemblyToLoadFrom)
+		public Unity3DProtobufPayloadRegister()
 		{
 		}
 

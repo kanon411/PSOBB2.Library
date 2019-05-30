@@ -16,19 +16,16 @@ namespace GladMMO
 		/// <inheritdoc />
 		protected override void Load(ContainerBuilder builder)
 		{
-			/*builder.RegisterType<SerializerService>()
-				.AsSelf()
-				.As<ISerializerService>()
-				.OnActivated(args =>
-				{
-					args.Instance.Compile();
-				})
-				.SingleInstance();
 
-			builder.RegisterType<FreecraftCoreGladNetSerializerAdapter>()
+			//Register the serialization models.
+			Unity3DProtobufPayloadRegister unityProtobufRegisteration = new Unity3DProtobufPayloadRegister();
+			unityProtobufRegisteration.RegisterDefaults();
+			unityProtobufRegisteration.Register();
+
+			builder.RegisterType<ProtobufNetGladNetSerializerAdapter>()
 				.AsSelf()
-				.As<INetworkSerializationService>()
-				.SingleInstance();*/
+				.AsImplementedInterfaces()
+				.SingleInstance();
 		}
 	}
 }

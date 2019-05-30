@@ -24,11 +24,6 @@ namespace GladMMO
 				.As<ILog>()
 				.SingleInstance();
 
-			//Register the serialization models.
-			Unity3DProtobufPayloadRegister unityProtobufRegisteration = new Unity3DProtobufPayloadRegister();
-			unityProtobufRegisteration.RegisterDefaults();
-			unityProtobufRegisteration.Register();
-
 			builder.Register<IManagedNetworkClient<GameClientPacketPayload, GameServerPacketPayload>>(context =>
 				{
 #warning TODO We need this reimplemented

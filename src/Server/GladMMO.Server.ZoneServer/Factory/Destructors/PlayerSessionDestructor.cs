@@ -4,7 +4,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class PlayerSessionDestructor : IObjectDestructorable<PlayerSessionDeconstructionContext>
 	{

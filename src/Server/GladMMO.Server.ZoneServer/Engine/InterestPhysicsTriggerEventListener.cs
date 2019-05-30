@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSpoofable))]
 	[AdditionalRegisterationAs(typeof(IEntityInterestChangeEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class InterestPhysicsTriggerEventListener : IGameInitializable, IEntityInterestChangeEventSubscribable, IEntityInterestChangeEventSpoofable
 	{
 		private IPhysicsTriggerEventSubscribable TriggerEventSubscribable { get; }

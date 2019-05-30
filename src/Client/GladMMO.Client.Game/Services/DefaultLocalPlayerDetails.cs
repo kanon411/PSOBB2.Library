@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using FreecraftCore;
 
 namespace GladMMO
 {
@@ -33,7 +32,13 @@ namespace GladMMO
 			FieldDataMap = fieldDataMap ?? throw new ArgumentNullException(nameof(fieldDataMap));
 			CharacterDataRepo = characterDataRepo ?? throw new ArgumentNullException(nameof(characterDataRepo));
 
-			_localPlayerGuid = new Lazy<NetworkEntityGuid>(() => new NetworkEntityGuid(((ulong)characterDataRepo.CharacterId + ((ulong)EntityGuidMask.Player << 48))));
+			_localPlayerGuid = new Lazy<NetworkEntityGuid>(() =>
+			{
+				return new NetworkEntityGuidBuilder()
+					.WithId(characterDataRepo.CharacterId)
+					.WithType(EntityType.Player)
+					.Build();
+			});
 		}
 	}
 }

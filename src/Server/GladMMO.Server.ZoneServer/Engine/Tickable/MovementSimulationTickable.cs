@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class MovementSimulationTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IMovementGenerator<GameObject>> MovementGenerators { get; }

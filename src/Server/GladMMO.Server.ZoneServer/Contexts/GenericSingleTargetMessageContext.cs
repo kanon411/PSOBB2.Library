@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Generic message context for sending a <see cref="PayloadToSend"/> to the connection

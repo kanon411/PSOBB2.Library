@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 using GladNet;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
+	/*[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class SharedMovementInputChangedSendNetworkedInputEventListener : BaseSingleEventListenerInitializable<IMovementInputChangedEventSubscribable, MovementInputChangedEventArgs>, IGameTickable
 	{
-		private IPeerPayloadSendService<GamePacketPayload> SendService { get; }
+		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }
 
 		private ILog Logger { get; }
 
@@ -26,7 +25,7 @@ namespace GladMMO
 
 		/// <inheritdoc />
 		public SharedMovementInputChangedSendNetworkedInputEventListener(IMovementInputChangedEventSubscribable subscriptionService, 
-			[NotNull] IPeerPayloadSendService<GamePacketPayload> sendService, 
+			[NotNull] IPeerPayloadSendService<GameClientPacketPayload> sendService, 
 			[NotNull] ILog logger,
 			[NotNull] ILocalPlayerDetails playerDetails,
 			[NotNull] IReadonlyEntityGuidMappable<GameObject> worldRepresentationMappable) 
@@ -87,5 +86,5 @@ namespace GladMMO
 		{
 			return new MovementInfo(moveFlags, MovementFlagExtra.None, 0, freecraftVector, orientation, null, 0, 0, 0, null, 0);
 		}
-	}
+	}*/
 }

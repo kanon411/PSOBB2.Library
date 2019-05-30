@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Common.Logging;
+using Glader.Essentials;
 using SceneJect.Common;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[Injectee]
 	public sealed class InterestRadiusGatewayEntry : InterestMonitorComponent

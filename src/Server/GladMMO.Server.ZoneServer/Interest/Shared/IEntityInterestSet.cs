@@ -1,4 +1,4 @@
-﻿namespace PSOBB
+﻿namespace GladMMO
 {
 	/// <summary>
 	/// Add/Remove interface for an interest set.

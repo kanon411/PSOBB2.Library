@@ -9,7 +9,7 @@ using GladNet;
 using JetBrains.Annotations;
 using ProtoBuf;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ZoneServerApplicationBase : TcpServerServerApplicationBase<GameServerPacketPayload, GameClientPacketPayload>
 	{

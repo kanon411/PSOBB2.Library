@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
+using GladMMO;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Don't do a Skippable here, because we actually don't have a good design. It's possible without work there is still something to do.
 	[GameInitializableOrdering(0)] //this should run first
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class DefaultInterestRadiusManager : EventQueueBasedTickable<IEntityInterestChangeEventSubscribable, EntityInterestChangeEventArgs>
 	{
 		private IReadonlyEntityGuidMappable<InterestCollection> ManagedInterestCollections { get; }
@@ -26,11 +28,11 @@ namespace PSOBB
 
 		/// <inheritdoc />
 		public DefaultInterestRadiusManager(
-			[NotNull] IEntityInterestChangeEventSubscribable subscriptionService,
-			[NotNull] ILog logger,
-			[NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
-			[NotNull] INetworkMessageSender<EntityVisibilityChangeContext> visibilityMessageSender,
-			[NotNull] GlobalEntityCollectionsLockingPolicy lockingPolicy) 
+			[PostSharp.Patterns.Contracts.NotNull] IEntityInterestChangeEventSubscribable subscriptionService,
+			[PostSharp.Patterns.Contracts.NotNull] ILog logger,
+			[PostSharp.Patterns.Contracts.NotNull] IReadonlyEntityGuidMappable<InterestCollection> managedInterestCollections,
+			[PostSharp.Patterns.Contracts.NotNull] INetworkMessageSender<EntityVisibilityChangeContext> visibilityMessageSender,
+			[PostSharp.Patterns.Contracts.NotNull] GlobalEntityCollectionsLockingPolicy lockingPolicy) 
 			: base(subscriptionService, true, logger)
 		{
 			ManagedInterestCollections = managedInterestCollections ?? throw new ArgumentNullException(nameof(managedInterestCollections));

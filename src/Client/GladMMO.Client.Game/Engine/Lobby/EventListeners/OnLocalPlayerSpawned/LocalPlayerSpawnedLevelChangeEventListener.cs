@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac.Core;
 using Autofac.Features.AttributeFilters;
-using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO

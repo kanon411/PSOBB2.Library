@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Refactor interface implementation
-	public sealed class MovementDataCollection : IDirtyableMovementDataCollection, IEntityGuidMappable<IMovementData>
+	public sealed class MovementDataCollection : IDirtyableMovementDataCollection, IEntityGuidMappable<IMovementData>, IEntityCollectionRemovable
 	{
 		private IEntityGuidMappable<IMovementData> InternallyManagedMovementDictionary { get; }
 

@@ -4,7 +4,7 @@ using System.Text;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DefaultSessionMessageContext<TPayloadWriteType> : IPeerSessionMessageContext<TPayloadWriteType> 
 		where TPayloadWriteType : class

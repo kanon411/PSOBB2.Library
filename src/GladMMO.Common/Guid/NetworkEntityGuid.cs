@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FreecraftCore;
 using Newtonsoft.Json;
 using ProtoBuf;
 using Refit;
@@ -53,11 +52,6 @@ namespace GladMMO
 		[JsonIgnore]
 		[ProtoIgnore]
 		public bool isEmpty => RawGuidValue == 0;
-
-		/// <inheritdoc />
-		[JsonIgnore]
-		[ProtoIgnore]
-		public EntityGuidMask EntityTypeMask => throw new NotSupportedException($"TODO: This is from FreecraftCore. We should remove this.");
 
 		/// <summary>
 		/// Indiciates the current GUID of the entity. This is the last chunk represents the actual ID without any type or identifying information.

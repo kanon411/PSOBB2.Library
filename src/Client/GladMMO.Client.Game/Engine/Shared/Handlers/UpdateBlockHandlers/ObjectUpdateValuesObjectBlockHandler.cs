@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 using Reinterpret.Net;
 
 namespace GladMMO
 {
-	public sealed class ObjectUpdateValuesObjectBlockHandler : BaseObjectUpdateBlockHandler<ObjectUpdateValuesObjectBlock>
+	/*public sealed class ObjectUpdateValuesObjectBlockHandler : BaseObjectUpdateBlockHandler<ObjectUpdateValuesObjectBlock>
 	{
 		public IEntityGuidMappable<IChangeTrackableEntityDataCollection> ChangeTrackableCollection { get; }
 
@@ -43,5 +42,5 @@ namespace GladMMO
 			if(ChangeTrackableCollection.ContainsKey(new NetworkEntityGuid(updateBlock.ObjectToUpdate.RawGuidValue)))
 				Test(updateBlock.UpdateValuesCollection, ChangeTrackableCollection[new NetworkEntityGuid(updateBlock.ObjectToUpdate.RawGuidValue)]);
 		}
-	}
+	}*/
 }

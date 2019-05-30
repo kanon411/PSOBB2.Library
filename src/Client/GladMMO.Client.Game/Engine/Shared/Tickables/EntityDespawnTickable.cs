@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 using UnityEngine;
 

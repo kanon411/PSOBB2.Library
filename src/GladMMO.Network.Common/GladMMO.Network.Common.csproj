@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\" />
     <Folder Include="Packet\" />
-    <Folder Include="Payload\" />
   </ItemGroup>
 
   <ItemGroup>

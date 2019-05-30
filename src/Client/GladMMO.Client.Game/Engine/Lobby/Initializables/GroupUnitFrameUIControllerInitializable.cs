@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO

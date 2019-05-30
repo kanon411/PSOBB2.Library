@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Features.AttributeFilters;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO
@@ -36,8 +35,8 @@ namespace GladMMO
 			GroupUnitframeManager.TryClaimUnitFrame(args.PlayerGuid);
 
 			//Even if we don't know them, we should register an event for it.
-			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH, OnCurrentHealthChangedValue);
-			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)FreecraftCore.EUnitFields.UNIT_FIELD_LEVEL, OnCurrentLevelChanged);
+			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)EUnitFields.UNIT_FIELD_HEALTH, OnCurrentHealthChangedValue);
+			GroupUnitframeManager.RegisterCallback<int>(args.PlayerGuid, (int)EUnitFields.UNIT_FIELD_LEVEL, OnCurrentLevelChanged);
 
 			//TODO: If we come to know them after group join, we'll need to register.
 			if(!EntityDataMappable.ContainsKey(args.PlayerGuid))
@@ -52,8 +51,8 @@ namespace GladMMO
 			{
 				//Very possible we don't know them
 				//But if we do we should calculate their initial unitframe resources
-				RecalulateHealthUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_HEALTH));
-				RecaculateLevelUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_LEVEL));
+				RecalulateHealthUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_HEALTH));
+				RecaculateLevelUI(args.PlayerGuid, EntityDataMappable[args.PlayerGuid].GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_LEVEL));
 				GroupUnitframeManager[args.PlayerGuid].SetElementActive(true);
 			}
 		}
@@ -70,12 +69,12 @@ namespace GladMMO
 
 		private void RecalulateHealthUI(NetworkEntityGuid player, int currentHealth)
 		{
-			float healthPercentage = (float)currentHealth / EntityDataMappable[player].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH);
+			float healthPercentage = (float)currentHealth / EntityDataMappable[player].GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_MAXHEALTH);
 
 			GroupUnitframeManager[player].HealthBar.BarFillable.FillAmount = healthPercentage;
 
 			//Also we want to see the percentage text
-			GroupUnitframeManager[player].HealthBar.BarText.Text = $"{currentHealth} / {EntityDataMappable[player].GetFieldValue<int>((int)FreecraftCore.EUnitFields.UNIT_FIELD_MAXHEALTH)}";
+			GroupUnitframeManager[player].HealthBar.BarText.Text = $"{currentHealth} / {EntityDataMappable[player].GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_MAXHEALTH)}";
 		}
 
 		private void OnCurrentHealthChangedValue(NetworkEntityGuid source, EntityDataChangedArgs<int> changeArgs)

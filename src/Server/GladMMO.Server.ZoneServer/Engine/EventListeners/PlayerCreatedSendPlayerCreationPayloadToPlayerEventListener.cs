@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//This listener only does one thing, but it looks like it a lot.
 	//When the player's world representation exists in the server scene
 	//it just sends a player creation event to the actual player
 	//so that the player will actually spawn itself, and know how to correctly.
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class PlayerCreatedSendPlayerCreationPayloadToPlayerEventListener : BaseSingleEventListenerInitializable<IPlayerWorldSessionCreatedEventSubscribable, PlayerWorldSessionCreationEventArgs>
 	{
 		private INetworkMessageSender<GenericSingleTargetMessageContext<PlayerSelfSpawnEventPayload>> Sender { get; }

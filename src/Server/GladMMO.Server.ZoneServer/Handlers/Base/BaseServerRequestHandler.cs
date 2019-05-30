@@ -6,12 +6,12 @@ using Common.Logging;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public abstract class BaseServerRequestHandler<TSpecificPayloadType> : IPeerMessageHandler<GameClientPacketPayload, GameServerPacketPayload, IPeerSessionMessageContext<GameServerPacketPayload>>
 		where TSpecificPayloadType : GameClientPacketPayload
 	{
-		protected Common.Logging.ILog Logger { get; }
+		protected ILog Logger { get; }
 
 		/// <inheritdoc />
 		protected BaseServerRequestHandler([NotNull] ILog logger)

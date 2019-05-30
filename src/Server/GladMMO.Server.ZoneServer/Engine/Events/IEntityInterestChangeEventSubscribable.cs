@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface IEntityInterestChangeEventSubscribable
 	{

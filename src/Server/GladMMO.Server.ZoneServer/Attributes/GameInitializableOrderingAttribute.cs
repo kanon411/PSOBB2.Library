@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class GameInitializableOrderingAttribute : Attribute

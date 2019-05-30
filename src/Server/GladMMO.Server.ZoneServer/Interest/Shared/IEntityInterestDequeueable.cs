@@ -1,4 +1,4 @@
-﻿namespace PSOBB
+﻿namespace GladMMO
 {
 	public interface IEntityInterestDequeueable
 	{

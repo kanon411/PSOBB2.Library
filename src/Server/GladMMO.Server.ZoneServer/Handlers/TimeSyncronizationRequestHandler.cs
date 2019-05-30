@@ -7,9 +7,9 @@ using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class TimeSyncronizationRequestHandler : BaseServerRequestHandler<ServerTimeSyncronizationRequestPayload>
 	{
 		/// <inheritdoc />

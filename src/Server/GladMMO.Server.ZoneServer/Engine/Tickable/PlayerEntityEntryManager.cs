@@ -4,15 +4,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IPlayerWorldSessionCreatedEventSubscribable))]
 	[GameInitializableOrdering(2)]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class PlayerEntityEntryManager : EventQueueBasedTickable<IPlayerSessionClaimedEventSubscribable, PlayerSessionClaimedEventArgs>, IPlayerWorldSessionCreatedEventSubscribable
 	{
 		private IFactoryCreatable<GameObject, PlayerEntityCreationContext> PlayerFactory { get; }
@@ -59,18 +60,18 @@ namespace PSOBB
 				Logger.Debug($"Dequeueing entity creation request for: {args.EntityGuid.EntityType}:{args.EntityGuid.EntityId}");
 
 			//TODO: This is test data
-			EntityFieldDataCollection<EntityDataFieldType> testData = new EntityFieldDataCollection<EntityDataFieldType>();
+			EntityFieldDataCollection<EUnitFields> testData = new EntityFieldDataCollection<EUnitFields>();
 
 			//TODO: Test values set
-			testData.SetFieldValue(EntityDataFieldType.EntityCurrentHealth, 100);
-			testData.SetFieldValue(EntityDataFieldType.EntityMaxHealth, 120);
+			testData.SetFieldValue(EUnitFields.UNIT_FIELD_HEALTH, 100);
+			testData.SetFieldValue(EUnitFields.UNIT_FIELD_MAXHEALTH, 120);
 
 			using(LockingPolicy.WriterLock(null, CancellationToken.None))
 			{
 				//TODO: Time stamp
 				//TODO: We should check if the result is valid? Maybe return a CreationResult?
 				//We don't need to do anything with the returned object.
-				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(args.EntityGuid, args.SessionContext, new PositionChangeMovementData(0, args.SpawnPosition, Vector2.zero), EntityPrefab.RemotePlayer, testData));
+				GameObject playerGameObject = PlayerFactory.Create(new PlayerEntityCreationContext(args.EntityGuid, args.SessionContext, EntityPrefab.RemotePlayer, args.SpawnPosition, 0));
 			}
 
 			if(Logger.IsDebugEnabled)

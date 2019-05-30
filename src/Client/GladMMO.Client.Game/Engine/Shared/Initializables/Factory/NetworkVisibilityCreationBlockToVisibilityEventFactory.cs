@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using FreecraftCore;
 using Glader.Essentials;
 
 namespace GladMMO
 {
-	[AdditionalRegisterationAs(typeof(IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>))]
+	/*[AdditionalRegisterationAs(typeof(IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>))]
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class NetworkVisibilityCreationBlockToVisibilityEventFactory : IGameInitializable, IFactoryCreatable<NetworkEntityNowVisibleEventArgs, ObjectUpdateCreateObject1Block>
 	{
@@ -66,5 +65,5 @@ namespace GladMMO
 		{
 			return Task.CompletedTask;
 		}
-	}
+	}*/
 }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
-using FreecraftCore;
 using Glader.Essentials;
 using UnityEngine;
 
 namespace GladMMO
 {
-	[AdditionalRegisterationAs(typeof(ILocalPlayerSpawnedEventSubscribable))]
+	/*[AdditionalRegisterationAs(typeof(ILocalPlayerSpawnedEventSubscribable))]
 	[SceneTypeCreateGladMMO(GameSceneType.DefaultLobby)]
 	public sealed class EntitySpawnTickable : EventQueueBasedTickable<INetworkEntityVisibleEventSubscribable, NetworkEntityNowVisibleEventArgs>, ILocalPlayerSpawnedEventSubscribable
 	{
@@ -87,5 +86,5 @@ namespace GladMMO
 
 			return false;
 		}
-	}
+	}*/
 }

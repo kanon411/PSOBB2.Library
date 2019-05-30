@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Glader.Essentials;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//Initializable that just starts the zoneserver network listener.
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class ZoneServerNetworkStartInitializable : IGameInitializable
 	{
 		private ZoneServerApplicationBase ApplicationBase { get; }

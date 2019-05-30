@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(IPlayerSessionClaimedEventSubscribable))]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class ClientSessionClaimRequestHandler : BaseServerRequestHandler<ClientSessionClaimRequestPayload>, IPlayerSessionClaimedEventSubscribable
 	{
 		private IZoneServerToGameServerClient GameServerClient { get; }

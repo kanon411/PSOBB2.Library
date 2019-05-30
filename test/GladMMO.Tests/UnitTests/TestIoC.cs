@@ -5,7 +5,6 @@ using System.Text;
 using Autofac;
 using Common.Logging;
 using Fasterflect;
-using FreecraftCore;
 using Glader.Essentials;
 using Moq;
 using GladMMO.Client;

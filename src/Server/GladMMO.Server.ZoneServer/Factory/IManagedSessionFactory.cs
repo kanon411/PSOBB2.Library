@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GladNet;
 
-namespace PSOBB
+namespace GladMMO
 {
 	/// <summary>
 	/// Simplified type interface for the <see cref="IFactoryCreatable{TCreateType,TContextType}"/>

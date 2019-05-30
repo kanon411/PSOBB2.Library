@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Refit;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class AsyncEndpointZoneServerToGameServerService : BaseAsyncEndpointService<IZoneServerToGameServerClient>, IZoneServerToGameServerClient
 	{

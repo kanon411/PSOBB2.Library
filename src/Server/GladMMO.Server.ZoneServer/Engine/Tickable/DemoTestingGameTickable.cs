@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Glader.Essentials;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//To put some demo/testing code into
 	[GameInitializableOrdering(1)]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class DemoTestingGameTickable : IGameTickable
 	{
 		private IReadonlyEntityGuidMappable<IEntityDataFieldContainer> EntityDataContainer { get; }
@@ -36,7 +37,7 @@ namespace PSOBB
 			//We should just decrement every player's health by 10 every second.
 			foreach(IEntityDataFieldContainer container in EntityDataContainer.Values)
 			{
-				container.SetFieldValue((int)EntityDataFieldType.EntityCurrentHealth, Math.Max(0, container.GetFieldValue<int>((int)EntityDataFieldType.EntityCurrentHealth) - 10));
+				container.SetFieldValue((int)EUnitFields.UNIT_FIELD_HEALTH, Math.Max(0, container.GetFieldValue<int>((int)EUnitFields.UNIT_FIELD_HEALTH) - 10));
 			}
 		}
 	}

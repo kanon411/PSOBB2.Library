@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using ProtoBuf;
 using Refit;
 using UnityEngine;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class DefaultZoneServerDependencyModule : Module
 	{
@@ -24,12 +25,12 @@ namespace PSOBB
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
-			Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
+			/*Unity3DProtobufPayloadRegister payloadRegister = new Unity3DProtobufPayloadRegister();
 			payloadRegister.RegisterDefaults();
-			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);
+			payloadRegister.Register(ZoneServerMetadataMarker.ClientPayloadTypesByOpcode, ZoneServerMetadataMarker.ServerPayloadTypesByOpcode);*/
 
 			//Set the sync context
-			UnityExtended.InitializeSyncContext();
+			UnityAsyncHelper.InitializeSyncContext();
 
 			//TODO: We need to not have such a high rate of Update and need to add prediction.
 			Application.targetFrameRate = 60;
@@ -114,7 +115,7 @@ namespace PSOBB
 				.As<IZoneServerToGameServerClient>()
 				.SingleInstance();
 
-			builder.RegisterType<DefaultMovementHandlerService>()
+			/*builder.RegisterType<DefaultMovementHandlerService>()
 				.As<IMovementDataHandlerService>()
 				.AsSelf();
 
@@ -124,7 +125,7 @@ namespace PSOBB
 
 			builder.RegisterType<PositionChangeMovementBlockHandler>()
 				.AsImplementedInterfaces()
-				.AsSelf();
+				.AsSelf();*/
 
 			builder.RegisterType<UtcNowNetworkTimeService>()
 				.AsSelf()

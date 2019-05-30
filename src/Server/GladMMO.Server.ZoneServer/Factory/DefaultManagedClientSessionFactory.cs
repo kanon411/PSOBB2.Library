@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[AdditionalRegisterationAs(typeof(ISessionDisconnectionEventSubscribable))]
 	[AdditionalRegisterationAs(typeof(IFactoryCreatable<ManagedClientSession<GameServerPacketPayload, GameClientPacketPayload>, ManagedClientSessionCreationContext>))]
 	[AdditionalRegisterationAs(typeof(IManagedClientSessionFactory))]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class DefaultManagedClientSessionFactory : IManagedClientSessionFactory, ISessionDisconnectionEventSubscribable, IGameInitializable
 	{
 		private ILog Logger { get; }

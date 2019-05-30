@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Common.Logging;
+using Glader.Essentials;
 using GladNet;
 using Nito.AsyncEx;
 using UnityEngine.Events;
 
-namespace PSOBB
+namespace GladMMO
 {
 	[GameInitializableOrdering(Int32.MaxValue)] //this should ALWAYS be last, just incase anything else is in queue.
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class PlayerEntityExitManager : EventQueueBasedTickable<ISessionDisconnectionEventSubscribable, SessionStatusChangeEventArgs>
 	{
 		/// <summary>
@@ -77,7 +78,7 @@ namespace PSOBB
 			NetworkEntityGuid entityGuid = ConnectionToEntityMap[args.Details.ConnectionId];
 
 			//First we need to save the entity data since it DOES own an entity.
-			UnityExtended.UnityMainThreadContext.PostAsync(async () =>
+			UnityAsyncHelper.UnityMainThreadContext.PostAsync(async () =>
 			{
 				//Nothing should really be taking a write lock, except session entry I guess.
 				//This could be bad

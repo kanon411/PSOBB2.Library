@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public interface IReadonlyConnectionEntityCollection : IReadOnlyDictionary<int, NetworkEntityGuid>
 	{

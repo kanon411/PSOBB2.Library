@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Glader.Essentials;
 using GladNet;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	//TODO: Refactor, this is just for testing
 	[GameInitializableOrdering(1)]
-	[SceneTypeCreate(GameSceneType.DefaultLobby)]
+	[ServerSceneTypeCreate(ServerSceneType.Default)]
 	public sealed class EntityDataUpdateManager : IGameTickable
 	{
 		private IPlayerEntityGuidEnumerable PlayerGuids { get; }

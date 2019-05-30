@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class InterestChangedPacketBuilder
 	{

@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using FreecraftCore;
 using GladNet;
 using Nito.AsyncEx;
 using Reinterpret.Net;
 
 namespace GladMMO
 {
-	/// <summary>
+	/*/// <summary>
 	/// Decorator that decorates the provided <see cref="NetworkClientBase"/> with functionality
 	/// that allows you to write <see cref="TWritePayloadBaseType"/> directly into the stream/client.
 	/// Overloads the usage of <see cref="Write"/> to accomplish this.
@@ -221,5 +220,5 @@ namespace GladMMO
 				return new ServerPacketHeader(IncomingClientSmallPacketHeader.DecodePacketSize(firstByte, PacketPayloadReadBuffer[0]));
 			}
 		}
-	}
+	}*/
 }

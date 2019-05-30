@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using JetBrains.Annotations;
 
-namespace PSOBB
+namespace GladMMO
 {
 	public sealed class ManagedSessionCreationContext
 	{

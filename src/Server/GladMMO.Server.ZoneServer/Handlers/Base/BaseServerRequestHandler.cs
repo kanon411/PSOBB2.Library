@@ -33,7 +33,8 @@ namespace GladMMO
 		{
 			if(CanHandle(message))
 			{
-				await HandleMessage(context, message.Payload as TSpecificPayloadType);
+				await HandleMessage(context, message.Payload as TSpecificPayloadType)
+					.ConfigureAwait(false);
 				return true;
 			}
 

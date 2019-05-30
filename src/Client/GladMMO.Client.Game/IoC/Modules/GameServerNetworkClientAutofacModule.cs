@@ -45,7 +45,7 @@ namespace GladMMO
 				.As<IPeerMessageContextFactory>()
 				.SingleInstance();
 
-			builder.RegisterType<PayloadInterceptMessageSendService<GameServerPacketPayload>>()
+			builder.RegisterType<PayloadInterceptMessageSendService<GameClientPacketPayload>>()
 				.As<IPeerRequestSendService<GameClientPacketPayload>>()
 				.SingleInstance();
 

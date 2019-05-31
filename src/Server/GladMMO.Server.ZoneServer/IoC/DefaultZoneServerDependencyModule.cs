@@ -25,6 +25,7 @@ namespace GladMMO
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			ServicePointManager.CheckCertificateRevocationList = false;
 
+			//TODO: Extract to seperate module like the client.
 			//Register the serialization models.
 			Unity3DProtobufPayloadRegister unityProtobufRegisteration = new Unity3DProtobufPayloadRegister();
 			unityProtobufRegisteration.RegisterDefaults();
@@ -36,8 +37,9 @@ namespace GladMMO
 			//TODO: We need to not have such a high rate of Update and need to add prediction.
 			Application.targetFrameRate = 60;
 
-			builder.RegisterInstance(new ProtobufNetGladNetSerializerAdapter(PrefixStyle.Fixed32))
-				.As<INetworkSerializationService>();
+			builder.RegisterType<ProtobufNetGladNetSerializerAdapter>()
+				.As<INetworkSerializationService>()
+				.SingleInstance();
 
 			builder.RegisterType<ZoneServerDefaultRequestHandler>()
 				.AsImplementedInterfaces()

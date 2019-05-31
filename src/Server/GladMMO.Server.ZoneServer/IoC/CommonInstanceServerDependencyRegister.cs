@@ -12,7 +12,7 @@ namespace GladMMO
 	public sealed class CommonInstanceServerDependencyRegister : NonBehaviourDependency
 	{
 		[SerializeField]
-		public GameSceneType SceneType;
+		public ServerSceneType SceneType;
 
 		/// <inheritdoc />
 		public override void Register(ContainerBuilder register)

@@ -107,8 +107,7 @@ namespace GladMMO
 			}
 			catch(Exception e)
 			{
-				UnityEngine.Debug.LogError($"Encountered Exception in serializing outgoing packet Type: {payload.GetType().Name}. Exception: {e.Message}");
-				throw;
+				throw new InvalidOperationException($"Encountered Exception in serializing outgoing packet Type: {payload.GetType().Name}. Exception: {e.Message}", e);
 			}
 		}
 

@@ -23,9 +23,7 @@ namespace GladMMO
 		/// <inheritdoc />
 		public IManagedNetworkServerClient<GameServerPacketPayload, GameClientPacketPayload> Create(ManagedSessionCreationContext context)
 		{
-			return new DotNetTcpClientNetworkClient(context.Client)
-				.AddHeaderlessNetworkMessageReading(Serializer)
-				.Build<GameClientPacketPayload, GameServerPacketPayload, IPacketPayload>()
+			return new GladMMOUnmanagedNetworkClient<DotNetTcpClientNetworkClient, GameClientPacketPayload, GameServerPacketPayload, IGamePacketPayload>(new DotNetTcpClientNetworkClient(context.Client), Serializer)
 				.AsManagedSession(Logger);
 		}
 	}

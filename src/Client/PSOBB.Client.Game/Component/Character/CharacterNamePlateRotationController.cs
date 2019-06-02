@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
+using Debug = System.Diagnostics.Debug;
+
+namespace PSOBB
+{
+	public sealed class CharacterNamePlateRotationController : MonoBehaviour
+	{
+		[UsedImplicitly]
+		[SerializeField]
+		private Transform LookTransform;
+
+		[UsedImplicitly]
+		[SerializeField]
+		private Transform TextObjectTransform;
+
+		void Start()
+		{
+			Debug.Assert(TextObjectTransform != null, nameof(TextObjectTransform) + " != null");
+			Debug.Assert(LookTransform != null, nameof(LookTransform) + " != null");
+
+			//TODO: Camera.main is SLOW.
+			ProjectVersionStage.AssertAlpha();
+			LookTransform = Camera.main.transform;
+		}
+
+		void LateUpdate()
+		{
+			TextObjectTransform.LookAt(LookTransform);
+			Vector3 angles = TextObjectTransform.eulerAngles;
+			
+			//To get it looking at the actual camera we need to rotate it 180 degrees and then
+			//invert the X to compensate.
+			TextObjectTransform.eulerAngles = new Vector3(-angles.x, angles.y + 180, 0);
+		}
+	}
+}

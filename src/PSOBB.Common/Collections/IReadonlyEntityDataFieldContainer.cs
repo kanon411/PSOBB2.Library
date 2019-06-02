@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PSOBB
+{
+	/// <summary>
+	/// Contract for containers that hold
+	/// field values.
+	/// </summary>
+	public interface IReadonlyEntityDataFieldContainer
+	{
+		TValueType GetFieldValue<TValueType>(int index)
+			where TValueType : struct;
+	}
+
+	/// <summary>
+	/// Contract for containers that hold
+	/// field values.
+	/// </summary>
+	public interface IReadonlyEntityDataFieldContainer<in TFieldType> : IReadonlyEntityDataFieldContainer
+	{
+		TValueType GetFieldValue<TValueType>(TFieldType index)
+			where TValueType : struct;
+	}
+}
